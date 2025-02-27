@@ -49,15 +49,19 @@ int main()
     #if USE_MOTOR_GEAR_RATIO_78                                    
     const float gear_ratio = 78.125f; 
     const float kn = 180.0f / 12.0f;
-    const float d_wheel = 0.035f;  // wheel diameter in meters
+    const float d_wheel = 0.035f;  // wheel diameter in mete
     const float b_wheel = 0.1518f; // wheelbase, distance from wheel to wheel in meters
     const float bar_dist = 0.118f; // distance from wheel axis to leds on sensor bar / array in meters
+    const float Kp = 2.0f;
+    const float Kp_nl = 17.0f;
     #else // GEAR_RATIO 100
     const float gear_ratio = 78.125f; 
     const float kn = 180.0f / 12.0f;
     const float d_wheel = 0.0372f;  // wheel diameter in meters
     const float b_wheel = 0.156f; // wheelbase, distance from wheel to wheel in meters
     const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
+    const float Kp = 1.6f * 2.0f;
+    const float Kp_nl = 1.6f * 17.0f;
     #endif
 
     // motor M2 and M3, do NOT enable motion planner when used with the LineFollower (disabled per default)
@@ -66,6 +70,7 @@ int main()
 
     // line follower
     LineFollower lineFollower(PB_9, PB_8, bar_dist, d_wheel, b_wheel, motor_M3.getMaxPhysicalVelocity());
+    lineFollower.setRotationalVelocityGain(Kp, Kp_nl);
 
     // start timer
     main_task_timer.start();
