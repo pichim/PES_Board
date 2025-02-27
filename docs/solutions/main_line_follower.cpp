@@ -49,7 +49,7 @@ int main()
     #if USE_MOTOR_GEAR_RATIO_78                                    
     const float gear_ratio = 78.125f; 
     const float kn = 180.0f / 12.0f;
-    const float d_wheel = 0.035f;  // wheel diameter in mete
+    const float d_wheel = 0.035f;  // wheel diameter in meters
     const float b_wheel = 0.1518f; // wheelbase, distance from wheel to wheel in meters
     const float bar_dist = 0.118f; // distance from wheel axis to leds on sensor bar / array in meters
     const float Kp = 2.0f;
