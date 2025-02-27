@@ -58,16 +58,14 @@ int main()
     const float d_wheel = 0.0372f;  // wheel diameter in meters
     const float b_wheel = 0.156f; // wheelbase, distance from wheel to wheel in meters
     const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
-
     #endif
 
-    // motor M1 and M2, do NOT enable motion planner when used with the LineFollower (disabled per default)
-    //If the motors misbehave, I suggest trying to rename M1 and M2 to M2 and M1 respectively
-    DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);
+    // motor M2 and M3, do NOT enable motion planner when used with the LineFollower (disabled per default)
     DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio, kn, voltage_max);
+    DCMotor motor_M3(PB_PWM_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio, kn, voltage_max);
 
     // line follower
-    LineFollower lineFollower(PB_9, PB_8, bar_dist, d_wheel, b_wheel, motor_M2.getMaxPhysicalVelocity());
+    LineFollower lineFollower(PB_9, PB_8, bar_dist, d_wheel, b_wheel, motor_M3.getMaxPhysicalVelocity());
 
     // start timer
     main_task_timer.start();
@@ -80,8 +78,8 @@ int main()
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
             enable_motors = 1;
-            motor_M1.setVelocity(lineFollower.getRightWheelVelocity()); // set a desired speed for speed controlled dc motors M1
-            motor_M2.setVelocity(lineFollower.getLeftWheelVelocity());  // set a desired speed for speed controlled dc motors M2
+            motor_M2.setVelocity(lineFollower.getRightWheelVelocity()); // set a desired speed for speed controlled dc motors M2
+            motor_M3.setVelocity(lineFollower.getLeftWheelVelocity());  // set a desired speed for speed controlled dc motors M3
         } else {
             // the following code block gets executed only once
             if (do_reset_all_once) {
