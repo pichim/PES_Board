@@ -43,23 +43,21 @@ int main()
 
     // create object to enable power electronics for the dc motors
     DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
-
-    #if USE_MOTOR_GEAR_RATIO_78
-    constexpr float voltage_max = 12.0f;// maximum voltage of battery packs, adjust this to
-                                    // 6.0f V if you only use one battery pack
-                                    constexpr float gear_ratio = 78.125f; 
-    constexpr float kn = 180.0f / 12.0f;
-    constexpr float d_wheel = 0.035f;  // wheel diameter in meters
-    constexpr float b_wheel = 0.1518f; // wheelbase, distance from wheel to wheel in meters
-    constexpr float bar_dist = 0.118f; // distance from wheel axis to leds on sensor bar / array in meters
-    #else // GEAR_RATIO 100
-    constexpr float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
+    const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                      // 6.0f V if you only use one battery pack
-    constexpr float gear_ratio = 78.125f; 
-    constexpr float kn = 180.0f / 12.0f;
-    constexpr float d_wheel = 0.0372f;  // wheel diameter in meters
-    constexpr float b_wheel = 0.156f; // wheelbase, distance from wheel to wheel in meters
-    constexpr float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
+
+    #if USE_MOTOR_GEAR_RATIO_78                                    
+    const float gear_ratio = 78.125f; 
+    const float kn = 180.0f / 12.0f;
+    const float d_wheel = 0.035f;  // wheel diameter in meters
+    const float b_wheel = 0.1518f; // wheelbase, distance from wheel to wheel in meters
+    const float bar_dist = 0.118f; // distance from wheel axis to leds on sensor bar / array in meters
+    #else // GEAR_RATIO 100
+    const float gear_ratio = 78.125f; 
+    const float kn = 180.0f / 12.0f;
+    const float d_wheel = 0.0372f;  // wheel diameter in meters
+    const float b_wheel = 0.156f; // wheelbase, distance from wheel to wheel in meters
+    const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
 
     #endif
 
