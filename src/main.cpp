@@ -20,9 +20,6 @@ void toggle_do_execute_main_fcn(); // custom function which is getting executed 
 // main runs as an own thread
 int main()
 {
-    // servo
-    Servo servo_D0(PB_D0);
-    Servo servo_D1(PB_D1);  
     // attach button fall function address to user button object
     user_button.fall(&toggle_do_execute_main_fcn);
 
@@ -41,29 +38,51 @@ int main()
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 
-    // start timer
-    main_task_timer.start();
+    // servo
+    Servo servo_D0(PB_D0);
+    Servo servo_D1(PB_D1);
 
+    // minimal pulse width and maximal pulse width obtained from the servo calibration process
+    // futuba S3001
+    float servo_D0_ang_min = 0.011f; // carefull, these values might differ from servo to servo
+    float servo_D0_ang_max = 0.13f;
+    // reely S0090
+    float servo_D1_ang_min = 0.022f;
+    float servo_D1_ang_max = 0.05f;
+
+    //servo.setPulseWidth: before calibration (0,1) -> (min pwm, max pwm)
+    //servo.setPulseWidth: after calibration (0,1) -> (servo_D0_ang_min, servo_D0_ang_max)
+    servo_D0.calibratePulseMinMax(servo_D0_ang_min, servo_D0_ang_max);
+    servo_D1.calibratePulseMinMax(servo_D1_ang_min, servo_D1_ang_max);
+
+    // default acceleration of the servo motion profile is 1.0e6f
+    servo_D0.setMaxAcceleration(0.3f);
+    servo_D1.setMaxAcceleration(0.3f);
+
+    // variables to move the servo, this is just an example
     float servo_input = 0.0f;
     int servo_counter = 0; // define servo counter, this is an additional variable
                        // used to command the servo
     const int loops_per_seconds = static_cast<int>(ceilf(1.0f / (0.001f * static_cast<float>(main_task_period_ms))));
 
+    // start timer
+    main_task_timer.start();
+
     // this loop will run forever
     while (true) {
         main_task_timer.reset();
-        // print to the serial terminal
-        printf("Pulse width: %f \n", servo_input);
 
         if (do_execute_main_task) {
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
+
             // enable the servos
             if (!servo_D0.isEnabled())
             servo_D0.enable();
             if (!servo_D1.isEnabled())
             servo_D1.enable();  
+
             // command the servos
             servo_D0.setPulseWidth(servo_input);
             servo_D1.setPulseWidth(servo_input);
@@ -72,27 +91,29 @@ int main()
             if ((servo_input < 1.0f) &&                     // constrain servo_input to be < 1.0f
                 (servo_counter % loops_per_seconds == 0) && // true if servo_counter is a multiple of loops_per_second
                 (servo_counter != 0))                       // avoid servo_counter = 0
-                servo_input += 0.005f;
-                servo_counter++;
-                
+                servo_input += 0.05f;
+            servo_counter++;
         } else {
             // the following code block gets executed only once
             if (do_reset_all_once) {
                 do_reset_all_once = false;
-                
 
                 // reset variables and objects
                 led1 = 0;
             }
-            // reset variables and objects
-            led1 = 0;
-            servo_D0.disable();
-            servo_D1.disable();
-            servo_input = 0.0f;
+                // reset variables and objects
+                led1 = 0;
+                servo_D0.disable();
+                servo_D1.disable();
+                servo_input = 0.0f;
+            }
         }
 
         // toggling the user led
         user_led = !user_led;
+
+        // print to the serial terminal
+        printf("Pulse width: %f \n", servo_input);
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();
@@ -100,8 +121,8 @@ int main()
             printf("Warning: Main task took longer than main_task_period_ms\n");
         else
             thread_sleep_for(main_task_period_ms - main_task_elapsed_time_ms);
-    }
 }
+
 
 void toggle_do_execute_main_fcn()
 {
