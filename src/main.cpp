@@ -38,8 +38,7 @@ int main()
     const int main_task_period_ms = 20; // define main task period time in ms e.g. 20 ms, there for
                                         // the main task will run 50 times per second
     Timer main_task_timer;              // create Timer object which we use to run the main task
-                                        // every main_task_period_ms
-
+                                        // every main_task_period_m
     // led on nucleo board
     DigitalOut user_led(LED1);
 
