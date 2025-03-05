@@ -3,7 +3,7 @@
 
 # Workshop 2
 
-The objective of the second workshop is to get familiar with the PES board's hardware and functionality by incorporating additional sensors and actuators, specifically an ultrasonic distance sensor and a servo motor.
+The objective of the second workshop is to get familiar with the PES boards hardware and functionality by incorporating additional sensors and actuators, specifically an ultrasonic distance sensor and a servo motor.
 
 Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintanable firmware for the robot. 
 
@@ -33,7 +33,7 @@ We assume that you know the general structure of the PES board, if not, please v
 
 The first task will be the integration of two servo motors and the corresponding calibration process.
 
-1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information about how to connect the servos to the PES board. Follow the instructions outlined in the haradware tutorial to complete the calibration.
+1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the haradware tutorial to complete the calibration.
 
     > [Servo Tutorial](../markdown/servo.md)
 
@@ -48,7 +48,7 @@ The second task will be to design and implement a state machine (this is nothing
 
 The overall goal is to build a mechatronic system capable of adjusting the deflection of the servo based on the distance measured by the ultrasonic sensor. The system will enter a sleep state if readings are not within a specified range, and pressing the mechanical button will trigger an emergency state/stop which will reset the system.
 
-Before beginning the task you should make yourself familiar with the part [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
+Before beginning the task you should get yourself familiar with the part [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
 
 Below you can find a flow chart diagram showing the logic of the transitions for each state.
 
@@ -75,7 +75,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
 
 3. Read the ultrasonic sensor manual and create an object in the ``main()`` function
     >[Ultrasonic Sensor Manual](../markdown/ultrasonic_sensor.md)
-4. Make sure that you add a reading command and a statement to handle non-valid measurment. This should be placed inside the ``while()`` loop in the scope of the ``if()`` statement. So that it is executed after clicking the **USER** button:
+4. Make sure that you add a reading command and a statement to handle non-valid measurement. This should be placed inside the ``while()`` loop in the scope of the ``if()`` statement, so that it is executed after clicking the **USER** button:
 
 ```
 // read us sensor distance, only valid measurements will update us_distance_cm
@@ -142,7 +142,7 @@ switch (robot_state) {
     }
 ```
 
-8. In the following step, you will map the measured distance to the deflection of the servo. Since the servos are calibrated, the objective is to map the servo in a way that associates variable ot the minimum sensor range ``us_distance_min`` with zero servo deflection and the maximum range ``us_distance_max`` with the maximum servo deflection. Define the following variables along with the variable ``us_distance_cm``:
+8. In the following step, you will map the measured distance to the deflection of the servo. Since the servos are calibrated, the objective is to map the servo in a way that associates variable to the minimum sensor range ``us_distance_min`` with zero servo deflection and the maximum range ``us_distance_max`` with the maximum servo deflection. Define the following variables along with the variable ``us_distance_cm``:
 
 ```
 // min and max ultra sonic sensor reading, (us_distance_min, us_distance_max) -> (servo_min, servo_max)
@@ -164,7 +164,7 @@ float us_distance_max = 40.0f;
     }
 ```
 
-10. Now, let's establish the conditions that prompt transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **SLEEP** state, while the **EMERGENCY** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
+10. Now, let's establish the conditions that prompts transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **SLEEP** state, while the **EMERGENCY** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
 
 ```
     case RobotState::EXECUTION: {
@@ -186,7 +186,7 @@ float us_distance_max = 40.0f;
     }
 ```
 
-11. To transition back from the **SLEEP** state to the **EXECUTION** state, the sensor readings must fall within the specified range. And important to note, the **EMERGENCY** state needs also to be triggerable when the system is in the **SLEEP** state. Add the following code snippet to the **SLEEP** state case condition:
+11. To transition back from the **SLEEP** state to the **EXECUTION** state, the sensor readings must be within the specified range. And important to note, the **EMERGENCY** state needs also to be triggerable when the system is in the **SLEEP** state. Add the following code snippet to the **SLEEP** state case condition:
 
 ```
     case RobotState::SLEEP: {
@@ -216,7 +216,7 @@ float us_distance_max = 40.0f;
     }
 ```
 
-And add the following command to the ``else()`` statement at the end of the ``while()`` loop:
+Add the following command to the ``else()`` statement at the end of the ``while()`` loop:
 
 ```
 // the following code block gets executed only once
@@ -244,11 +244,11 @@ printf("US distance cm: %f \n", us_distance_cm);
 
 ## Summary
 
-In the second workshop, the integration of a servo along with the PES board, servo calibration, and a mechanical button incorporation were performed. Additionally, the creation of a state machine using an ultrasonic sensor was explored. By establishing robot states and implementing transition conditions, a primitive mechatronic system capable of adjusting a servo based on ultrasonic sensor readings was achieved.
+In the second workshop, the integration of a servo motor along with the PES board, servo calibration, and a mechanical button incorporation were performed. Additionally, the creation of a state machine, using an ultrasonic sensor, was explored. By establishing robot states and implementing transition conditions, a primitive mechatronic system capable of adjusting a servo motor based on ultrasonic sensor readings was implemented.
 
 ## Important Notes
 
-- Identing matters! It is important to keep the code clean and readable. This will help you and others to read and understand the code better.
+- Indentation matters! It is important to keep the code clean and readable. This will help you and others to read, understand and maintain the code better.
 - Printing to the serial terminal is a useful tool for debugging. It is important to understand the state of the system and the values of the variables at different points in the code. This will help you to identify errors and to understand the system better. But you have to be carefull with the amount of printed data, as it can slow down the system. So after debugging, it is important to remove or comment out the print statements.
 
 ## Solutions

@@ -39,24 +39,24 @@
     Files checked before FS25:
 
         Markdown files read and checked:
-        - README.md                     (ok)
+        - README.md                     (ok)   ->   ws1-3, 1
         - build_mbed_linux.md           (ok)
         - build_mbed_windows.md         (ok)
         - stepper_motor.md              (ok)
-        - course_setup.md               (ok)
-        - dc_motor.md                   (ok)
+        - course_setup.md               (ok)   ->   ws1, 2
+        - dc_motor.md                   (ok)   ->   ws3, 3
         - imu.md                        (ok)
-        - ir_sensor.md                  (ok)
+        - ir_sensor.md                  (ok)   ->   ws1, 6
         - kinematics.md                 (ok)
         - line_follower.md              (ok)
-        - main_description.md           (ok)
+        - main_description.md           (ok)   ->   ws1, 5
         - sd_card_logger.md             (ok)
-        - servo.md                      (ok)
-        - tips.md                       (ok)
-        - ultrasonic_sensor.md          (ok)
-        - ws1.md                        (ok)
-        - ws2.md                        (ok)
-        - ws3.md                        (ok)
+        - servo.md                      (ok)   ->   ws2, 3
+        - tips.md                       (ok)   ->   ws1, 3
+        - ultrasonic_sensor.md          (ok)   ->   ws2, 4
+        - ws1.md                        (ok)   ->   ws1, 4
+        - ws2.md                        (ok)   ->   ws2, 2
+        - ws3.md                        (ok)   ->   ws3, 2
 
         Solutions:
         - main_base.cpp                       (ok)
@@ -90,8 +90,8 @@
 Big shoutout to Maciej Szarek for his help and the support (https://github.com/szar99).
 
 <p align="center">
-    <img src="docs/images/fast_prototyping.jpg" alt="Fast Prototyping does not to be perfect" width="650"/> </br>
-    <i>Fast Prototyping does not to be perfect</i>
+    <img src="docs/images/fast_prototyping.jpg" alt="Fast Prototyping does not have to be perfect" width="650"/> </br>
+    <i>Fast Prototyping does not have to be perfect</i>
 </p>
 
 Fast prototyping in robotics focuses on quickly building and testing a simple version of the system rather than aiming for perfection from the start. Through iterative development, each prototype helps identify and fix issues, leading to gradual improvements. This approach saves time and cost, encourages experimentation, and ensures that the final design is optimized based on real-world performance. Additionally, hardware and software evolve together, allowing adjustments to both as new challenges arise. Instead of spending too much time planning, build, test, and refine — learning from each iteration.
@@ -288,6 +288,9 @@ And below you find all the solutions, as well as some additional examples:
 - [Differential Drive Kinematics](docs/markdown/kinematics.md)
 
 ## Build Mbed OS projects with VScode
+
+The following describtions explain how to build Mbed OS projects with VScode on different operating systems without using PlatformIO. With PlatformIO the project should work as is.
+
 - [Build Mbed on Windows with VScode](docs/markdown/build_mbed_windows.md)
 - [Build Mbed on Linux/WSL with VScode](docs/markdown/build_mbed_linux.md)
 

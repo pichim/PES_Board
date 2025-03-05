@@ -28,7 +28,7 @@ We will discuss different control strategies for motor control, e.g. speed contr
 
 ## Part 1
 
-In the first task, we will focus just on understanding the motor functionality and control mechanisms. To achieve this, we'll rely on the information provided in the hardware tutorial: [DC Motor Tutorial](../markdown/dc_motor.md)
+In the first task, we will focus just on understanding the motor functionality and control mechanisms. To achieve this, we rely on the information provided in the hardware tutorial: [DC Motor Tutorial](../markdown/dc_motor.md)
 
 **Important Note: In this tutorial, the motors are consistently connected to the same pin. However, it's worth noting that there is an option to connect them to different pins: M2 and M3. You can run up to 3 DC motors with one PES board.**
 
