@@ -16,6 +16,9 @@ DebounceIn user_button(BUTTON1);   // create DebounceIn to evaluate the user but
 void toggle_do_execute_main_fcn(); // custom function which is getting executed when user
                                    // button gets pressed, definition below
 
+// function declaration, definition at the end
+float ir_sensor_compensation(float ir_distance_mV);
+
 // main runs as an own thread
 int main()
 {
