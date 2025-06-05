@@ -57,7 +57,7 @@ public:
     /**
      * @brief Destroy the UltrasonicSensor object.
      */
-    ~UltrasonicSensor();
+    virtual ~UltrasonicSensor();
 
     /**
      * @brief Read the measured distance in centimeters.

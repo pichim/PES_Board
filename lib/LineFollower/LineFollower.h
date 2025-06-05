@@ -42,7 +42,7 @@ public:
     /**
      * @brief Destroy the Line Follower object.
      */
-    ~LineFollower();
+    virtual ~LineFollower();
 
     /**
      * @brief Set the gains for the rotational velocity controller.

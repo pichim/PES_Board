@@ -144,7 +144,7 @@ int main()
     DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
 
     const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
-                                        // 6.0f V if you only use one battery pack
+                                     // 6.0f V if you only use one battery pack
 
     // https://www.pololu.com/product/3475/specs
     const float gear_ratio_M1 = 31.25f; // gear ratio

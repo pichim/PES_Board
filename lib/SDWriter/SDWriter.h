@@ -57,8 +57,11 @@
 class SDWriter
 {
 public:
-    SDWriter(PinName mosi, PinName miso, PinName sck, PinName cs);
-    ~SDWriter();
+    explicit SDWriter(PinName mosi,
+                      PinName miso,
+                      PinName sck,
+                      PinName cs);
+    virtual ~SDWriter();
 
     bool mount();
     bool unmount();

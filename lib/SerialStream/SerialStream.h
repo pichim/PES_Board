@@ -25,7 +25,7 @@ public:
                           PinName tx,
                           PinName rx,
                           int baudrate = 2000000);
-    ~SerialStream() = default;
+    virtual ~SerialStream() = default;
 
     void write(const float val);
     void send();

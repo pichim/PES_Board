@@ -16,15 +16,15 @@
 class PIDCntrl
 {
 public:
-    PIDCntrl(float I, float Ts, float uMin, float uMax);
-    PIDCntrl(float P, float I, float Ts, float uMin, float uMax);
-    PIDCntrl(float P, float I, float D, float Ts, float uMin, float uMax);
-    PIDCntrl(float P, float I, float D, float tau_f, float Ts, float uMin, float uMax);
-    PIDCntrl(float P, float I, float D, float tau_f, float tau_ro, float Ts, float uMin, float uMax);
+    explicit PIDCntrl(float I, float Ts, float uMin, float uMax);
+    explicit PIDCntrl(float P, float I, float Ts, float uMin, float uMax);
+    explicit PIDCntrl(float P, float I, float D, float Ts, float uMin, float uMax);
+    explicit PIDCntrl(float P, float I, float D, float tau_f, float Ts, float uMin, float uMax);
+    explicit PIDCntrl(float P, float I, float D, float tau_f, float tau_ro, float Ts, float uMin, float uMax);
 
-    PIDCntrl(){};
+    explicit PIDCntrl(){};
 
-    ~PIDCntrl() = default;
+    virtual ~PIDCntrl() = default;
 
     void reset(float initValue = 0.0f);
 

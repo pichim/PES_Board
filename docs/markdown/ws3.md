@@ -87,7 +87,7 @@ if (us_distance_cm_candidate > 0.0f)
 
 ```
 const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
-                                    // 6.0f V if you only use one battery pack
+                                 // 6.0f V if you only use one battery pack
 
 // motor M3
 const float gear_ratio_M3 = 78.125f; // gear ratio

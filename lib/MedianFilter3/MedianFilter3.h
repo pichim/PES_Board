@@ -16,8 +16,8 @@ class MedianFilter3
 {
 public:
     // constructors
-    MedianFilter3();
-    ~MedianFilter3() = default;
+    explicit MedianFilter3();
+    virtual ~MedianFilter3() = default;
 
     // optionally call this if you want to re-init the filter later.
     void init();

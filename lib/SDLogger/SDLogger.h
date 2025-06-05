@@ -69,8 +69,12 @@ public:
  * @param num_of_floats Number of floats per record to write to SD card.
  *                      Must be <= SD_LOGGER_NUM_OF_FLOATS_MAX
  */
-    SDLogger(PinName mosi, PinName miso, PinName sck, PinName cs, uint8_t num_of_floats = SD_LOGGER_NUM_OF_FLOATS_MAX);
-    ~SDLogger();
+    explicit SDLogger(PinName mosi,
+                      PinName miso,
+                      PinName sck,
+                      PinName cs,
+                      uint8_t num_of_floats = SD_LOGGER_NUM_OF_FLOATS_MAX);
+    virtual ~SDLogger();
 
     // write float values one by one (appends to the ring buffer automatically, but you need to write m_num_of_floats floats)
     void write(const float val);

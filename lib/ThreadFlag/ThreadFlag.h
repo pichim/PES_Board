@@ -40,7 +40,7 @@
 class ThreadFlag
 {
 public:
-    ThreadFlag();
+    explicit ThreadFlag();
     virtual ~ThreadFlag();
     virtual unsigned int read() const;
     operator unsigned int() const;

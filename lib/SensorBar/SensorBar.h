@@ -166,7 +166,7 @@ public:
                        PinName scl,
                        float bar_dist,
                        bool run_as_thread = true);
-    ~SensorBar();
+    virtual ~SensorBar();
 
     static constexpr int64_t PERIOD_MUS = 4000;
 

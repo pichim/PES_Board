@@ -14,8 +14,8 @@
 class LinearCharacteristics3
 {
 public:
-    LinearCharacteristics3();
-    ~LinearCharacteristics3() = default;
+    explicit LinearCharacteristics3();
+    virtual ~LinearCharacteristics3() = default;
 
     void setCalibrationParameter(Eigen::Matrix3f A, Eigen::Vector3f b);
     void setLimits(float &lowerLimit, float &upperLimit);

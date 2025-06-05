@@ -1,7 +1,5 @@
 #include "RealTimeThread.h"
 
-
-
 RealTimeThread::RealTimeThread(uint32_t period_us,
                                osPriority priority,
                                uint32_t stack_size) : m_period_us(period_us)
@@ -9,10 +7,12 @@ RealTimeThread::RealTimeThread(uint32_t period_us,
                                                     , m_stack_size(stack_size)
                                                     , m_Thread(priority, stack_size)
 {
-    bool init_success = init();
+    const bool init_success = init();
     if (!init_success) {
         printf("RealTimeThread: CRITICAL ERROR - Failed to initialize, object is not functional\n");
     }
+    // we enable the base class per default, so that the thread starts running
+    enable();
 }
 
 RealTimeThread::~RealTimeThread()
@@ -80,7 +80,7 @@ void RealTimeThread::setPeriod(uint32_t period_us)
     // thread-safe update of period and enabled state
     m_Mutex.lock();
     m_period_us = period_us;
-    bool currently_enabled = m_enabled;
+    const bool currently_enabled = m_enabled;
     m_Mutex.unlock();
 
     if (currently_enabled) {
@@ -101,7 +101,7 @@ void RealTimeThread::setPriority(osPriority priority)
 uint32_t RealTimeThread::getMinExecutionTimeUs() const
 {
     m_Mutex.lock();
-    uint32_t min_execution_time_us = (m_execution_count > 0) ? m_min_execution_time_us : 0;
+    const uint32_t min_execution_time_us = (m_execution_count > 0) ? m_min_execution_time_us : 0;
     m_Mutex.unlock();
     return min_execution_time_us;
 }
@@ -109,7 +109,7 @@ uint32_t RealTimeThread::getMinExecutionTimeUs() const
 float RealTimeThread::getAverageExecutionTimeUs() const
 {
     m_Mutex.lock();
-    float average_execution_time_us = (m_execution_count > 0) ? (float)m_total_execution_time_us / m_execution_count : 0.0f;
+    const float average_execution_time_us = (m_execution_count > 0) ? (float)m_total_execution_time_us / m_execution_count : 0.0f;
     m_Mutex.unlock();
     return average_execution_time_us;
 }

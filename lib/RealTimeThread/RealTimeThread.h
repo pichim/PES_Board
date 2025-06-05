@@ -44,8 +44,6 @@
 #ifndef REAL_TIME_THREAD_H_
 #define REAL_TIME_THREAD_H_
 
-#include "mbed.h"
-
 #include "ThreadFlag.h"
 
 using namespace std::chrono;

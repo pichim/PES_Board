@@ -1,13 +1,13 @@
 #include "DCMotor.h"
 
-DCMotor::DCMotor(PinName pin_pwm,
-                 PinName pin_enc_a,
-                 PinName pin_enc_b,
+DCMotor::DCMotor(PinName pwm_pin,
+                 PinName enc_a_pin,
+                 PinName enc_b_pin,
                  float gear_ratio,
                  float kn,
                  float voltage_max,
-                 float counts_per_turn) : m_FastPWM(pin_pwm),
-                                          m_EncoderCounter(pin_enc_a, pin_enc_b),
+                 float counts_per_turn) : m_FastPWM(pwm_pin),
+                                          m_EncoderCounter(enc_a_pin, enc_b_pin),
                                           m_Thread(osPriorityHigh1)
 #if PERFORM_CHIRP_MEAS
                                           , m_BufferedSerial(USBTX, USBRX)

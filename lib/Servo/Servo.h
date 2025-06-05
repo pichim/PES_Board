@@ -55,7 +55,7 @@ public:
     /**
      * @brief Destroy the Servo object.
      */
-    ~Servo();
+    virtual ~Servo();
 
     /**
      * @brief Calibrate the minimum and maximum pulse widths for the servo.

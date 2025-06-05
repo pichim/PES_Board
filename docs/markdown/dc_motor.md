@@ -255,7 +255,7 @@ The following code illustrates the declaration of all necessary parameters to se
 
 ```
 const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
-                                    // 6.0f V if you only use one battery pack
+                                 // 6.0f V if you only use one battery pack
 
 // motor M2
 const float gear_ratio_M2 = 78.125f; // gear ratio

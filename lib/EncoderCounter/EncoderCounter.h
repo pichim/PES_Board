@@ -20,7 +20,7 @@ class EncoderCounter
 
 public:
 
-    EncoderCounter(PinName a, PinName b);
+    explicit EncoderCounter(PinName a, PinName b);
     virtual     ~EncoderCounter();
     void        reset();
     void        reset(int16_t offset);

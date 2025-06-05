@@ -28,7 +28,7 @@ public:
     /**
      * @brief Destroys the Stepper object, cleaning up resources.
      */
-    ~Stepper();
+    virtual ~Stepper();
 
     /**
      * @brief Gets the current step setpoint.

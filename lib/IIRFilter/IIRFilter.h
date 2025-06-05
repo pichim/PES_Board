@@ -9,8 +9,8 @@
 
 class IIRFilter {
 public:
-    IIRFilter() {};
-    ~IIRFilter() = default;
+    explicit IIRFilter() {};
+    virtual ~IIRFilter() = default;
 
     void integratorInit(const float Ts);
     void integratorUpdate(const float Ts);

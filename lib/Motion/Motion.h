@@ -28,9 +28,9 @@ class Motion {
         double      position;       /**< The position value of this motion, given in [m] or [rad]. */
         float       velocity;       /**< The velocity value of this motion, given in [m/s] or [rad/s]. */
         
-                    Motion();
-                    Motion(double position, float velocity);
-                    Motion(const Motion& motion);
+        explicit    Motion();
+        explicit    Motion(double position, float velocity);
+        explicit    Motion(const Motion& motion);
         virtual     ~Motion();
         void        set(double position, float velocity);
         void        set(const Motion& motion);
