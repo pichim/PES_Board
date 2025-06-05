@@ -1,4 +1,11 @@
-#pragma once
+/**
+ * @file IIRFilter.h
+ * @brief This file defines the IIRFilter class.
+ * @author M. Peter / pmic / pichim
+ */
+
+#ifndef IIR_FILTER_H_
+#define IIR_FILTER_H_
 
 class IIRFilter {
 public:
@@ -46,3 +53,5 @@ private:
 
     void applyFilterUpdate(const float input, const float output);
 };
+
+#endif /* IIR_FILTER_H_ */

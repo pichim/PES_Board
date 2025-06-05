@@ -1,3 +1,9 @@
+/**
+ * @file MedianFilter3.h
+ * @brief This file defines the MedianFilter3 class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef MEDIAN_FILTER_3_H_
 #define MEDIAN_FILTER_3_H_
 

@@ -30,8 +30,7 @@
  * motor.getRotation(); // read current rotation
  * ```
  *
- * @author M. E. Peter
- * @date 11.12.2023
+ * @author M. Peter / pmic / pichim
  */
 
 #ifndef DC_MOTOR_H_

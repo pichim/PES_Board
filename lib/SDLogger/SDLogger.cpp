@@ -5,9 +5,17 @@ SDLogger::SDLogger(PinName mosi,
                    PinName sck,
                    PinName cs,
                    uint8_t num_of_floats) : m_SDWriter(mosi, miso, sck, cs),
-                                            m_Thread(osPriorityLow, 4096),
+                                            m_Thread(osPriorityLow),
                                             m_num_of_floats(num_of_floats)
 {
+    // validate input parameters
+    if (num_of_floats == 0 || num_of_floats > SD_LOGGER_NUM_OF_FLOATS_MAX) {
+        printf("SDLogger: Invalid num_of_floats (%d), using default (%d)\n",
+            num_of_floats,
+            SD_LOGGER_NUM_OF_FLOATS_MAX);
+        m_num_of_floats = SD_LOGGER_NUM_OF_FLOATS_MAX;
+    }
+
     // start thread
     m_Thread.start(callback(this, &SDLogger::threadTask));
 
@@ -47,7 +55,7 @@ void SDLogger::send()
     static bool send_num_of_floats_once = false;
     if (!send_num_of_floats_once) {
         send_num_of_floats_once = true;
-        // write the "m_num_of_floats" as the first byte once
+        // write current count
         if (!m_SDWriter.writeByte(m_float_cntr)) {
             printf("SDLogger: writing num_of_floats byte failed\n");
         }
@@ -87,6 +95,10 @@ void SDLogger::logFloats(const float* data, size_t count)
 
 bool SDLogger::openFile()
 {
+    // close any existing file first
+    if (m_file_open) {
+        closeFile();
+    }
     // attempt to mount & open
     if (!m_SDWriter.mount()) {
         printf("SDLogger: mount failed\n");
@@ -94,6 +106,7 @@ bool SDLogger::openFile()
     }
     if (!m_SDWriter.openNextFile()) {
         printf("SDLogger: openNextFile failed\n");
+        m_SDWriter.unmount(); // cleanup on failure
         return false;
     }
     // note: i leave this in case it is needed in the future
@@ -103,6 +116,7 @@ bool SDLogger::openFile()
     //     return false;
     // }
     m_file_open = true;
+    printf("SDLogger: File opened successfully\n");
     return true;
 }
 
@@ -122,7 +136,7 @@ void SDLogger::flushBuffer()
     }
 
     // drain in chunks
-    static constexpr size_t CHUNK_SIZE = 256;
+    static constexpr size_t CHUNK_SIZE = 512; // increased from 256 for better throughput
     float tmp[CHUNK_SIZE];
 
     while (!m_CircularBuffer.empty()) {
@@ -143,11 +157,13 @@ void SDLogger::flushBuffer()
         }
         m_Mutex.unlock();
 
-        // write that chunk
-        if (!m_SDWriter.writeFloats(tmp, count_to_pop)) {
-            printf("SDLogger: writeFloats failed\n");
-            // break (or keep trying)
-            break;
+        if (count_to_pop > 0) {
+            // write that chunk
+            if (!m_SDWriter.writeFloats(tmp, count_to_pop)) {
+                printf("SDLogger: writeFloats failed\n");
+                // break to avoid infinite loop on persistent errors
+                break;
+            }
         }
     }
 }
@@ -156,10 +172,18 @@ bool SDLogger::pushFloats(const float* data, size_t count)
 {
     for (size_t i = 0; i < count; i++) {
         if (m_CircularBuffer.full()) {
+            m_overflow_count++;
             return false;
         }
         m_CircularBuffer.push(data[i]);
     }
+
+    // update max buffer usage for diagnostics
+    size_t current_usage = m_CircularBuffer.size();
+    if (current_usage > m_max_buffer_usage) {
+        m_max_buffer_usage = current_usage;
+    }
+    
     return true;
 }
 

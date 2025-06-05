@@ -1,3 +1,9 @@
+/**
+ * @file PIDCntrl.h
+ * @brief This file defines the PIDCntrl class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef PID_CNTRL_H_
 #define PID_CNTRL_H_
 

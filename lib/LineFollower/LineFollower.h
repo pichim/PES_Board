@@ -1,3 +1,9 @@
+/**
+ * @file LineFollower.h
+ * @brief This file defines the LineFollower class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef LINE_FOLLOWER_H_
 #define LINE_FOLLOWER_H_
 

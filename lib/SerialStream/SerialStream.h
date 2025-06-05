@@ -1,4 +1,11 @@
-#pragma once
+/**
+ * @file SerialStream.h
+ * @brief This file defines the SerialStream class.
+ * @author M. Peter / pmic / pichim
+ */
+
+#ifndef SERIAL_STREAM_H_
+#define SERIAL_STREAM_H_
 
 #define S_STREAM_DO_USE_SERIAL_PIPE true
 
@@ -47,3 +54,4 @@ private:
     void resetByteMsg(byte_msg_t& byte_msg);
     void sendNumOfFloatsOnce();
 };
+#endif /* SERIAL_STREAM_H_ */

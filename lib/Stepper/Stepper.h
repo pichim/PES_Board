@@ -1,3 +1,9 @@
+/**
+ * @file Stepper.h
+ * @brief This file defines the Stepper class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef STEPPER_H_
 #define STEPPER_H_
 

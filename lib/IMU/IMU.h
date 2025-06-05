@@ -1,3 +1,9 @@
+/**
+ * @file IMU.h
+ * @brief This file defines the IMU class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef IMU_H_
 #define IMU_H_
 

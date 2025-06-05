@@ -1,3 +1,9 @@
+/**
+ * @file IRSensor.h
+ * @brief This file defines the IRSensor class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef IR_SENSOR_H_
 #define IR_SENSOR_H_
 

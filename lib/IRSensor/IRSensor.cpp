@@ -2,9 +2,8 @@
 
 IRSensor::IRSensor(PinName pin) : m_AnalogIn(pin),
                                   m_AvgFilter(N),
-                                  m_Thread(osPriorityNormal, 4096)
+                                  m_Thread(osPriorityNormal)
 {
-
     // start thread
     m_Thread.start(callback(this, &IRSensor::threadTask));
 
@@ -14,7 +13,7 @@ IRSensor::IRSensor(PinName pin) : m_AnalogIn(pin),
 
 IRSensor::IRSensor(PinName pin, float a, float b) : m_AnalogIn(pin),
                                                     m_AvgFilter(N),
-                                                    m_Thread(osPriorityNormal, 4096)
+                                                    m_Thread(osPriorityNormal)
 {
     // calibrate the sensor
     setCalibration(a, b);

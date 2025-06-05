@@ -2,7 +2,7 @@
 
 IMU::IMU(PinName pin_sda, PinName pin_scl) : m_ImuLSM9DS1(pin_sda, pin_scl),
                                              m_Mahony(Parameters::kp, Parameters::ki, TS),
-                                             m_Thread(osPriorityHigh, 4096)
+                                             m_Thread(osPriorityHigh)
 {
 #if (IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE && IMU_DO_USE_STATIC_MAG_CALIBRATION)
     m_magCalib.setCalibrationParameter(Parameters::A_mag, Parameters::b_mag);

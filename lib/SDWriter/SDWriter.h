@@ -43,8 +43,7 @@
  * }
  * ```
  *
- * @author M. E. Peter
- * @date 02.01.2025
+ * @author M. Peter / pmic / pichim
  */
 
 #ifndef SD_WRITER_H_
@@ -86,8 +85,6 @@ private:
 
     FILE* m_FilePtr{nullptr};
     bool  m_mounted{false};
-
-    int   m_file_counter{0}; // for enumerating new files
     char  m_file_path[64];   // current file path
 
     bool ensureDirExists(const char* path);

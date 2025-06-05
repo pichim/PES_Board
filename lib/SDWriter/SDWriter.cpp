@@ -29,7 +29,12 @@ bool SDWriter::mount()
         m_SDBlockDevice.deinit();
         return false;
     }
-    ensureDirExists("/sd/data");
+    if (!ensureDirExists("/sd/data")) {
+        printf("SDWriter: failed to create data directory\n");
+        m_FATFileSystem.unmount();
+        m_SDBlockDevice.deinit();
+        return false;
+    }
     m_mounted = true;
     return true;
 }
@@ -122,18 +127,33 @@ bool SDWriter::flush()
 
 bool SDWriter::ensureDirExists(const char* path)
 {
-    mkdir(path, 0777);
-    // not checking the return code; if directory already exists, it's fine.
-    return true;
+    // check if directory already exists
+    DIR* dir = opendir(path);
+    if (dir) {
+        closedir(dir);
+        return true;
+    }
+    // try to create directory
+    int result = mkdir(path, 0777);
+    if (result == 0) {
+        printf("SDWriter: created directory %s\n", path);
+        return true;
+    } else if (errno == EEXIST) {
+        // directory already exists, which is fine
+        return true;
+    } else {
+        printf("SDWriter: failed to create directory %s (errno: %d)\n", path, errno);
+        return false;
+    }
 }
 
 bool SDWriter::openNumberedFile()
 {
-    for (int i = 1; i <= 999; i++) {
+    for (int i = 0; i <= 999; i++) {
         sprintf(m_file_path, "/sd/data/%03d.bin", i);
         FILE* test_fp = fopen(m_file_path, "r");
         if (!test_fp) {
-            // this file doesn't exist yet, so create it:
+            // file doesn't exist yet, try to create it
             m_FilePtr = fopen(m_file_path, "wb");
             if (m_FilePtr) {
                 printf("SDWriter: opened %s\n", m_file_path);

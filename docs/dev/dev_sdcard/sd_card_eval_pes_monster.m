@@ -1,9 +1,11 @@
 clc, clear all
 %%
 
+file_id = fopen('010.bin');
+
 % file_id = fopen('023.bin'); % dc motor thread 2 kHz, pwm 20 kHz
 % file_id = fopen('027.bin'); % dc motor thread 1 kHz, pwm 20 kHz
-file_id = fopen('032.bin'); % dc motor thread 1 kHz, pwm 1 kHz
+% file_id = fopen('032.bin'); % dc motor thread 1 kHz, pwm 1 kHz
 
 num_of_floats = fread(file_id, 1, 'uint8')
 

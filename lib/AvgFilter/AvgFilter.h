@@ -1,3 +1,9 @@
+/**
+ * @file AvgFilter.h
+ * @brief This file defines the Average Filter class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef AVG_FILTER_H_
 #define AVG_FILTER_H_
 

@@ -37,8 +37,7 @@
  * sd_logger.send();
  * ```
  *
- * @author M. E. Peter
- * @date 02.01.2025
+ * @author M. Peter / pmic / pichim
  */
 
 #ifndef SD_LOGGER_H_
@@ -62,20 +61,14 @@
 class SDLogger
 {
 public:
-    // Increase buffer size for higher throughput / less overflow
-    // static const size_t BUFFER_SIZE = 8192; // 8k floats = 32kB
-    // static const size_t BUFFER_SIZE = 4096; // 4k floats = 16kB
-    static const size_t BUFFER_SIZE = 2048; // 2k floats = 8kB
-    // static const size_t BUFFER_SIZE = 1024; // e.g. 4kB
-
-    /**
-     * @param mosi          SPI MOSI pin
-     * @param miso          SPI MISO pin
-     * @param sck           SPI SCK pin
-     * @param cs            SPI CS pin
-     * @param num_of_floats We'll write this once at file start 
-     *                      to indicate how many floats are in each record.
-     */
+/**
+ * @param mosi          SPI MOSI pin
+ * @param miso          SPI MISO pin
+ * @param sck           SPI SCK pin
+ * @param cs            SPI CS pin
+ * @param num_of_floats Number of floats per record to write to SD card.
+ *                      Must be <= SD_LOGGER_NUM_OF_FLOATS_MAX
+ */
     SDLogger(PinName mosi, PinName miso, PinName sck, PinName cs, uint8_t num_of_floats = SD_LOGGER_NUM_OF_FLOATS_MAX);
     ~SDLogger();
 
@@ -85,7 +78,12 @@ public:
     void send();
 
 private:
-    static constexpr int64_t PERIOD_MUS = 20000;
+    // Increase buffer size for higher throughput / less overflow
+    // static const size_t BUFFER_SIZE = 8192; // 8k floats = 32kB
+    // static const size_t BUFFER_SIZE = 4096; // 4k floats = 16kB
+    static const size_t BUFFER_SIZE = 2048; // 2k floats = 8kB
+    // static const size_t BUFFER_SIZE = 1024; // e.g. 4kB
+    static constexpr int64_t PERIOD_MUS = 20000; // 20 ms period
 
     Mutex m_Mutex; // mutex to protect the ring buffer
     CircularBuffer<float, BUFFER_SIZE> m_CircularBuffer;
@@ -99,6 +97,10 @@ private:
     uint8_t m_float_cntr{0};
     bool m_file_open{false};
     float m_data[SD_LOGGER_NUM_OF_FLOATS_MAX];
+
+    // buffer monitoring
+    size_t m_max_buffer_usage{0};
+    uint32_t m_overflow_count{0};
 
     // log some float data (appends to ring buffer)
     void logFloats(const float* data);
@@ -115,5 +117,11 @@ private:
 
     void threadTask();
     void sendThreadFlag();
+
+    // diagnostics
+    size_t getBufferUsage() const { return m_CircularBuffer.size(); }
+    size_t getMaxBufferUsage() const { return m_max_buffer_usage; }
+    uint32_t getOverflowCount() const { return m_overflow_count; }
+    void resetDiagnostics() { m_max_buffer_usage = 0; m_overflow_count = 0; }
 };
 #endif /* SD_LOGGER_H_ */

@@ -8,7 +8,7 @@ DCMotor::DCMotor(PinName pin_pwm,
                  float voltage_max,
                  float counts_per_turn) : m_FastPWM(pin_pwm),
                                           m_EncoderCounter(pin_enc_a, pin_enc_b),
-                                          m_Thread(osPriorityHigh1, 4096)
+                                          m_Thread(osPriorityHigh1)
 #if PERFORM_CHIRP_MEAS
                                           , m_BufferedSerial(USBTX, USBRX)
 #endif

@@ -3,7 +3,7 @@
 UltrasonicSensor::UltrasonicSensor(PinName pin)
     : m_DigitalInOut(pin),
       m_InteruptIn(pin),
-      m_Thread(osPriorityAboveNormal, 4096)
+      m_Thread(osPriorityAboveNormal)
 {
     m_Timer.start();
 

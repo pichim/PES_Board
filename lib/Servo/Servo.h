@@ -27,8 +27,7 @@
  * servo.setPulseWidth(0.5f); // set servo to mid position
  * ```
  *
- * @author M. E. Peter
- * @date 11.12.2023
+ * @author M. Peter / pmic / pichim
  */
 
 #ifndef SERVO_H_

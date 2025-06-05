@@ -28,8 +28,7 @@
  * float distance = ultrasonicSensor;
  * ```
  *
- * @author M. E. Peter
- * @date 12.12.2023
+ * @author M. Peter / pmic / pichim
  */
 
 #ifndef ULTRASONIC_SENSOR_H_

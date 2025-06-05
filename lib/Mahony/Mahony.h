@@ -1,3 +1,9 @@
+/**
+ * @file Mahony.h
+ * @brief This file defines the Mahony class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef MAHONY_H_
 #define MAHONY_H_
 

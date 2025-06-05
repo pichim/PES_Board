@@ -1,3 +1,9 @@
+/**
+ * @file Chirp.h
+ * @brief This file defines the Chirp Signal Generator class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef CHIRP_H_
 #define CHIRP_H_
 

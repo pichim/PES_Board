@@ -1,3 +1,9 @@
+/**
+ * @file LinearCharacteristics3.h
+ * @brief This file defines the LinearCharacteristics3 class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef LINEAR_CHARACTERISTICS3_H_
 #define LINEAR_CHARACTERISTICS3_H_
 
