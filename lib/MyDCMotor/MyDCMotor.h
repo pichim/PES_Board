@@ -18,6 +18,7 @@ public:
                        uint32_t period_us = 1000,
                        osPriority priority = osPriorityHigh1,
                        uint32_t stack_size = OS_STACK_SIZE);
+
     virtual ~MyDCMotor();
 
     float getVelocity() const { return m_encoder_signals.velocity; }
@@ -30,11 +31,6 @@ public:
     void chirpEnable();
     void chirpDisable();
     bool isChirpEnabled() const { return m_enable_chirp; };
-    
-    // disable functions from base class, changing period and priority
-    // is not supported as this class is designed for a fixed period
-    void setPeriod(uint32_t period_us) = delete;
-    void setPriority(osPriority priority) = delete;
 
 protected:
     void executeTask() override;

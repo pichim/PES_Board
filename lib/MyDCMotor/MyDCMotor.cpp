@@ -15,6 +15,8 @@ MyDCMotor::MyDCMotor(PinName pwm_pin,
 {
     // constructor initializes both base class RealTimeThread and MyDCMotor
     m_encoder_signals = m_Encoder.update();
+    // enable thread by default
+    enable();
 }
 
 MyDCMotor::~MyDCMotor()

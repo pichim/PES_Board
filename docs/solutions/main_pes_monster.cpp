@@ -88,21 +88,21 @@ int main()
     IRSensor ir_sensor(PC_2);                      // before the calibration the read function will return the averaged mV value
     ir_sensor.setCalibration(2.574e+04f, -29.37f); // after the calibration the read function will return the calibrated value
 
-    // // // real time thread template
-    // RealTimeThread real_time_thread(1000000);
+    // real time thread template
+    RealTimeThread real_time_thread(1000000);
 
-    class MyRealTimeTask : public RealTimeThread {
+    class MyRealTimeThread : public RealTimeThread {
         // for every constructor that exists in RealTimeThread, add a corresponding constructor to the 
-        // overload set of MyRealTimeTask that simply forwards its arguments to the base‐class constructor
+        // overload set of MyRealTimeThread that simply forwards its arguments to the base‐class constructor
         using RealTimeThread::RealTimeThread;
     protected:
         void executeTask() override {
             static uint32_t run_cntr = 0;
             // avoid printf in real-time threads by default, this is just an example!
-            printf("RealTimeThread is enabled and runs for the %lu time\n", run_cntr++);
+            printf("MyRealTimeThread is enabled and runs for the %lu time\n", run_cntr++);
         }
     };
-    MyRealTimeTask real_time_thread(1000000);
+    MyRealTimeThread my_real_time_thread(2000000);
 
     // TODO RealTimeThread:
     // - check diagnostics of the real-time thread, e.g. execution time, max. execution time, etc.
@@ -218,8 +218,9 @@ int main()
             // read analog input
             ir_distance_avg = ir_sensor.read();
 
-            // enable real time thread
+            // enable real time threads
             real_time_thread.enable();
+            my_real_time_thread.enable();
 
             // read us sensor distance, only valid measurements will update us_distance_cm
             const float us_distance_cm_candidate = us_sensor.read();
@@ -316,6 +317,7 @@ int main()
                 led1 = led2 = 0;
                 ir_distance_avg = 0.0f;
                 real_time_thread.disable();
+                my_real_time_thread.disable();
                 us_distance_cm = 0.0f;
                 imu_data.init();
                 servo_D0.setPulseWidth(0.0f);
