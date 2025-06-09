@@ -27,6 +27,8 @@ public:
                           int baudrate = 2000000);
     virtual ~SerialStream() = default;
 
+    static constexpr uint8_t NUM_OF_FLOATS_MAX = S_STREAM_NUM_OF_FLOATS_MAX;
+
     void write(const float val);
     void send();
     bool startByteReceived();

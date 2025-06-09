@@ -4,6 +4,8 @@ MyDCMotor::MyDCMotor(PinName pwm_pin,
                      PinName enc_a_pin,
                      PinName enc_b_pin,
                      float counts_per_turn,
+                     PinName tx,
+                     PinName rx,
                      float voltage_max,
                      uint32_t period_us,
                      osPriority priority,
@@ -12,9 +14,12 @@ MyDCMotor::MyDCMotor(PinName pwm_pin,
                                           , m_Encoder(enc_a_pin, enc_b_pin, counts_per_turn, FCUT_HZ, D, m_Ts)
                                           , m_Motor(pwm_pin, voltage_max)
                                           , m_Chirp(CHIRP_F0_HZ, 0.99f / (2.0f * m_Ts), CHIRP_TIME_S, m_Ts)
+                                          , m_SerialStream(SerialStream::NUM_OF_FLOATS_MAX, tx, rx)
 {
     // constructor initializes both base class RealTimeThread and MyDCMotor
     m_encoder_signals = m_Encoder.update();
+    // start timer
+    m_Timer.start();
     // enable thread by default
     enable();
 }
@@ -32,8 +37,9 @@ void MyDCMotor::setVoltage(float voltage)
 }
 
 
-void MyDCMotor::chirpEnable()
+void MyDCMotor::chirpEnable(float amplitude)
 {
+    m_chirp_amplitude = amplitude;
     m_enable_chirp = true;
 }
 
@@ -44,19 +50,45 @@ void MyDCMotor::chirpDisable()
 
 void MyDCMotor::executeTask()
 {
+    // measure delta time
+    const microseconds time_us = m_Timer.elapsed_time();
+    const float dtime_us = duration_cast<microseconds>(time_us - m_time_previous_us).count();
+    m_time_previous_us = time_us;
+
     // read encoder signals
     m_encoder_signals = m_Encoder.update();
 
-    // be aware that m_target_voltage is overwritten by chirp if enabled, so 
-    // do not use setVoltage() if chirp is enabled
+    // add chirp excitation to target voltage if enabled
+    float chirp_exc = 0.0f;
+    static bool do_reset_once = false;
     if (m_enable_chirp) {
-        if (m_Chirp.update()) {
-            m_target_voltage = CHIRP_AMPLITUDE_V * m_Chirp.getExc() + CHIRP_OFFSET_V;
-        } else {
-            m_target_voltage = 0.0f; // stop motor after chirp
+
+        // set reset flag
+        do_reset_once = true;
+
+        if (m_SerialStream.startByteReceived() && m_Chirp.update()) {
+            // update chirp excitation
+            chirp_exc = m_chirp_amplitude * m_Chirp.getExc();
+
+            // send data over serial stream
+            m_SerialStream.write( dtime_us );
+            m_SerialStream.write( (float)m_encoder_signals.counts );
+            m_SerialStream.write( m_encoder_signals.velocity );
+            m_SerialStream.write( m_encoder_signals.rotations );
+            m_SerialStream.write( m_target_voltage + chirp_exc );
+            m_SerialStream.write( m_Chirp.getSinarg() );
+            m_SerialStream.send();
+        }
+
+    } else {
+        if (do_reset_once) {
+            do_reset_once = false;
+
+            m_Chirp.reset();
+            m_SerialStream.reset();
         }
     }
 
     // update motor with current target voltage
-    m_Motor.setVoltage(m_target_voltage);
+    m_Motor.setVoltage(m_target_voltage + chirp_exc);
 }

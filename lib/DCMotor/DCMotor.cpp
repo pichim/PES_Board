@@ -160,6 +160,8 @@ void DCMotor::setVelocityCntrl(float kp, float ki, float kd)
                               m_voltage_max * (2.0f * PWM_MAX - 1.0f));
     // avoid students melting their motors
     setVelocityCntrlIntegratorLimitsPercent();
+    // // print for debugging
+    // printf("DCMotor: velocity controller parameters: kp = %.4f, ki = %.4f, kd = %.4f\n", kp, ki, kd);
 }
 
 void DCMotor::setVelocityCntrlIntegratorLimitsPercent(float percent_of_max)

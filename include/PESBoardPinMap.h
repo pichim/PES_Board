@@ -35,6 +35,10 @@
     #define PB_SD_SCK PC_10
     #define PB_SD_CS PD_2
 
+    // Unused UART3
+    #define PB_UART3_TX PB_10
+    #define PB_UART3_RX PC_5
+
 #else
 
     #define PB_D0 PC_9  // ???

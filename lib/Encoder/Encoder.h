@@ -32,13 +32,11 @@ public:
 private:
     EncoderCounter m_EncoderCounter;
     IIRFilter m_lowPass2;
-    encoder_signals_t m_encoder_signals;
-    Mutex m_Mutex;
+    // Mutex m_Mutex; // not needed when only used in one thread
 
-    short m_counts_previous;
+    long m_counts;
+    short m_count_previous;
     float m_counts_per_turn;
     float m_Ts;
-
-    float updateEncoderAndReturnDeltaCounts();
 };
 #endif /* ENCODER_H_ */

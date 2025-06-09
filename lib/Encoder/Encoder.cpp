@@ -15,36 +15,35 @@ Encoder::Encoder(PinName enc_a_pin,
 
 void Encoder::reset()
 {
-    m_Mutex.lock();
-    m_EncoderCounter.reset();
+    // m_Mutex.lock();
     m_lowPass2.reset(0.0f);
-    m_encoder_signals.counts = m_counts_previous = m_EncoderCounter.read();
-    m_encoder_signals.velocity = 0.0f;
-    m_encoder_signals.rotations = 0.0f;
-    m_Mutex.unlock();
+    m_EncoderCounter.reset();
+    m_counts = m_count_previous = m_EncoderCounter.read();
+    // m_Mutex.unlock();
 }
 
 Encoder::encoder_signals_t Encoder::update(float sign)
 {
-    static float velocity_gain = 1.0f / m_Ts;
-    static float rotation_gain = 1.0f / m_counts_per_turn;
+    // convert to rotations per second resp. rotations
+    static const float velocity_gain = 1.0f / m_Ts;
+    static const float rotation_gain = 1.0f / m_counts_per_turn;
 
-    m_Mutex.lock();
-    const float rotation_increment = updateEncoderAndReturnDeltaCounts();
-    m_encoder_signals.velocity = m_lowPass2.apply(sign * velocity_gain * rotation_increment);
-    m_encoder_signals.rotations = sign * rotation_gain * static_cast<float>(m_encoder_signals.counts);
-    encoder_signals_t encoder_signals = m_encoder_signals;  // Copy under protection
-    m_Mutex.unlock();
-    
+    // m_Mutex.lock();
+    // avoid overflow by using short for counts
+    const short count = m_EncoderCounter.read();
+    const short count_delta = count - m_count_previous;
+    m_count_previous = count;
+
+    // total counts
+    m_counts += count_delta;
+
+    // encoder signals
+    encoder_signals_t encoder_signals;
+    encoder_signals.counts = m_counts;
+    const float rotation_increment = static_cast<float>(count_delta) / m_counts_per_turn;
+    encoder_signals.velocity = m_lowPass2.apply(sign * velocity_gain * rotation_increment);
+    encoder_signals.rotations = sign * rotation_gain * static_cast<float>(m_counts);
+    // m_Mutex.unlock();
+
     return encoder_signals;
-}
-
-float Encoder::updateEncoderAndReturnDeltaCounts()
-{  
-    // avoid overflow
-    const short counts = m_EncoderCounter.read();
-    const short counts_delta = counts - m_counts_previous;
-    m_counts_previous = counts;
-    m_encoder_signals.counts += counts_delta;
-    return static_cast<float>(counts_delta) / m_counts_per_turn;
 }

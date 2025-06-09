@@ -1,3 +1,9 @@
+/**
+ * @file GPA.h
+ * @brief This file defines the GPA class.
+ * @author M. Peter / pmic / pichim
+ */
+
 #ifndef GPA_H_
 #define GPA_H_
 
