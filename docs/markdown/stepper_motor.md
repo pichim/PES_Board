@@ -81,13 +81,14 @@ A detailed sketch of the wireing can be found in the file, which can be found in
 
 **Motor 1 Pins**
 
-```
+```cpp
 Step PB_9
 Direction PB_8
 ```
+
 **Motor 2 Pins**
 
-```
+```cpp
 Step PB_4
 Direction PA_7
 ```
@@ -96,11 +97,11 @@ Direction PA_7
 
 Initially, it's essential to add the suitable drivers to the ***main.cpp*** file and then create a ``Stepper`` object inside ``main()`` function with the pin names passed as an argument.
 
-```
+```cpp
 #include "Stepper.h"
 ```
 
-```
+```cpp
 // stepper motors
 Stepper stepper_M1(PB_9, PB_8);
 Stepper stepper_M2(PB_4, PA_7);
@@ -115,7 +116,7 @@ The driver is designed to work with stepper motors that require direction and st
 1. **Setting Rotation (`setRotation`)**:
    - **Purpose**: Moves the motor to a specified rotation count. You can set the rotation with or without specifying the velocity.
    - **Usage**:
-     ```
+     ```cpp
      myStepper.setRotation(2.0);      // moves to 2 full rotations at default velocity
      myStepper.setRotation(3.5, 2.0); // moves to 3.5 rotations at 2 rotations per second
      ```
@@ -123,7 +124,7 @@ The driver is designed to work with stepper motors that require direction and st
 2. **Relative Rotation (`setRotationRelative`)**:
    - **Purpose**: Rotates the motor by a specified relative amount from its current position. Like `setRotation`, you can specify velocity or use the current velocity.
    - **Usage**:
-     ```
+     ```cpp
      myStepper.setRotationRelative(1.0);       // moves 1 full rotation forward from the current position
      myStepper.setRotationRelative(-0.5, 1.5); // moves 0.5 rotations backward at 1.5 rotations per second
      ```
@@ -131,7 +132,7 @@ The driver is designed to work with stepper motors that require direction and st
 3. **Setting Velocity (`setVelocity`)**:
    - **Purpose**: Sets the motor's velocity directly, either moving it at a constant speed or stopping it if the velocity is zero.
    - **Usage**:
-     ```
+     ```cpp
      myStepper.setVelocity(2.0); // moves continuously at 2 rotations per second
      myStepper.setVelocity(0.0); // stops the motor
      ```
@@ -139,7 +140,7 @@ The driver is designed to work with stepper motors that require direction and st
 4. **Steps Control (`setSteps`)**:
    - **Purpose**: Moves the motor to a specific step count at a given velocity. It handles the direction automatically.
    - **Usage**:
-     ```
+     ```cpp
      myStepper.setSteps(1600, 2.0); // moves to step 1600 at 2 rotations per second
      ```
 

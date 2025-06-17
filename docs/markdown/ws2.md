@@ -59,13 +59,13 @@ Below you can find a flow chart diagram showing the logic of the transitions for
 
 1. Connect the mechanical button to the **PC_5** pin on the Nucleo board (one wire to **PC_5** and one wire to **GND**, see [Nucleo Board Pinmap][0]). And add the ultrasonic distance sensor driver ``UltrasonicSensor.h`` to the top of the ***main.cpp*** file:
 
-```
+```cpp
 #include "UltrasonicSensor.h"
 ```
 
 2. In the scope of the ``main()`` function, you have to create a ``mechanical_button`` object and set the appropriate pullup mode:
 
-```
+```cpp
 // mechanical button
 DigitalIn mechanical_button(PC_5); // create DigitalIn object to evaluate mechanical button, you
                                    // need to specify the mode for proper usage, see below
@@ -77,7 +77,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
     >[Ultrasonic Sensor Manual](../markdown/ultrasonic_sensor.md)
 4. Make sure that you add a reading command and a statement to handle non-valid measurement. This should be placed inside the ``while()`` loop in the scope of the ``if()`` statement, so that it is executed after clicking the **USER** button:
 
-```
+```cpp
 // read us sensor distance, only valid measurements will update us_distance_cm
 const float us_distance_cm_candidate = us_sensor.read();
 if (us_distance_cm_candidate > 0.0f)
@@ -86,7 +86,7 @@ if (us_distance_cm_candidate > 0.0f)
 
 5. At the top of ``main()`` function create the ``robot_state`` enum object:
 
-```
+```cpp
 // set up states for state machine
 enum RobotState {
     INITIAL,
@@ -98,7 +98,7 @@ enum RobotState {
 
 6. In the ``if (do_execute_main_task)`` statement, where ``do_execute_main_task`` is ``true``, place the blank template of the state machine:
 
-```
+```cpp
 // state machine
 switch (robot_state) {
     case RobotState::INITIAL: {
@@ -130,7 +130,7 @@ switch (robot_state) {
 
 7. Enable the servo in the **INITIAL** state and transition to the **EXECUTION** state:
 
-```
+```cpp
     case RobotState::INITIAL: {
         printf("INITIAL\n");
         // enable the servo
@@ -144,7 +144,7 @@ switch (robot_state) {
 
 8. In the following step, you will map the measured distance to the deflection of the servo. Since the servos are calibrated, the objective is to map the servo in a way that associates variable to the minimum sensor range ``us_distance_min`` with zero servo deflection and the maximum range ``us_distance_max`` with the maximum servo deflection. Define the following variables along with the variable ``us_distance_cm``:
 
-```
+```cpp
 // min and max ultra sonic sensor reading, (us_distance_min, us_distance_max) -> (servo_min, servo_max)
 float us_distance_min = 6.0f;
 float us_distance_max = 40.0f;
@@ -152,7 +152,7 @@ float us_distance_max = 40.0f;
 
 9. Implement the following code snippet and discuss it:
 
-```
+```cpp
     case RobotState::EXECUTION: {
         printf("EXECUTION\n");
         // function to map the distance to the servo movement (us_distance_min, us_distance_max) -> (0.0f, 1.0f)
@@ -166,7 +166,7 @@ float us_distance_max = 40.0f;
 
 10. Now, let's establish the conditions that prompts transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **SLEEP** state, while the **EMERGENCY** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
 
-```
+```cpp
     case RobotState::EXECUTION: {
         printf("EXECUTION\n");
         // function to map the distance to the servo movement (us_distance_min, us_distance_max) -> (0.0f, 1.0f)
@@ -188,7 +188,7 @@ float us_distance_max = 40.0f;
 
 11. To transition back from the **SLEEP** state to the **EXECUTION** state, the sensor readings must be within the specified range. And important to note, the **EMERGENCY** state needs also to be triggerable when the system is in the **SLEEP** state. Add the following code snippet to the **SLEEP** state case condition:
 
-```
+```cpp
     case RobotState::SLEEP: {
         printf("SLEEP\n");
         // if the measurement is within the min and max limits go to EXECUTION
@@ -205,7 +205,7 @@ float us_distance_max = 40.0f;
 
 12. The **EMERGENCY** state resets all output variables to zero and disables the hardware that requires activation (for now only the servo), simulating an emergency stop of the system. To reactivate the system, press the **USER** button. At the **EMERGENCY** condition insert:
 
-```
+```cpp
     case RobotState::EMERGENCY: {
         printf("EMERGENCY\n");
         // the transition to the emergency state causes the execution of the commands contained
@@ -218,7 +218,7 @@ float us_distance_max = 40.0f;
 
 Add the following command to the ``else()`` statement at the end of the ``while()`` loop:
 
-```
+```cpp
 // the following code block gets executed only once
 if (do_reset_all_once) {
     do_reset_all_once = false;
@@ -233,7 +233,7 @@ if (do_reset_all_once) {
 
 13. You can print the measured distance with the following command:
 
-```
+```cpp
 // print to the serial terminal
 printf("US distance cm: %f \n", us_distance_cm);
 ```

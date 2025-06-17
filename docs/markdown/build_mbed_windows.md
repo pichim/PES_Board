@@ -12,13 +12,13 @@ Just answer all prompts with `yes` and/or `Enter`.
 
 ### Update Conda
 
-```
+```bash
 conda update --all
 ```
 
 ### Disable Conda's auto-activation (optional)
 
-```
+```bash
 conda config --set auto_activate_base false
 ```
 
@@ -28,7 +28,7 @@ To replicate the Conda environment, use the file `docs/conda_envs/mbed-env-windo
 
 You can create the environment with the following command
 
-```
+```bash
 conda env create -f mbed-env-linux.yml
 ```
 
@@ -52,7 +52,7 @@ Download the latest installer from https://nodejs.org/en/download or get the fil
 
 Install Node.js, use the default settings. To veryfy the installation, open a terminal and type
 
-```bash
+```bashbash
 node -v
 npm -v
 ```
@@ -67,7 +67,7 @@ npm install -g mbed-vscode-generator
 
 Replace `pichim` with your GitHub username so that you clone your fork of the repository (if you intend to use version control).
 
-```
+```bash
 git clone https://github.com/pichim/PES_Board.git
 ```
 
@@ -92,14 +92,14 @@ Press Cntrl+Shift+P and type `Python: Select Interpreter` and select the `mbed-e
 
 Make sure you have a file '.mbed' in the root of your project with the following content
 
-```
+```bash
 ROOT=.
 
 ```
 
 Use the terminal in VSCode for the following commands.
 
-```
+```bash
 mbed toolchain GCC_ARM
 mbed config GCC_ARM_PATH "C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\13.3 rel1\bin"
 mbed-vscode-generator -m NUCLEO_F446RE
@@ -107,7 +107,7 @@ mbed-vscode-generator -m NUCLEO_F446RE
 
 The following command only works if you use Windows PowerShell. Replace the `gcc-x64` with `gcc-arm` in the `.vscode/c_cpp_properties.json` and `--profile=debug` with `--profile=develop` in the `.vscode/tasks.json` files
 
-```
+```bash
 (Get-Content .vscode/c_cpp_properties.json) -replace '"gcc-x64"', '"gcc-arm"' | Set-Content .vscode/c_cpp_properties.json
 (Get-Content .vscode/tasks.json) -replace '--profile=debug', '--profile=develop' | Set-Content .vscode/tasks.json
 ```
@@ -116,7 +116,7 @@ The following command only works if you use Windows PowerShell. Replace the `gcc
 
 If you only use VSCode, you can install Mbed OS using git with the following command
 
-```
+```bash
 git clone --branch mbed-os-6.17.0 --depth 1 https://github.com/ARMmbed/mbed-os.git
 ```
 
@@ -148,7 +148,7 @@ To make this work you have to run PowerShell as Administrator in navigate to the
 
 Command to Create the Symbolic Link
 
-```
+```bash
 New-Item -ItemType SymbolicLink `
     -Path ".\mbed-os" `
     -Value "..\mbed-os"

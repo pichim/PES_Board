@@ -67,7 +67,7 @@ Beginning here some essential programming tips are presented. These tips are cru
 - Write clean and readable code. Use meaningful variable and function names to enhance code understanding.
 - Follow a consistent coding style, adhering to common conventions like indentation and bracket placement.
 
-```
+```cpp
 // bad example
 int x; // distance in cm
 
@@ -80,7 +80,7 @@ int distance_in_cm;
 - Include comments to explain complex logic, especially if it might not be immediately evident to others or even yourself when revisiting the code.
 - Don't over-comment simple and obvious code, but strike a balance for clarity.
 
-```
+```cpp
 // bad example: unnecessary comment
 // distance in cm
 int distance_in_cm;
@@ -94,7 +94,7 @@ int distance_in_cm;
 - Refrain from using "magic numbers" (hard-coded constants) in your code. Define constants with meaningful names instead.
 - Constants enhance code readability and make it easier to update values later.
 
-```
+```cpp
 const int MAX_ATTEMPTS = 3;
 for (int i = 0; i < MAX_ATTEMPTS; ++i) {
     // ...
@@ -106,7 +106,7 @@ for (int i = 0; i < MAX_ATTEMPTS; ++i) {
 - Break down your code into smaller, modular functions (or classes). Each function should ideally perform a single, well-defined task.
 - Encapsulation helps manage complexity and makes debugging and testing more manageable.
 
-```
+```cpp
 // bad example
 int main() {
     // monolithic code
@@ -131,7 +131,7 @@ int main() {
 - Use the ``printf()`` function to print the values of variables during debugging to the serial monitor. This provides insights into the state of the program at different points.
 - Enhance readability by formatting the debugging output. Include informative labels or context to quickly identify the purpose of the printed values.
 
-```
+```cpp
 int value = 42;
 printf("Debugging: %d", value);
 ```
@@ -177,7 +177,7 @@ Execute corresponding actions or functions for each state.
 
 Here is the code used to implement the state machine based on the preceding flowchart. Analyze the code to compare how the steps correspond between the flowchart and the code implementation.
 
-```
+```cpp
 // set up states for state machine
 enum RobotState {
     INITIAL,

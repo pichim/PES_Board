@@ -66,7 +66,7 @@ However, integrating magnetometer data into sensor fusion algorithms presents se
 **NOTE:**
 - IMU by default is not using magnetometer for position evaluation, to enable it is necessary to change defined variable to true in ``IMU.h`` file:
 
-```
+```cpp
 #define IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE true
 ```
 
@@ -96,7 +96,7 @@ To start working with the IMU, it is necessary to create an object in the ***mai
 
 There is no need to plug anything as IMU is an integral part of the PES board. Pins that are used to communicate with the IMU:
 
-```
+```cpp
 // imu
 #define PB_IMU_SDA PC_9
 #define PB_IMU_SCL PA_8
@@ -106,7 +106,7 @@ There is no need to plug anything as IMU is an integral part of the PES board. P
 
 Add the IMU driver ``IMU.h`` to the top of the ***main.cpp*** file:
 
-```
+```cpp
 #include "IMU.h"
 ```
 
@@ -114,7 +114,7 @@ To be able to start to use the ``IMU`` driver, the initial step is to create the
 
 As mentioned the IMU is using two pins to communicate. Next step is to create an object of the class that will serve as a store of data, sorted in an appropriate way and second object with the associated pins passed as an argument to receive measurments from IMU:
 
-```
+```cpp
 // imu
 ImuData imu_data;
 IMU imu(PB_IMU_SDA, PB_IMU_SCL);   
@@ -124,7 +124,7 @@ IMU imu(PB_IMU_SDA, PB_IMU_SCL);
 
 Once the objects have been declared, it is possible to read data from the sensor. As mentioned, this data is processed inside the class with the appropriate filters and in addition to reading the sensor values themselves, the orientation of the board in space is calculated and expressed in quaternions and Euler angles. As mentioned, the data is collected in a custom data container of the type `ImuData`.
 
-```
+```cpp
 // read imu data
 imu_data = imu.getImuData();
 ```
@@ -135,7 +135,7 @@ The `ImuData` object is a data structure that is updated as the `IMU` class thre
 - Y -> 1
 - Z -> 2
 
-```
+```cpp
 // acceleration around three axis
 float acc_X_axis = imu_data.acc(0);
 float acc_Y_axis = imu_data.acc(1); 
@@ -144,7 +144,7 @@ float acc_Z_axis = imu_data.acc(2);
 
 For reading the coefficients of the quaternion, the following commands can be used:
 
-```
+```cpp
 // quaterions coefficients
 float quatW = imu_data.quat.w();
 float quatX = imu_data.quat.x();
@@ -158,7 +158,7 @@ When reading the angles in the Eulerian convention, one assumes:
 - Pitch -> 1
 - Yaw -> 2
 
-```
+```cpp
 // euler angles
 float roll = imu_data.rpy(0);
 float pitch = imu_data.rpy(1);
@@ -187,14 +187,14 @@ The gimbal allows stabilization in two axes. Assuming that the horizontal flat s
 
 The ***main.cpp*** file has the standard form known from the base file. Add the IMU ``IMU.h`` and  servo ``Servo.h`` driver to the top of the ***main.cpp*** file:
 
-```
+```cpp
 #include "IMU.h"
 #include "Servo.h"
 ```
 
 In order to properly program the gimbal, it is necessary to define the ``Servo`` object responsible for roll and the servo responsible for pitch but also the IMU along with the object for collecting data.
 
-```
+```cpp
 // servo
 Servo servo_roll(PB_D0);
 Servo servo_pitch(PB_D1);
@@ -207,7 +207,7 @@ Eigen::Vector2f rp;
 
 The servos must be calibrated before  the use and the appropriate values must be entered into the calibration functions. In addition, angle limits of the servos and the values of the coefficients of the linear functions that allow the signal to be mapped as an angle to the PWM pulse width are also defined.
 
-```
+```cpp
 // minimal pulse width and maximal pulse width obtained from the servo calibration process
 // modelcraft RS2 MG/BB
 float servo_ang_min = 0.0325f;
@@ -229,7 +229,7 @@ const float normalised_angle_offset = 0.5f;
 
 Next, the variables that will feed the function are defined along with the base position of servos:
 
-```
+```cpp
 // pulse width
 static float roll_servo_width = 0.5f;
 static float pitch_servo_width = 0.5f;
@@ -240,7 +240,7 @@ servo_pitch.setPulseWidth(pitch_servo_width);
 
 To activate the servo, use the following command. Place this command to enable the servo after initiating the program execution with the **USER** button:
 
-```
+```cpp
 // enable the servos
 if (!servo_roll.isEnabled())
     servo_roll.enable();
@@ -250,7 +250,7 @@ if (!servo_pitch.isEnabled())
 
 The next step is to place functions that read data from the IMU, perform the appropriate transformation, and map the angles to a PWM signal contained in the range from 0 to 1.
 
-```
+```cpp
 // read imu data
 imu_data = imu.getImuData();
 
@@ -262,7 +262,7 @@ rp(1) = acosf((imu_data.quat.w() - imu_data.quat.y()) * (imu_data.quat.w() - imu
 
 The next key element is a command that allows you to control the servo according to the angle of tilt, it is important this command is only enforced if the angle is within a predefined range
 
-```
+```cpp
 // map to servo commands
 roll_servo_width = -normalised_angle_gain * rp(0) + normalised_angle_offset;
 pitch_servo_width = normalised_angle_gain * rp(1) + normalised_angle_offset;
@@ -274,7 +274,7 @@ if (rp(0) < angle_range_max && rp(0) > angle_range_min)
 
 Lastly add the following command to the ``else()`` statement, the purpose is to set servo initial position. This is triggered by pressing the **USER** button while the main task is running (second time you press the button).
 
-```
+```cpp
 roll_servo_width = 0.5f;
 pitch_servo_width = 0.5f;
 servo_roll.setPulseWidth(roll_servo_width);
@@ -283,7 +283,7 @@ servo_pitch.setPulseWidth(pitch_servo_width);
 
 The last thing is the command that allows you to read the width of the roll and pitch pulse.
 
-```
+```cpp
         // print to the serial terminal
         printf("%f, %f \n", roll_servo_width, pitch_servo_width);
 ```

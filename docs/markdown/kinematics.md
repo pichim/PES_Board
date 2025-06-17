@@ -138,13 +138,13 @@ $$
 
 As mentioned previously when writing code with the above transformations, the eigen library is used to define vectors and matrices and perform linear algebra. First, define the geometric values of the vehicle, such as wheel radius and wheelbase. In addition, you can write the corresponding matrix and define vectors that will contain the wheel speeds and robot's velocities.
 
-```
+```cpp
 #include <Eigen/Dense>
 
 #define M_PIf 3.14159265358979323846f // pi
 ```
 
-```
+```cpp
 // robot kinematics
 const float r_wheel = 0.0563f / 2.0f; // wheel radius in meters
 const float b_wheel = 0.13f;          // wheelbase, distance from wheel to wheel in meters
@@ -157,7 +157,7 @@ Eigen::Vector2f wheel_speed = {0.0f, 0.0f};  // w1 w2 (wheel speed)
 
 To calculate the rotational speeds of the wheels, you must first define the desired values of the linear and rotational speed of the robot, e.g.
 
-```
+```cpp
 robot_coord(0) = 1.0f;
 robot_coord(1) = 0.5f;
 ```
@@ -167,13 +167,13 @@ robot_coord(1) = 0.5f;
 
 Then apply the calculation with the following command:
 
-```
+```cpp
 wheel_speed = Cwheel2robot.inverse() * robot_coord;
 ```
 
 To access the velocity of the wheels just use the appropriate index:
 
-```
+```cpp
 // set velocity setpoints in rps
 motor_right.setVelocity(wheel_speed(0) / (2.0f * M_PIf));
 motor_left.setVelocity(wheel_speed(1) / (2.0f * M_PIf));

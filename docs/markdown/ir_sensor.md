@@ -82,13 +82,13 @@ To start working with the sensor, it is necessary to plug it correclty and creat
 
 To be able to use the tooling from the Mbed platform, it is necessary to include the library at the beginning of the ***main.cpp*** file:
 
-```
+```cpp
 #include "mbed.h"
 ```
 
 Create an object with the pin's name passed as an argument and define a variable to store the corresponding reading from the sensor in millivolts:
 
-```
+```cpp
 // ir distance sensor
 float ir_distance_mV = 0.0f; // define a variable to store measurement (in mV)
 AnalogIn ir_analog_in(PC_2); // create AnalogIn object to read in the infrared distance sensor
@@ -136,7 +136,7 @@ The first step of the procedure is the simultaneous measurement of the actual di
 
 - To read the values measured by the sensor, it is essential to include a command that will be executed every iteration of the program. There for, this command is positioned within the ``while()`` loop but after the ``if()`` statement which indicates that the command will start reading sensor values after starting the program execution with the **USER** button. 
 
-```
+```cpp
 // read analog input
 ir_distance_mV = 1.0e3f * ir_analog_in.read() * 3.3f;
 ```
@@ -146,14 +146,14 @@ ir_distance_mV = 1.0e3f * ir_analog_in.read() * 3.3f;
 
 - To continuously receive printouts on the serial monitor, place the command within the ``while()`` loop, ensuring constant output regardless of the main task execution:
 
-```
+```cpp
 // print to the serial terminal
 printf("IR distance mV: %f \n", ir_distance_mV);
 ```
 
 - To reset the variables to the initial values without restarting the program, add the following command in the ``else()`` statement, triggered by pressing the **USER** button while the program is running.
 
-```
+```cpp
 // reset variables and objects
 led1 = 0;
 ir_distance_mV = 0.0f;
@@ -166,7 +166,7 @@ ir_distance_mV = 0.0f;
 
 Function definition (at the end of the ***main.cpp*** file)
 
-```
+```cpp
 float ir_sensor_compensation(float ir_distance_mV)
 {
     // insert values that you got from the MATLAB file
@@ -185,7 +185,7 @@ After inserting the function, take a close look at how it is structured, are the
 
 Possible situation:
 
-```
+```cpp
 (ir_distance_mV + b) == 0.0f
 ```
 
@@ -193,27 +193,27 @@ In the case of this function, there is the possibility of a situation where a di
 
 Function declaration (at the beginning of the ***main.cpp*** file)
 
-```
+```cpp
 // function declaration, definition at the end
 float ir_sensor_compensation(float ir_distance_mV);
 ```
 
 - To read the distance in centimeters, declare the variable that will handle this value in the same location where the variable to store the value in millivolts is declared.
 
-```
+```cpp
 float ir_distance_mV = 0.0f; // define a variable to store measurement (in mV)
 float ir_distance_cm = 0.0f;
 ```
 
 Following this, proceed to call the function for evaluation within the ``while()`` loop.
 
-```
+```cpp
 ir_distance_cm = ir_sensor_compensation(ir_distance_mV);
 ```
 
 - To reset the variables to the initial values without restarting the program, add the following command to the ``else()`` statement, triggered by pressing the **USER** button while program is running.
 
-```
+```cpp
 // reset variables and objects
 led1 = 0;
 ir_distance_mV = 0.0f;
@@ -222,7 +222,7 @@ ir_distance_cm = 0.0f;
 
 - Finally, add the new variable to the printing command as the last step.
 
-```
+```cpp
 // print to the serial terminal
 printf("IR distance mV: %f IR distance cm: %f \n", ir_distance_mV, ir_distance_cm);
 ```
@@ -245,19 +245,19 @@ The first graph illustrates the non-linear relationship between the sensor's rec
 The sensor reading is relatively noisy, which can be improved by filtering the signal. The simplest way to filter the signal is to use a moving average filter. This is implifitly done in the class ``IRSensor``.
 With the constructor
 
-```
+```cpp
 IRSensor ir_sensor(PC_2);
 ```
 
 you create an object that reads the sensor signal periodically at 200 Hz and you can obtain the filtered value by calling the method ``read()``. You can apply the calibration with the function
 
-```
+```cpp
 ir_sensor.setCalibration(2.574e+04f, -29.37f);
 ```
 
 To obtain the averaged value you can use
 
-```
+```cpp
 float ir_distance_avg = ir_sensor.read();
 ```
 
@@ -265,7 +265,7 @@ It is important to note that before the ``setCalibration()`` the ``read()`` func
 
 An other option is to use the constructor
 
-```
+```cpp
 IRSensor ir_sensor(PC_2, 2.574e+04f, -29.37f);
 ```
 
@@ -273,7 +273,7 @@ where you create an object an calibrate it in one line.
 
 With the commands
 
-```
+```cpp
 float ir_distance_mV = ir_sensor.readmV(); // sensor value in millivolts
 float ir_distance_cm = ir_sensor.readcm(); // sensor value in centimeters (if calibrated)
 ```

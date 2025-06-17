@@ -53,7 +53,7 @@ To start working with the sensor, it is necessary to plug it correclty and creat
 
 The ultrasonic sensor was tested with a 5V power supply and a single pin that transmits the signal. There for, it can use the same ports as the servos. You can use the the following pins on the PES board:
 
-```
+```cpp
 PB_D0
 PB_D1
 PB_D2
@@ -73,11 +73,11 @@ To establish the connection, use the cable displayed in the following image. It 
 
 In the given example, the sensor is plugged into pin **D3 (PB_D3)** on the PES board. Initially, it's essential to add the suitable driver to the ***main.cpp*** file and then create an ``UltrasonicSensor`` object inside ``main()`` function with the pin name passed as an argument along with the variable definition that will be used to store the sensor value.
 
-```
+```cpp
 #include "UltrasonicSensor.h"
 ```
 
-```
+```cpp
 // ultra sonic sensor
 UltrasonicSensor us_sensor(PB_D3);
 float us_distance_cm = 0.0f;
@@ -92,7 +92,7 @@ float us_distance_cm = 0.0f;
 
 The operation is straightforward since all processes are encapsulated within the class including a function that returns the distance in centimeters. This functionality is accessed through the following command:
 
-```
+```cpp
 // read us sensor distance, non valid measurements will return -1.0f
 us_distance_cm = us_sensor.read();
 ```
@@ -101,7 +101,7 @@ If no new valid measurement is available, the ``read()`` function returns -1.0f.
 
 As an example you can do someting like
 
-```
+```cpp
 // read us sensor distance, only valid measurements will update us_distance_cm
 const float us_distance_cm_candidate = us_sensor.read();
 if (us_distance_cm_candidate > 0.0f)

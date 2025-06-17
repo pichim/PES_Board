@@ -24,7 +24,7 @@ To use the `SDLogger`, you need an **SD card**. Successfully tested sd cards are
 
 The SD card module itself is alread on the PES board. The pin names are defined in `PESBoardPinMap.h`:
 
-```
+```cpp
 // SD-Card
 #define PB_SD_MOSI PC_12
 #define PB_SD_MISO PC_11
@@ -38,20 +38,20 @@ The SD card module itself is alread on the PES board. The pin names are defined 
 
 Include the `SDLogger` header file in your `main.cpp` file:
 
-```
+```cpp
 #include "SDLogger.h"
 ```
 
 Create an `SDLogger` object in the `main()` function:
 
-```
+```cpp
 // sd card logger
 SDLogger sd_logger(PB_SD_MOSI, PB_SD_MISO, PB_SD_SCK, PB_SD_CS);
 ```
 
 Now you are already set up to log data. The `SDLogger` class provides the following functions:
 
-```
+```cpp
 // write data to the internal buffer of the sd card logger and send it to the sd card
 sd_logger.write(1.0f); // log 1.0f
 sd_logger.send();
@@ -61,7 +61,7 @@ You need to call `sd_logger.send()` to write the data to the SD card. The `write
 
 Currently the `SDLogger` class supports to log up to 100 float values. To log multiple values, e.g. 3 values you can use
 
-```
+```cpp
 // write data to the internal buffer of the sd card logger and send it to the sd card
 sd_logger.write(1.0f); // log 1.0f
 sd_logger.write(2.0f); // log 2.0f
@@ -73,7 +73,7 @@ Maximum tested throughput was 22 float values at 500 Hz.
 
 You can cast other data types to float, e.g.:
 
-```
+```cpp
 // write data to the internal buffer of the sd card logger and send it to the sd card
 sd_logger.write((float)(1)); // cast 1 to float and log 1.0f
 sd_logger.send();

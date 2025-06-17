@@ -118,7 +118,7 @@ To start working with the DC motor, it is necessary to plug it correctly and cre
 
 DC motors have assigned pins on the PES board. Seen from the motor, **PWM** is the input and **ENC** (Encoder) is the output of the system:
 
-```
+```cpp
 // PES-Board Pin Names
 PB_PWM_M1
 PB_PWM_M2
@@ -185,14 +185,14 @@ To power the DC motors, connect the two battery packs to the back of the PES boa
 
 This object needs to be created alongside other necessary variables and objects.
 
-```
+```cpp
 // create object to enable power electronics for the DC motors
 DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
 ```
 
 To complete the motor activation process, set the value of the object to 1, enabling the power electronics. This should be applied inside the ``while()`` loop, and preferably inside the ``if()`` function so that activation takes place consciously.
 
-```
+```cpp
 // enable hardwaredriver DC motors: 0 -> disabled, 1 -> enabled
 enable_motors = 1;
 ```
@@ -208,13 +208,13 @@ The provided examples show three different used cases of a DC motor and how to u
 
 To use Motor M1 in an open loop configuration (no feedback, therefor no encoder needed), start by including the ``FastPWM.h`` driver to the ***main.cpp*** file. Next, create an object by passing the pin names as arguments. 
 
-```
+```cpp
 #include "FastPWM.h"
 ```
 
 Then a ``FastPWM`` object needs to be created, which is used to command the voltage applied to the DC motor:
 
-```
+```cpp
 // motor M1
 FastPWM pwm_M1(PB_PWM_M1); // create FastPWM object to command motor M1
 ```
@@ -226,7 +226,7 @@ Motor M1 is used open-loop, meaning we just apply a certain voltage to the motor
 
 A positive voltage will cause the motor to rotate in one direction and a negative voltage will cause the motor to rotate in the opposite direction. You can alter the rotating direction by changing the cables connected to the motor (connections to M+ and M-).
 
-```
+```cpp
 pwm_M1.write(0.75f); // apply 6V to the motor
 ```
 
@@ -234,7 +234,7 @@ pwm_M1.write(0.75f); // apply 6V to the motor
 
 Since we are reusing the pins from M1, we can leave the motor connected to M1. To be able to use the DC motor in a velocity controlled closed loop comment out the previous code for motor M1, e.g.:
 
-```
+```cpp
 // // motor M1
 // FastPWM pwm_M1(PB_PWM_M1); // create FastPWM object to command motor M1
 ...
@@ -243,7 +243,7 @@ Since we are reusing the pins from M1, we can leave the motor connected to M1. T
 
 Motor M2 operates in a closed loop to control the velocity. To be able to use this functionallity it is necessary to include the ``DCMotor.h`` driver in the ***main.cpp*** file.
 
-```
+```cpp
 #include "DCMotor.h"
 ```
 
@@ -253,7 +253,7 @@ It is important to note, that different motors have different gear ratios and mo
 
 The following code illustrates the declaration of all necessary parameters to set up a  ``DCMotor`` object:
 
-```
+```cpp
 const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                  // 6.0f V if you only use one battery pack
 
@@ -267,20 +267,20 @@ DCMotor motor_M2(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M2, kn_M2, volt
 
 Then include the command that will drive the motor with half of the maximum rotational velocity:
 
-```
+```cpp
 motor_M2.setVelocity(motor_M2.getMaxVelocity() * 0.5f);
 ```
 
 We can additionally use the driver functionality to limit the maximum rotational velocity to half the maximum physical velocity at which the motor can rotate.
 
-```
+```cpp
 // limit max. velocity to half physical possible velocity
 motor_M2.setMaxVelocity(motor_M2.getMaxPhysicalVelocity() * 0.5f);
 ```
 
 To receive the measured velocity/speed, include the following command inside the ``while()`` loop that prints the motor speed values to the serial terminal. This allows us to verify the correctness of the connection, ensuring that the motor's rotation direction aligns with our expectations and corresponds to the displayed speed values.
 
-```
+```cpp
 // print to the serial terminal
 printf("Motor velocity: %f \n", motor_M2.getVelocity());
 ```
@@ -291,7 +291,7 @@ printf("Motor velocity: %f \n", motor_M2.getVelocity());
   
 The default motor driver does not activate the motion planner, meaning the speed setpoint will be reached as fast as possible with the current PID controller parameters. To test this, you can place the following command inside the ``while()`` loop.
 
-```
+```cpp
 // limit max. velocity to half physical possible velocity
 motor_M2.setMaxVelocity(motor_M2.getMaxPhysicalVelocity() * 0.5f);
 ```
@@ -305,7 +305,7 @@ Nevertheless, the driver is designed to be able to command the motor with smooth
 
 To be able to use the motion planner, the module needs to be activated with the following command, that is placed below the DC motor declaration:
 
-```
+```cpp
 // enable the motion planner for smooth movements
 motor_M2.enableMotionPlanner();
 ```
@@ -319,7 +319,7 @@ Below are graphs of the measured velocity and acceleration versus time without (
 
 Adjustments to the maximum acceleration can be done by using the following command (which should be placed after declaring the ``DCMotor`` object):
 
-```
+```cpp
 // limit max. acceleration to half of the default acceleration
 motor_M2.setMaxAcceleration(motor_M2.getMaxAcceleration() * 0.5f);
 ```
@@ -332,7 +332,7 @@ motor_M2.setMaxAcceleration(motor_M2.getMaxAcceleration() * 0.5f);
 
 Since we are reusing the pins from M1, we can leave the motor connected to M1. To be able to use the DC motor in a position controlled closed loop comment out the previous code for motor M2, e.g.:
 
-```
+```cpp
 // // motor M2
 // const float gear_ratio_M2 = 78.125f; // gear ratio
 // const float kn_M2 = 180.0f / 12.0f;  // motor constant [rpm/V]
@@ -349,7 +349,7 @@ Since we are reusing the pins from M1, we can leave the motor connected to M1. T
 
 To use Motor M3 in closed loop for position control, we insert the following code snipped:
 
-```
+```cpp
 // motor M3
 const float gear_ratio_M3 = 78.125f; // gear ratio
 const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
@@ -364,13 +364,13 @@ motor_M3.setMaxVelocity(motor_M3.getMaxPhysicalVelocity() * 0.5f);
 
 Then include the command that will rotate the motor 3 times:
 
-```
+```cpp
 motor_M3.setRotation(3.0f);
 ```
 
 Update the printing command to print the number of rotations:
 
-```
+```cpp
 // print to the serial terminal
 printf("Motor position: %f \n", motor_M3.getRotation());
 ```

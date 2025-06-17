@@ -52,7 +52,7 @@ The ``servo`` driver is designed for controlling servos, commanding the angle wi
 
 For the PES board, analog servos are associated with specific ports, outlined as follows:
 
-```
+```cpp
 PB_D0
 PB_D1
 PB_D2
@@ -65,7 +65,7 @@ PB_D3
 
 Add the servo driver ``Servo.h`` to the top of the ***main.cpp*** file:
 
-```
+```cpp
 #include "Servo.h"
 ```
 
@@ -73,7 +73,7 @@ To be able to start to use the ``Servo`` driver, the initial step is to create t
 
 Create an object with the associated pins passed as an argument:
 
-```
+```cpp
 // servo
 Servo servo_D0(PB_D0);
 Servo servo_D1(PB_D1);
@@ -118,7 +118,7 @@ After setting the minimum and maximum pulse width via the servo driver (calibrat
 
 Define the necessary variables required for the calibration process.
 
-```
+```cpp
 float servo_input = 0.0f;
 int servo_counter = 0; // define servo counter, this is an additional variable
                        // used to command the servo
@@ -127,14 +127,14 @@ const int loops_per_seconds = static_cast<int>(ceilf(1.0f / (0.001f * static_cas
 
 To monitor the ``servo_input`` variable value, it's necessary to include the following printing statement inside the ``while()`` loop to be enforced every iteration regardless of whether the main task has been triggered:
 
-```
+```cpp
 // print to the serial terminal
 printf("Pulse width: %f \n", servo_input);
 ```
 
 To activate the servo, use the following command. Place this command to enable the servo after the initiating the program execution with the **USER** button:
 
-```
+```cpp
 // enable the servos
 if (!servo_D0.isEnabled())
     servo_D0.enable();
@@ -144,7 +144,7 @@ if (!servo_D1.isEnabled())
 
 Next, use the following function and statements. These will enable the incremental adjustment of the servo position every one second. It is important to ensure that the incremental change in the servo position, i.e., the pulse width, is relatively small to obtain precise minimum and maximum values. Try to find a tradeoff between too large and therefor too long execution time to wait for and too small and therefor not long enough values.
 
-```
+```cpp
 // command the servos
 servo_D0.setPulseWidth(servo_input);
 servo_D1.setPulseWidth(servo_input);
@@ -159,7 +159,7 @@ servo_counter++;
 
 To reset the ``servo_input`` variable to zero and disable the servos without restarting the program, add the following command to the ``else()`` statement. This is triggered by pressing the **USER** button while the main task is running (second time you press the button).
 
-```
+```cpp
 // reset variables and objects
 led1 = 0;
 servo_D0.disable();
@@ -173,7 +173,7 @@ The goal is to monitor the ``servo_input`` variable and the servo. Every one sec
 
 Now that the values are known, beneath the servo object declaration, define the appropriate variables with the values obtained in the process.
 
-```
+```cpp
 // minimal pulse width and maximal pulse width obtained from the servo calibration process
 // futuba S3001
 float servo_D0_ang_min = 0.0150f; // carefull, these values might differ from servo to servo
@@ -196,14 +196,14 @@ Now the ``servo_input`` variable in the range from 0.0f to 1.0f will be maped in
 
 To use the servo, the initial step is to enable it. This action starts the servo and moves it to the zero position, as this position is defined as the default. But the initial possition can also be passed as argument so that servo will move to the particular position after enabling it.
 
-```
+```cpp
 // enable the servo and move it to zero
 if (!servo_D0.isEnabled()) {
     servo_D0.enable();
 }
 ```
 
-```
+```cpp
 // enable the servo and move it to the center
 if (!servo_D0.isEnabled()) {
     servo_D0.enable(0.5f);
@@ -216,7 +216,7 @@ The class design incorporates the capability to execute smooth movements by adju
 
 The following function can be used as an example to establish smooth movement and needs to be placed after the ``Servo`` object calibration:  
 
-```
+```cpp
 // default acceleration of the servo motion profile is 1.0e6f
 servo_D0.setMaxAcceleration(0.3f);
 ```

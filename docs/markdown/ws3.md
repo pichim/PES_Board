@@ -52,7 +52,7 @@ Before doing the task you may look at the [Structuring a Robot Task Tutorial](..
    
 3. Define a ``mechanical button`` object in the ``main()`` function with the appropriate pullup mode
 
-```
+```cpp
 // mechanical button
 DigitalIn mechanical_button(PC_5); // create DigitalIn object to evaluate mechanical button, you
                                    // need to specify the mode for proper usage, see below
@@ -64,7 +64,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
 
 5. Include the necessary drivers at the top of the ***main.cpp*** file. For more details refer to [Ultrasonic Distance Sernsor](../markdown/ultrasonic_sensor.md)
 
-```
+```cpp
 #include "UltrasonicSensor.h"
 
 ...
@@ -76,7 +76,7 @@ float us_distance_cm = 0.0f;
 
 6. Within the ``while()`` loop, include the following command to enable distance readings from the sensor regardless of the robot's current state.
 
-```
+```cpp
 // read us sensor distance, only valid measurements will update us_distance_cm
 const float us_distance_cm_candidate = us_sensor.read();
 if (us_distance_cm_candidate > 0.0f)
@@ -85,7 +85,7 @@ if (us_distance_cm_candidate > 0.0f)
 
 7. Create an object for [Motor M3](../markdown/dc_motor.md#motor-m3), which will be controlled by setting the setpoint position. Activate the motion planner and configure the maximum acceleration to half of the default value.
 
-```
+```cpp
 const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                  // 6.0f V if you only use one battery pack
 
@@ -103,7 +103,7 @@ motor_M3.setMaxAcceleration(motor_M3.getMaxAcceleration() * 0.5f);
 
 8. At the start of the ``main()`` function, include the enumerators representing the different robot states:
 
-```
+```cpp
 // set up states for state machine
 enum RobotState {
     INITIAL,
@@ -116,7 +116,7 @@ enum RobotState {
 
 9. Then in the ``if()`` statement triggering through ``do_execute_main_task``, place a blank template of the state machine:
 
-```
+```cpp
 // state machine
 switch (robot_state) {
     case RobotState::INITIAL: {
@@ -148,7 +148,7 @@ switch (robot_state) {
 
 10. Insert the DC motor enable statement in the **INITIAL** state case. Subsequently, go the the next state, which is the **SLEEP** state
 
-```
+```cpp
     case RobotState::INITIAL: {
         // enable hardwaredriver dc motors: 0 -> disabled, 1 -> enabled
         enable_motors = 1;
@@ -160,7 +160,7 @@ switch (robot_state) {
 
 11. The **SLEEP** state is the state in which the system will wait for the signal to execute the task, so to go to the **FORWARD** state, this signal will be provided by clicking the mechanical button.
 
-```
+```cpp
     case RobotState::SLEEP: {
         // wait for the signal from the user, so to run the process 
         // that is triggered by clicking mechanical button
@@ -174,7 +174,7 @@ switch (robot_state) {
 
 12. In the **FORWARD** state, include a command to execute 2.9f forward rotations and a condition that transitions to the **BACKWARD** state after reaching 2.85f revolutions. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
 
-```
+```cpp
     case RobotState::FORWARD: {
         // press is moving forward until it reaches 2.9f rotations, 
         // when reaching the value go to BACKWARD
@@ -193,7 +193,7 @@ switch (robot_state) {
 
 13. In the **BACKWARD** state, the device returns to the initial position. Additionally, include a statement to transition to the **SLEEP** state after reaching that position.
 
-```
+```cpp
     case RobotState::BACKWARD: {
         // move backwards to the initial position
         // and go to the SLEEP state if reached
@@ -208,7 +208,7 @@ switch (robot_state) {
 
 14. In the **EMERGENCY** state, the machine needs to quickly return to the initial position and turn off. To achieve this, disable the motion planner, as it allows for the fastest possible movement. Subsequently, turn "off" the machine, simulating the effect of pressing the emergency button. To reuse the mechatronic system, reset the machine using the **RESET** button logic `toggle_do_execute_main_fcn()`.
 
-```
+```cpp
     case RobotState::EMERGENCY: {
         // disable the motion planer and
         // move to the initial position asap
@@ -224,14 +224,14 @@ switch (robot_state) {
 
 15. At the end of the ``while()`` loop, add the following command to print the distance measured by the sensor and the number of rotations of the motor.
 
-```
+```cpp
 // print to the serial terminal
 printf("US Sensor in cm: %f, DC Motor Rotations: %f\n", us_distance_cm, motor_M3.getRotation());
 ```
 
 16. Include the following commands in the ``else()`` statement, triggered by pressing the **USER** button while the program is running, to reset the variables to their initial values without restarting the program. Since we are switching between using and not using the internal motion planner, we need to reset the motion planner internal position and velocity.
 
-```
+```cpp
 // reset variables and objects
 led1 = 0;
 enable_motors = 0;

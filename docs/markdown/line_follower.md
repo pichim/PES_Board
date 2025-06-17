@@ -79,7 +79,7 @@ To plug the power source you will need to use:
 
 Include the necessary driver in the ***main.cpp*** file
 
-```
+```cpp
 #include "SensorBar.h"
 ```
 
@@ -88,7 +88,7 @@ and create a variable for the distance from the wheel axis to the LEDs on the se
 - SDA pin - Used for data transfer in I2C standard (``PB_9``)
 - SCL pin - Used for clock synchronization (``PB_8``)
 
-```
+```cpp
 const float bar_dist = 0.083f; // distance from wheel axis to leds on sensor bar / array in meters
 SensorBar sensorBar(PB_9, PB_8, bar_dist);
 ```
@@ -97,13 +97,13 @@ SensorBar sensorBar(PB_9, PB_8, bar_dist);
 
 If you want to read out the angle of the line relative to the robot and only update the variable ``angle`` when the line is detected you need to define a persistent variable to store the angle. This variable should be updated in the main loop when the line is detected. The angle is calculated in the driver and can be accessed by the user.
 
-```
+```cpp
 float angle = 0.0f;
 ```
 
 The sensor bar driver provides functionality to read the sensor values and calculate the angle of the line relative to the robot's orientation.
 
-```
+```cpp
 // only update sensor bar angle if a led is triggered
 if (sensorBar.isAnyLedActive())
     angle = sensorBar.getAvgAngleRad();
@@ -117,7 +117,7 @@ You can use the Eigen library for linear algebra operations. The library is used
 
 As usual include the library in the ***main.cpp*** file.
 
-```
+```cpp
 #include <Eigen/Dense>
 
 #define M_PIf 3.14159265358979323846f // pi
@@ -125,7 +125,7 @@ As usual include the library in the ***main.cpp*** file.
 
 Now you're able to define the mapping from wheel velocity to the robot velocities as a 2x2 matrix using the following code snippet, check out [Kinematics](../markdown/kinematics.md) for more information.
 
-```
+```cpp
 const float r_wheel = 0.0564f / 2.0f; // wheel radius in meters
 const float b_wheel = 0.13f;          // wheelbase, distance from wheel to wheel in meters
 // transforms robot to wheel velocities
@@ -136,7 +136,7 @@ Cwheel2robot << r_wheel / 2.0f,       r_wheel / 2.0f,
 
 Usually the control law to follow a line is implemented with respect to the robot, so translational forward velocity and angular velocity. Assuming you already have the robot velocities, you can calculate the wheel velocities using the inverse of the matrix defined above.
 
-```
+```cpp
 // map robot velocities to wheel velocities in rad/sec
 Eigen::Vector2f wheel_speed = Cwheel2robot.inverse() * robot_coord;
 ```
@@ -145,7 +145,7 @@ In the above code snippet, the variable ``robot_coord`` is a 2x1 ``Eigen::Vector
 
 To output the wheel velocities as setpoints to the DC motors, you can use the following code snippet.
 
-```
+```cpp
 // setpoints for the dc-motors in rps
 motor_M1.setVelocity(wheel_speed(0) / (2.0f * M_PIf)); // set a desired speed for speed controlled dc motors M1
 motor_M2.setVelocity(wheel_speed(1) / (2.0f * M_PIf)); // set a desired speed for speed controlled dc motors M2
@@ -168,16 +168,16 @@ To start using the ``LineFollower`` driver, the initial step in the ***main.cpp*
 
 To set up the module in the main function, it's necessary that you define two DC motor objects. To do so, please see the instructions provided in [DC Motor](../markdown/dc_motor.md). Code snipets that should be placed in the correct places:
 
-```
+```cpp
 #include "DCMotor.h"
 ```
 
-```
+```cpp
 // create object to enable power electronics for the DC motors
 DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
 ```
 
-```
+```cpp
 const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                  // 6.0f V if you only use one battery pack
 const float gear_ratio = 78.125f; 
@@ -204,11 +204,11 @@ Initially, it's essential to add the suitable driver to our ***main.cpp*** file 
 
 The remaining values are defined by default, but there is a possibility to change some of the parameters, as described below the description of the internal algorithm.
 
-```
+```cpp
 #include "LineFollower.h"
 ```
 
-```
+```cpp
 const float d_wheel = 0.035f;  // wheel diameter in meters
 const float b_wheel = 0.1518f; // wheelbase, distance from wheel to wheel in meters
 const float bar_dist = 0.118f; // distance from wheel axis to leds on sensor bar / array in meters
@@ -237,7 +237,7 @@ The ``LineFollower`` class provides functionality to dynamically adjust the foll
 
 The mathematical operations carried out within the driver determine the speed values for each wheel: right and left. These speed values are expressed in revolutions per second (RPS), allowing direct control of the motors using these values. Below is the code that should be executed when the **USER** button is pressed.
 
-```
+```cpp
 // visual feedback that the main task is executed, setting this once would actually be enough
 led1 = 1;
 enable_motors = 1;
@@ -247,7 +247,7 @@ motor_M2.setVelocity(lineFollower.getLeftWheelVelocity());  // set a desired spe
 
 Don't forget to reset the variables when the **USER** button is pressed again.
 
-```
+```cpp
 // reset variables and objects
 led1 = 0;
 enable_motors = 0;
@@ -285,12 +285,12 @@ The ``ang_cntrl_fcn()`` function is responsible for calculating the angular velo
 
 2. Calculation:
 - If the angle is positive (``angle >= 0``), the function calculates the angular velocity using the formula:
-    ```
+    ```cpp
     ang_vel = Kp * angle + Kp_nl * angle * angle
     ```
     This formula applies proportional control (``Kp * angle``) along with a non-linear correction term (``Kp_nl * angle * angle``).
 - If the angle is zero or negative (``angle < 0``), the function calculates the angular velocity (``retval``) using a similar formula but with a negative sign for the non-linear term:
-    ```
+    ```cpp
     ang_vel = Kp * angle - Kp_nl * angle * angle
     ```
 
