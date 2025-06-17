@@ -337,8 +337,8 @@ While accelerating constantly, the feed-forward term will remove the steady stat
   <table>
     <tr>
       <td align="center">
-        <img src="../images/mydcmotor_0.png" alt="Voltage and Acceleration when toggling between 1 and -1 RPS setpoint" width="500"/>  
-        <br/><i>Voltage and Acceleration when toggling between 1 and -1 RPS setpoint</i>
+        <img src="../images/mydcmotor_0.png" alt="Voltage and Acceleration" width="500"/>  
+        <br/><i>Voltage and Acceleration</i>
       </td>
       <td align="center">
         <img src="../images/mydcmotor_1.png" alt="Corresponding Counts, Velocity and Position" width="500"/>  
