@@ -52,7 +52,7 @@ Download the latest installer from https://nodejs.org/en/download or get the fil
 
 Install Node.js, use the default settings. To veryfy the installation, open a terminal and type
 
-```bashbash
+```bash
 node -v
 npm -v
 ```
