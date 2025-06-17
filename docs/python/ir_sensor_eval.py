@@ -1,4 +1,4 @@
-# conda create --name pes-env python=3.11.4 numpy scipy matplotlib
+# conda create --name pes-env python=3.11.4 numpy scipy matplotlib pyserial control ipykernel
 
 import numpy as np
 import matplotlib.pyplot as plt

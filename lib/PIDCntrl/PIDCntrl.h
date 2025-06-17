@@ -34,12 +34,12 @@ public:
     void setup(float P, float I, float D, float tau_f, float Ts, float uMin, float uMax);
     void setup(float P, float I, float D, float tau_f, float tau_ro, float Ts, float uMin, float uMax);
 
-    void setCoeff_P(float P);
-    void setCoeff_I(float I);
-    void setCoeff_D(float D);
-    void setCoeff_F(float F);
+    void setParamP(float P);
+    void setParamI(float I);
+    void setParamD(float D);
+    void setParamF(float F);
 
-    void scale_PIDT2_param(float scale);
+    void scalePIDT2params(float scale);
 
     float update(float e);
     float update(float e, float y);
@@ -54,7 +54,7 @@ public:
     float get_P_gain();
     float get_bd();
     float get_ad();
-    float get_current_output();
+    float getCurrentOutput();
 
 private:
     float IPart, Dpart, d_old, u_old, uf;
@@ -65,9 +65,9 @@ private:
 
     void setCoefficients(float P, float I, float D, float tau_f, float tau_ro, float Ts);
 
-    void updateCoeff_I(float I, float Ts);
-    void updateCoeff_D(float D, float Ts, float tau_f);
-    void updateCoeff_RO(float Ts, float tau_ro);
+    void updateParamI(float I, float Ts);
+    void updateParamD(float D, float Ts, float tau_f);
+    void updateParamRO(float Ts, float tau_ro);
 
     float saturate(float u, float uMin, float uMax);
 };

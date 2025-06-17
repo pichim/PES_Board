@@ -183,7 +183,7 @@ int main()
     // motor_M3.setMaxVelocity(velocity_max_M3 * 0.5f);           // set maximum velocity to 50% of maximum velocity
 
     // // adjust fast pwm frequency
-    // int period_mus = 1000;
+    // int period_mus = 2000; // 500 Hz
     // motor_M1.setFastPWMPeriod_mus(period_mus);
     // motor_M2.setFastPWMPeriod_mus(period_mus);
     // motor_M3.setFastPWMPeriod_mus(period_mus);

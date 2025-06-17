@@ -15,7 +15,6 @@ public:
                      PinName enc_b_pin,
                      float counts_per_turn,
                      float fcut,
-                     float D,
                      float Ts);
     virtual ~Encoder() = default;
 
@@ -31,7 +30,7 @@ public:
 
 private:
     EncoderCounter m_EncoderCounter;
-    IIRFilter m_lowPass2;
+    IIRFilter m_lowPass1;
     // Mutex m_Mutex; // not needed when only used in one thread
 
     long m_counts;

@@ -22,8 +22,8 @@ DCMotor::DCMotor(PinName pwm_pin,
     // default controller parameters, parameters adapted from gear ratio 78:1 tune
     const float k_gear = gear_ratio / 78.125f;
     setVelocityCntrl(DCMotor::KP * k_gear, DCMotor::KI * k_gear, DCMotor::KD * k_gear);
-    if (kn != 0.0f)
-        m_PIDCntrl_velocity.setCoeff_F(60.0f / kn);
+    if (kn > 0.0f)
+        m_PIDCntrl_velocity.setParamF(60.0f / kn);
     setRotationCntrlGain();
 
     // iir filter

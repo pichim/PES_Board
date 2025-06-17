@@ -73,9 +73,9 @@ public:
      * @param enc_a_pin The first pin name for the encoder.
      * @param enc_b_pin The second pin name for the encoder.
      * @param gear_ratio The gear ratio of the gear box.
-     * @param kn The motor constant.
-     * @param voltage_max The maximum voltage for the motor.
-     * @param counts_per_turn The number of encoder counts per turn of the motor.
+     * @param kn The motor constant [rpm/V].
+     * @param voltage_max The maximum voltage for the motor (default: 12.0f).
+     * @param counts_per_turn The number of encoder counts per turn of the motor (default: 20.0f).
      */
     explicit DCMotor(PinName pwm_pin,
                      PinName enc_a_pin,
@@ -272,7 +272,7 @@ public:
 #endif
 
 private:
-    static constexpr int64_t PERIOD_MUS = 1000;
+    static constexpr int64_t PERIOD_MUS = 500;
     static constexpr float TS = 1.0e-6f * static_cast<float>(PERIOD_MUS);
     static constexpr float PWM_MIN = 0.01f;
     static constexpr float PWM_MAX = 0.99f;

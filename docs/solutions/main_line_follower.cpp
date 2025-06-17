@@ -58,7 +58,7 @@ int main()
     DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio, kn, voltage_max);
 
     // // optional: adjust pwm adjust fast pwm frequency
-    // int period_mus = 1000;
+    // int period_mus = 2000; // 500 Hz
     // motor_M1.setFastPWMPeriod_mus(period_mus);
     // motor_M2.setFastPWMPeriod_mus(period_mus);
 

@@ -38,6 +38,7 @@
     - create serial stream example
     - include serial stream python version (in addition to matlab version)
     - in DCMotor.cpp PERFORM_GPA_MEAS and PERFORM_CHIRP_MEAS should be tested with the latest updates, here features like serial_pipe and serialStream could be introduced
+      -> only tested if PERFORM_GPA_MEAS is still working via the terminal
 
     Files checked before FS25:
 

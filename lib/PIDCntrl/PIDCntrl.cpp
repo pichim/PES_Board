@@ -82,35 +82,35 @@ void PIDCntrl::setup(float P, float I, float D, float tau_f, float tau_ro, float
     reset();
 }
 
-void PIDCntrl::setCoeff_P(float P)
+void PIDCntrl::setParamP(float P)
 {
     this->P = P;
 }
 
-void PIDCntrl::setCoeff_I(float I)
+void PIDCntrl::setParamI(float I)
 {
     this->I = I;
-    updateCoeff_I(I, Ts);
+    updateParamI(I, Ts);
 }
 
-void PIDCntrl::setCoeff_D(float D)
+void PIDCntrl::setParamD(float D)
 {
     this->D = D;
-    updateCoeff_D(D, Ts, tau_f);
+    updateParamD(D, Ts, tau_f);
 }
 
-void PIDCntrl::setCoeff_F(float F)
+void PIDCntrl::setParamF(float F)
 {
     this->F = F;
 }
 
-void PIDCntrl::scale_PIDT2_param(float scale)
+void PIDCntrl::scalePIDT2params(float scale)
 {
     P = P_init * scale;
     I = I_init * scale;
     D = D_init * scale;
-    updateCoeff_I(I, Ts);
-    updateCoeff_D(D, Ts, tau_f);
+    updateParamI(I, Ts);
+    updateParamD(D, Ts, tau_f);
 }
 
 float PIDCntrl::update(float e)
@@ -196,7 +196,7 @@ float PIDCntrl::get_ad()
     return ad;
 }
 
-float PIDCntrl::get_current_output(void)
+float PIDCntrl::getCurrentOutput(void)
 {
     return uf;
 }
@@ -210,9 +210,9 @@ void PIDCntrl::setCoefficients(float P, float I, float D, float tau_f, float tau
     this->tau_f = tau_f;
     this->tau_ro = tau_ro;
     this->Ts = Ts;
-    updateCoeff_I(I, Ts);
-    updateCoeff_D(D, Ts, tau_f);
-    updateCoeff_RO(Ts, tau_ro);
+    updateParamI(I, Ts);
+    updateParamD(D, Ts, tau_f);
+    updateParamRO(Ts, tau_ro);
 
     /* store initial parameters */
     this->P_init = P;
@@ -220,14 +220,14 @@ void PIDCntrl::setCoefficients(float P, float I, float D, float tau_f, float tau
     this->D_init = D;
 }
 
-void PIDCntrl::updateCoeff_I(float I, float Ts)
+void PIDCntrl::updateParamI(float I, float Ts)
 {
     double I_d = static_cast<double>(I);
     double Ts_d = static_cast<double>(Ts);
     bi = static_cast<float>(I_d * Ts_d);
 }
 
-void PIDCntrl::updateCoeff_D(float D, float Ts, float tau_f)
+void PIDCntrl::updateParamD(float D, float Ts, float tau_f)
 {
     double D_d = static_cast<double>(D);
     double Ts_d = static_cast<double>(Ts);
@@ -236,7 +236,7 @@ void PIDCntrl::updateCoeff_D(float D, float Ts, float tau_f)
     ad = static_cast<float>((Ts_d - 2.0 * tau_f_d) / (Ts_d + 2.0 * tau_f_d));
 }
 
-void PIDCntrl::updateCoeff_RO(float Ts, float tau_ro)
+void PIDCntrl::updateParamRO(float Ts, float tau_ro)
 {
     double Ts_d = static_cast<double>(Ts);
     double tau_ro_d = static_cast<double>(tau_ro);
