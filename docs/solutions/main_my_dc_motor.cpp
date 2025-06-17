@@ -5,8 +5,7 @@
 
 // drivers
 #include "DebounceIn.h"
-#include "IMU.h"
-#include "Servo.h"
+#include "MyDCMotor.h"
 
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
@@ -34,39 +33,22 @@ int main()
     // led on nucleo board
     DigitalOut user_led(LED1);
 
-    // servo
-    Servo servo_roll(PB_D0);
-    Servo servo_pitch(PB_D1);
+    // additional led
+    // create DigitalOut object to command extra led, you need to add an aditional resistor, e.g. 220...500 Ohm
+    // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
+    DigitalOut led1(PB_9);
 
-    // imu
-    ImuData imu_data;
-    IMU imu(PB_IMU_SDA, PB_IMU_SCL);    
-    Eigen::Vector2f rp;
+    // create object to enable power electronics for the dc motors
+    DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
 
-    // minimal pulse width and maximal pulse width obtained from the servo calibration process
-    // modelcraft RS2 MG/BB
-    float servo_ang_min = 0.0325f;
-    float servo_ang_max = 0.1250f;
-
-    // servo.setPulseWidth: before calibration (0,1) -> (min pwm, max pwm)
-    // servo.setPulseWidth: after calibration (0,1) -> (servo_D0_ang_min, servo_D0_ang_max)
-    servo_roll.calibratePulseMinMax(servo_ang_min, servo_ang_max);
-    servo_pitch.calibratePulseMinMax(servo_ang_min, servo_ang_max);
-
-    // angle limits of the servos
-    const float angle_range_min = -M_PI/2.0f;
-    const float angle_range_max = M_PI/2.0f;    
-
-    // angle to pulse width coefficients
-    const float normalised_angle_gain = 1.0f / M_PI;
-    const float normalised_angle_offset = 0.5f;
-
-    // pulse width
-    static float roll_servo_width = 0.5f;
-    static float pitch_servo_width = 0.5f;
-
-    servo_roll.setPulseWidth(roll_servo_width);
-    servo_pitch.setPulseWidth(pitch_servo_width);
+    // https://www.pololu.com/product/3490/specs
+    const float gear_ratio = 100.00f;
+    const float kn = 140.0f / 12.0f;
+    // const float voltage_for_one_RPS = 60.0f / kn;
+    MyDCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn);
+    motor_M1.setVelocityCntrl(6.78f/*Kp*/, 269.84f/*Ki*/);
+    motor_M1.setVelocityCntrlIntegratorLimitsPercent(100.0f); // defalut is at 30% of max voltage
+    motor_M1.setMaxAcceleration(20.0f); // keep in mind that this introduced additional delay
 
     // start timer
     main_task_timer.start();
@@ -77,36 +59,31 @@ int main()
 
         if (do_execute_main_task) {
 
-            // enable the servos
-            if (!servo_roll.isEnabled())
-                servo_roll.enable();
-            if (!servo_pitch.isEnabled())
-                servo_pitch.enable();
+            // enable the motors if they are not enabled yet
+            if (!enable_motors) {
+                enable_motors = 1;
+            }
 
-            // read imu data
-            imu_data = imu.getImuData();
+            // write the desired voltage to the motor
+            // // motor_M1.setVoltage(voltage_for_one_RPS);
+            // motor_M1.setVoltage(6.0f);
 
-            // roll angle
-            rp(0) = atan2f(imu_data.quat.x() + imu_data.quat.z(), imu_data.quat.w() - imu_data.quat.y()) - atan2f(imu_data.quat.z() - imu_data.quat.x(), imu_data.quat.y() + imu_data.quat.w());
-            // pitch angle
-            rp(1) = acosf((imu_data.quat.w() - imu_data.quat.y()) * (imu_data.quat.w() - imu_data.quat.y()) + (imu_data.quat.x() + imu_data.quat.z()) * (imu_data.quat.x() + imu_data.quat.z()) - 1.0f) - M_PI / 2.0f;
+            // write desired velocity to the motor
+            motor_M1.setVelocity(1.0f);
 
-            // map to servo commands
-            roll_servo_width = -normalised_angle_gain * rp(0) + normalised_angle_offset;
-            pitch_servo_width = normalised_angle_gain * rp(1) + normalised_angle_offset;
-            if (rp(0) < angle_range_max && rp(0) > angle_range_min)
-                servo_roll.setPulseWidth(roll_servo_width);
-            if (rp(0) < angle_range_max && rp(0) > angle_range_min)
-                servo_pitch.setPulseWidth(pitch_servo_width);
-
+            // visual feedback that the main task is executed, setting this once would actually be enough
+            led1 = 1;
         } else {
             // the following code block gets executed only once
             if (do_reset_all_once) {
                 do_reset_all_once = false;
-                roll_servo_width = 0.5f;
-                pitch_servo_width = 0.5f;
-                servo_roll.setPulseWidth(roll_servo_width);
-                servo_pitch.setPulseWidth(pitch_servo_width);
+
+                // motor_M1.setVoltage(0.0f);
+
+                motor_M1.setVelocity(-1.0f);
+
+                // reset variables and objects
+                led1 = 0;
             }
         }
 
@@ -114,7 +91,10 @@ int main()
         user_led = !user_led;
 
         // print to the serial terminal
-        printf("%f, %f \n", roll_servo_width, pitch_servo_width);
+        printf("Counts: %6ld Velocity RPS: %6.2f Rotations: %6.2f Voltage: %6.2f\n", motor_M1.getCounts(),
+                                                                                     motor_M1.getVelocity(),
+                                                                                     motor_M1.getRotation(),
+                                                                                     motor_M1.getVoltage());
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();

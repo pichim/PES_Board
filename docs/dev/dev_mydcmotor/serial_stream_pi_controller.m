@@ -1,7 +1,7 @@
 clc, clear all
 %%
 
-port = '/dev/ttyUSB0';
+port = '/dev/ttyUSB1'; % port = 'COM12';
 baudrate = 2e6;
 
 % Initialize the SerialStream object
@@ -101,9 +101,9 @@ fprintf('Measured DC-Gain: %0.2f dB\n', db(abs(g(2))));
 
 % Model the plant as transfer function
 s = tf('s');
-K = db2mag(-11.31);
+K = db2mag(-12.5);
 n = 2;
-T1 = 1.0 / (2*pi* 10.0);
+T1 = 1.0 / (2*pi* 9.5);
 Tt = 1e-3;
 G_mod = K / (T1*s + 1.0)^n;
 
@@ -154,9 +154,9 @@ T1_approx = T1 * (n + 1) / 2;
 Tt_approx = T1 * (n - 1) / 2 + Tt;
 
 % PI Controller
-Kp = 0.6 * T1_approx / (Tt_approx * K)
+Kp = 0.6 * T1_approx / (Tt_approx * K);
 Ti = T1_approx;
-Ki = Kp / Ti
+Ki = Kp / Ti;
 C = Kp + Ki/s;
 
 % Controller Gains

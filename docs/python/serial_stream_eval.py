@@ -31,7 +31,7 @@ except Exception as e:
     exit()
 
 # Save the data
-filename = "docs/dev/dev_mydcmotor/data_00.npz"
+filename = "docs/python/data_00.npz"
 np.savez(filename, **data)
 
 # Load the data

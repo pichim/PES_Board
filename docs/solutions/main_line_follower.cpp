@@ -47,9 +47,11 @@ int main()
     const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                      // 6.0f V if you only use one battery pack
 #if USE_GEAR_RATIO_78
+    // https://www.pololu.com/product/3477/specs
     const float gear_ratio = 78.125f;
     const float kn = 180.0f / 12.0f;
 #else
+    // https://www.pololu.com/product/3490/specs
     const float gear_ratio = 100.00f;
     const float kn = 140.0f / 12.0f;
 #endif
@@ -128,3 +130,4 @@ void toggle_do_execute_main_fcn()
     if (do_execute_main_task)
         do_reset_all_once = true;
 }
+

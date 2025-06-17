@@ -156,6 +156,10 @@ motor_M2.setVelocity(wheel_speed(1) / (2.0f * M_PIf)); // set a desired speed fo
 - [Differential Drive Robot Kinematics Calibration](../solutions/main_calib_kinematic_ss24.cpp)
 - [Line follower Base Example](../solutions/main_line_follower_base_ss24.cpp)
 
+## Examples for Ashesi 2025
+
+- [Line follower Base Example](../solutions/main_line_follower_base_ss24.cpp)
+
 ## Line Follower Driver (in case you don't want to develop your own line following algorithm)
 
 The ``LineFollower`` driver is designed to drive (control) a differential drive robot with a line follower array attached along a black line on white background.

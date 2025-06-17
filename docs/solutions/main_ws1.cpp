@@ -109,3 +109,4 @@ float ir_sensor_compensation(float ir_distance_mV)
 
     return a / (ir_distance_mV + b);
 }
+
