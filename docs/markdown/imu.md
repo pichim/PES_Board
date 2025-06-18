@@ -58,7 +58,7 @@ Clearly we cannot just integrate the gyroscope signal to get the angle; the bias
 The accelerometer, on the other hand, has no bias (if calibrated properly) but significant noise. The accelerometer measurements are proportional to the angle relative to gravity. For simplicity we just write.
 
 $$
-y_{acc}(t) = \phi(t) + \eta_{acc}
+y_{acc}(t) = \phi(t) + \eta_{acc}(t)
 $$
 
 These two signals can be fused, so that we combine the precise operation of the gyroscope in the short term and use the accelerometer for long-term correction. This fusion can be done with different techniques, with the simplest form being a complementary filter. This approach uses a low-pass filter for measurements from the accelerometer and a high-pass filter for the integral of measurements from the gyroscope.
