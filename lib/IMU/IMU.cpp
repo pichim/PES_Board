@@ -88,6 +88,7 @@ void IMU::threadTask()
             m_ImuData.mag = mag;
             m_ImuData.quat = m_Mahony.getOrientationAsQuaternion();
             m_ImuData.rpy = m_Mahony.getOrientationAsRPYAngles();
+            m_ImuData.pry = m_Mahony.getOrientationAsPRYAngles();
             m_ImuData.tilt = m_Mahony.getTiltAngle();
         }
 
@@ -101,6 +102,7 @@ void IMU::threadTask()
                m_ImuData.mag(0), m_ImuData.mag(1), m_ImuData.mag(2), time_ms);
         printf("%.6f, %.6f, %.6f, %.6f, ", m_ImuData.quat.w(), m_ImuData.quat.x(), m_ImuData.quat.y(), m_ImuData.quat.z());
         printf("%.6f, %.6f, %.6f, ", m_ImuData.rpy(0), m_ImuData.rpy(1), m_ImuData.rpy(2));
+        printf("%.6f, %.6f, %.6f, ", m_ImuData.pry(0), m_ImuData.pry(1), m_ImuData.pry(2));
         printf("%.6f\n", m_ImuData.tilt);
 #endif
     }

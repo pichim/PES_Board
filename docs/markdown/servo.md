@@ -101,7 +101,7 @@ In order to properly control the servo, the basic step that should be performed 
 >
 >In the second servo illustrations, the zero position corresponds to a pulse width of 1 ms, while the maximum angle is achieved at 2 ms. Hence, a calibration process is undertaken to determine these values. These calibration values are specific to the example shown in the figure and do not hold for the servos we use. Also, our servo drivers runs at 50 Hz, therefor the servo period response pulse width is 20 ms.
 >
-> For more information see: [here][2]
+> For more information see [here][2].
 
 The calibration process involves sending progressively wider pulses to determine, the pulse width corresponding to the minimal angle and the pulse width corresponding to the maximum angle of the servo. Best practice is to start with a very small pulse width and gradually increase it until the servo starts moving. This process is repeated until the servo reaches its maximum angle and stops moving, even though the pulse width is further increased. The pulse width values corresponding to the minimum and maximum positions are used as calibration values. It may be necessary to use a slightly higher than minimal value and a slightly lower than maximum value to ensure that the servo is working as expected (safety margins).
 

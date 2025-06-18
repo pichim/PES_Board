@@ -17,7 +17,7 @@ The analog distance sensor is equipped with an IR diode and uses triangulation t
 >    <i> Working principle </i>
 ></p>
 >
-> More detailed explanation can be found: [here][3]
+> More detailed explanation can be found [here][3].
 
 <p align="center">
     <img src="../images/ir-distance-sensor.png" alt="IR_sensor" width="400"/> </br>

@@ -23,6 +23,7 @@ public:
     void update(Eigen::Vector3f gyro, Eigen::Vector3f acc, Eigen::Vector3f mag);
     Eigen::Quaternionf getOrientationAsQuaternion() const;
     Eigen::Vector3f getOrientationAsRPYAngles() const;
+    Eigen::Vector3f getOrientationAsPRYAngles() const;
     float getTiltAngle() const;
 
 private:
@@ -32,11 +33,13 @@ private:
     Eigen::Quaternionf m_quat;
     Eigen::Vector3f m_bias;
     Eigen::Vector3f m_rpy;
+    Eigen::Vector3f m_pry;
     float m_tilt = 0.0f;
 
     void initialise();
     void updateOrientation(Eigen::Vector3f gyro, Eigen::Vector3f e);
-    Eigen::Vector3f quat2rpy(Eigen::Quaternionf quat);
+    Eigen::Vector3f quat2rpy(Eigen::Quaternionf q);
+    Eigen::Vector3f quat2pry(Eigen::Quaternionf q);
     Eigen::Vector3f calcRotationError(Eigen::Vector3f v1, Eigen::Vector3f v2);
 };
 

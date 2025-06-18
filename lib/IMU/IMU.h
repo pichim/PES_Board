@@ -56,7 +56,12 @@ public:
 
     Eigen::Vector3f gyro, acc, mag;
     Eigen::Quaternionf quat;
-    Eigen::Vector3f rpy;
+    Eigen::Vector3f rpy; // roll, pitch, yaw according to Tait-Bryan angles ZYX
+                         // where R = Rz(yaw) * Ry(pitch) * Rx(roll) for ZYX sequence
+                         // singularity at pitch = +/-pi/2 radians (+/- 90 deg)
+    Eigen::Vector3f pry; // pitch, roll, yaw according to Tait-Bryan angles ZXY
+                         // where R = Rz(yaw) * Rx(roll) * Ry(pitch) for ZXY sequence
+                         // singularity at roll = +/-pi/2 radians (+/- 90 deg)
     float tilt = 0.0f;
 
     void init() {
@@ -65,6 +70,7 @@ public:
         mag.setZero();
         quat.setIdentity();
         rpy.setZero();
+        pry.setZero();
     };
 };
 
