@@ -123,7 +123,7 @@ to true in ``IMU.h`` file:
 The IMU is mounted on the PES board as shown in the following image. However, there are different versions of the PES board, so the alignment of the IMU may vary. Therefore, it is important to check the alignment of the IMU based on measurements. The simplest way to do this is to print the acceleration measurements to the console.
 
 <p align="center">
-    <img src="../images/imu_axis_pes.PNG" alt="IMU coordinate system" width="600"/> </br>
+    <img src="../images/imu_axis_pes.PNG" alt="IMU coordinate system" width="650"/> </br>
     <i>IMU coordinate system</i>
 </p>
 
@@ -213,8 +213,8 @@ float yaw = imu_data.rpy(2);
 In order to demonstrate how the IMU can be used, a 2D gimbal has been prepared requiring printing a few parts and assembling the appropriate servos.
 
 <p align="center">
-    <img src="../images/gimbal_with_coord_frame.png" alt="2 Axis Gimbal" width="650"/> </br>
-    <i>2 Axis Gimbal</i>
+    <img src="../images/gimbal_with_coord_frame.png" alt="2-Axis Gimbal" width="650"/> </br>
+    <i>2-Axis Gimbal</i>
 </p>
 
 Prepared parts in `.stl` format for printing can be found in the folder (docs/cad/gimbal); additionally, step files are also placed there in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
