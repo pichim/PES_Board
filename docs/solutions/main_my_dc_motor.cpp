@@ -64,7 +64,7 @@ int main()
                 enable_motors = 1;
             }
 
-            // write the desired voltage to the motor
+            // // write the desired voltage to the motor
             // // motor_M1.setVoltage(voltage_for_one_RPS);
             // motor_M1.setVoltage(6.0f);
 

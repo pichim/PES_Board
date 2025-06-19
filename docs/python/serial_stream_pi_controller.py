@@ -48,7 +48,7 @@ def get_step_resp_from_frd(G_frd, f_max_hz):
     return step_resp
 
 
-port = "/dev/ttyUSB1"  # "COM12"
+port = "/dev/ttyUSB0"  # "COM12"
 baudrate = int(2e6)
 
 # Initialize the SerialStream object

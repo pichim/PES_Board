@@ -7,7 +7,7 @@ import scipy as sp
 from SerialStream import SerialStream
 
 
-port = "/dev/ttyUSB1"  # "COM12"
+port = "/dev/ttyUSB0"  # "COM12"
 baudrate = int(2e6)
 
 # Initialize the SerialStream object

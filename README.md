@@ -17,7 +17,6 @@
     - Maciej Szarek (szar)
  -->
 
-
  <!--
     Info about the demonstrators for WS2 and WS3:
 
@@ -27,16 +26,21 @@
     - Make a hole in the element for the motor shaft (details available: https://www.printables.com/de/model/516177-universal-spur-gears-collection-module-15)
 -->
 
-
  <!--
-    TODO: General:
+    TODO:
+
+    Before Ghana 25
+    - Create Workshop with imu and comp filter
+    - Create Workshop with my dc motor
+    - Create Workshop with line follower
+    - test main_pes_monster.cpp with the latest updates
+
+    General:
     - adjust line follwer example according to the new line follower hardware (grey robots)
     - document how to use PlatformIO
       - especially with regards to gcc instead of armclang
-      - remove important note in sd card logger (maybe)
+      - remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)
     - document how to use Putty
-    - create serial stream example
-    - include serial stream python version (in addition to matlab version)
     - in DCMotor.cpp PERFORM_GPA_MEAS and PERFORM_CHIRP_MEAS should be tested with the latest updates, here features like serial_pipe and serialStream could be introduced
       -> only tested if PERFORM_GPA_MEAS is still working via the terminal
 
