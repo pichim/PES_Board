@@ -3,11 +3,11 @@
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import control as ct
 import scipy as sp
 from SerialStream import SerialStream
 
-
-port = "/dev/ttyUSB1" # "COM12"
+port = "/dev/ttyUSB0"  # "COM12"
 baudrate = int(2e6)
 
 # Initialize the SerialStream object
@@ -31,7 +31,7 @@ except Exception as e:
     exit()
 
 # Save the data
-filename = "docs/dev/dev_mydcmotor/data_00.npz"
+filename = "docs/python/data_comp_filter_00.npz"
 np.savez(filename, **data)
 
 # Load the data
@@ -55,46 +55,46 @@ plt.ylim([0, 1.2 * np.max(np.diff(data["time"]) * 1e6)])
 
 # Defining the indices for the data columns
 ind = {}
-ind["counts"] = 0
-ind["velocity"] = 1
-ind["rotations"] = 2
-ind["voltage"] = 3
-ind["velocity_setpoint"] = 4
-ind["velocity_target"] = 5
-
-# Calculate smoothed acceleration
-acceleration = np.insert(np.diff(data["values"][:, ind["velocity"]]) / Ts, 0, 0.0)  # prepend zero to match length
-acceleration_smoothed = np.convolve(acceleration, np.ones(20) / 20, mode="same")
+ind["gyro"] = 0
+ind["acc"] = [1, 2]
+ind["roll"] = 3
 
 plt.figure(2)
 plt.subplot(2, 1, 1)
-plt.plot(data["time"], data["values"][:, ind["voltage"]])
+plt.plot(data["time"], data["values"][:, ind["gyro"]])
 plt.grid(True)
-plt.ylabel("Voltage (V)")
+plt.ylabel("Gyro (rad/sec)")
+plt.xlim([0, data["time"][-1]])
+
 plt.subplot(2, 1, 2)
-plt.plot(data["time"], acceleration_smoothed)
+plt.plot(data["time"], data["values"][:, ind["acc"]])
 plt.grid(True)
-plt.ylabel("Acceleration (RPS/sec)")
 plt.xlabel("Time (sec)")
+plt.ylabel("Acc (m²/sec)")
+plt.xlim([0, data["time"][-1]])
+
+# Roll estimates based on individual measurements
+roll_gyro = np.cumsum(data["values"][:, ind["gyro"]]) * Ts
+roll_acc = np.arctan2(data["values"][:, ind["acc"][0]], data["values"][:, ind["acc"][1]])
+
+# Creating Low-Pass Filter
+s = ct.tf("s")
+T = 0.2
+Glp_c = 1 / (T * s + 1)
+Glp = ct.sample_system(Glp_c, Ts, method="tustin")
+Blp = np.squeeze(Glp.num[0][0])
+Alp = np.squeeze(Glp.den[0][0])
+
+# Complementary Filter
+roll = T * sp.signal.lfilter(Blp, Alp, data["values"][:, ind["gyro"]]) + sp.signal.lfilter(Blp, Alp, roll_acc)
 
 plt.figure(3)
-plt.subplot(3, 1, 1)
-plt.plot(data["time"], data["values"][:, ind["counts"]])
+plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll]) * 180 / np.pi)
 plt.grid(True)
-plt.ylabel("Counts")
-plt.subplot(3, 1, 2)
-plt.plot(data["time"], data["values"][:, ind["velocity_setpoint"]], label="Setpoint")
-plt.plot(data["time"], data["values"][:, ind["velocity_target"]], label="Target")
-plt.plot(data["time"], data["values"][:, ind["velocity"]], label="Actual")
-plt.grid(True)
-plt.ylabel("Velocity (RPS)")
-plt.legend()
-plt.subplot(3, 1, 3)
-plt.plot(data["time"], data["values"][:, ind["rotations"]])
-plt.grid(True)
-plt.ylabel("Rotations")
 plt.xlabel("Time (sec)")
-plt.tight_layout()
+plt.ylabel("Roll (deg)")
+plt.legend(["Mahony", "Int. Gyro", "Acc", "Comp. Filter"], loc="best")
+plt.xlim([0, data["time"][-1]])
 
 # Show all plots
 plt.show()

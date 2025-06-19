@@ -121,6 +121,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
         * [IMU](docs/markdown/imu.md)
         * [Stepper Motor](docs/markdown/stepper_motor.md)
         * [SD-Card](docs/markdown/sd_card_logger.md)
+        * [Serial Stream](docs/markdown/serial_stream.md)
 3. [Tips](#tips)
     * [Project Development](docs/markdown/tips.md#project-development)
     * [Programming](docs/markdown/tips.md#programming)
@@ -254,6 +255,7 @@ The following links contain the hardware tutorials. The documents contain specif
 - [IMU](docs/markdown/imu.md)
 - [Stepper Motor](docs/markdown/stepper_motor.md)
 - [SD-Card](docs/markdown/sd_card_logger.md)
+- [Serial Stream](docs/markdown/serial_stream.md)
 
 ## Tips
 
@@ -281,8 +283,9 @@ And below you find all the solutions, as well as some additional examples:
 - [Example Line Follower Base Example](docs/solutions/main_line_follower_base_ss24.cpp)
 - [Example Differential Drive Robot Kinematics Calibration](docs/solutions/main_calib_kinematic_ss24.cpp)
 - [Example Stepper Motor](docs/solutions/main_stepper_motor.cpp)
-- [Example SD-Card 1](docs/solutions/main_sd_card_logger_e1.cpp)
-- [Example SD-Card 2](docs/solutions/main_sd_card_logger_e2.cpp)
+- [Example 1 SD-Card](docs/solutions/main_sd_card_logger_e1.cpp)
+- [Example 2 SD-Card](docs/solutions/main_sd_card_logger_e2.cpp)
+- [Example Serial Stream](docs/solutions/main_serial_stream.cpp)
 
 ### Additional Information
 

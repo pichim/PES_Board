@@ -28,10 +28,11 @@ catch exception
 end
 
 % Save the data
-save data_chirp_00.mat data
+filename = 'data_pi_controller_00.mat';
+save(filename, 'data');
 
 % Load the data
-load data_chirp_00.mat
+load(filename)
 
 
 %% Evaluate time
@@ -101,10 +102,14 @@ fprintf('Measured DC-Gain: %0.2f dB\n', db(abs(g(2))));
 
 % Model the plant as transfer function
 s = tf('s');
-K = db2mag(0); % adjust the values here
-n = 1;
-T1 = 1.0 / (2*pi* 100);
-Tt = 0.1;
+% K = db2mag(0); % adjust the values here
+% n = 1;
+% T1 = 1.0 / (2*pi* 100);
+% Tt = 0.1;
+K = db2mag(-12.5);
+n = 2;
+T1 = 1.0 / (2*pi* 9.5);
+Tt = 1e-3;
 G_mod = K / (T1*s + 1.0)^n;
 
 % Add dead time using 1st-order Pade approximation

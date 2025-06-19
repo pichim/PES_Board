@@ -25,11 +25,12 @@ xlim([0 data.time(end-1)])
 ylim([0 1.2*max(dtime_mus)])
 
 % // write data to the internal buffer of the sd card logger and send it to the sd card
-% sd_logger.write(dtime_us);
-% sd_logger.write(ir_distance_mV);
-% sd_logger.write(ir_distance_cm);
-% sd_logger.write(ir_distance_avg);
+% sd_logger.write( dtime_us );        //  0 delta time in us
+% sd_logger.write( ir_distance_mV );  //  1 ir distance in mV
+% sd_logger.write( ir_distance_cm );  //  2 ir distance in cm
+% sd_logger.write( ir_distance_avg ); //  3 ir distance averaged in cm
 % sd_logger.send();
+
 figure(2)
 ax(1) = subplot(121);
 plot(data.time, data.values(:,1)), grid on

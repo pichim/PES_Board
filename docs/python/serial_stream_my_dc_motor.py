@@ -7,7 +7,7 @@ import scipy as sp
 from SerialStream import SerialStream
 
 
-port = "/dev/ttyUSB0"  # "COM12"
+port = "/dev/ttyUSB1"  # "COM12"
 baudrate = int(2e6)
 
 # Initialize the SerialStream object
@@ -31,7 +31,7 @@ except Exception as e:
     exit()
 
 # Save the data
-filename = "docs/python/data_00.npz"
+filename = "docs/python/data_my_dc_motor_00.npz"
 np.savez(filename, **data)
 
 # Load the data
@@ -55,16 +55,46 @@ plt.ylim([0, 1.2 * np.max(np.diff(data["time"]) * 1e6)])
 
 # Defining the indices for the data columns
 ind = {}
-ind["cntr_1"] = 0
-ind["cntr_2"] = 1
+ind["counts"] = 0
+ind["velocity"] = 1
+ind["rotations"] = 2
+ind["voltage"] = 3
+ind["velocity_setpoint"] = 4
+ind["velocity_target"] = 5
+
+# Calculate smoothed acceleration
+acceleration = np.insert(np.diff(data["values"][:, ind["velocity"]]) / Ts, 0, 0.0)  # prepend zero to match length
+acceleration_smoothed = np.convolve(acceleration, np.ones(20) / 20, mode="same")
 
 plt.figure(2)
-plt.plot(data["time"], data["values"][:, ind["cntr_1"]], label="Counter 1")
-plt.plot(data["time"], data["values"][:, ind["cntr_2"]], label="Counter 2")
+plt.subplot(2, 1, 1)
+plt.plot(data["time"], data["values"][:, ind["voltage"]])
 plt.grid(True)
+plt.ylabel("Voltage (V)")
+plt.subplot(2, 1, 2)
+plt.plot(data["time"], acceleration_smoothed)
+plt.grid(True)
+plt.ylabel("Acceleration (RPS/sec)")
 plt.xlabel("Time (sec)")
-plt.ylabel("Count")
+
+plt.figure(3)
+plt.subplot(3, 1, 1)
+plt.plot(data["time"], data["values"][:, ind["counts"]])
+plt.grid(True)
+plt.ylabel("Counts")
+plt.subplot(3, 1, 2)
+plt.plot(data["time"], data["values"][:, ind["velocity_setpoint"]], label="Setpoint")
+plt.plot(data["time"], data["values"][:, ind["velocity_target"]], label="Target")
+plt.plot(data["time"], data["values"][:, ind["velocity"]], label="Actual")
+plt.grid(True)
+plt.ylabel("Velocity (RPS)")
 plt.legend()
+plt.subplot(3, 1, 3)
+plt.plot(data["time"], data["values"][:, ind["rotations"]])
+plt.grid(True)
+plt.ylabel("Rotations")
+plt.xlabel("Time (sec)")
+plt.tight_layout()
 
 # Show all plots
 plt.show()

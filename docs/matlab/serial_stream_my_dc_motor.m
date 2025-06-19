@@ -1,7 +1,7 @@
 clc, clear all
 %%
 
-port = '/dev/ttyUSB0'; % port = 'COM12';
+port = '/dev/ttyUSB1'; % port = 'COM12';
 baudrate = 2e6;
 
 % Initialize the SerialStream object
@@ -28,7 +28,7 @@ catch exception
 end
 
 % Save the data
-filename = 'data_00.mat';
+filename = 'data_my_dc_motor_00.mat';
 save(filename, 'data');
 
 % Load the data
@@ -55,14 +55,40 @@ ylim([0 1.2*max(diff(data.time * 1e6))])
 %% Evaluate the data
 
 % Defining the indices for the data columns
-ind.cntr_1 = 1;
-ind.cntr_2 = 2;
+ind.counts    = 1;
+ind.velocity  = 2;
+ind.rotations = 3;
+ind.voltage   = 4;
+ind.velocity_setpoint = 5;
+ind.velocity_target   = 6;
+
+% Calculate smoothed acceleration
+acceleration = [0; diff(data.values(:, ind.velocity))/Ts]; % prepend zero to match length
+acceleration_smoothed = conv(acceleration, ones(1, 20)/20, 'same');
 
 figure(2)
-plot(data.time, data.values(:, ind.cntr_1)), grid on, hold on
-plot(data.time, data.values(:, ind.cntr_2)), hold off
+subplot(211)
+plot(data.time, data.values(:, ind.voltage)), grid on
+ylabel('Voltage (V)')
+subplot(212)
+plot(data.time, acceleration_smoothed), grid on
+ylabel('Acceleration (RPS/sec)')
 xlabel('Time (sec)')
-ylabel('Count')
-legend('Counter 1', ...
-    'Counter 2', ...
-    'Location', 'Best')
+
+figure(3)
+subplot(311)
+plot(data.time, data.values(:, ind.counts)), grid on
+ylabel('Counts')
+subplot(312)
+plot(data.time, [data.values(:, ind.velocity_setpoint), ...
+    data.values(:, ind.velocity_target), ...
+    data.values(:, ind.velocity)]), grid on
+legend('Setpoint', ...
+    'Target', ...
+    'Actual', ...
+    'Location', 'best')
+ylabel('Velocity (RPS)')
+subplot(313)
+plot(data.time, data.values(:, ind.rotations)), grid on
+ylabel('Rotations')
+xlabel('Time (sec)')

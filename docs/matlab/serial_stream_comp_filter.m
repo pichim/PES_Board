@@ -28,7 +28,7 @@ catch exception
 end
 
 % Save the data
-filename = 'data_00.mat';
+filename = 'data_comp_filter_00.mat';
 save(filename, 'data');
 
 % Load the data
@@ -55,14 +55,48 @@ ylim([0 1.2*max(diff(data.time * 1e6))])
 %% Evaluate the data
 
 % Defining the indices for the data columns
-ind.cntr_1 = 1;
-ind.cntr_2 = 2;
+ind.gyro = 1;
+ind.acc  = 2:3;
+ind.roll = 4;
 
 figure(2)
-plot(data.time, data.values(:, ind.cntr_1)), grid on, hold on
-plot(data.time, data.values(:, ind.cntr_2)), hold off
+subplot(211)
+plot(data.time, data.values(:, ind.gyro)), grid on
+ylabel('Gyro (rad/sec)')
+xlim([0 data.time(end)])
+subplot(212)
+plot(data.time, data.values(:, ind.acc)), grid on
 xlabel('Time (sec)')
-ylabel('Count')
-legend('Counter 1', ...
-    'Counter 2', ...
+ylabel('Acc (m²/sec)')
+xlim([0 data.time(end)])
+
+% Roll estimates based on individual measurements
+roll_gyro = cumtrapz(data.values(:, ind.gyro)) * Ts;
+roll_acc = atan2(data.values(:, ind.acc(1)), ...
+    data.values(:, ind.acc(2)));
+
+% Creating Low-Pass Filter
+s = tf('s');
+T = 0.2;
+Glp_c = 1 / (T*s + 1);
+Glp = c2d(Glp_c, Ts, 'tustin');
+Blp = Glp.num{1};
+Alp = Glp.den{1};
+
+% Complementary Filter
+roll_comp_filter = T * filter(Blp, Alp, data.values(:, ind.gyro)) + ...
+    filter(Blp, Alp, atan2(data.values(:, ind.acc(1)), data.values(:, ind.acc(2))));
+
+figure(3)
+plot(data.time, [data.values(:, ind.roll), ...
+    roll_gyro, ...
+    roll_acc, ...
+    roll_comp_filter] * 180/pi), grid on
+xlabel('Time (sec)')
+ylabel('Roll (deg)')
+legend('Mahony', ...
+    'Int. Gyro', ...
+    'Acc', ...
+    'Comp. Filter', ...
     'Location', 'Best')
+xlim([0 data.time(end)])

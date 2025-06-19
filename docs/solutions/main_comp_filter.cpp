@@ -5,7 +5,8 @@
 
 // drivers
 #include "DebounceIn.h"
-#include "SDLogger.h"
+#include "IMU.h"
+#include "SerialStream.h"
 
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
@@ -38,24 +39,47 @@ int main()
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 
-    // sd card logger
-    int cntr = 0;
-    SDLogger sd_logger(PB_SD_MOSI, PB_SD_MISO, PB_SD_SCK, PB_SD_CS);
+    // imu
+    ImuData imu_data;
+    IMU imu(PB_IMU_SDA, PB_IMU_SCL);
+
+    // serial stream to send data over uart
+    SerialStream serialStream(PB_UNUSED_UART_TX, PB_UNUSED_UART_RX);
+
+    // additional timer to measure time elapsed since last call
+    Timer logging_timer;
+    microseconds time_previous_us{0};
 
     // start timer
     main_task_timer.start();
+    logging_timer.start();
 
     // this loop will run forever
     while (true) {
         main_task_timer.reset();
+
+        // measure delta time
+        const microseconds time_us = logging_timer.elapsed_time();
+        const float dtime_us = duration_cast<microseconds>(time_us - time_previous_us).count();
+        time_previous_us = time_us;
 
         if (do_execute_main_task) {
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
 
-            // increment counter
-            cntr++;
+            // read imu data
+            imu_data = imu.getImuData();
+
+            if (serialStream.startByteReceived()) {
+                // send data over serial stream
+                serialStream.write( dtime_us );         //  0 delta time in us
+                serialStream.write( imu_data.gyro(0) ); //  1 gyro x in rad/s
+                serialStream.write( imu_data.acc(1) );  //  2 acc y in m/s^2
+                serialStream.write( imu_data.acc(2) );  //  3 acc z in m/s^2
+                serialStream.write( imu_data.rpy(0) );  //  4 roll in rad
+                serialStream.send();
+            }
 
         } else {
             // the following code block gets executed only once
@@ -63,22 +87,13 @@ int main()
                 do_reset_all_once = false;
 
                 // reset variables and objects
+                serialStream.reset();
                 led1 = 0;
-
-                cntr = 0;
             }
         }
 
         // toggling the user led
         user_led = !user_led;
-
-        // print to the serial terminal
-        if ((cntr % 50 == 0) && (cntr != 0))
-            printf("Counter: %d \n", cntr);
-
-        // write data to the internal buffer of the sd card logger and send it to the sd card
-        sd_logger.write((float)(cntr)); // the logger only supports float, so we need to cast the counter to float
-        sd_logger.send();
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();
@@ -97,4 +112,3 @@ void toggle_do_execute_main_fcn()
     if (do_execute_main_task)
         do_reset_all_once = true;
 }
-

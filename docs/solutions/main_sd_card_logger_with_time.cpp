@@ -49,16 +49,22 @@ int main()
     // sd card logger
     SDLogger sd_logger(PB_SD_MOSI, PB_SD_MISO, PB_SD_SCK, PB_SD_CS);
 
-    // additional timer to measure time
+    // additional timer to measure time elapsed since last call
     Timer logging_timer;
-    logging_timer.start();
+    microseconds time_previous_us{0};
 
     // start timer
     main_task_timer.start();
+    logging_timer.start();
 
     // this loop will run forever
     while (true) {
         main_task_timer.reset();
+
+        // measure delta time
+        const microseconds time_us = logging_timer.elapsed_time();
+        const float dtime_us = duration_cast<microseconds>(time_us - time_previous_us).count();
+        time_previous_us = time_us;
 
         if (do_execute_main_task) {
 
@@ -87,18 +93,12 @@ int main()
 
         // print to the serial terminal
         printf("IR distance mV: %f IR distance cm: %f IR distance cm averaged: %f \n", ir_distance_mV, ir_distance_cm, ir_distance_avg);
-
-        // measure delta time
-        static microseconds time_previous_us{0}; // static variables are only initialized once
-        const microseconds time_us = logging_timer.elapsed_time();
-        const float dtime_us = duration_cast<microseconds>(time_us - time_previous_us).count();
-        time_previous_us = time_us;
         
         // write data to the internal buffer of the sd card logger and send it to the sd card
-        sd_logger.write(dtime_us);
-        sd_logger.write(ir_distance_mV);
-        sd_logger.write(ir_distance_cm);
-        sd_logger.write(ir_distance_avg);
+        sd_logger.write( dtime_us );        //  0 delta time in us
+        sd_logger.write( ir_distance_mV );  //  1 ir distance in mV
+        sd_logger.write( ir_distance_cm );  //  2 ir distance in cm
+        sd_logger.write( ir_distance_avg ); //  3 ir distance averaged in cm
         sd_logger.send();
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
@@ -118,4 +118,3 @@ void toggle_do_execute_main_fcn()
     if (do_execute_main_task)
         do_reset_all_once = true;
 }
-

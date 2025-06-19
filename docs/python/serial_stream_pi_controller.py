@@ -48,7 +48,7 @@ def get_step_resp_from_frd(G_frd, f_max_hz):
     return step_resp
 
 
-port = "/dev/ttyUSB1" # "COM12"
+port = "/dev/ttyUSB1"  # "COM12"
 baudrate = int(2e6)
 
 # Initialize the SerialStream object
@@ -72,7 +72,7 @@ except Exception as e:
     exit()
 
 # Save the data
-filename = "docs/python/data_chirp_00.npz"
+filename = "docs/python/data_pi_controller_00.npz"
 np.savez(filename, **data)
 
 # Load the data
@@ -145,10 +145,14 @@ print(f"Measured DC-Gain: {ct.mag2db(abs(g[0])):.2f} dB")
 
 # Model the plant as transfer function
 s = ct.tf([1, 0], 1)
-K = ct.db2mag(0) # adjust values here
-n = 1
-T1 = 1.0 / (2 * np.pi * 100)
-Tt = 0.1
+# K = ct.db2mag(0) # adjust values here
+# n = 1
+# T1 = 1.0 / (2 * np.pi * 100)
+# Tt = 0.1
+K = ct.db2mag(-12.5)
+n = 2
+T1 = 1.0 / (2 * np.pi * 9.5)
+Tt = 1e-3
 G_mod = K / (T1 * s + 1) ** n
 
 # Add dead time using 1st-order Pade approximation

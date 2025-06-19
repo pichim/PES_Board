@@ -1,8 +1,8 @@
 #include "SerialStream.h"
 
-SerialStream::SerialStream(uint8_t num_of_floats,
-                           PinName tx,
+SerialStream::SerialStream(PinName tx,
                            PinName rx,
+                           uint8_t num_of_floats,
                            int baudrate) : _buffer_size(sizeof(float) * S_STREAM_CLAMP(num_of_floats))
 #if S_STREAM_DO_USE_SERIAL_PIPE
                                          , _SerialPipe(tx, rx, baudrate, 1 + 1, // serial pipe extects 1 byte more

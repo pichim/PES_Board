@@ -21,13 +21,11 @@
 
 class SerialStream {
 public:
-    explicit SerialStream(uint8_t num_of_floats,
-                          PinName tx,
+    explicit SerialStream(PinName tx,
                           PinName rx,
+                          uint8_t num_of_floats = S_STREAM_NUM_OF_FLOATS_MAX,
                           int baudrate = 2000000);
     virtual ~SerialStream() = default;
-
-    static constexpr uint8_t NUM_OF_FLOATS_MAX = S_STREAM_NUM_OF_FLOATS_MAX;
 
     void write(const float val);
     void send();
