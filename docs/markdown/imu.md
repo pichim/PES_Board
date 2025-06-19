@@ -217,7 +217,7 @@ In order to demonstrate how the IMU can be used, a 2D gimbal has been prepared r
     <i>2-Axis Gimbal</i>
 </p>
 
-Prepared parts in `.stl` format for printing can be found in the folder (docs/cad/gimbal); additionally, step files are also placed there in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
+Prepared parts in `.stl` format for printing can be found [here](../cad/gimbal); additionally, step files are also placed there in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
 
 **NOTE:**
 - Remember to calibrate the servos before using them for proper operation of the gimbal.
@@ -340,4 +340,4 @@ For debugging purposes, it is useful to print the normalized angles to the seria
 printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
 ```
 
-The full working solution can be found in [Gimbal](../solutions/main_gimbal.cpp)
+The full working solution can be found in [Gimbal](../solutions/main_gimbal.cpp).

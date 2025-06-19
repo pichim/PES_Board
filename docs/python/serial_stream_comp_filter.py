@@ -86,10 +86,10 @@ Blp = np.squeeze(Glp.num[0][0])
 Alp = np.squeeze(Glp.den[0][0])
 
 # Complementary Filter
-roll = T * sp.signal.lfilter(Blp, Alp, data["values"][:, ind["gyro"]]) + sp.signal.lfilter(Blp, Alp, roll_acc)
+roll_comp_filter = T * sp.signal.lfilter(Blp, Alp, data["values"][:, ind["gyro"]]) + sp.signal.lfilter(Blp, Alp, roll_acc)
 
 plt.figure(3)
-plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll]) * 180 / np.pi)
+plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll_comp_filter]) * 180 / np.pi)
 plt.grid(True)
 plt.xlabel("Time (sec)")
 plt.ylabel("Roll (deg)")

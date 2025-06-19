@@ -26,6 +26,8 @@ We will discuss different control strategies for motor control, e.g. speed contr
 
 ### Assignment
 
+- You have successfully completed the previous workshops.
+
 ## Part 1
 
 In the first task, we will focus just on understanding the motor functionality and control mechanisms. To achieve this, we rely on the information provided in the hardware tutorial: [DC Motor Tutorial](../markdown/dc_motor.md)
