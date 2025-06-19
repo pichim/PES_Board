@@ -11,7 +11,7 @@ The `SerialStream` system consists of three components:
 ### Microcontroller Side (`SerialStream` C++ class):
 - Simple buffer for floating-point data (up to 30 float values)
 - Transmits data packets via UART at 2 Mbaud baud rate
-- Implements start-byte synchronization protocol (byte value 255)
+- Implements optional start-byte synchronization protocol
 - Automatically sends number of floats once when streaming starts
 - Non-buffering, immediate transmission when `send()` is called
 
@@ -43,10 +43,8 @@ To use the `SerialStream` class, you need an additional Serial to USB cable:
 `SerialStream` implements a simple protocol:
 1. Host sends start byte (255) to trigger data transmission
 2. Microcontroller responds by sending number of floats (once)
-3. Microcontroller continuously sends float data when `send()` is called
+3. Microcontroller sends float data when `send()` is called
 4. Host collects and processes the received data
-
-**Note: The start byte functionality is optional. On the microcontroller side, you can decide whether to use it or not. Its purpose is to trigger the data stream on the microcontroller from the host computer.**
 
 ## Example Usage
 
@@ -90,6 +88,8 @@ if (serialStream.startByteReceived()) {
 }
 ```
 
+**Note: The start byte functionality is optional. On the microcontroller side, you can decide whether to use it or not. Its purpose is to trigger the data stream on the microcontroller from the host computer.**
+
 Maximum used throughput in a real application was sending 30 float values at 1 kHz.
 
 **Important Note: Serial Stream relies on you sending delta time values in microseconds as the first signal. This is crucial for the correct functioning of the Serial Stream implementation on the host computer.**
@@ -102,14 +102,6 @@ void send();                 // send the buffered data to the host
 bool startByteReceived();    // check if the host computer has sent the start byte
 void reset();                // reset the SerialStream state and clear buffer
 ```
-
-### How SerialStream Works
-
-The SerialStream class maintains a simple internal buffer:
-- `write()` adds float values to the buffer sequentially
-- `send()` transmits all buffered data via UART
-- Maximum buffer size is 30 float values (120 bytes)
-- If the buffer is full after `write()`, `send()` is called automatically
 
 ### Examples 
 
