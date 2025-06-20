@@ -123,7 +123,7 @@ to true in ``IMU.h`` file:
 The IMU is mounted on the PES board as shown in the following image. However, there are different versions of the PES board, so the alignment of the IMU may vary. Therefore, it is important to check the alignment of the IMU based on measurements. The simplest way to do this is to print the acceleration measurements to the console.
 
 <p align="center">
-    <img src="../images/imu_axis_pes.PNG" alt="IMU coordinate system" width="650"/> </br>
+    <img src="../images/imu_axis_pes.png" alt="IMU coordinate system" width="650"/> </br>
     <i>IMU coordinate system</i>
 </p>
 
