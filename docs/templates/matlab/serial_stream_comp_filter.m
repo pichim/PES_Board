@@ -28,11 +28,11 @@ catch exception
 end
 
 % Save the data
-filename = 'data_comp_filter_00.mat';
-save(filename, 'data');
+file_name = 'data_comp_filter_00.mat';
+save(file_name, 'data');
 
 % Load the data
-load(filename)
+load(file_name)
 
 
 %% Evaluate time

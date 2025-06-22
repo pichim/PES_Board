@@ -1,5 +1,6 @@
 # conda create --name pes-env python=3.11.4 numpy scipy matplotlib pyserial control ipykernel
 
+import os
 import time
 import numpy as np
 import matplotlib.pyplot as plt
@@ -31,11 +32,11 @@ except Exception as e:
     exit()
 
 # Save the data
-filename = "docs/python/data_00.npz"
-np.savez(filename, **data)
+file_name = os.path.join("docs", "solutions" ,"python", "data_00.npz")
+np.savez(file_name, **data)
 
 # Load the data
-loaded = np.load(filename)
+loaded = np.load(file_name)
 data = {"time": loaded["time"], "values": loaded["values"]}
 
 # Evaluate time

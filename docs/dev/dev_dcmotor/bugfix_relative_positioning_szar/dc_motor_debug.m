@@ -1,10 +1,10 @@
 clc, clear variables
 %%
 
-filename = 'putty_version_pmich.log';
-filename1 = 'putty_version_szar.log';
-logTable = readtable(filename);
-logTable1 = readtable(filename1);
+file_name = 'putty_version_pmich.log';
+file_name1 = 'putty_version_szar.log';
+logTable = readtable(file_name);
+logTable1 = readtable(file_name1);
 
 
 logArray = table2array(logTable);

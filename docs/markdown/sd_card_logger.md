@@ -84,11 +84,11 @@ sd_logger.send();
 Log an incrementing counter
 
 - [Example 1 SD-Card](../solutions/main_sd_card_logger.cpp)
-- [MATLAB Evaluation of Example 1 SD-Card Data](../matlab/sd_card_eval.m)
-- [Python Evaluation of Example 1 SD-Card Data](../python/sd_card_eval.py)
+- [MATLAB Evaluation of Example 1 SD-Card Data](../solutions/matlab/sd_card_eval.m)
+- [Python Evaluation of Example 1 SD-Card Data](../solutions/python/sd_card_eval.py)
 
 Log Time and Data from an IR Distance Sensor
 
 - [Example 2 SD-Card](../solutions/main_sd_card_logger_with_time.cpp)
-- [MATLAB Evaluation of Example 2 SD-Card Data](../matlab/sd_card_with_time_eval.m)
-- [Python Evaluation of Example 2 SD-Card Data](../python/sd_card_with_time_eval.py)
+- [MATLAB Evaluation of Example 2 SD-Card Data](../solutions/matlab/sd_card_with_time_eval.m)
+- [Python Evaluation of Example 2 SD-Card Data](../solutions/python/sd_card_with_time_eval.py)

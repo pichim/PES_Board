@@ -122,8 +122,8 @@ The first step of the procedure is the simultaneous measurement of the actual di
 > - Length measure tape
 >
 > Software:
-> - MATLAB file: [IR sensor evaluation](../matlab/ir_sensor_eval.m)
-> - Python file: [IR sensor evaluation](../python/ir_sensor_eval.py)
+> - [Template MATLAB Evaluation of IR sensor Data](../templates/matlab/ir_sensor_eval.m)
+> - [Template Python Evaluation of IR sensor Data](../templates/python/ir_sensor_eval.py)
 
 #### Procedure
 
@@ -161,7 +161,7 @@ ir_distance_mV = 0.0f;
 
 - Once the above commands are implemented, the next step is to compile and run the application.
 - During the calibration process, position the sensor's edge at the marked points on the tape. The sensor should face the wall to measure the distance from. It's important to align the sensor beam parallel to the ground. Simultaneously, note the distance and the corresponding readout values displayed on the serial monitor after applying it to each designated point.
-- After collecting the data points, input them into tha MATLAB file [IR sensor evaluation](../matlab/ir_sensor_eval.m) under the respective variables dist_cm and dist_mV. This file aids in determining the coefficients for the optimal-fit curve. <b>To achieve accurate results, it's crucial to define a suitable range of values for the curve fitting. Check the name of the sensor and look for its range, only within this range the fitting will be accurate</b>. There is also a corresonding Python evaluation file under [IR sensor evaluation](../python/ir_sensor_eval.py).
+- After collecting the data points, input them into tha MATLAB file [Template MATLAB Evaluation of IR sensor Data](../templates/matlab/ir_sensor_eval.m) under the respective variables dist_cm and dist_mV. This file aids in determining the coefficients for the optimal-fit curve. <b>To achieve accurate results, it's crucial to define a suitable range of values for the curve fitting. Check the name of the sensor and look for its range, only within this range the fitting will be accurate</b>. There is also a corresonding Python evaluation file under [Template Python Evaluation of IR sensor Data](../templates/python/ir_sensor_eval.py).
 - Following this, proceed to create a function that converts the sensor readings into a physical length [cm]. While the function definition can be positioned at the end of the ***main.cpp*** file, it must be declared before the ``main()`` function to ensure successful compilation.
 
 Function definition (at the end of the ***main.cpp*** file)

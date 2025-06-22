@@ -45,7 +45,7 @@ This is already set up to send all the necessary data to the host computer.
 Templates to evaluate the data for either MATLAB or Python can be found here:
 
 - [Template MATLAB Evaluation of IMU Data](../templates/matlab/serial_stream_comp_filter.m)
-- [Template Python Evaluation of IMU Data (*.py)](../templates/python/serial_stream_comp_filter.py)
+- [Template Python Evaluation of IMU Data](../templates/python/serial_stream_comp_filter.py)
 - [Template Interactive Python Evaluation of IMU Data](../templates/python/serial_stream_comp_filter.ipynb)
 
 ## Summary
@@ -56,5 +56,5 @@ In this workshop, we explored the IMU (Inertial Measurement Unit) and its applic
 
 - [Gimbal](../solutions/main_gimbal.cpp)
 - [MATLAB Evaluation of IMU Data](../matlab/serial_stream_comp_filter.m)
-- [Python Evaluation of IMU Data (*.py)](../python/serial_stream_comp_filter.py)
+- [Python Evaluation of IMU Data](../python/serial_stream_comp_filter.py)
 - [Interactive Python Evaluation of IMU Data](../python/serial_stream_comp_filter.ipynb)

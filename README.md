@@ -30,12 +30,18 @@
     TODO:
 
     Before Ghana 25
-    - Create Workshop 4 with line follower
-    - Create Workshop 5 with imu and comp filter -> done
-      - Part 1: Reading IMU and 2 axis gimbal
-      - Part 2: Serial Stream hardware tutorial and complementary filter
-    - Create Workshop 6 with my dc motor
-    - test main_pes_monster.cpp with the latest updates
+
+    - Week 1:
+      - 
+
+    - Week 2:
+      - Create Workshop 4 with line follower
+      - Create Workshop 5 with imu and comp filter -> done
+        - Part 1: Reading IMU and 2 axis gimbal
+        - Part 2: Serial Stream hardware tutorial and complementary filter
+      - Create Workshop 6 with my dc motor
+      - test main_pes_monster.cpp with the latest updates
+      - Add the actual md files to the README.md file
 
     General:
     - adjust line follwer example according to the new line follower hardware (grey robots)
@@ -137,7 +143,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Workshop 1](docs/markdown/ws1.md)
     * [Workshop 2](docs/markdown/ws2.md)
     * [Workshop 3](docs/markdown/ws3.md)
-    * [Workshop 5](docs/markdown/ws5.md)
+    <!-- * [Workshop 5](docs/markdown/ws5.md) -->
 5. [Build Mbed OS projects with VScode](#build-mbed-os-projects-with-vscode)
     * [Build Mbed on Windows with VScode](docs/markdown/build_mbed_windows.md)
     * [Build Mbed on Linux/WSL with VScode](docs/markdown/build_mbed_linux.md)
@@ -278,7 +284,7 @@ The following links contain the workshops instructions:
 - [Workshop 1](docs/markdown/ws1.md)
 - [Workshop 2](docs/markdown/ws2.md)
 - [Workshop 3](docs/markdown/ws3.md)
-- [Workshop 5](docs/markdown/ws5.md)
+<!-- - [Workshop 5](docs/markdown/ws5.md) -->
 
 And below you find all the solutions, as well as some additional examples:
 - [Solution Workshop 1](docs/solutions/main_ws1.cpp)

@@ -28,11 +28,11 @@ catch exception
 end
 
 % Save the data
-filename = 'data_my_dc_motor_00.mat';
-save(filename, 'data');
+file_name = 'data_comp_filter_00.mat';
+save(file_name, 'data');
 
 % Load the data
-load(filename)
+load(file_name)
 
 
 %% Evaluate time
@@ -55,40 +55,48 @@ ylim([0 1.2*max(diff(data.time * 1e6))])
 %% Evaluate the data
 
 % Defining the indices for the data columns
-ind.counts    = 1;
-ind.velocity  = 2;
-ind.rotations = 3;
-ind.voltage   = 4;
-ind.velocity_setpoint = 5;
-ind.velocity_target   = 6;
-
-% Calculate smoothed acceleration
-acceleration = [0; diff(data.values(:, ind.velocity))/Ts]; % prepend zero to match length
-acceleration_smoothed = conv(acceleration, ones(1, 20)/20, 'same');
+ind.gyro = 1;
+ind.acc  = 2:3;
+ind.roll = 4;
 
 figure(2)
 subplot(211)
-plot(data.time, data.values(:, ind.voltage)), grid on
-ylabel('Voltage (V)')
+plot(data.time, data.values(:, ind.gyro)), grid on
+ylabel('Gyro (rad/sec)')
+xlim([0 data.time(end)])
 subplot(212)
-plot(data.time, acceleration_smoothed), grid on
-ylabel('Acceleration (RPS/sec)')
+plot(data.time, data.values(:, ind.acc)), grid on
 xlabel('Time (sec)')
+ylabel('Acc (m²/sec)')
+xlim([0 data.time(end)])
+
+% Roll estimates based on individual measurements
+roll_gyro = cumtrapz(data.values(:, ind.gyro)) * Ts;
+roll_acc = atan2(data.values(:, ind.acc(1)), ...
+    data.values(:, ind.acc(2)));
+
+% Creating Low-Pass Filter
+s = tf('s');
+T = 0.2;
+Glp_c = 1 / (T*s + 1);
+Glp = c2d(Glp_c, Ts, 'tustin');
+Blp = Glp.num{1};
+Alp = Glp.den{1};
+
+% Complementary Filter
+roll_comp_filter = T * filter(Blp, Alp, data.values(:, ind.gyro)) + ...
+    filter(Blp, Alp, atan2(data.values(:, ind.acc(1)), data.values(:, ind.acc(2))));
 
 figure(3)
-subplot(311)
-plot(data.time, data.values(:, ind.counts)), grid on
-ylabel('Counts')
-subplot(312)
-plot(data.time, [data.values(:, ind.velocity_setpoint), ...
-    data.values(:, ind.velocity_target), ...
-    data.values(:, ind.velocity)]), grid on
-legend('Setpoint', ...
-    'Target', ...
-    'Actual', ...
-    'Location', 'best')
-ylabel('Velocity (RPS)')
-subplot(313)
-plot(data.time, data.values(:, ind.rotations)), grid on
-ylabel('Rotations')
+plot(data.time, [data.values(:, ind.roll), ...
+    roll_gyro, ...
+    roll_acc, ...
+    roll_comp_filter] * 180/pi), grid on
 xlabel('Time (sec)')
+ylabel('Roll (deg)')
+legend('Mahony', ...
+    'Int. Gyro', ...
+    'Acc', ...
+    'Comp. Filter', ...
+    'Location', 'Best')
+xlim([0 data.time(end)])
