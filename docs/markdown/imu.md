@@ -41,7 +41,7 @@ An IMU with 9 degrees of freedom is a device that measures and provides informat
 
 ### Sensor Fusion
 
-To achieve sufficient data accuracy, sensor fusion uses specialized algorithms to integrate measurements from multiple sensors of varying types. By combining the strengths of different sensors, this process capitalizes on their respective favorable characteristics, culminating in the achievement of the most precise measurements possible.
+To achieve sufficient data accuracy, sensor fusion uses specialized algorithms to integrate measurements from multiple sensors of varying types. By combining the strengths of different sensors, this process capitalizes on their respective favorable characteristics, culminating in achieving the most precise measurements possible.
 
 A good example to understand the idea of sensor fusion is the estimation of the roll angle using an accelerometer and a gyroscope.
 
@@ -53,7 +53,7 @@ $$
 y_{gyro}(t) = \omega(t) + b_{gyro}
 $$
 
-Clearly we cannot just integrate the gyroscope signal to get the angle; the bias will accumulate over time and lead to drift in the angle estimation.
+Clearly, we cannot just integrate the gyroscope signal to get the angle; the bias will accumulate over time and lead to drift in the angle estimation.
 
 The accelerometer, on the other hand, has no bias (if calibrated properly) but significant noise. The accelerometer measurements are proportional to the angle relative to gravity. For simplicity we just write.
 
@@ -61,7 +61,7 @@ $$
 y_{acc}(t) = \phi(t) + \eta_{acc}(t)
 $$
 
-These two signals can be fused, so that we combine the precise operation of the gyroscope in the short term and use the accelerometer for long-term correction. This fusion can be done with different techniques, with the simplest form being a complementary filter. This approach uses a low-pass filter for measurements from the accelerometer and a high-pass filter for the integral of measurements from the gyroscope.
+These two signals can be fused so that we combine the precise operation of the gyroscope in the short term and use the accelerometer for long-term correction. This fusion can be done with different techniques, with the simplest form being a complementary filter. This approach uses a low-pass filter for measurements from the accelerometer and a high-pass filter for the integral of measurements from the gyroscope.
 
 $$
 G_{lp}(s) = \frac{1}{T s + 1}
@@ -77,7 +77,7 @@ $$
 \hat{\phi} = G_{lp}(s) \ y_{acc} + G_{hp}(s) \ \frac{1}{s} \ y_{gyro}
 $$
 
-after simplifications we end up with the complementary filter
+after simplifications, we end up with the complementary filter
 
 $$
 \hat{\phi} = \frac{1}{T s + 1} \ y_{acc} + \frac{T}{T s + 1} \ y_{gyro}
@@ -100,7 +100,7 @@ The ``IMU`` class uses a Mahony filter which is used to estimate the orientation
 
 ### Magnetometer
 
-In order to be able to estimate the heading a magnetometer is needed. This sensor measures the strength and direction of Earth's magnetic field with respect to the IMU body frame.
+In order to be able to estimate the heading, a magnetometer is needed. This sensor measures the strength and direction of Earth's magnetic field with respect to the IMU body frame.
 
 However, integrating magnetometer data into sensor fusion algorithms presents challenges, primarily stemming from the need for accurate calibration. Magnetometers are highly sensitive instruments that can be influenced by various sources of magnetic interference, including nearby metallic objects and electrical equipment like motors. These external factors can distort the measured magnetic field, leading to inaccuracies in orientation estimation. In general, magnetometers are not useful in indoor environments.
 
@@ -114,7 +114,7 @@ By default, the IMU is not using the magnetometer. To enable it, it is necessary
 #define IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE true
 ```
 
-to true in ``IMU.h`` file:
+to true in the ``IMU.h`` file:
 
 - A MATLAB file used for magnetometer calibration can be found [here](../dev/dev_imu/99_fcn_bib/MgnCalibration.m).
 
@@ -221,14 +221,14 @@ Prepared parts in `.stl` format for printing can be found [here](../cad/gimbal);
 
 **NOTE:**
 - Remember to calibrate the servos before using them for proper operation of the gimbal.
-- The servo for the roll movement `PB_D0` is attached to the first joint (grey)
-- The servo for the pitch movement `PB_D1` is attached to the second joint (red)
+- The servo for the roll movement ``PB_D0`` is attached to the first joint (grey)
+- The servo for the pitch movement ``PB_D1`` is attached to the second joint (red)
 
 The gimbal allows stabilization in two axes. Assuming that the horizontal flat surface is defined by the X and Y axes, in the event of a deflection of the PES board in both of these axes, the servos will compensate for these deflections and cause the mount to be in a perpendicular orientation with respect to the plane.
 
 ### Software
 
-The ***main.cpp*** file has the standard form known from the base file. Add the IMU ``IMU.h`` and  servo ``Servo.h`` driver to the top of the ***main.cpp*** file:
+The ***main.cpp*** file has the standard form known from the base file. Add the IMU ``IMU.h`` and servo ``Servo.h`` driver to the top of the ***main.cpp*** file:
 
 ```cpp
 #include "IMU.h"

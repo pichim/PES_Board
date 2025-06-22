@@ -52,37 +52,43 @@
     - in DCMotor.cpp PERFORM_GPA_MEAS and PERFORM_CHIRP_MEAS should be tested with the latest updates, here features like serial_pipe and serialStream could be introduced
       -> only tested if PERFORM_GPA_MEAS is still working via the terminal
 
-    Files checked before FS25:
+    Files checked before Ghana 25:
 
         Markdown files read and checked:
         - README.md                     (ok & spell checked)   ->   ws1-3, 1
         - build_mbed_linux.md           (ok & spell checked)
         - build_mbed_windows.md         (ok & spell checked)
-        - stepper_motor.md              (ok)
+        - stepper_motor.md              (ok & spell checked)
         - course_setup.md               (ok & spell checked)   ->   ws1, 2
         - dc_motor.md                   (ok & spell checked)   ->   ws3, 3
-        - imu.md                        (ok)
+        - imu.md                        (ok & spell checked)
         - ir_sensor.md                  (ok & spell checked)   ->   ws1, 6
-        - kinematics.md                 (ok)
-        - line_follower.md              (ok)
+        - kinematics.md                 (ok & spell checked)
+        - line_follower.md              (ok & spell checked)
         - main_description.md           (ok & spell checked)   ->   ws1, 5
+        - my_dc_motor.md
         - sd_card_logger.md             (ok)
+        - serial_stream.md
         - servo.md                      (ok & spell checked)   ->   ws2, 3
         - tips.md                       (ok & spell checked)   ->   ws1, 3
         - ultrasonic_sensor.md          (ok & spell checked)   ->   ws2, 4
         - ws1.md                        (ok & spell checked)   ->   ws1, 4
         - ws2.md                        (ok & spell checked)   ->   ws2, 2
         - ws3.md                        (ok & spell checked)   ->   ws3, 2
+        - ws5.md
 
         Solutions:
         - main_base.cpp                       (ok)
         - main_calib_kinematic_ss24.cpp       (ok)
+        - main_comp_filter.cpp
         - main_gimbal.cpp                     (ok)
+        - main_my_dc_motor.cpp
         - main_line_follower.cpp              (ok)
         - main_line_follower_base_ss24.cpp    (ok)
         - main_pes_monster.cpp                (ok)
-        - main_sd_card_logger_e1.cpp          (ok)
-        - main_sd_card_logger_e2.cpp          (ok)
+        - main_sd_card_logger.cpp             (ok)
+        - main_sd_card_logger_with_time.cpp   (ok)
+        - main_serial_stream.cpp
         - main_stepper_motor.cpp              (ok)
         - main_ws1.cpp                        (ok)
         - main_ws1_ir_sensor_class.cpp        (ok)

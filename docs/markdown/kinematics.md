@@ -1,5 +1,5 @@
 <!-- link list, last updated 16.02.2024 -->
-[0]: https://en.wikipedia.org/wiki/Differentiab_wheeled_robot
+[0]: https://en.wikipedia.org/wiki/Differential_wheeled_robot
 
 # Differential Robot Kinematics
 
@@ -9,7 +9,7 @@ The kinematics of a differential drive robot describe the relationship between t
 
 [Wikipedia: Differential Wheeled Robot][0]
 
-## Problem overiew
+## Problem Overview
 
 **Model parameters:**
 - Wheel radius $r$
@@ -24,7 +24,7 @@ The kinematics of a differential drive robot describe the relationship between t
 - Left wheel velocity $\omega_2$ 
 
 **NOTE:** 
-- For the implementation in C++, we use Eigen. Eigen is a powerfull C++ library for linear algebra.
+- For the implementation in C++, we use Eigen. Eigen is a powerful C++ library for linear algebra.
 
 ## Deriving the Kinematic Model
 
@@ -36,7 +36,7 @@ The computational process should start by defining geometric relationships and b
 
 ### Linear velocity
 
-The linear speed of the robot can be calculated as the average value of the speed of the right and the left wheel
+The linear speed of the robot can be calculated as the average value of the speed of the right and left wheels
 
 $$
 v = \frac{v_1 + v_2}{2}
@@ -77,12 +77,12 @@ $$
 and split this into the form
 
 $$
-v = \frac{r}{b} \cdot \omega_1 - \frac{r}{b} \cdot \omega_2
+\omega = \frac{r}{b} \cdot \omega_1 - \frac{r}{b} \cdot \omega_2
 $$
 
 ### Transformation matrix
 
-From the above equations, the transformation matrix can directly be determined. The matrix maps the vector of the wheel speeds to translational and rotational velocity of the robot.
+From the above equations, the transformation matrix can be directly determined. The matrix maps the vector of the wheel speeds to translational and rotational velocity of the robot.
 
 $$
 \begin{bmatrix}
@@ -96,7 +96,7 @@ v \\\
 \cdot
 \begin{bmatrix}
 \omega_1 \\\
-\omega_1
+\omega_2
 \end{bmatrix}
 $$
 
@@ -113,7 +113,7 @@ However, our goal is the inverse transformation, that is, from linear and rotati
 $$
 \begin{bmatrix}
 \omega_1 \\\
-\omega_1
+\omega_2
 \end{bmatrix} = 
 \begin{bmatrix}
 \frac{1}{r} & \frac{b}{2\cdot r} \\\
@@ -136,7 +136,7 @@ $$
 
 ## Example Code
 
-As mentioned previously when writing code with the above transformations, the eigen library is used to define vectors and matrices and perform linear algebra. First, define the geometric values of the vehicle, such as wheel radius and wheelbase. In addition, you can write the corresponding matrix and define vectors that will contain the wheel speeds and robot's velocities.
+As mentioned previously, when writing code with the above transformations, the eigen library is used to define vectors and matrices and perform linear algebra. First, define the geometric values of the vehicle, such as wheel radius and wheelbase. In addition, you can write the corresponding matrix and define vectors that will contain the wheel speeds and robot's velocities.
 
 ```cpp
 #include <Eigen/Dense>
@@ -155,7 +155,7 @@ Eigen::Vector2f robot_coord = {0.0f, 0.0f};  // contains v and w (robot translat
 Eigen::Vector2f wheel_speed = {0.0f, 0.0f};  // w1 w2 (wheel speed)
 ```
 
-To calculate the rotational speeds of the wheels, you must first define the desired values of the linear and rotational speed of the robot, e.g.
+To calculate the rotational speeds of the wheels, you must first define the desired values of the linear and rotational speed of the robot, e.g.,
 
 ```cpp
 robot_coord(0) = 1.0f;
@@ -163,7 +163,7 @@ robot_coord(1) = 0.5f;
 ```
 
 **NOTE:** 
-- To assign appropriate values to individual elements of the vector we use the convention (0), (1).
+- To assign appropriate values to individual elements of the vector, we use the convention (0), (1).
 
 Then apply the calculation with the following command:
 
@@ -171,7 +171,7 @@ Then apply the calculation with the following command:
 wheel_speed = Cwheel2robot.inverse() * robot_coord;
 ```
 
-To access the velocity of the wheels just use the appropriate index:
+To access the velocity of the wheels, just use the appropriate index:
 
 ```cpp
 // set velocity setpoints in rps
