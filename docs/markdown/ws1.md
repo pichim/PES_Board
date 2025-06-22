@@ -3,7 +3,7 @@
 
 # Workshop 1
 
-The first workshop aims to introduce the Nucleo-F446RE microcontroller. We will familiarize ourselfs with Mbed Studio, an integrated development environment (IDE) for coding and software/firmware development. The workshop will start by analysing a given ***main.cpp*** file, it's structure, and the implementation of basic commands.
+The first workshop aims to introduce the Nucleo-F446RE microcontroller. We will familiarize ourselves with Mbed Studio, an integrated development environment (IDE) for coding and software/firmware development. The workshop will start by analyzing a given ***main.cpp*** file, its structure, and the implementation of basic commands.
 
 Participants will explore hardware utilization, specifically the IR Sensor and a calibration process. To optimize the calibration parameters we will use either MATLAB or Python.
 
@@ -35,13 +35,13 @@ The first task will be to run a test program using an additional LED.
 
 1. Connect the LED to the pin **PB_9** and ground to the corresponding pin, see [Nucleo Board Pinmap][0]
 2. After connecting the additional LED, connect the board to the computer or laptop using the mini USB cable. Immediately after connecting, a console window should appear in Mbed Studio.
-3. Make sure you see the active program and the connection to the board in the upper left corner of the screen. If so, you can flash the compiled programm to the microcontroller using the **Play** button.
+3. Make sure you see the active program and the connection to the board in the upper left corner of the screen. If so, you can flash the compiled program to the microcontroller using the **Play** button.
 4. Monitor the progress in the bottom left corner of the screen, where the OS will display information about the uploading process. The big LED on the Nucleo board will blink with green and red during the flashing process and stay continuously lit once the process is complete.
 5. The small LED should be blinking fast now, indicating how many times the program runs per second.
 6. Now click the blue **USER** button on the Nucleo board while watching the additional LED.
-7. Now click the blue **USER** button on the Nucleo board once again. What happends with the additional LED diode?
+7. Now click the blue **USER** button on the Nucleo board once again. What happens with the additional LED diode?
 
-After finishing the task read through the code, read the comments and try to understand it. Discuss the basic program in the group. 
+After finishing the task, read through the code, read the comments and try to understand it. Discuss the basic program in the group. 
 
 **If you have any questions, just ask them : - ), always!**
 
@@ -55,7 +55,7 @@ The second task will be carried out using an IR distance sensor. This task will 
 
 ## Summary
 
-In this workshop, participants were introduced to the Nucleo-F446RE board, acquiring familiarity with the Mbed Studio IDE and basic usage of objects in C++. The workshop included understanding of the ***main.cpp*** file, comprehension of its structure, defining and working with objects and the implementation of essential commands. Additionally, exploration of hardware utilization, particularly an IR sensor, and the corresponding calibration using MATLAB were conducted. This first workshop aimed to put basic steps in using the system, laying the groundwork for further exploration for the development of robotics- and mechatronics-systems.
+In this workshop, participants were introduced to the Nucleo-F446RE board, acquiring familiarity with the Mbed Studio IDE and basic usage of objects in C++. The workshop included understanding of the ***main.cpp*** file, comprehension of its structure, defining and working with objects and the implementation of essential commands. Additionally, exploration of hardware utilization, particularly an IR sensor, and the corresponding calibration using MATLAB were conducted. This first workshop aimed to establish basic steps in using the system, laying the groundwork for further exploration for the development of robotics and mechatronics systems.
 
 ## Solution
 

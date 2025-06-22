@@ -1,9 +1,9 @@
 <!--
     Styling Rules:
-    - When ever possible *.md [Links] should be used, and not just bold text
+    - Whenever possible *.md [Links] should be used, and not just bold text
     - In a *.md [Link] all words start with a capital letter, e.g.: [Course setup]
-    - A button or a pin or something similar is highlited bold: **USER BUTTON**, **PB_9**
-    - Source code files are highlited bold and cursive: ***main.cpp***
+    - A button or a pin or something similar is highlighted bold: **USER BUTTON**, **PB_9**
+    - Source code files are highlighted bold and italic: ***main.cpp***
     - Functions, objects and variables when not in a code snippet are formatted like this:
       - ``main()`` function
       - ``servo.enable()`` function
@@ -55,22 +55,22 @@
     Files checked before FS25:
 
         Markdown files read and checked:
-        - README.md                     (ok)   ->   ws1-3, 1
-        - build_mbed_linux.md           (ok)
-        - build_mbed_windows.md         (ok)
+        - README.md                     (ok & spell checked)   ->   ws1-3, 1
+        - build_mbed_linux.md           (ok & spell checked)
+        - build_mbed_windows.md         (ok & spell checked)
         - stepper_motor.md              (ok)
-        - course_setup.md               (ok)   ->   ws1, 2
+        - course_setup.md               (ok & spell checked)   ->   ws1, 2
         - dc_motor.md                   (ok)   ->   ws3, 3
         - imu.md                        (ok)
-        - ir_sensor.md                  (ok)   ->   ws1, 6
+        - ir_sensor.md                  (ok & spell checked)   ->   ws1, 6
         - kinematics.md                 (ok)
         - line_follower.md              (ok)
-        - main_description.md           (ok)   ->   ws1, 5
+        - main_description.md           (ok & spell checked)   ->   ws1, 5
         - sd_card_logger.md             (ok)
         - servo.md                      (ok)   ->   ws2, 3
-        - tips.md                       (ok)   ->   ws1, 3
+        - tips.md                       (ok & spell checked)   ->   ws1, 3
         - ultrasonic_sensor.md          (ok)   ->   ws2, 4
-        - ws1.md                        (ok)   ->   ws1, 4
+        - ws1.md                        (ok & spell checked)   ->   ws1, 4
         - ws2.md                        (ok)   ->   ws2, 2
         - ws3.md                        (ok)   ->   ws3, 2
 
@@ -122,7 +122,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Nucleo F446RE](#nucleo-f446re)
         * [Nucleo Pinmap][0]
     * [PES Board](#pes-board)
-        * [Pheripherals](#pheripherals)
+        * [Peripherals](#peripherals)
         * [Pin-Mapping](#pin-mapping)
     * [Hardware Tutorials](#hardware-tutorials)
         * [IR Sensor](docs/markdown/ir_sensor.md)
@@ -139,14 +139,14 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Programming](docs/markdown/tips.md#programming)
         * [Main file description](docs/markdown/main_description.md)
     * [Structuring a Robot Task](docs/markdown/tips.md#structuring-a-robot-task)
-4. [Workshops, Solutions and Examples](#workshops)
+4. [Workshops, Solutions and Examples](#workshops-solutions-and-examples)
     * [Workshop 1](docs/markdown/ws1.md)
     * [Workshop 2](docs/markdown/ws2.md)
     * [Workshop 3](docs/markdown/ws3.md)
     <!-- * [Workshop 5](docs/markdown/ws5.md) -->
-5. [Build Mbed OS projects with VScode](#build-mbed-os-projects-with-vscode)
-    * [Build Mbed on Windows with VScode](docs/markdown/build_mbed_windows.md)
-    * [Build Mbed on Linux/WSL with VScode](docs/markdown/build_mbed_linux.md)
+5. [Build Mbed OS projects with VS Code](#build-mbed-os-projects-with-vs-code)
+    * [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
+    * [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
 6. [Weblinks](#weblinks)
 
 ## Course Setup
@@ -166,11 +166,11 @@ During the course, we will use the Nucleo-F446RE board from ST Microelectronics 
 
 >**IMPORTANT NOTE:**
 >
->- <b>When working with hardware (connecting, reconnecting etc.), it is recommended that all power sources are disconnected. This is a general safety measurement! So for us, the Nucleo is disconnected and the PES board **Power Switch** is **OFF** when ever we change someting at the hardware setup.</b>
+>- <b>When working with hardware (connecting, reconnecting etc.), it is recommended that all power sources are disconnected. This is a general safety measure! So for us, the Nucleo is disconnected and the PES board **Power Switch** is **OFF** whenever we change something at the hardware setup.</b>
 >- <b>The USB cable should only be connected to the computer after the power switch has been switched on.</b>
 >- <b>Do not connect the charger when the battery packs are not connected, otherwise the PES board will be damaged.</b>
->- <b>Using the PES board with power ON and hardware running while connected to your computer/laptop happens at your own risk. There was a case where the students laptop was damaged in the past.</b>
->- <b>Various Nucleo boards, PES Boards and even laptops have been damaged in the past, so make sure to stick to the rules above.</b>
+>- <b>Using the PES board with power ON and hardware running while connected to your computer/laptop happens at your own risk. There was a case where a student's laptop was damaged in the past.</b>
+>- <b>Various Nucleo boards, PES boards and even laptops have been damaged in the past, so make sure to stick to the rules above.</b>
 
 ### Nucleo F446RE
 
@@ -185,7 +185,7 @@ The Nucleo-F446RE is a microcontroller development board featuring the STM32F446
 
 Arm Mbed provides a dedicated platform with essential information about the development board. Here you can find technical specifications and the pinmap.
 
-- [Mbed ST-Nucleo-F446RE</font>][0]
+- [Mbed ST-Nucleo-F446RE][0]
 
 ### PES Board
 
@@ -203,24 +203,24 @@ The PES board is a hardware board with additional sensors, devices and power ele
 >- <b>The voltage of the DO (servos) is set via the switch behind the charging socket: 3.3V or 5V. Generally this can be set to 5V.</b>
 >- <b>Motor encoder soldering can be wrong. Do not assume that if you plug in one motor and everything works you can then also use the same connections with a different motor. You have to make sure that the physical rotation is according to your needs and that a positive input leads to a positive change of increments.</b>
 >- <b>Depending on the PES board version DCMotor M3 rotation direction might be inverted.</b>
->- <b>Depending on the PES board version the Pin map might differ. Feel free to ask if you are not sure.</b>
+>- <b>Depending on the PES board version, the pin map might differ. Feel free to ask if you are not sure.</b>
 
 #### Batteries
 
-The kit includes two sets of 6V battery packs, which can be connected in series to provide 12 volts. The battery packs need to be connected to the back of the PES Board. The picture below illustrates the proper battery connection required to get a total voltage of 12V.
+The kit includes two sets of 6V battery packs, which can be connected in series to provide 12 volts. The battery packs need to be connected to the back of the PES board. The picture below illustrates the proper battery connection required to get a total voltage of 12V.
 
 <p align="center">
     <img src="docs/images/battery_packs.png" alt="Battery Packs" width="600"/> </br>
     <i>Battery Packs</i>
 </p>
 
-The batteries enables the board itself to be powered independently of the connection to the computer/laptop, eliminating the need for a connection via the Mini USB cable. The board continues to receive a stable 5V supply while offering the option to use up to 12V supply for the power electronics of the motors. To activate the external battery power, switch the slider on the PES board to the ON position.
+The batteries enable the board itself to be powered independently of the connection to the computer/laptop, eliminating the need for a connection via the Mini USB cable. The board continues to receive a stable 5V supply while offering the option to use up to 12V supply for the power electronics of the motors. To activate the external battery power, switch the slider on the PES board to the ON position.
 
-<b>Single battery pack</b> - if you are using a single battery pack, the remaining pins need to be bridged. If only 6 V is used, this must be parameterised accordingly in the firmware when parameterising classes of hardware.
+<b>Single battery pack</b> - if you are using a single battery pack, the remaining pins need to be bridged. If only 6 V is used, this must be parameterized accordingly in the firmware when parameterizing classes of hardware.
 
 #### Charging the Batteries
 
-<b>Using the Charger</b> - if you connect the charger to the PES board, the battery packs must be connected. If the battery packs (2 packs for 12 volts or one pack and a jumper for 6 volts) are not connected when you plug in the charger, the PES board will be destroyed. <b>THE CHARGER IS NOT A POWERSUPPLY</b>
+<b>Using the Charger</b> - if you connect the charger to the PES board, the battery packs must be connected. If the battery packs (2 packs for 12 volts or one pack and a jumper for 6 volts) are not connected when you plug in the charger, the PES board will be destroyed. <b>THE CHARGER IS NOT A POWER SUPPLY</b>
 
 <b>Charging batteries</b> - the battery packs are only charged when the power switch is set to OFF.
 
@@ -230,11 +230,11 @@ The batteries enables the board itself to be powered independently of the connec
 
 All additional technical information such as schematics and pin maps for the PES board can be found [here](/docs/datasheets/pes_board_data). Also included there are CAD files of the combined Nucleo F446RE and PES board in `.3dxml` extensions (for 3Dexperience).
 
-#### Pheripherals
+#### Peripherals
 
 <p align="center">
-    <img src="docs/images/pes_board_peripherals_cropped.png" alt="PES Board Pheripherals" width="950"/> </br>
-    <i>PES Board Pheripherals</i>
+    <img src="docs/images/pes_board_peripherals_cropped.png" alt="PES Board Peripherals" width="950"/> </br>
+    <i>PES Board Peripherals</i>
 </p>
 
 - [pes_board_peripherals.pdf](docs/datasheets/pes_board_peripherals.pdf)
@@ -278,15 +278,15 @@ Tips that you might find useful can be found in the document [Tips](docs/markdow
 - [Programming](docs/markdown/tips.md#programming)
 - [Structuring a Robot Task](docs/markdown/tips.md#structuring-a-robot-task)
 
-## Workshops
+## Workshops, Solutions and Examples
 
-The following links contain the workshops instructions:
+The following links contain the workshop instructions:
 - [Workshop 1](docs/markdown/ws1.md)
 - [Workshop 2](docs/markdown/ws2.md)
 - [Workshop 3](docs/markdown/ws3.md)
 <!-- - [Workshop 5](docs/markdown/ws5.md) -->
 
-And below you find all the solutions, as well as some additional examples:
+And below you will find all the solutions, as well as some additional examples:
 - [Solution Workshop 1](docs/solutions/main_ws1.cpp)
 - [Solution Workshop 2, Part 1](docs/solutions/main_ws2_p1.cpp)
 - [Solution Workshop 2, Part 2](docs/solutions/main_ws2_p2.cpp)
@@ -305,12 +305,12 @@ And below you find all the solutions, as well as some additional examples:
 
 - [Differential Drive Kinematics](docs/markdown/kinematics.md)
 
-## Build Mbed OS projects with VScode
+## Build Mbed OS projects with VS Code
 
-The following describtions explain how to build Mbed OS projects with VScode on different operating systems without using PlatformIO. With PlatformIO the project should work as is.
+The following descriptions explain how to build Mbed OS projects with VS Code on different operating systems without using PlatformIO. With PlatformIO the project should work as is.
 
-- [Build Mbed on Windows with VScode](docs/markdown/build_mbed_windows.md)
-- [Build Mbed on Linux/WSL with VScode](docs/markdown/build_mbed_linux.md)
+- [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
+- [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
 
 ## Weblinks
 

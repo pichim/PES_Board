@@ -10,7 +10,7 @@ Initial steps for your project and the development process.
 
 This stage holds significant importance, particularly in group collaboration, as it encourages the exchange and mutual influence of initial ideas. No specific tools are needed; simply grab a blank sheet or use a whiteboard. Express your ideas visually or verbally in paragraphs. For projects centered on mechatronic systems, consider essential elements like:
 - <b>Think about the main purpose</b> - Define the device's purpose, functionalities, and prioritize factors such as speed or accuracy. These considerations guide the direction for formulating specific solutions in the project.
-- <b>Think about pitfalls</b> - In the early stages, identifying pitfalls might be challenging, but using your imagination allows you to to at least partially eliminate potential paths that may pose challenges or setbacks. Even though pitfalls are inevitable, early identification at least of some of these is crutial.
+- <b>Think about pitfalls</b> - In the early stages, identifying pitfalls might be challenging, but using your imagination allows you to at least partially eliminate potential paths that may pose challenges or setbacks. Even though pitfalls are inevitable, early identification of at least some of these is crucial.
 
 <p align="center">
     <img src="../images/sensors_actuators.png" alt="Sensors and Actuators" width="600"/> </br>
@@ -23,14 +23,14 @@ This stage holds significant importance, particularly in group collaboration, as
 
 ### 2. Flow-Chart
 
-Creating a flowchart at the start of the project offers important benefits. It provides a visual roadmap, helping in understanding the project's structure. The flow-chart serves as an early detection tool for potential bottlenecks or complexities, allowing for strategic problem-solving. Detailed planning during the creation of the flow-chart minimizes oversights and unexpected issues. The flow-chart diagram acts as a reference guide, ensuring on-going alignment with the project objectives. Prior to coding, having a comprehensive flow-chart allows for the existence of the entire logic. The programmer can systematically implement the flow-chart and its underlying logic, breaking down the process into individual steps that can be implemented and tested separately. This approach facilitates the gradual evolution of the software, ensuring a structured and efficient implementation process. More about creating flow-chart diagrams can be found under the section [Flow Chart Diagram](#1-flow-chart-diagram).
+Creating a flowchart at the start of the project offers important benefits. It provides a visual roadmap, helping in understanding the project's structure. The flow-chart serves as an early detection tool for potential bottlenecks or complexities, allowing for strategic problem-solving. Detailed planning during the creation of the flow-chart minimizes oversights and unexpected issues. The flow-chart diagram acts as a reference guide, ensuring ongoing alignment with the project objectives. Prior to coding, having a comprehensive flow-chart allows for the existence of the entire logic. The programmer can systematically implement the flow-chart and its underlying logic, breaking down the process into individual steps that can be implemented and tested separately. This approach facilitates the gradual evolution of the software, ensuring a structured and efficient implementation process. More about creating flow-chart diagrams can be found under the section [Flow Chart Diagram](#1-flow-chart-diagram).
 
 ### 3. Coding
 
 When it comes to coding, the following steps are crucial for a successful project development:
 
--  <b>Have no Fear </b>- Start programming as soon as possible. Even if you don't have a clear idea of what you are doing - DO IT! You will learn a lot and gain experience that will be useful in the future. There is only a very small number of people that can read a book or watch a video about programming and then start programming without any issues. Most of us have to learn by doing.
-- <b>Just play</b> - Start small, play with your system, allow yourselft to make errors, learn from them... and have <b>FUN!</b>
+- <b>Have no Fear</b> - Start programming as soon as possible. Even if you don't have a clear idea of what you are doing - DO IT! You will learn a lot and gain experience that will be useful in the future. There is only a very small number of people that can read a book or watch a video about programming and then start programming without any issues. Most of us have to learn by doing.
+- <b>Just play</b> - Start small, play with your system, allow yourself to make errors, learn from them... and have <b>FUN!</b>
 - <b>Step by Step Implementation</b> - Start implementing the ideas you have gathered. With an idea of what actuators and sensors you want to use, as well as how your robot is supposed to work - start writing code gradually. Familiarize yourself with the capabilities of the elements you are using and think about their application to your project. Consider creating small examples where you use the sensor or the actuator you intend to integrate in your project separately. This will help you understand the capabilities of the elements you are using.
 - <b>Test</b> - Test your code... test, test, test. Testing after each step is implemented is very important due to the fact that only doing so will protect you from larger errors. Debugging large and complex parts of code can be very painful!
 - <b>Printf Debug</b> - When encountering issues in your code, embrace debugging as a crucial problem-solving tool. It entails identifying and resolving errors, ensuring your program functions seamlessly. After detecting each error and before making each change, think about the solution and then make changes, and go back to the previous point!
@@ -45,7 +45,7 @@ Through (fast and early) prototyping, you not only validate the feasibility of y
   <table>
     <tr>
       <td align="center">
-        <img src="../images/fast_prototyping.jpg" alt="Fast Prototyping does not have to be perfect" width="500"/>  
+        <img src="../images/fast_prototyping.jpg" alt="Fast Prototyping does not have to be perfect" width="500"/>
         <br/><i>Fast Prototyping does not have to be perfect</i>
       </td>
       <td align="center">
@@ -158,7 +158,7 @@ To create a state machine the first step is to design a flow chart-diagram. A we
 - <b>Iterate and Refine</b> - Review and refine the flow chart iteratively. Ensure that the logical flow is coherent, and states and transitions align with the desired robot behavior.
 
 
-Below you can find an example of a flow chart of a mechatronic system that will be designed in [Workshop 2](../markdown/ws1.md).
+Below you can find an example of a flow chart of a mechatronic system that will be designed in [Workshop 2](../markdown/ws2.md).
 
 <p align="center">
     <img src="../images/ws2_flowchart.png" alt="WS2 flow chart" width="500"/> </br>
@@ -170,9 +170,7 @@ Below you can find an example of a flow chart of a mechatronic system that will 
 A state machine represents different states a robot can be in and the transitions between these states based on certain conditions or events. To create a state machine, follow these steps:
 - <b>Identify States and Events</b> - Enumerate the distinct states your robot can be in (e.g., idle, moving, obstacle detected). Identify events or conditions that trigger transitions between states (e.g. button pressed, sensor input within a certain range, ...).
 - <b>Define State Transitions</b> - For each state, specify the conditions that lead to transitions to other states. Determine the actions or functions associated with each transition.
-- <b>Syntax in C++</b> - Use an enum or a set of constants to represent different states.
-Implement a switch-case structure to handle state transitions based on conditions.
-Execute corresponding actions or functions for each state.
+- <b>Syntax in C++</b> - Use an enum or a set of constants to represent different states. Implement a switch-case structure to handle state transitions based on conditions. Execute corresponding actions or functions for each state.
 - <b>Be aware</b> - When changing states, prioritize sensor input for transitions, avoiding time-based decisions that may lead to blocking code. In general, blocking code should be avoided! 
 
 Here is the code used to implement the state machine based on the preceding flowchart. Analyze the code to compare how the steps correspond between the flowchart and the code implementation.

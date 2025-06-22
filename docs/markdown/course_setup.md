@@ -4,23 +4,23 @@ This site guides you through the essential steps to begin the course, starting f
 
 ## Accounts
 
-It is recommended that you use a private E-mail address to set up accounts on Mbed and on GitHub. To be able to use MATLAB it is mandatory to use the account from your university because of the corresponding license.
+It is recommended that you use a private email address to set up accounts on Mbed and on GitHub. To be able to use MATLAB it is mandatory to use the account from your university because of the corresponding license.
 
-- GitHub: https://github.com/ Private E-mail
-- Mbed: https://os.mbed.com/ Private E-mail
+- GitHub: https://github.com/ Private email
+- Mbed: https://os.mbed.com/ Private email
 - MATLAB: https://matlab.mathworks.com/ University account
 
 ## Software
 
 - Mbed Studio: https://os.mbed.com/studio/ Free IDE for the Mbed OS ecosystem
 - PuTTY: https://www.putty.org/ SSH and telnet client
-- MATLAB: https://matlab.mathworks.com/  Programming and nummerical computing platform
+- MATLAB: https://matlab.mathworks.com/  Programming and numerical computing platform
 
 ## GitHub
 
 GitHub is a web-based platform from Microsoft for version control using Git, facilitating collaborative software development by providing tools for code hosting, tracking changes, and managing project workflows. It allows developers to work on projects simultaneously, merge their changes seamlessly, and track the project's history. GitHub is widely used in the software development community for code collaboration, issue tracking, and hosting open-source projects.
 
-* To create a fork of the PES Board repository you need to go to the repository Github: https://github.com/pichim/PES_Board
+* To create a fork of the PES Board repository you need to go to the repository on GitHub: https://github.com/pichim/PES_Board
 * On the top right corner click **Fork**:
 
 <p align="center">
@@ -34,7 +34,7 @@ By forking the repository, you can freely experiment with changes without affect
 
 ## Arm Mbed
 
-Arm Mbed is a comprehensive embedded systems development platform, it offers a range of tools, libraries, and acces to a real time C++ based OS to simplify and accelerate the development process for Arm-based microcontrollers. Mbed provides a unified and scalable environment, supporting diverse applications in the field of embedded systems and IoT.
+Arm Mbed is a comprehensive embedded systems development platform, it offers a range of tools, libraries, and access to a real-time C++ based OS to simplify and accelerate the development process for Arm-based microcontrollers. Mbed provides a unified and scalable environment, supporting diverse applications in the field of embedded systems and IoT.
 
 ### Mbed Studio
 
@@ -62,12 +62,12 @@ Importing a program from GitHub to Mbed Studio involves linking the local reposi
 * Visit the GitHub page of your repository (e.g., https://github.com/YOUR_NICK/NAME_OF_FORKED_REPOSITORY) and copy the **HTTPS** URL, located below the box on your forked repository.
 
 <p align="center">
-    <img src="../images/https_link_github.png" alt="https link github" width="350"/> </br>
+    <img src="../images/https_link_github.png" alt="HTTPS link GitHub" width="350"/> </br>
     <i>HTTPS link GitHub</i>
 </p>
 
 * Paste the full **HTTPS** URL of the relevant web page and (optionally) edit the program name.
-* If you are changing the **Project name**, it is a good a practice to name projects with capital letters, so they can be distinguished from libaries (often lowercase letters).
+* If you are changing the **Project name**, it is good practice to name projects with capital letters, so they can be distinguished from libraries (often lowercase letters).
 
 <p align="center">
     <img src="../images/importing_mbed_1.png" alt="Importing Program 1" width="320"/> </br>
@@ -136,9 +136,9 @@ To apply code changes, you can simply click the **PLAY** button, prompting Mbed 
 
 ### Connected Board
 
-Upon connecting the Nucleo Board to your computer, it is recognised as an additional drive. This drive represents the built-in mass storage feature facilitated by the Nucleo Board's on-board ST-Link programmer/debugger. Detected as a removable drive, it often adopts a name like "NODE_F446RE" (based on the specific Nucleo model).
+Upon connecting the Nucleo Board to your computer, it is recognized as an additional drive. This drive represents the built-in mass storage feature facilitated by the Nucleo Board's on-board ST-Link programmer/debugger. Detected as a removable drive, it often adopts a name like "NODE_F446RE" (based on the specific Nucleo model).
 
-This drive serves as a convenient avenue for transferring the compiled binary (firmware) of your program to the Nucleo Board. You can easily drag and drop the compiled binary file onto this drive, and the ST-Link interface will subsequently flash the microcontroller's memory with the updated firmware. This process is integral to the flashing or programming step, ensuring your microcontroller running the latest code.
+This drive serves as a convenient avenue for transferring the compiled binary (firmware) of your program to the Nucleo Board. You can easily drag and drop the compiled binary file onto this drive, and the ST-Link interface will subsequently flash the microcontroller's memory with the updated firmware. This process is integral to the flashing or programming step, ensuring your microcontroller is running the latest code.
 
 ### File Storage Location
 
@@ -154,4 +154,4 @@ Windows: ``"C:\Users\UserName\Mbed Programs\Project\BUILD\NUCLEO_TYPE\ARMC6\Proj
 
 #### Flashing the Microcontroller by Drag and Drop
 
-This ***Project.bin*** file is the compiled binary that can be flashed to the microcontroller. To flash the binary just drag and drop the file the the drive representing your microcontroller.
+This ***Project.bin*** file is the compiled binary that can be flashed to the microcontroller. To flash the binary just drag and drop the file to the drive representing your microcontroller.

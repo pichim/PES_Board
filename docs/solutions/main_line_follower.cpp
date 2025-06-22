@@ -37,7 +37,7 @@ int main()
     DigitalOut user_led(LED1);
 
     // additional led
-    // create DigitalOut object to command extra led, you need to add an aditional resistor, e.g. 220...500 Ohm
+    // create DigitalOut object to command extra led, you need to add an additional resistor, e.g. 220...500 Ohm
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 

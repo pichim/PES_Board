@@ -1,4 +1,4 @@
-# Build Mbed OS Projects on Ubuntu or Windows Subsystem for Linux with VSCode
+# Build Mbed OS Projects on Ubuntu or Windows Subsystem for Linux with VS Code
 
 Tested on Ubuntu 20.04 and Ubuntu 24.04. Last tested on 30.12.2024.
 
@@ -37,7 +37,7 @@ conda env create -f mbed-env-linux.yml
 
 ## GCC ARM Embedded Toolchain
 
-### Download the the latest Version of the Toolchain
+### Download the Latest Version of the Toolchain
 
 ```bash
 ARM_TOOLCHAIN_VERSION=$(curl -s https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads | grep -Po '<h4>Version \K.+(?=</h4>)')
@@ -66,7 +66,7 @@ sudo tar xf gcc-arm-none-eabi.tar.xz --strip-components=1 -C /opt/gcc-arm-none-e
 echo 'export PATH=$PATH:/opt/gcc-arm-none-eabi/bin' | sudo tee -a /etc/profile.d/gcc-arm-none-eabi.sh
 ```
 
-## Install Node.js, Npm and Mbed VSCode Generator
+## Install Node.js, npm and Mbed VS Code Generator
 
 ```bash
 sudo apt install -y nodejs
@@ -82,7 +82,7 @@ Replace `pichim` with your GitHub username so that you clone your fork of the re
 git clone https://github.com/pichim/PES_Board.git
 ```
 
-## Recommended Extensions in VSCode (might not all be necessary)
+## Recommended Extensions in VS Code (might not all be necessary)
 
 - `C/C++ Extension Pack` by Microsoft
 - `Python` by Microsoft
@@ -93,11 +93,11 @@ git clone https://github.com/pichim/PES_Board.git
 - `CMake Tools` by Microsoft
 - `Makefile Tools` by Microsoft
 
-## Activate the Conda environment in VSCode
+## Activate the Conda environment in VS Code
 
-You have to open the folder of the Mbed project in VSCode.
+You have to open the folder of the Mbed project in VS Code.
 
-Press Cntrl+Shift+P and type `Python: Select Interpreter` and select the `mbed-env` environment.
+Press Ctrl+Shift+P and type `Python: Select Interpreter` and select the `mbed-env` environment.
 
 ## Set up the Mbed Tools
 
@@ -108,7 +108,7 @@ ROOT=.
 
 ```
 
-Use the terminal in VSCode for the following commands.
+Use the terminal in VS Code for the following commands.
 
 ```bash
 mbed toolchain GCC_ARM
@@ -133,7 +133,7 @@ git clone --branch mbed-os-6.17.0 --depth 1 https://github.com/ARMmbed/mbed-os.g
 
 ## Build the project
 
-Press Cntrl+Shift+B and select `Build Mbed OS application`.
+Press Ctrl+Shift+B and select `Build Mbed OS application`.
 
 The binary file will be in the `BUILD/NUCLEO_F446RE/GCC_ARM-DEVELOP/PES_Board.bin` directory.
 
@@ -141,13 +141,13 @@ The binary file will be in the `BUILD/NUCLEO_F446RE/GCC_ARM-DEVELOP/PES_Board.bi
 
 You can flash the binary file to the board using the USB cable. Just drag and drop the binary file to the board when connected.
 
-## Serial Monitor in VSCode
+## Serial Monitor in VS Code
 
 You can use the extension
 
 - `Serial Monitor` by Microsoft
 
-to monitor the serial output of the board in VSCode directly.
+to monitor the serial output of the board in VS Code directly.
 
 ## Building in WSL (Windows Subsystem for Linux)
 
