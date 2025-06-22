@@ -60,7 +60,7 @@
         - build_mbed_windows.md         (ok & spell checked)
         - stepper_motor.md              (ok)
         - course_setup.md               (ok & spell checked)   ->   ws1, 2
-        - dc_motor.md                   (ok)   ->   ws3, 3
+        - dc_motor.md                   (ok & spell checked)   ->   ws3, 3
         - imu.md                        (ok)
         - ir_sensor.md                  (ok & spell checked)   ->   ws1, 6
         - kinematics.md                 (ok)
@@ -72,7 +72,7 @@
         - ultrasonic_sensor.md          (ok & spell checked)   ->   ws2, 4
         - ws1.md                        (ok & spell checked)   ->   ws1, 4
         - ws2.md                        (ok & spell checked)   ->   ws2, 2
-        - ws3.md                        (ok)   ->   ws3, 2
+        - ws3.md                        (ok & spell checked)   ->   ws3, 2
 
         Solutions:
         - main_base.cpp                       (ok)

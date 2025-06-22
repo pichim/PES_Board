@@ -3,9 +3,9 @@
 
 # Workshop 3
 
-In the third workshop, we will be using DC motors, exploring various control methods and understanding how to use the capabilities of the available drivers and hardware. DC motors are often used as drive systems, e.g. to drive a small vehicle or robot forward.
+In the third workshop, we will be using DC motors, exploring various control methods and understanding how to use the capabilities of the available drivers and hardware. DC motors are often used as drive systems, e.g., to drive a small vehicle or robot forward.
 
-We will discuss different control strategies for motor control, e.g. speed controlled and position controller (angular speed and rotation). Additionally, we will revisit the construction of a state machine, incorporating sensor-equipped motors for distance measurement and integrating a mechanical button into the system.
+We will discuss different control strategies for motor control, e.g., speed control and position control (angular speed and rotation). Additionally, we will revisit the construction of a state machine, incorporating sensor-equipped motors for distance measurement and integrating a mechanical button into the system.
 
 ## Hardware
 
@@ -30,7 +30,7 @@ We will discuss different control strategies for motor control, e.g. speed contr
 
 ## Part 1
 
-In the first task, we will focus just on understanding the motor functionality and control mechanisms. To achieve this, we rely on the information provided in the hardware tutorial: [DC Motor Tutorial](../markdown/dc_motor.md)
+In the first task, we will focus only on understanding the motor functionality and control mechanisms. To achieve this, we rely on the information provided in the hardware tutorial: [DC Motor Tutorial](../markdown/dc_motor.md)
 
 **Important Note: In this tutorial, the motors are consistently connected to the same pin. However, it's worth noting that there is an option to connect them to different pins: M2 and M3. You can run up to 3 DC motors with one PES board.**
 
@@ -44,13 +44,13 @@ In the second part, we'll design a state machine using the hardware introduced i
 >**3. Backward**  <br>
 >**4. Emergency** <br>
 
-The objective is to set up a mechatronic system that mimics a can crusher press. Pressing the mechanical button will prompt to the **Forward** state in which the motor will move forward a specific number of revolutions (representing the press going down), and then, after reaching a specyfic number of rotation, move backwards to the initial position and then to the **Sleep** state. If the distance from the ultrasonic sensor while being in the **Forward** state drops below a certain threshold (limit) (e.g. an obstacle is in the way), the device should switch to the **Emergency** state and rapidly return to the initial position and shut down.
+The objective is to set up a mechatronic system that mimics a can crusher press. Pressing the mechanical button will prompt the transition to the **Forward** state in which the motor will move forward a specific number of revolutions (representing the press going down), and then, after reaching a specific number of rotations, move backwards to the initial position and then to the **Sleep** state. If the distance from the ultrasonic sensor while being in the **Forward** state drops below a certain threshold (limit) (e.g., an obstacle is in the way), the device should switch to the **Emergency** state and rapidly return to the initial position and shut down.
 
-Before doing the task you may look at the [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
+Before doing the task, you may look at the [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
 
 1. Create the flow-chart diagram according to the description above.
    
-2. Connect the mechanical button to pin **PC_5** and and ground to the corresponding pin (see [Nucleo Board Pinmap][0])
+2. Connect the mechanical button to pin **PC_5** and ground to the corresponding pin (see [Nucleo Board Pinmap][0])
    
 3. Define a ``mechanical button`` object in the ``main()`` function with the appropriate pullup mode
 
@@ -64,7 +64,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
 
 4. Connect the ultrasonic sensor to pin **D3** on the PES board (see [PES Board Pinmap](../datasheets/pes_board_peripherals.pdf))
 
-5. Include the necessary drivers at the top of the ***main.cpp*** file. For more details refer to [Ultrasonic Distance Sernsor](../markdown/ultrasonic_sensor.md)
+5. Include the necessary drivers at the top of the ***main.cpp*** file. For more details, refer to [Ultrasonic Distance Sensor](../markdown/ultrasonic_sensor.md)
 
 ```cpp
 #include "UltrasonicSensor.h"
@@ -94,7 +94,7 @@ const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust thi
 // motor M3
 const float gear_ratio_M3 = 78.125f; // gear ratio
 const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
-// it is assumed that only one motor is available, there fore
+// it is assumed that only one motor is available, therefore
 // we use the pins from M1, so you can leave it connected to M1
 DCMotor motor_M3(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M3, kn_M3, voltage_max);
 // enable the motion planner for smooth movement
@@ -148,7 +148,7 @@ switch (robot_state) {
 }
 ```
 
-10. Insert the DC motor enable statement in the **INITIAL** state case. Subsequently, go the the next state, which is the **SLEEP** state
+10. Insert the DC motor enable statement in the **INITIAL** state case. Subsequently, go to the next state, which is the **SLEEP** state
 
 ```cpp
     case RobotState::INITIAL: {
@@ -165,8 +165,8 @@ switch (robot_state) {
 ```cpp
     case RobotState::SLEEP: {
         // wait for the signal from the user, so to run the process 
-        // that is triggered by clicking mechanical button
-        // then go the the FORWARD state
+        // that is triggered by clicking the mechanical button
+        // then go to the FORWARD state
         if (mechanical_button.read())
             robot_state = RobotState::FORWARD;
 
@@ -185,7 +185,7 @@ switch (robot_state) {
         // we transition to the EMERGENCY state
         if (us_distance_cm < 4.5f)
             robot_state = RobotState::EMERGENCY;
-        // switching condition is sligthly smaller for robustness
+        // switching condition is slightly smaller for robustness
         if (motor_M3.getRotation() > 2.89f)
             robot_state = RobotState::BACKWARD;
 
@@ -200,7 +200,7 @@ switch (robot_state) {
         // move backwards to the initial position
         // and go to the SLEEP state if reached
         motor_M3.setRotation(0.0f);
-        // switching condition is sligthly bigger for robustness
+        // switching condition is slightly bigger for robustness
         if (motor_M3.getRotation() < 0.01f)
             robot_state = RobotState::SLEEP;
 
@@ -208,11 +208,11 @@ switch (robot_state) {
     }
 ```
 
-14. In the **EMERGENCY** state, the machine needs to quickly return to the initial position and turn off. To achieve this, disable the motion planner, as it allows for the fastest possible movement. Subsequently, turn "off" the machine, simulating the effect of pressing the emergency button. To reuse the mechatronic system, reset the machine using the **RESET** button logic `toggle_do_execute_main_fcn()`.
+14. In the **EMERGENCY** state, the machine needs to quickly return to the initial position and turn off. To achieve this, disable the motion planner, as it allows for the fastest possible movement. Subsequently, turn "off" the machine, simulating the effect of pressing the emergency button. To reuse the mechatronic system, reset the machine using the **RESET** button logic ``toggle_do_execute_main_fcn()``.
 
 ```cpp
     case RobotState::EMERGENCY: {
-        // disable the motion planer and
+        // disable the motion planner and
         // move to the initial position asap
         // then reset the system
         motor_M3.disableMotionPlanner();
@@ -231,7 +231,7 @@ switch (robot_state) {
 printf("US Sensor in cm: %f, DC Motor Rotations: %f\n", us_distance_cm, motor_M3.getRotation());
 ```
 
-16. Include the following commands in the ``else()`` statement, triggered by pressing the **USER** button while the program is running, to reset the variables to their initial values without restarting the program. Since we are switching between using and not using the internal motion planner, we need to reset the motion planner internal position and velocity.
+16. Include the following commands in the ``else()`` statement, triggered by pressing the **USER** button while the program is running, to reset the variables to their initial values without restarting the program. Since we are switching between using and not using the internal motion planner, we need to reset the motion planner's internal position and velocity.
 
 ```cpp
 // reset variables and objects
@@ -244,7 +244,7 @@ motor_M3.enableMotionPlanner();
 robot_state = RobotState::INITIAL;
 ```
 
-17. Upload the program to the microcontroller using the **PLAY** button in Mbed Studio. Then, aim the sensor at an object that is beyond the distance triggering the **EMERGENCY** state. Press the **USER** button, and click the mechanical button.
+17. Upload the program to the microcontroller using the **PLAY** button in Mbed Studio. Then, aim the sensor at an object that is beyond the distance triggering the **EMERGENCY** state. Press the **USER** button and click the mechanical button.
     
 18. Experiment by pressing the mechanical button and pointing the sensor at an object that is below the threshold specified in the code.
 

@@ -26,7 +26,7 @@ int main()
 
     // while loop gets executed every main_task_period_ms milliseconds, this is a
     // simple approach to repeatedly execute main
-    const int main_task_period_ms = 20; // define main task period time in ms e.g. 20 ms, there for
+    const int main_task_period_ms = 20; // define main task period time in ms e.g. 20 ms, therefore
                                         // the main task will run 50 times per second
     Timer main_task_timer;              // create Timer object which we use to run the main task
                                         // every main_task_period_ms
@@ -51,7 +51,7 @@ int main()
     // // motor M2
     // const float gear_ratio_M2 = 78.125f; // gear ratio
     // const float kn_M2 = 180.0f / 12.0f;  // motor constant [rpm/V]
-    // // it is assumed that only one motor is available, there fore
+    // // it is assumed that only one motor is available, therefore
     // // we use the pins from M1, so you can leave it connected to M1
     // DCMotor motor_M2(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M2, kn_M2, voltage_max);
     // // limit max. velocity to half physical possible velocity
@@ -64,7 +64,7 @@ int main()
     // motor M3
     const float gear_ratio_M3 = 78.125f; // gear ratio
     const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
-    // it is assumed that only one motor is available, there fore
+    // it is assumed that only one motor is available, therefore
     // we use the pins from M1, so you can leave it connected to M1
     DCMotor motor_M3(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M3, kn_M3, voltage_max);
     // enable the motion planner for smooth movement

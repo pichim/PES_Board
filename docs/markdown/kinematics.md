@@ -48,7 +48,7 @@ $$
 v_i = \omega_i \cdot r,\ i = 1, 2
 $$
 
-There fore, we can write
+Therefore, we can write
 
 $$
 v = \frac{\omega_1 \cdot r + \omega_2 \cdot r}{2}
