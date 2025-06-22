@@ -32,7 +32,7 @@
     Before Ghana 25
 
     - Week 1:
-      - 
+      - Adjust line follwer example according to the new line follower hardware (grey robots)
 
     - Week 2:
       - Create Workshop 4 with line follower
@@ -42,14 +42,14 @@
       - Create Workshop 6 with my dc motor
       - test main_pes_monster.cpp with the latest updates
       - Add the actual md files to the README.md file
+      - Map all the new content to the workshops, see comment table below
 
     General:
-    - adjust line follwer example according to the new line follower hardware (grey robots)
-    - document how to use PlatformIO
-      - especially with regards to gcc instead of armclang
-      - remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)
-    - document how to use Putty
-    - in DCMotor.cpp PERFORM_GPA_MEAS and PERFORM_CHIRP_MEAS should be tested with the latest updates, here features like serial_pipe and serialStream could be introduced
+    - Document how to use PlatformIO
+      - Especially with regards to gcc instead of armclang
+      - Remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)
+    - Document how to use Putty
+    - In DCMotor.cpp PERFORM_GPA_MEAS and PERFORM_CHIRP_MEAS should be tested with the latest updates, here features like serial_pipe and serialStream could be introduced
       -> only tested if PERFORM_GPA_MEAS is still working via the terminal
 
     Files checked before Ghana 25:
@@ -59,36 +59,38 @@
         - build_mbed_linux.md           (ok & spell checked)
         - build_mbed_windows.md         (ok & spell checked)
         - stepper_motor.md              (ok & spell checked)
-        - course_setup.md               (ok & spell checked)   ->   ws1, 2
-        - dc_motor.md                   (ok & spell checked)   ->   ws3, 3
+        - course_setup.md               (ok & spell checked)   ->   ws1  , 2
+        - dc_motor.md                   (ok & spell checked)   ->   ws3  , 3
         - imu.md                        (ok & spell checked)
-        - ir_sensor.md                  (ok & spell checked)   ->   ws1, 6
+        - ir_sensor.md                  (ok & spell checked)   ->   ws1  , 6
         - kinematics.md                 (ok & spell checked)
         - line_follower.md              (ok & spell checked)
-        - main_description.md           (ok & spell checked)   ->   ws1, 5
-        - my_dc_motor.md
-        - sd_card_logger.md             (ok)
-        - serial_stream.md
-        - servo.md                      (ok & spell checked)   ->   ws2, 3
-        - tips.md                       (ok & spell checked)   ->   ws1, 3
-        - ultrasonic_sensor.md          (ok & spell checked)   ->   ws2, 4
-        - ws1.md                        (ok & spell checked)   ->   ws1, 4
-        - ws2.md                        (ok & spell checked)   ->   ws2, 2
-        - ws3.md                        (ok & spell checked)   ->   ws3, 2
-        - ws5.md
+        - main_description.md           (ok & spell checked)   ->   ws1  , 5
+        - my_dc_motor.md                (ok & spell checked)
+        - sd_card_logger.md             (ok & spell checked)
+        - serial_stream.md              (ok & spell checked)
+        - servo.md                      (ok & spell checked)   ->   ws2  , 3
+        - tips.md                       (ok & spell checked)   ->   ws1  , 3
+        - ultrasonic_sensor.md          (ok & spell checked)   ->   ws2  , 4
+        - ws1.md                        (ok & spell checked)   ->   ws1  , 4
+        - ws2.md                        (ok & spell checked)   ->   ws2  , 2
+        - ws3.md                        (ok & spell checked)   ->   ws3  , 2
+        - ws4.md                        does not exist yet
+        - ws5.md                        (ok & spell checked)
+        - ws6.md                        does not exist yet
 
         Solutions:
         - main_base.cpp                       (ok)
         - main_calib_kinematic_ss24.cpp       (ok)
-        - main_comp_filter.cpp
+        - main_comp_filter.cpp                (ok)
         - main_gimbal.cpp                     (ok)
-        - main_my_dc_motor.cpp
+        - main_my_dc_motor.cpp                (ok)
         - main_line_follower.cpp              (ok)
         - main_line_follower_base_ss24.cpp    (ok)
         - main_pes_monster.cpp                (ok)
         - main_sd_card_logger.cpp             (ok)
         - main_sd_card_logger_with_time.cpp   (ok)
-        - main_serial_stream.cpp
+        - main_serial_stream.cpp              (ok)
         - main_stepper_motor.cpp              (ok)
         - main_ws1.cpp                        (ok)
         - main_ws1_ir_sensor_class.cpp        (ok)

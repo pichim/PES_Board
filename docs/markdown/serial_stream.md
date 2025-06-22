@@ -10,7 +10,7 @@ The `SerialStream` system consists of three components:
 
 ### Microcontroller Side (`SerialStream` C++ class):
 - Simple buffer for floating-point data (up to 30 float values)
-- Transmits data packets via UART at 2 Mbaud baud rate
+- Transmits data packets via UART at 2 Mbaud
 - Implements optional start-byte synchronization protocol
 - Automatically sends number of floats once when streaming starts
 - Non-buffering, immediate transmission when `send()` is called
@@ -22,7 +22,7 @@ The `SerialStream` system consists of three components:
 - Includes timeout handling and data validation
 
 ### Python Side (`SerialStream.py` class):
-- Same as MATLAB, but implemented in Python
+- Same functionality as MATLAB, but implemented in Python
 
 ## Hardware and Pin Configuration
 
@@ -56,7 +56,7 @@ Include the `SerialStream` header file in your `main.cpp`:
 #include "SerialStream.h"
 ```
 
-Create a `SerialStream` object alongside with a `Timer` to measure time.
+Create a `SerialStream` object alongside a `Timer` to measure time.
 
 ```cpp
 // serial stream to send data over uart
@@ -90,7 +90,7 @@ if (serialStream.startByteReceived()) {
 
 **Note: The start byte functionality is optional. On the microcontroller side, you can decide whether to use it or not. Its purpose is to trigger the data stream on the microcontroller from the host computer.**
 
-Maximum used throughput in a real application was sending 30 float values at 1 kHz.
+The maximum used throughput in a real application was sending 30 float values at 1 kHz.
 
 **Important Note: Serial Stream relies on you sending delta time values in microseconds as the first signal. This is crucial for the correct functioning of the Serial Stream implementation on the host computer.**
 

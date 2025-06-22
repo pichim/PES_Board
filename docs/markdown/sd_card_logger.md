@@ -4,7 +4,7 @@ The **SD Card Logger** captures data and saves it in binary format on an SD card
 
 This guide provides a basic overview of the functionality and two short examples showing how to use `SDLogger` to log data.
 
-**Important Note: Logging with the SD Card Logger only works with the GNU Arm Embedded Toolchain which includes the GNU Compiler (gcc). Therefore, it will not work with Mbed Studio which is using Arm Compiler 6 (armclang), you have to use PlatformIO!**
+**Important Note: Logging with the SD Card Logger only works with the GNU Arm Embedded Toolchain which includes the GNU Compiler (gcc). Therefore, it will not work with Mbed Studio which uses Arm Compiler 6 (armclang), you have to use PlatformIO!**
 
 ## Basic Functionality
 
@@ -19,8 +19,8 @@ The `SDLogger` class:
 
 To use the `SDLogger`, you need an **SD card**. Successfully tested SD cards are:
 
-- Transcend 16 GB Micro SD HC1
-- SanDisk Ultra 16 GB Micro SD HC1 A1
+- Transcend 16 GB Micro SDHC1
+- SanDisk Ultra 16 GB Micro SDHC1 A1
 
 The SD card module itself is already on the PES board. The pin names are defined in `PESBoardPinMap.h`:
 
@@ -69,7 +69,7 @@ sd_logger.write(3.0f); // log 3.0f
 sd_logger.send();
 ````
 
-Maximum tested throughput was 22 float values at 500 Hz.
+The maximum tested throughput was 22 float values at 500 Hz.
 
 You can cast other data types to float, e.g.:
 

@@ -38,7 +38,7 @@ The ultimate goal is to implement a sensor fusion algorithm that estimates the o
 
 Start with the basic main file:
 
-- [Template MATLAB Evaluation of IMU Data](../templates/matlab/serial_stream_comp_filter.m)
+- [Main file for Complementary Filter](../solutions/main_comp_filter.cpp)
 
 This is already set up to send all the necessary data to the host computer.
 
