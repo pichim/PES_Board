@@ -5,7 +5,7 @@
 
 The objective of the second workshop is to get familiar with the PES boards hardware and functionality by incorporating additional sensors and actuators, specifically an ultrasonic distance sensor and a servo motor.
 
-Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintanable firmware for the robot. 
+Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintainable firmware for the robot. 
 
 ## Hardware
 
@@ -33,7 +33,7 @@ We assume that you know the general structure of the PES board, if not, please v
 
 The first task will be the integration of two servo motors and the corresponding calibration process.
 
-1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the haradware tutorial to complete the calibration.
+1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the hardware tutorial to complete the calibration.
 
     > [Servo Tutorial](../markdown/servo.md)
 
@@ -48,7 +48,7 @@ The second task will be to design and implement a state machine (this is nothing
 
 The overall goal is to build a mechatronic system capable of adjusting the deflection of the servo based on the distance measured by the ultrasonic sensor. The system will enter a sleep state if readings are not within a specified range, and pressing the mechanical button will trigger an emergency state/stop which will reset the system.
 
-Before beginning the task you should get yourself familiar with the part [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
+Before beginning the task you should familiarize yourself with the part [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
 
 Below you can find a flow chart diagram showing the logic of the transitions for each state.
 
@@ -157,21 +157,21 @@ float us_distance_max = 40.0f;
         printf("EXECUTION\n");
         // function to map the distance to the servo movement (us_distance_min, us_distance_max) -> (0.0f, 1.0f)
         servo_input = (us_distance_cm - us_distance_min) / (us_distance_max - us_distance_min);
-        // values smaller than 0.0f or bigger than 1.0f ar constrained to the range (0.0f, 1.0f) in setPulseWidth
+        // values smaller than 0.0f or bigger than 1.0f are constrained to the range (0.0f, 1.0f) in setPulseWidth
         servo_D0.setPulseWidth(servo_input);
 
         break;
     }
 ```
 
-10. Now, let's establish the conditions that prompts transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **SLEEP** state, while the **EMERGENCY** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
+10. Now, let's establish the conditions that prompt transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **SLEEP** state, while the **EMERGENCY** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
 
 ```cpp
     case RobotState::EXECUTION: {
         printf("EXECUTION\n");
         // function to map the distance to the servo movement (us_distance_min, us_distance_max) -> (0.0f, 1.0f)
         servo_input = (us_distance_cm - us_distance_min) / (us_distance_max - us_distance_min);
-        // values smaller than 0.0f or bigger than 1.0f ar constrained to the range (0.0f, 1.0f) in setPulseWidth
+        // values smaller than 0.0f or bigger than 1.0f are constrained to the range (0.0f, 1.0f) in setPulseWidth
         servo_D0.setPulseWidth(servo_input);
 
         // if the measurement is outside the min or max limit go to SLEEP
@@ -186,7 +186,7 @@ float us_distance_max = 40.0f;
     }
 ```
 
-11. To transition back from the **SLEEP** state to the **EXECUTION** state, the sensor readings must be within the specified range. And important to note, the **EMERGENCY** state needs also to be triggerable when the system is in the **SLEEP** state. Add the following code snippet to the **SLEEP** state case condition:
+11. To transition back from the **SLEEP** state to the **EXECUTION** state, the sensor readings must be within the specified range. And importantly, the **EMERGENCY** state needs also to be triggerable when the system is in the **SLEEP** state. Add the following code snippet to the **SLEEP** state case condition:
 
 ```cpp
     case RobotState::SLEEP: {
@@ -238,7 +238,7 @@ if (do_reset_all_once) {
 printf("US distance cm: %f \n", us_distance_cm);
 ```
 
-14. Compile and flash the program to the microcontroller using the **PLAY** button in Mbed studio and then point the sensor at an object that is at a distance that is within the range specified in the code and click the **USER** button.
+14. Compile and flash the program to the microcontroller using the **PLAY** button in Mbed Studio and then point the sensor at an object that is at a distance that is within the range specified in the code and click the **USER** button.
 
 15. Experiment by directing the sensor towards an object that is out of range. Press the mechanical button and observe the serial terminal to see the current state and the measured distance (if valid and within the specified range).
 
@@ -249,7 +249,7 @@ In the second workshop, the integration of a servo motor along with the PES boar
 ## Important Notes
 
 - Indentation matters! It is important to keep the code clean and readable. This will help you and others to read, understand and maintain the code better.
-- Printing to the serial terminal is a useful tool for debugging. It is important to understand the state of the system and the values of the variables at different points in the code. This will help you to identify errors and to understand the system better. But you have to be carefull with the amount of printed data, as it can slow down the system. So after debugging, it is important to remove or comment out the print statements.
+- Printing to the serial terminal is a useful tool for debugging. It is important to understand the state of the system and the values of the variables at different points in the code. This will help you to identify errors and to understand the system better. But you have to be careful with the amount of printed data, as it can slow down the system. So after debugging, it is important to remove or comment out the print statements.
 
 ## Solutions
 
@@ -258,5 +258,5 @@ In the second workshop, the integration of a servo motor along with the PES boar
 
 <p align="center">
     <img src="../images/pulse_to_position_eval.png" alt="Pulse to position " width="710"/> </br>
-    <i>Pulse width to normalised position for both servos </i>
+    <i>Pulse width to normalized position for both servos </i>
 </p>

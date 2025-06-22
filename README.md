@@ -67,11 +67,11 @@
         - line_follower.md              (ok)
         - main_description.md           (ok & spell checked)   ->   ws1, 5
         - sd_card_logger.md             (ok)
-        - servo.md                      (ok)   ->   ws2, 3
+        - servo.md                      (ok & spell checked)   ->   ws2, 3
         - tips.md                       (ok & spell checked)   ->   ws1, 3
-        - ultrasonic_sensor.md          (ok)   ->   ws2, 4
+        - ultrasonic_sensor.md          (ok & spell checked)   ->   ws2, 4
         - ws1.md                        (ok & spell checked)   ->   ws1, 4
-        - ws2.md                        (ok)   ->   ws2, 2
+        - ws2.md                        (ok & spell checked)   ->   ws2, 2
         - ws3.md                        (ok)   ->   ws3, 2
 
         Solutions:

@@ -19,11 +19,11 @@ An ultrasonic sensor (range finder / detector) is a type of sensor designed to m
 | Measuring range     | 3 - ~200 cm     |
 | Size                | 50 x 25 x 16 mm |
 | Weight              | 13 g            |
-| Measurment angle    | 15 °            |
+| Measurement angle   | 15 °            |
 | Working temperature | -10 ~ 60 °C     |
 
 **NOTE:**
-- The measurements showed a relatively high variation above 2 meters, there for the measurment range is limited to 2 meters (with the current driver implementation).
+- The measurements showed a relatively high variation above 2 meters, therefore the measurement range is limited to 2 meters (with the current driver implementation).
 
 ## Links
 
@@ -44,14 +44,14 @@ An ultrasonic sensor (range finder / detector) is a type of sensor designed to m
 The ``UltrasonicSensor`` class provides functionality to measure distances by emitting ultrasonic pulses 
 and measuring the time taken for the echo to return. It encapsulates the details of interfacing with the
 sensor hardware and offers a simple interface for obtaining distance measurements in centimeters.
-Maximum measurment distance is approximately 2 meters (measured 198.1 cm) with a mearuement period of 12000
+Maximum measurement distance is approximately 2 meters (measured 198.1 cm) with a measurement period of 12000
 microseconds. If no new valid measurement is available, the ``read()`` function returns -1.0f.
 
-To start working with the sensor, it is necessary to plug it correclty and create an object in the ***main.cpp*** file and assign a digital output.
+To start working with the sensor, it is necessary to connect it correctly and create an object in the ***main.cpp*** file and assign a digital output.
 
 ### Connection to the PES Board
 
-The ultrasonic sensor was tested with a 5V power supply and a single pin that transmits the signal. There for, it can use the same ports as the servos. You can use the the following pins on the PES board:
+The ultrasonic sensor was tested with a 5V power supply and a single pin that transmits the signal. Therefore, it can use the same ports as the servos. You can use the following pins on the PES board:
 
 ```cpp
 PB_D0
@@ -62,7 +62,7 @@ PB_D3
 
 [PES Board Pinmap](../datasheets/pes_board_peripherals.pdf)
 
-To establish the connection, use the cable displayed in the following image. It is compatible with the plug and socket on the sensor and with pins on the PES board. When connecting the sensor to the PES board, remember that the yellow wire transmites the bidirectional signal. So, make sure to align the blue plug with the PES board accordingly to ensure a proper connection.
+To establish the connection, use the cable displayed in the following image. It is compatible with the plug and socket on the sensor and with pins on the PES board. When connecting the sensor to the PES board, remember that the yellow wire transmits the bidirectional signal. So, make sure to align the blue plug with the PES board accordingly to ensure a proper connection.
 
 <p align="center">
     <img src="../images/groove_cable_reworked.png" alt="Cables used to connect to the sensor" width="600"/> </br>
@@ -86,7 +86,7 @@ float us_distance_cm = 0.0f;
 <!-- Additional information is greyed out -->
 >Details about the driver
 >
->By sending a signal to the sensor, we command it to send a pulse with a rising edge followed by a falling edge and a pulse width of 10 microseconds. The device will emit sound with 8 periods of 40 kHz frequency and try to detect the echo (via convolution or similar). The sensor will then send a pulse proportional to the measurment time, which will be detected by the microcontroller. The time between the rising and falling edge is measured and used to calculate the distance on the microcontroller. This process is repeated every 12000 microseconds.
+>By sending a signal to the sensor, we command it to send a pulse with a rising edge followed by a falling edge and a pulse width of 10 microseconds. The device will emit sound with 8 periods of 40 kHz frequency and try to detect the echo (via convolution or similar). The sensor will then send a pulse proportional to the measurement time, which will be detected by the microcontroller. The time between the rising and falling edge is measured and used to calculate the distance on the microcontroller. This process is repeated every 12000 microseconds.
 
 ### Read the Distance
 
@@ -97,9 +97,9 @@ The operation is straightforward since all processes are encapsulated within the
 us_distance_cm = us_sensor.read();
 ```
 
-If no new valid measurement is available, the ``read()`` function returns -1.0f. This needs to be handeled appropriately in the application.
+If no new valid measurement is available, the ``read()`` function returns -1.0f. This needs to be handled appropriately in the application.
 
-As an example you can do someting like
+As an example you can use the following code snippet
 
 ```cpp
 // read us sensor distance, only valid measurements will update us_distance_cm

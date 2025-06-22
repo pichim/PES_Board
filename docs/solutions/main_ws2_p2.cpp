@@ -114,7 +114,7 @@ int main()
                     printf("EXECUTION\n");
                     // function to map the distance to the servo movement (us_distance_min, us_distance_max) -> (0.0f, 1.0f)
                     servo_input = (us_distance_cm - us_distance_min) / (us_distance_max - us_distance_min);
-                    // values smaller than 0.0f or bigger than 1.0f ar constrained to the range (0.0f, 1.0f) in setPulseWidth
+                    // values smaller than 0.0f or bigger than 1.0f are constrained to the range (0.0f, 1.0f) in setPulseWidth
                     servo_D0.setPulseWidth(servo_input);
 
                     // if the measurement is outside the min or max limit go to SLEEP
