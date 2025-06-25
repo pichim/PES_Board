@@ -39,6 +39,29 @@ The first task will be the integration of two servo motors and the corresponding
 
 ## Part 2
 
+### No Ultrasonic Sensor?
+
+Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [IR Sensor Tutorial](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
+
+To create and use the ``IRSensor`` class, you can use the following code snippet:
+
+```cpp
+#include "IRSensor.h"
+
+...
+
+// ir distance sensor instead of ultra sonic sensor
+IRSensor ir_sensor(PB_A0);
+ir_sensor.setCalibration(11801.3246f, -11.2132f); // set calibration values
+
+...
+
+// ir distance sensor instead of ultra sonic sensor
+us_distance_cm = ir_sensor.read();
+```
+
+### Ultrasonic Sensor
+
 The second task will be to design and implement a state machine (this is nothing else than a switch-case statement as a logic part). Here we will use an additional ultrasonic sensor. A state machine with the following states will be used:
 
 >**0. Initial**   </br>
@@ -241,25 +264,6 @@ printf("US distance cm: %f \n", us_distance_cm);
 14. Compile and flash the program to the microcontroller using the **PLAY** button in Mbed Studio and then point the sensor at an object that is at a distance that is within the range specified in the code and click the **USER** button.
 
 15. Experiment by directing the sensor towards an object that is out of range. Press the mechanical button and observe the serial terminal to see the current state and the measured distance (if valid and within the specified range).
-
-
-## No Ultrasonic Sensor?
-
-Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [IR Sensor Tutorial](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
-
-To create and use the ``IRSensor`` class, you can use the following code snippet:
-
-```cpp
-#include "IRSensor.h"
-...
-// ir distance sensor instead of ultra sonic sensor
-IRSensor ir_sensor(PB_A0);
-float ir_distance_cm = 0.0f;
-ir_sensor.setCalibration(11801.3246f, -11.2132f);
-...
-// ir distance sensor instead of ultra sonic sensor
-us_distance_cm = ir_sensor.read();
-```
 
 ## Summary
 

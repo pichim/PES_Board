@@ -18,7 +18,7 @@ We will discuss different control strategies for motor control, e.g., speed cont
 >Part 2:
 > - PES board with NUCLEO-F446RE board
 > - Mini USB cable
-> - Ultrasonic sensor 
+> - Ultrasonic sensor or IR sensor
 > - Mechanical button
 > - DC motor
 > - Additional wires to connect the sensor to the NUCLEO board
@@ -35,6 +35,29 @@ In the first task, we will focus only on understanding the motor functionality a
 **Important Note: In this tutorial, the motors are consistently connected to the same pin. However, it's worth noting that there is an option to connect them to different pins: M2 and M3. You can run up to 3 DC motors with one PES board.**
 
 ## Part 2
+
+### No Ultrasonic Sensor?
+
+Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [IR Sensor Tutorial](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
+
+To create and use the ``IRSensor`` class, you can use the following code snippet:
+
+```cpp
+#include "IRSensor.h"
+
+...
+
+// ir distance sensor instead of ultra sonic sensor
+IRSensor ir_sensor(PB_A0);
+ir_sensor.setCalibration(11801.3246f, -11.2132f); // set calibration values
+
+...
+
+// ir distance sensor instead of ultra sonic sensor
+us_distance_cm = ir_sensor.read();
+```
+
+### Ultrasonic Sensor
 
 In the second part, we'll design a state machine using the hardware introduced in the previous workshop. The state machine will consist of five states:
 
