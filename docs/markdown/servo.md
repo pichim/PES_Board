@@ -157,7 +157,7 @@ if ((servo_input < 1.0f) &&                     // constrain servo_input to be <
 servo_counter++;
 ```
 
-To reset the ``servo_input`` variable to zero and disable the servos without restarting the program, add the following command to the ``else()`` statement. This is triggered by pressing the **USER** button while the main task is running (second time you press the button).
+To reset the ``servo_input`` variable to zero and disable the servos without restarting the program, add the following command within the ``else()`` statement into the ``if()`` statement for resetting the variables. This is triggered by pressing the **USER** button while the main task is running (second time you press the button).
 
 ```cpp
 // reset variables and objects
@@ -167,7 +167,7 @@ servo_D1.disable();
 servo_input = 0.0f;
 ```
 
-In the subsequent step, compile the program. Once compilation is complete, click the **USER** button to initiate the execution. This action prompts the ``servo_input`` variable value to display on the serial monitor.
+In the subsequent step, compile the program and flash it. Once complete, click the **USER** button to initiate the execution. This action prompts the ``servo_input`` variable value to display on the serial monitor.
 
 The goal is to monitor the ``servo_input`` variable and the servo. Every one second, this variable increases by the specified value. Record the displayed value on paper after the servo initial movement takes place. Continue monitoring the variable and the servo until increasing the variable no longer results in further rotation. At this point, record the maximum value displayed on the screen.
 
@@ -189,26 +189,6 @@ servo_D1.calibratePulseMinMax(servo_D1_ang_min, servo_D1_ang_max);
 ```
 
 Now the ``servo_input`` variable in the range from 0.0f to 1.0f will be mapped in the driver internally to the pulse width range from value of ``servo_D0_ang_min`` to value of ``servo_D0_ang_max``.
-
-### Further Information
-
-#### Enabling the Servo
-
-To use the servo, the initial step is to enable it. This action starts the servo and moves it to the zero position, as this position is defined as the default. But the initial position can also be passed as argument so that servo will move to the particular position after enabling it.
-
-```cpp
-// enable the servo and move it to zero
-if (!servo_D0.isEnabled()) {
-    servo_D0.enable();
-}
-```
-
-```cpp
-// enable the servo and move it to the center
-if (!servo_D0.isEnabled()) {
-    servo_D0.enable(0.5f);
-}
-```
 
 #### Smooth Movement
 

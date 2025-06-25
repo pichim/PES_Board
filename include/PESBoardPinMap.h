@@ -5,6 +5,12 @@
 #define NEW_PES_BOARD_VERSION
 #ifdef NEW_PES_BOARD_VERSION
 
+    // Analog Inputs
+    #define PB_A0 PC_2
+    #define PB_A1 PC_3
+    #define PB_A2 PC_5
+    #define PB_A3 PB_1
+
     // Servos and Ultrasonic Sensor
     #define PB_D0 PB_2
     #define PB_D1 PC_8

@@ -5,7 +5,7 @@
 
 The objective of the second workshop is to get familiar with the PES boards hardware and functionality by incorporating additional sensors and actuators, specifically an ultrasonic distance sensor and a servo motor.
 
-Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintainable firmware for the robot. 
+Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintainable firmware for a robot. 
 
 ## Hardware
 
@@ -19,7 +19,7 @@ Furthermore, participants will be introduced to new tools/programming concepts, 
 >Part 2:
 > - PES board with NUCLEO-F446RE board
 > - Mini USB cable
-> - Ultrasonic sensor 
+> - Ultrasonic sensor or IR sensor
 > - Mechanical button
 > - Servo Futaba S3001/REELY S-0090
 > - Additional wires to connect the sensor to the NUCLEO board
@@ -242,6 +242,25 @@ printf("US distance cm: %f \n", us_distance_cm);
 
 15. Experiment by directing the sensor towards an object that is out of range. Press the mechanical button and observe the serial terminal to see the current state and the measured distance (if valid and within the specified range).
 
+
+## No Ultrasonic Sensor?
+
+Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [IR Sensor Tutorial](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
+
+To create and use the ``IRSensor`` class, you can use the following code snippet:
+
+```cpp
+#include "IRSensor.h"
+...
+// ir distance sensor instead of ultra sonic sensor
+IRSensor ir_sensor(PB_A0);
+float ir_distance_cm = 0.0f;
+ir_sensor.setCalibration(11801.3246f, -11.2132f);
+...
+// ir distance sensor instead of ultra sonic sensor
+us_distance_cm = ir_sensor.read();
+```
+
 ## Summary
 
 In the second workshop, the integration of a servo motor along with the PES board, servo calibration, and a mechanical button incorporation were performed. Additionally, the creation of a state machine, using an ultrasonic sensor, was explored. By establishing robot states and implementing transition conditions, a primitive mechatronic system capable of adjusting a servo motor based on ultrasonic sensor readings was implemented.
@@ -255,6 +274,7 @@ In the second workshop, the integration of a servo motor along with the PES boar
 
 - [Workshop 2, Part 1](../solutions/main_ws2_p1.cpp)
 - [Workshop 2, Part 2](../solutions/main_ws2_p2.cpp)
+- [Workshop 2 with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws2_p2_ir_sensor.cpp)
 
 <p align="center">
     <img src="../images/pulse_to_position_eval.png" alt="Pulse to position " width="710"/> </br>

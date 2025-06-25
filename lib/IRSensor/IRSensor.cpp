@@ -38,15 +38,16 @@ float IRSensor::reset()
 
     // apply calibration to cm (if calibrated)
     float distance_cm = 0.0f;
-    if (m_is_calibrated)
+    if (m_is_calibrated) {
         distance_cm = applyCalibration(m_distance_mV, m_a, m_b);
-    else
+        // constrain distance to [IR_SENSOR_DISTANCE_MIN, IR_SENSOR_DISTANCE_MAX]
+        distance_cm = (distance_cm > IR_SENSOR_DISTANCE_MAX) ? IR_SENSOR_DISTANCE_MAX :
+                      (distance_cm < IR_SENSOR_DISTANCE_MIN) ? IR_SENSOR_DISTANCE_MIN :
+                       distance_cm;
+    } else {
         distance_cm = m_distance_mV;
-
-    // constrain distance to [IR_SENSOR_DISTANCE_MIN, IR_SENSOR_DISTANCE_MAX]
-    m_distance_cm = (distance_cm > IR_SENSOR_DISTANCE_MAX) ? IR_SENSOR_DISTANCE_MAX :
-                    (distance_cm < IR_SENSOR_DISTANCE_MIN) ? IR_SENSOR_DISTANCE_MIN :
-                     distance_cm;
+    }
+    m_distance_cm = distance_cm;
 
     // reset the filter to the current readout
     m_distance_avg = m_AvgFilter.reset(m_distance_cm);
@@ -71,15 +72,16 @@ void IRSensor::threadTask()
 
         // apply calibration to cm (if calibrated)
         float distance_cm = 0.0f;
-        if (m_is_calibrated)
+        if (m_is_calibrated) {
             distance_cm = applyCalibration(m_distance_mV, m_a, m_b);
-        else
+            // constrain distance to [IR_SENSOR_DISTANCE_MIN, IR_SENSOR_DISTANCE_MAX]
+            distance_cm = (distance_cm > IR_SENSOR_DISTANCE_MAX) ? IR_SENSOR_DISTANCE_MAX :
+                          (distance_cm < IR_SENSOR_DISTANCE_MIN) ? IR_SENSOR_DISTANCE_MIN :
+                           distance_cm;
+        } else {
             distance_cm = m_distance_mV;
-
-        // constrain distance to [IR_SENSOR_DISTANCE_MIN, IR_SENSOR_DISTANCE_MAX]
-        m_distance_cm = (distance_cm > IR_SENSOR_DISTANCE_MAX) ? IR_SENSOR_DISTANCE_MAX :
-                        (distance_cm < IR_SENSOR_DISTANCE_MIN) ? IR_SENSOR_DISTANCE_MIN :
-                         distance_cm;
+        }
+        m_distance_cm = distance_cm;
 
         // average filtered distance
         static bool is_first_run = true;

@@ -228,7 +228,7 @@ The batteries enable the board itself to be powered independently of the connect
 
 #### Charging the Batteries
 
-<b>Using the Charger</b> - if you connect the charger to the PES board, the battery packs must be connected. If the battery packs (2 packs for 12 volts or one pack and a jumper for 6 volts) are not connected when you plug in the charger, the PES board will be destroyed. <b>THE CHARGER IS NOT A POWER SUPPLY</b>
+<b>Using the Charger</b> - if you connect the charger to the PES board, the battery packs must be connected. If the battery packs (2 packs for 12 volts or one pack and a jumper for 6 volts) are not connected when you plug in the charger, the PES board will be destroyed. <b>THE CHARGER IS NOT A POWER SUPPLY!</b>
 
 <b>Charging batteries</b> - the battery packs are only charged when the power switch is set to OFF.
 
@@ -253,18 +253,18 @@ All additional technical information such as schematics and pin maps for the PES
 
 ### Hardware Kit
 
-- 2x Battery packs 6v / 2300mAh with charger
+- 2x Battery packs 6V / 2300mAh with charger
 - 1x Servo – REELY S-0090
 - 1x Servo – FUTABA S3001
 - 1x LED green with resistor 2200/600mW/1%
-- 1x Distance sensor SHARP GP2YOA41 analog 300mm with cable
+- 1x Distance sensor SHARP GP2YOA41 analog 300mm with cable (or similar)
 - 1x DC Motor POLOLU (different gear ratios) D = 20 mm/ l = 43 mm/ 12V with encoder POLOLU 2.7 – 18V
 - 1x Mechanical Button
 - 1x Ultrasonic sensor GROVE ULTRASONIC RANGER V2.0 with cable
 
 ### Hardware Tutorials
 
-The following links contain the hardware tutorials. The documents contain specifications and technical information about the hardware itself and how to use it. The tutorials cover the software drivers, specific calibration procedures, controlling actuators and retrieving measurements from the sensors and actuators.
+The following links point to the hardware tutorials. These documents contain specifications and technical information about the hardware itself and how to use it. The tutorials cover the software drivers, specific calibration procedures, controlling actuators and retrieving measurements from the sensors and actuators.
 
 **Important Note: The PES board currently does not support stepper motors. The following example uses an external hardware driver and an additional battery pack, which is directly wired to the Nucleo board.**
 

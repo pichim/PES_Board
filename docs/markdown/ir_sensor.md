@@ -134,7 +134,7 @@ The first step of the procedure is the simultaneous measurement of the actual di
     <i>Performing the exercise</i>
 </p>
 
-- To read the values measured by the sensor, it is essential to include a command that will be executed every iteration of the program. Therefore, this command is positioned within the ``while()`` loop but after the ``if()`` statement which indicates that the command will start reading sensor values after starting the program execution with the **USER** button.
+- To read the values measured by the sensor, it is essential to include a command that will be executed every iteration of the program. Therefore, this command is positioned within the ``while()`` within the ``if()`` statement which indicates that the command will start reading sensor values after starting the program execution with the **USER** button.
 
 ```cpp
 // read analog input
