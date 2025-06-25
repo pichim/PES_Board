@@ -278,7 +278,7 @@ In the second workshop, the integration of a servo motor along with the PES boar
 
 - [Workshop 2, Part 1](../solutions/main_ws2_p1.cpp)
 - [Workshop 2, Part 2](../solutions/main_ws2_p2.cpp)
-- [Workshop 2 with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws2_p2_ir_sensor.cpp)
+- [Workshop 2, Part 2 with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws2_p2_ir_sensor.cpp)
 
 <p align="center">
     <img src="../images/pulse_to_position_eval.png" alt="Pulse to position " width="710"/> </br>
