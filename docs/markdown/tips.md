@@ -58,7 +58,7 @@ Through (fast and early) prototyping, you not only validate the feasibility of y
 
 ## Programming Tips
 
-An explanation of the structure of the default ***main.cpp*** file can be found in [Main File Description](../markdown/main_description.md).
+An explanation of the structure of the default ***main.cpp*** file can be found in [Main File Description](main_description.md).
 
 Beginning here some essential programming tips are presented. These tips are crucial for writing clean, readable, and maintainable code.
 
@@ -158,7 +158,7 @@ To create a state machine the first step is to design a flow chart-diagram. A we
 - <b>Iterate and Refine</b> - Review and refine the flow chart iteratively. Ensure that the logical flow is coherent, and states and transitions align with the desired robot behavior.
 
 
-Below you can find an example of a flow chart of a mechatronic system that will be designed in [Workshop 2](../markdown/ws2.md).
+Below you can find an example of a flow chart of a mechatronic system that will be designed in [Workshop 2](ws2.md).
 
 <p align="center">
     <img src="../images/ws2_flowchart.png" alt="WS2 flow chart" width="500"/> </br>

@@ -35,7 +35,7 @@ The sensor incorporates eight diodes for line detection, with each diode's illum
 
 ## **WARNING 1**
 
-<b>Before attempting to connect the sensor, it is important to carefully review the section [Connection to the PES Board](../markdown/line_follower.md#connection-to-the-pes-board). This sensor is highly sensitive, and mishandling during the connection will lead to destruction of the sensor. Therefore, caution is necessary to avoid damaging the unit!</b>
+<b>Before attempting to connect the sensor, it is important to carefully review the section [Connection to the PES Board](line_follower.md#connection-to-the-pes-board). This sensor is highly sensitive, and mishandling during the connection will lead to destruction of the sensor. Therefore, caution is necessary to avoid damaging the unit!</b>
 
 ### Connection to the PES Board
 
@@ -123,7 +123,7 @@ As usual include the library in the ***main.cpp*** file.
 #define M_PIf 3.14159265358979323846f // pi
 ```
 
-Now you're able to define the mapping from wheel velocity to the robot velocities as a 2x2 matrix using the following code snippet. Check out [Kinematics](../markdown/kinematics.md) for more information.
+Now you're able to define the mapping from wheel velocity to the robot velocities as a 2x2 matrix using the following code snippet. Check out [Differential Drive Kinematics](kinematics.md) for more information.
 
 ```cpp
 const float r_wheel = 0.0564f / 2.0f; // wheel radius in meters
@@ -166,7 +166,7 @@ The ``LineFollower`` driver is designed to drive (control) a differential drive 
 
 To start using the ``LineFollower`` driver, the initial step in the ***main.cpp*** file is to create the ``LineFollower`` object and specify the pins to which the object will be assigned.
 
-To set up the module in the main function, it's necessary that you define two DC motor objects. To do so, please see the instructions provided in [DC Motor](../markdown/dc_motor.md). Code snippets that should be placed in the correct places:
+To set up the module in the main function, it's necessary that you define two DC motor objects. To do so, please see the instructions provided in [DC Motor](dc_motor.md). Code snippets that should be placed in the correct places:
 
 ```cpp
 #include "DCMotor.h"
@@ -188,7 +188,7 @@ DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio, kn, voltage_ma
 ```
 
 **NOTE:**
-- Follow the instructions [Motor M2 Closed-Loop Velocity Control](../markdown/dc_motor.md#motor-m2-closed-loop-velocity-control)
+- Follow the instructions [Motor M2 Closed-Loop Velocity Control](dc_motor.md#motor-m2-closed-loop-velocity-control)
 - The control algorithm in the ``LineFollower`` driver works best if the motion planner for the DC motors is disabled (should be default).
 
 ### Create Line Follower Object
@@ -256,7 +256,7 @@ enable_motors = 0;
 **NOTE:** 
 - The ``LineFollower`` class assumes that the right motor is M1 and the left motor is M2 (sitting on the robot and looking forward) and that a positive speed setpoint to the motor M1 and M2 will rotate the robot positively around the z-axis (counter-clockwise seen from above).
 
-Below, you'll find an in-depth manual explaining the inner driver functions. While it's not mandatory to use this manual, familiarizing yourself with the content will certainly help. For enhanced comprehension, it's recommended to refer to the [Kinematics](../markdown/kinematics.md) document, which provides explanations of the mathematical operations involved.
+Below, you'll find an in-depth manual explaining the inner driver functions. While it's not mandatory to use this manual, familiarizing yourself with the content will certainly help. For enhanced comprehension, it's recommended to refer to the [Differential Drive Kinematics](kinematics.md) document, which provides explanations of the mathematical operations involved.
 
 ### Thread Algorithm Description
 

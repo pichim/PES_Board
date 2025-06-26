@@ -26,13 +26,13 @@ We will get to know Serial Streaming, which allows us to send data from the micr
 
 ## Part 1
 
-Part 1 of this workshop will focus on understanding the IMU functionality. We will use the information provided in the hardware tutorial: [Tutorial IMU](../markdown/imu.md).
+Part 1 of this workshop will focus on understanding the IMU functionality. We will use the information provided in the hardware tutorial: [Tutorial IMU](imu.md).
 
 The goal here is to understand how the IMU works, how to read data from it, and how to use it to control a 2-axis gimbal system.
 
 ## Part 2
 
-In the second part, we'll learn how to stream data from the microcontroller to a host computer using Serial Streaming. This will allow us to capture data and process it on the host. Here we either use MATLAB or Python to process the data and visualize it. To get started with Serial Streaming, refer to the tutorial: [Tutorial Serial Stream](../markdown/serial_stream.md).
+In the second part, we'll learn how to stream data from the microcontroller to a host computer using Serial Streaming. This will allow us to capture data and process it on the host. Here we either use MATLAB or Python to process the data and visualize it. To get started with Serial Streaming, refer to the tutorial: [Tutorial Serial Stream](serial_stream.md).
 
 The ultimate goal is to implement a sensor fusion algorithm that estimates the orientation of the IMU around the X-axis. The algorithm will be applied to the data received from the IMU. The goal here is to get roughly the same results as the ``IMU`` class built-in orientation estimation algorithm (Mahony filter). Here the main task is to discretize the needed low-pass filters for the complementary filter and apply these to the appropriate signals.
 

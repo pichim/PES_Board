@@ -1,11 +1,10 @@
 <!-- link list -->
 [0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
 
-# Workshop 3
+# Workshop 4
 
-In the third workshop, we will be using DC motors, exploring various control methods and understanding how to use the capabilities of the available drivers and hardware. DC motors are often used as drive systems, e.g., to drive a small vehicle or robot forward.
-
-We will discuss different control strategies for motor control, e.g., speed control and position control (angular speed and rotation). Additionally, we will revisit the construction of a state machine, incorporating sensor-equipped motors for distance measurement and integrating a mechanical button into the system.
+linefollower.md
+kinematics.md
 
 ## Hardware
 

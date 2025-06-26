@@ -25,7 +25,7 @@ Participants will explore hardware utilization, specifically the IR Sensor and a
 
 ### Assignment
 
-We assume that you already have all necessary accounts set up and software installed to conduct the workshop. If not, go to: [Course Setup](../markdown/course_setup.md), and follow the instructions there.
+We assume that you already have all necessary accounts set up and software installed to conduct the workshop. If not, go to: [Course Setup](course_setup.md), and follow the instructions there.
 
 Furthermore, ensure that you are familiar with the general structure of the board. If not, refer to: [Nucleo F446RE](../../README.md#nucleo-f446re)
 
@@ -51,7 +51,7 @@ The second task will be carried out using an IR distance sensor. This task will 
 
 1. Read the IR sensor manual. There you can find technical information about the sensor and instructions for the connection to the Nucleo board. Perform the calibration according to the hardware tutorial:
    
-    > [Tutorial Infrared Distance Sensor](../markdown/ir_sensor.md)
+    > [Tutorial Infrared Distance Sensor](ir_sensor.md)
 
 ## Summary
 

@@ -35,13 +35,13 @@ The first task will be the integration of two servo motors and the corresponding
 
 1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the hardware tutorial to complete the calibration.
 
-    > [Tutorial Servo](../markdown/servo.md)
+    > [Tutorial Servo](servo.md)
 
 ## Part 2
 
 ### No Ultrasonic Sensor?
 
-Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [Tutorial Infrared Distance Sensor](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
+Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [Tutorial Infrared Distance Sensor](ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
 
 To create and use the ``IRSensor`` class, you can use the following code snippet:
 
@@ -71,7 +71,7 @@ The second task will be to design and implement a state machine (this is nothing
 
 The overall goal is to build a mechatronic system capable of adjusting the deflection of the servo based on the distance measured by the ultrasonic sensor. The system will enter a sleep state if readings are not within a specified range, and pressing the mechanical button will trigger an emergency state/stop which will reset the system.
 
-Before beginning the task you should familiarize yourself with the part [Tutorial Structuring a Robot Task](../markdown/tips.md#structuring-a-robot-task).
+Before beginning the task you should familiarize yourself with the part [Tutorial Structuring a Robot Task](tips.md#structuring-a-robot-task).
 
 Below you can find a flow chart diagram showing the logic of the transitions for each state.
 
@@ -97,7 +97,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
 ```
 
 3. Read the ultrasonic sensor manual and create an object in the ``main()`` function
-    >[Ultrasonic Sensor Manual](../markdown/ultrasonic_sensor.md)
+    >[Ultrasonic Sensor Manual](ultrasonic_sensor.md)
 4. Make sure that you add a reading command and a statement to handle non-valid measurement. This should be placed inside the ``while()`` loop in the scope of the ``if()`` statement, so that it is executed after clicking the **USER** button:
 
 ```cpp
