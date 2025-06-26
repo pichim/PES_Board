@@ -265,17 +265,17 @@ const float kn_M2 = 180.0f / 12.0f;  // motor constant [rpm/V]
 DCMotor motor_M2(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M2, kn_M2, voltage_max);
 ```
 
-Then include the command that will drive the motor with half of the maximum rotational velocity:
-
-```cpp
-motor_M2.setVelocity(motor_M2.getMaxVelocity() * 0.5f);
-```
-
-We can additionally use the driver functionality to limit the maximum rotational velocity to half the maximum physical velocity at which the motor can rotate.
+We can additionally use the driver functionality to limit the maximum rotational velocity to half the maximum physical velocity at which the motor can rotate. This really depends on the use case and should only be done if you really need to limit the maximum speed of the motor.
 
 ```cpp
 // limit max. velocity to half physical possible velocity
 motor_M2.setMaxVelocity(motor_M2.getMaxPhysicalVelocity() * 0.5f);
+```
+
+Then include the command that will drive the motor with half of the maximum rotational velocity:
+
+```cpp
+motor_M2.setVelocity(motor_M2.getMaxVelocity() * 0.5f);
 ```
 
 To receive the measured velocity/speed, include the following command inside the ``while()`` loop that prints the motor speed values to the serial terminal. This allows us to verify the correctness of the connection, ensuring that the motor's rotation direction aligns with our expectations and corresponds to the displayed speed values.

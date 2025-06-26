@@ -107,7 +107,7 @@ if (us_distance_cm_candidate > 0.0f)
     us_distance_cm = us_distance_cm_candidate;
 ```
 
-5. At the top of ``main()`` function create the ``robot_state`` enum object:
+5. At the start of the ``main()`` function create the ``robot_state`` enum object:
 
 ```cpp
 // set up states for state machine

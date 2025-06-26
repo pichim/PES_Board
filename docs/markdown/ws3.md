@@ -111,6 +111,9 @@ if (us_distance_cm_candidate > 0.0f)
 7. Create an object for [Motor M3](../markdown/dc_motor.md#motor-m3), which will be controlled by setting the setpoint position. Activate the motion planner and configure the maximum acceleration to half of the default value.
 
 ```cpp
+// create object to enable power electronics for the dc motors
+DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
+
 const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                  // 6.0f V if you only use one battery pack
 
