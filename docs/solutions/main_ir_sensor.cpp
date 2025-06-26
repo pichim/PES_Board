@@ -14,7 +14,7 @@ bool do_reset_all_once = false;    // this variable is used to reset certain var
 // objects for user button (blue button) handling on nucleo board
 DebounceIn user_button(BUTTON1);   // create DebounceIn to evaluate the user button
 void toggle_do_execute_main_fcn(); // custom function which is getting executed when user
-                                   // button gets pressed, definition below
+                                   // button gets pressed, definition at the end
 
 // function declaration, definition at the end
 float ir_sensor_compensation(float ir_distance_mV);

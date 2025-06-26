@@ -49,7 +49,7 @@ bool do_reset_all_once = false;    // this variable is used to reset certain var
 // objects for user button (blue button) handling on nucleo board
 DebounceIn user_button(BUTTON1);   // create DebounceIn to evaluate the user button
 void toggle_do_execute_main_fcn(); // custom function which is getting executed when user
-                                   // button gets pressed, definition below
+                                   // button gets pressed, definition at the end
 ```
 
 ``toggle_do_execute_main_fcn()`` is declared here, but defined below the ``main()`` function. This is the function that will be executed when the blue **USER** button is pressed. It is declared here, so that the ``main()`` function knows that it exists and can be executed. The actual definition of the function is placed below the ``main()`` function at the end of the file.
