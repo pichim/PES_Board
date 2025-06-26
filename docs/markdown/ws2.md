@@ -35,13 +35,13 @@ The first task will be the integration of two servo motors and the corresponding
 
 1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the hardware tutorial to complete the calibration.
 
-    > [Servo Tutorial](../markdown/servo.md)
+    > [Tutorial Servo](../markdown/servo.md)
 
 ## Part 2
 
 ### No Ultrasonic Sensor?
 
-Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [IR Sensor Tutorial](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
+Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [Tutorial Infrared Distance Sensor](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
 
 To create and use the ``IRSensor`` class, you can use the following code snippet:
 
@@ -71,7 +71,7 @@ The second task will be to design and implement a state machine (this is nothing
 
 The overall goal is to build a mechatronic system capable of adjusting the deflection of the servo based on the distance measured by the ultrasonic sensor. The system will enter a sleep state if readings are not within a specified range, and pressing the mechanical button will trigger an emergency state/stop which will reset the system.
 
-Before beginning the task you should familiarize yourself with the part [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
+Before beginning the task you should familiarize yourself with the part [Tutorial Structuring a Robot Task](../markdown/tips.md#structuring-a-robot-task).
 
 Below you can find a flow chart diagram showing the logic of the transitions for each state.
 
@@ -276,9 +276,9 @@ In the second workshop, the integration of a servo motor along with the PES boar
 
 ## Solutions
 
-- [Workshop 2, Part 1](../solutions/main_ws2_p1.cpp)
-- [Workshop 2, Part 2](../solutions/main_ws2_p2.cpp)
-- [Workshop 2, Part 2 with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws2_p2_ir_sensor.cpp)
+- [Workshop 2 Part 1 Solution: Example Servo](../solutions/main_servo.cpp)
+- [Workshop 2 Part 2 Solution](../solutions/main_ws2_p2.cpp)
+- [Workshop 2 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws2_p2_ir_sensor.cpp)
 
 <p align="center">
     <img src="../images/pulse_to_position_eval.png" alt="Pulse to position " width="710"/> </br>

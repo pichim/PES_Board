@@ -92,11 +92,11 @@
         - main_sd_card_logger_with_time.cpp   (ok)
         - main_serial_stream.cpp              (ok)
         - main_stepper_motor.cpp              (ok)
-        - main_ws1.cpp                        (ok)
-        - main_ws1_ir_sensor_class.cpp        (ok)
-        - main_ws2_p1.cpp                     (ok)
+        - main_ir_sensor.cpp                  (ok)
+        - main_ir_sensor_class.cpp            (ok)
+        - main_servo.cpp                      (ok)
         - main_ws2_p2.cpp                     (ok)
-        - main_ws3_p1.cpp                     (ok)
+        - main_dc_motor.cpp                   (ok)
         - main_ws3_p2.cpp                     (ok)
   -->
 
@@ -295,11 +295,14 @@ The following links contain the workshop instructions:
 <!-- - [Workshop 5](docs/markdown/ws5.md) -->
 
 And below you will find all the solutions, as well as some additional examples:
-- [Solution Workshop 1](docs/solutions/main_ws1.cpp)
-- [Solution Workshop 2, Part 1](docs/solutions/main_ws2_p1.cpp)
-- [Solution Workshop 2, Part 2](docs/solutions/main_ws2_p2.cpp)
-- [Solution Workshop 3, Part 1](docs/solutions/main_ws3_p1.cpp)
-- [Solution Workshop 3, Part 2](docs/solutions/main_ws3_p2.cpp)
+- [Workshop 1 Solution: Example Infrared Distance Sensor](docs/solutions/main_ir_sensor.cpp)
+- [Workshop 1 Solution: Example Infrared Distance Sensor using IRSensor class](docs/solutions/main_ir_sensor_class.cpp)
+- [Workshop 2 Part 1 Solution: Example Servo](docs/solutions/main_servo.cpp)
+- [Workshop 2 Part 2 Solution](docs/solutions/main_ws2_p2.cpp)
+- [Workshop 2 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](docs/solutions/main_ws2_p2_ir_sensor.cpp)
+- [Workshop 3 Part 1 Solution: Example DC Motor](docs/solutions/main_dc_motor.cpp)
+- [Workshop 3 Part 2 Solution](docs/solutions/main_ws3_p2.cpp)
+- [Workshop 3 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](docs/solutions/main_ws3_p2_ir_sensor.cpp)
 - [Example Line Follower](docs/solutions/main_line_follower.cpp)
 - [Example Gimbal](docs/solutions/main_gimbal.cpp)
 - [Example Line Follower Base Example](docs/solutions/main_line_follower_base_ss24.cpp)

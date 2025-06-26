@@ -51,16 +51,16 @@ The second task will be carried out using an IR distance sensor. This task will 
 
 1. Read the IR sensor manual. There you can find technical information about the sensor and instructions for the connection to the Nucleo board. Perform the calibration according to the hardware tutorial:
    
-    > [IR Sensor Tutorial](../markdown/ir_sensor.md)
+    > [Tutorial Infrared Distance Sensor](../markdown/ir_sensor.md)
 
 ## Summary
 
 In this workshop, participants were introduced to the Nucleo-F446RE board, acquiring familiarity with the Mbed Studio IDE and basic usage of objects in C++. The workshop included understanding of the ***main.cpp*** file, comprehension of its structure, defining and working with objects and the implementation of essential commands. Additionally, exploration of hardware utilization, particularly an IR sensor, and the corresponding calibration using MATLAB were conducted. This first workshop aimed to establish basic steps in using the system, laying the groundwork for further exploration for the development of robotics and mechatronics systems.
 
-## Solution
+## Solutions
 
-- [Workshop 1](../solutions/main_ws1.cpp)
-- [Workshop 1 with filtered values (IRSensor class)](../solutions/main_ws1_ir_sensor_class.cpp)
+- [Workshop 1 Solution: Example Infrared Distance Sensor](../solutions/main_ir_sensor.cpp)
+- [Workshop 1 Solution: Example Infrared Distance Sensor using IRSensor class](../solutions/main_ir_sensor_class.cpp)
 
 <p align="center">
     <img src="../images/ir_sensor_eval.png" alt="IR Sensor Evaluation" width="950"/> </br>

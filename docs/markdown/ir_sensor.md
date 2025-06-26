@@ -279,3 +279,8 @@ float ir_distance_cm = ir_sensor.readcm(); // sensor value in centimeters (if ca
 ```
 
 you can read out the unfiltered values.
+
+## Examples
+
+- [Example Infrared Distance Sensor](../solutions/main_ir_sensor.cpp)
+- [Example Infrared Distance Sensor using IRSensor class](../solutions/main_ir_sensor_class.cpp)

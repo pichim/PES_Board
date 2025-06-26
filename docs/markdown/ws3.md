@@ -30,7 +30,7 @@ We will discuss different control strategies for motor control, e.g., speed cont
 
 ## Part 1
 
-In the first task, we will focus only on understanding the motor functionality and control mechanisms. To achieve this, we rely on the information provided in the hardware tutorial: [DC Motor Tutorial](../markdown/dc_motor.md)
+In the first task, we will focus only on understanding the motor functionality and control mechanisms. To achieve this, we rely on the information provided in the hardware tutorial: [Tutorial DC Motor](../markdown/dc_motor.md)
 
 **Important Note: In this tutorial, the motors are consistently connected to the same pin. However, it's worth noting that there is an option to connect them to different pins: M2 and M3. You can run up to 3 DC motors with one PES board.**
 
@@ -38,7 +38,7 @@ In the first task, we will focus only on understanding the motor functionality a
 
 ### No Ultrasonic Sensor?
 
-Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [IR Sensor Tutorial](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
+Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [Tutorial Infrared Distance Sensor](../markdown/ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
 
 To create and use the ``IRSensor`` class, you can use the following code snippet:
 
@@ -69,7 +69,7 @@ In the second part, we'll design a state machine using the hardware introduced i
 
 The objective is to set up a mechatronic system that mimics a can crusher press. Pressing the mechanical button will prompt the transition to the **Forward** state in which the motor will move forward a specific number of revolutions (representing the press going down), and then, after reaching a specific number of rotations, move backwards to the initial position and then to the **Sleep** state. If the distance from the ultrasonic sensor while being in the **Forward** state drops below a certain threshold (limit) (e.g., an obstacle is in the way), the device should switch to the **Emergency** state and rapidly return to the initial position and shut down.
 
-Before doing the task, you may look at the [Structuring a Robot Task Tutorial](../markdown/tips.md#structuring-a-robot-task).
+Before doing the task, you may look at the [Tutorial Structuring a Robot Task](../markdown/tips.md#structuring-a-robot-task).
 
 1. Create the flow-chart diagram according to the description above.
    
@@ -277,9 +277,9 @@ In the third workshop, we explored DC motors and the functionality of the driver
 
 ## Solutions
 
-- [Workshop 3, Part 1](../solutions/main_ws3_p1.cpp)
-- [Workshop 3, Part 2](../solutions/main_ws3_p2.cpp)
-- [Workshop 3, Part 2 with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws3_p2_ir_sensor.cpp)
+- [Workshop 2 Part 1 Solution: Example DC Motor](../solutions/main_dc_motor.cpp)
+- [Workshop 2 Part 2 Solution](../solutions/main_ws3_p2.cpp)
+- [Workshop 2 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws3_p2_ir_sensor.cpp)
 
 <p align="center">
     <img src="../images/ws3_flowchart.png" alt="Flow Chart for Workshop 3" width="500"/> </br>

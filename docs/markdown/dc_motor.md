@@ -393,3 +393,7 @@ In the following graph, a smooth positioning step of a DC motor is shown in more
     <img src="../images/dc_motor_smooth_positioning.png" alt="DC Motor Smooth Positioning" width="910"/> </br>
     <i>Smooth Positioning of 78:1 DC Motor</i>
 </p>
+
+## Example
+
+- [Example DC Motor](../solutions/main_dc_motor.cpp)
