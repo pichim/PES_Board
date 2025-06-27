@@ -235,7 +235,7 @@ Below are the graphs showing the results from the calibration process.
 
 The first graph illustrates the non-linear relationship between the sensor's received voltage and its distance from an obstacle. In the second graph two curves are presented: the blue curve representing measured points and the green curve the optimal-fit function. The third graph shows how well the fitted function relates to its optimum (the closer to a linear function, the better).
 
-**NOTE:**
+**NOTES:**
 - Keep in mind that the signal is mapped to a range of 0.0f to 1.0f. Consequently, the reading needs to be multiplied by 3.3, representing the maximum range of the sensor, and then by 1000 to convert the signal from volts to millivolts.
 
 - After the calibration, using the sensor is straightforward however, the measured values need to be calibrated using the function acquired during the calibration process. This ensures the result is available as physical distance. Determining this function for each sensor individually is recommended.

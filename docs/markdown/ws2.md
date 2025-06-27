@@ -33,9 +33,7 @@ We assume that you know the general structure of the PES board, if not, please v
 
 The first task will be the integration of two servo motors and the corresponding calibration process.
 
-1. Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the hardware tutorial to complete the calibration.
-
-    > [Tutorial Servo](servo.md)
+Refer to the Servo manual for a step-by-step hardware tutorial on the usage of a servo motor and on the calibration process. There you can find also information on how to connect the servos to the PES board. Follow the instructions outlined in the hardware tutorial to complete the calibration: [Tutorial Servo](servo.md)
 
 ## Part 2
 

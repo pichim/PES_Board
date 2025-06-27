@@ -8,7 +8,7 @@
 #include "DCMotor.h"
 #include "LineFollower.h"
 
-#define USE_GEAR_RATIO_78 false // st this to true use gear ratio 78.125, otherwise 100.00 is used
+#define USE_GEAR_RATIO_78 false    // set this to true use gear ratio 78.125, otherwise 100.00 is used
 
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
@@ -59,12 +59,6 @@ int main()
     DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);
     DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio, kn, voltage_max);
 
-    // // optional: adjust pwm adjust fast pwm frequency
-    // int period_mus = 2000; // 500 Hz
-    // motor_M1.setFastPWMPeriod_mus(period_mus);
-    // motor_M2.setFastPWMPeriod_mus(period_mus);
-
-    // line follower, tune max. vel rps to your needs
 #if USE_GEAR_RATIO_78
     const float d_wheel = 0.035f;  // wheel diameter in meters
     const float b_wheel = 0.1518f; // wheelbase, distance from wheel to wheel in meters
@@ -74,8 +68,8 @@ int main()
     const float b_wheel = 0.156f;  // wheelbase, distance from wheel to wheel in meters
     const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
 #endif
+    // line follower, tune max. vel rps to your needs
     LineFollower lineFollower(PB_9, PB_8, bar_dist, d_wheel, b_wheel, motor_M2.getMaxPhysicalVelocity());
-
     // nonlinear controller gains, tune to your needs
 #if USE_GEAR_RATIO_78
     const float Kp = 1.0f * 2.0f;
@@ -84,7 +78,7 @@ int main()
     const float Kp = 1.2f * 2.0f;
     const float Kp_nl = 1.2f * 17.0f;
 #endif
-    lineFollower.setRotationalVelocityGain(Kp, Kp_nl);
+    lineFollower.setRotationalVelocityControllerGains(Kp, Kp_nl);
 
     // start timer
     main_task_timer.start();
@@ -94,9 +88,12 @@ int main()
         main_task_timer.reset();
 
         if (do_execute_main_task) {
+
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
             enable_motors = 1;
+
+            // setpoints for the dc motors in rps
             motor_M1.setVelocity(lineFollower.getRightWheelVelocity()); // set a desired speed for speed controlled dc motors M1
             motor_M2.setVelocity(lineFollower.getLeftWheelVelocity());  // set a desired speed for speed controlled dc motors M2
         } else {

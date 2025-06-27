@@ -280,9 +280,9 @@ In the third workshop, we explored DC motors and the functionality of the driver
 
 ## Solutions
 
-- [Workshop 2 Part 1 Solution: Example DC Motor](../solutions/main_dc_motor.cpp)
-- [Workshop 2 Part 2 Solution](../solutions/main_ws3_p2.cpp)
-- [Workshop 2 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws3_p2_ir_sensor.cpp)
+- [Workshop 3 Part 1 Solution: Example DC Motor](../solutions/main_dc_motor.cpp)
+- [Workshop 3 Part 2 Solution](../solutions/main_ws3_p2.cpp)
+- [Workshop 3 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](../solutions/main_ws3_p2_ir_sensor.cpp)
 
 <p align="center">
     <img src="../images/ws3_flowchart.png" alt="Flow Chart for Workshop 3" width="500"/> </br>

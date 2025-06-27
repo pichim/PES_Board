@@ -10,9 +10,9 @@ LineFollower::LineFollower(PinName sda_pin,
                                                       m_Thread(osPriorityAboveNormal2)
 {
     // set default gains of the controllers
-    setRotationalVelocityGain();
+    setRotationalVelocityControllerGains();
 
-    // transform robot to wheel
+    // transforms wheel to robot velocities
     float r_wheel = d_wheel / 2.0f;
     m_Cwheel2robot << r_wheel / 2.0f,       r_wheel / 2.0f,
                       r_wheel / b_wheel, -r_wheel / b_wheel;
@@ -38,13 +38,13 @@ LineFollower::~LineFollower()
     m_Thread.terminate();
 }
 
-void LineFollower::setRotationalVelocityGain(float Kp, float Kp_nl)
+void LineFollower::setRotationalVelocityControllerGains(float Kp, float Kp_nl)
 {
     m_Kp = Kp;
     m_Kp_nl = Kp_nl;
 }
 
-void LineFollower::setMaxWheelVelocityRPS(float wheel_vel_max)
+void LineFollower::setMaxWheelVelocity(float wheel_vel_max)
 {
     if (m_motor_vel_max_rps < wheel_vel_max) {
         m_wheel_vel_max_rps = m_motor_vel_max_rps;
@@ -99,13 +99,13 @@ void LineFollower::followLine()
         // update sensor bar readings
         m_SensorBar.update();
 
-        // only update sensor bar angle if a led is triggered
+        // only update sensor bar angle if an led is triggered
         is_any_led_active = m_SensorBar.isAnyLedActive();
         if (is_any_led_active) {
             m_angle = m_SensorBar.getAvgAngleRad();
         }
 
-        // control algorithm in robot velocities
+        // control algorithm for robot velocities
         m_robot_coord(1) = ang_cntrl_fcn(m_Kp, m_Kp_nl, m_angle);
         m_robot_coord(0) = vel_cntrl_fcn(m_wheel_vel_max_rps * 2 * M_PIf,
                                          m_rotation_to_wheel_vel,
@@ -115,7 +115,7 @@ void LineFollower::followLine()
         // map robot velocities to wheel velocities in rad/sec
         Eigen::Vector2f wheel_speed = m_Cwheel2robot.inverse() * m_robot_coord;
 
-        // setpoints for the dc-motors in rps
+        // setpoints for the dc motors in rps
         m_wheel_right_velocity_rps = wheel_speed(0) / (2.0f * M_PIf);
         m_wheel_left_velocity_rps = wheel_speed(1) / (2.0f * M_PIf);
     }
