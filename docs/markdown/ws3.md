@@ -87,7 +87,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
 
 4. Connect the ultrasonic sensor to pin **D3** on the PES board (see [PES Board Pinmap](../datasheets/pes_board_peripherals.pdf))
 
-5. Include the necessary drivers at the top of the ***main.cpp*** file. For more details, refer to [Ultrasonic Distance Sensor](ultrasonic_sensor.md)
+5. Include the necessary drivers at the top of the ***main.cpp*** file. For more details, refer to [Tutorial Ultrasonic Distance Sensor](ultrasonic_sensor.md)
 
 ```cpp
 #include "UltrasonicSensor.h"
@@ -108,7 +108,7 @@ if (us_distance_cm_candidate > 0.0f)
     us_distance_cm = us_distance_cm_candidate;
 ```
 
-7. Create an object for [Motor M3](dc_motor.md#motor-m3), which will be controlled by setting the setpoint position. Activate the motion planner and configure the maximum acceleration to half of the default value.
+7. Create an object for **Motor M3**, see [Tutorial DC Motor](dc_motor.md#motor-m3), which will be controlled by setting the setpoint position. Activate the motion planner and configure the maximum acceleration to half of the default value.
 
 ```cpp
 // create object to enable power electronics for the dc motors

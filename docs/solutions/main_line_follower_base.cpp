@@ -80,7 +80,7 @@ int main()
                     r1_wheel / b_wheel, -r2_wheel / b_wheel;
 
     // sensor bar
-    SensorBar sensorBar(PB_9, PB_8, bar_dist);
+    SensorBar sensor_bar(PB_9, PB_8, bar_dist);
 
     // angle measured from sensor bar (black line) relative to robot
     float angle{0.0f};
@@ -103,8 +103,8 @@ int main()
             enable_motors = 1;
 
             // only update sensor bar angle if an led is triggered
-            if (sensorBar.isAnyLedActive())
-                angle = sensorBar.getAvgAngleRad();
+            if (sensor_bar.isAnyLedActive())
+                angle = sensor_bar.getAvgAngleRad();
 
             // control algorithm for robot velocities
             Eigen::Vector2f robot_coord = {0.5f * wheel_vel_max * r1_wheel,  // half of the max. forward velocity

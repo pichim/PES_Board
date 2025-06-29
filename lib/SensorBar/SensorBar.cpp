@@ -17,10 +17,14 @@ SensorBar::SensorBar(PinName sda,
 
     lastBarRawValue = lastBarPositionValue = 0;
 
-    angle = avg_angle = 0;
+    angle = avgAngle = 0;
     nrOfLedsActive = 0;
-    avg_filter.init(10);
-    is_first_avg = true;
+    avgFilterAngle.init(AVG_FILTER_ANGLE_N);
+    isFirstAvgAngle = true;
+
+    for (int i = 0; i < 8; ++i) {
+        avgFilterBits[i].init(AVG_FILTER_BITS_N);
+    }
 
     clearBarStrobe();  // to illuminate all the time
     clearInvertBits(); // to make the bar look for a dark line on a reflective surface
@@ -67,38 +71,69 @@ void SensorBar::clearInvertBits()
 //
 //****************************************************************************//
 
-uint8_t SensorBar::getRaw()
+uint8_t SensorBar::getRaw() const
 {
     return lastBarRawValue;
 }
 
-int8_t SensorBar::getBinaryPosition()
+int8_t SensorBar::getBinaryPosition() const
 {
     return -lastBarPositionValue;
 }
 
-float SensorBar::getAngleRad()
+float SensorBar::getAngleRad() const
 {
     return angle;
 }
 
-float SensorBar::getAvgAngleRad()
+float SensorBar::getAvgAngleRad() const
 {
-    return avg_angle;
+    return avgAngle;
 }
 
-uint8_t SensorBar::getNrOfLedsActive()
+uint8_t SensorBar::getNrOfLedsActive() const
 {
     return nrOfLedsActive;
 }
 
-bool SensorBar::isAnyLedActive()
+bool SensorBar::isAnyLedActive() const
 {
-    bool retval = false;
-    if(nrOfLedsActive != 0) {
-        retval =  true;
-    }
-    return retval;
+    if(nrOfLedsActive != 0)
+        return true;
+    return false;
+}
+
+float SensorBar::getAvgBit(int bitNumber) const {
+    if (bitNumber < 0 || bitNumber >= 8)
+        return 0.0f;
+    // constrain the value
+    const float avgBit = avgFilterBits[bitNumber].read();
+    return constrainIntoZeroToOne(avgBit);
+}
+
+float SensorBar::getMeanThreeAvgBitsLeft() const {
+    // Leftmost 3 bits
+    const float avgBits = 0.5f * avgFilterBits[0].read()
+                        + 0.3f * avgFilterBits[1].read()
+                        + 0.2f * avgFilterBits[2].read();
+    return constrainIntoZeroToOne(avgBits);
+}
+
+float SensorBar::getMeanThreeAvgBitsRight() const {
+    // Rightmost 3 bits
+    const float avgBits = 0.2f * avgFilterBits[5].read()
+                        + 0.3f * avgFilterBits[6].read()
+                        + 0.5f * avgFilterBits[7].read();
+    return constrainIntoZeroToOne(avgBits);
+}
+
+float SensorBar::getMeanFourAvgBitsCenter() const {
+    // Center 4 bits
+    const float avgBits = 0.15f * avgFilterBits[2].read()
+                        + 0.35f * avgFilterBits[3].read()
+                        + 0.35f * avgFilterBits[4].read()
+                        + 0.15f * avgFilterBits[5].read();
+    return constrainIntoZeroToOne(avgBits);
 }
 
 void SensorBar::update()
@@ -117,14 +152,16 @@ void SensorBar::update()
         writeByte(REG_DATA_B, 0x00); //make sure both IR and indicators are on
     }
     //Operate the I2C machine
-    lastBarRawValue = readByte( REG_DATA_A );  //Peel the data off port A
+    lastBarRawValue = readByte( REG_DATA_A ); //Peel the data off port A
 
-    if( invertBits == 1 ) { //Invert the bits if needed
+    //Invert the bits if needed
+    if( invertBits == 1 ) {
         lastBarRawValue ^= 0xFF;
     }
 
+    //Turn off IR and feedback when done
     if( barStrobe == 1 ) {
-        writeByte(REG_DATA_B, 0x03); //Turn off IR and feedback when done
+        writeByte(REG_DATA_B, 0x03);
     }
 
     //count bits
@@ -152,21 +189,26 @@ void SensorBar::update()
         lastBarPositionValue = 0;
     }
 
-    //Update member variables
+    //Update average filters
     angle = updateAngleRad();
     nrOfLedsActive = updateNrOfLedsActive();
 
     if(nrOfLedsActive == 0) {
-        if(!is_first_avg) {
-            avg_filter.reset();
-            is_first_avg = true;
+        if(!isFirstAvgAngle) {
+            avgFilterAngle.reset();
+            isFirstAvgAngle = true;
         }
     } else {
-        if(is_first_avg) {
-            is_first_avg = false;
-            avg_filter.reset(angle);
+        if(isFirstAvgAngle) {
+            isFirstAvgAngle = false;
+            avgFilterAngle.reset(angle);
         }
-        avg_angle = avg_filter.apply(angle);
+        avgAngle = avgFilterAngle.apply(angle);
+    }
+
+    for (int i = 0; i < 8; ++i) {
+        bool bit = (lastBarRawValue >> i) & 0x01;
+        avgFilterBits[7 - i].apply(static_cast<float>(bit));
     }
 }
 
@@ -219,10 +261,10 @@ void SensorBar::reset()
 //
 uint8_t SensorBar::readByte(uint8_t registerAddress)
 {
-    char readValue;
-    char data[2] = {registerAddress, 0};
-    i2c.write(deviceAddress, data, 1);
-    i2c.read(deviceAddress, &readValue, 1);
+    uint8_t readValue;
+    uint8_t data[2] = {registerAddress, 0};
+    i2c.write(deviceAddress, reinterpret_cast<char*>(data), 1);
+    i2c.read(deviceAddress, reinterpret_cast<char*>(&readValue), 1);
 
     return readValue;
 }
@@ -236,11 +278,10 @@ unsigned int SensorBar::readWord(uint8_t registerAddress)
 {
     unsigned int readValue;
     unsigned int msb, lsb;
-    //unsigned int timeout = RECEIVE_TIMEOUT_VALUE * 2;
-    char data[2] = {registerAddress, 0};
-    char r_data[2];
-    i2c.write(deviceAddress, data, 1);
-    i2c.read(deviceAddress, r_data, 2);
+    uint8_t data[2] = {registerAddress, 0};
+    uint8_t r_data[2];
+    i2c.write(deviceAddress, reinterpret_cast<char*>(data), 1);
+    i2c.read(deviceAddress, reinterpret_cast<char*>(r_data), 2);
     msb = ((unsigned int)r_data[0] & 0x00FF) << 8;
     lsb = ((unsigned int)r_data[1] & 0x00FF);
     readValue = msb | lsb;
@@ -254,11 +295,11 @@ unsigned int SensorBar::readWord(uint8_t registerAddress)
 //  - destination is an array of uint8_ts where the read values will be stored into
 //  - length is the number of uint8_ts to be read
 //  - No return value.
-void SensorBar::readBytes(uint8_t firstRegisterAddress, char * destination, uint8_t length)
+void SensorBar::readBytes(uint8_t firstRegisterAddress, uint8_t * destination, uint8_t length)
 {
-    char data[2] = {firstRegisterAddress, 0};
-    i2c.write(deviceAddress, data, 1);
-    i2c.read(deviceAddress, destination, length);
+    uint8_t data[2] = {firstRegisterAddress, 0};
+    i2c.write(deviceAddress, reinterpret_cast<char*>(data), 1);
+    i2c.read(deviceAddress, reinterpret_cast<char*>(destination), length);
 }
 
 // writeByte(uint8_t registerAddress, uint8_t writeValue)
@@ -268,39 +309,39 @@ void SensorBar::readBytes(uint8_t firstRegisterAddress, char * destination, uint
 //  - No return value.
 void SensorBar::writeByte(uint8_t registerAddress, uint8_t writeValue)
 {
-    char data[2] = {registerAddress, writeValue};
-    i2c.write(deviceAddress, data, 2);
+    uint8_t data[2] = {registerAddress, writeValue};
+    i2c.write(deviceAddress, reinterpret_cast<char*>(data), 2);
 }
 
 // writeWord(uint8_t registerAddress, ungisnged int writeValue)
 //  This function writes a two-uint8_t word to registerAddress and registerAddress + 1
 //  - the upper uint8_t of writeValue is written to registerAddress
-//      - the lower uint8_t of writeValue is written to registerAddress + 1
+//  - the lower uint8_t of writeValue is written to registerAddress + 1
 //  - No return value.
 void SensorBar::writeWord(uint8_t registerAddress, unsigned int writeValue)
 {
     uint8_t msb, lsb;
     msb = ((writeValue & 0xFF00) >> 8);
     lsb = (writeValue & 0x00FF);
-    char data[3] = {registerAddress, msb, lsb};
-    i2c.write(deviceAddress, data, 3);
+    uint8_t data[3] = {registerAddress, msb, lsb};
+    i2c.write(deviceAddress, reinterpret_cast<char*>(data), 3);
 }
 
 // writeBytes(uint8_t firstRegisterAddress, uint8_t * writeArray, uint8_t length)
 //  This function writes an array of uint8_ts, beggining at a specific adddress
 //  - firstRegisterAddress is the initial register to be written.
-//      - All writes following will be at incremental register addresses.
+//  - All writes following will be at incremental register addresses.
 //  - writeArray should be an array of uint8_t values to be written.
 //  - length should be the number of uint8_ts to be written.
-//  - no return value.
-void SensorBar::writeBytes(uint8_t firstRegisterAddress, uint8_t * writeArray, uint8_t length)
+//  - No return value.
+void SensorBar::writeBytes(uint8_t firstRegisterAddress, const uint8_t * writeArray, uint8_t length)
 {
-    char data[10] = {};
+    uint8_t data[10] = {};
     data[0] = firstRegisterAddress;
     for(int i = 0; i < length; i++) {
         data[1+i] = writeArray[i];
     }
-    i2c.write(deviceAddress, data, length+1);
+    i2c.write(deviceAddress, reinterpret_cast<char*>(data), length+1);
 }
 
 void SensorBar::updateAsThread()
@@ -330,6 +371,11 @@ uint8_t SensorBar::updateNrOfLedsActive()
         }
     }
     return bitsCounted;
+}
+
+float SensorBar::constrainIntoZeroToOne(float val) const
+{
+    return val < 0.0f ? 0.0f : val > 1.0f ? 1.0f : val;
 }
 
 void SensorBar::sendThreadFlag()

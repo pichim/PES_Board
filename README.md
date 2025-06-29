@@ -133,7 +133,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
         * [Peripherals](#peripherals)
         * [Pin-Mapping](#pin-mapping)
     * [Hardware Tutorials](#hardware-tutorials)
-        * [IR Sensor](docs/markdown/ir_sensor.md)
+        * [Infrared Distance Sensor](docs/markdown/ir_sensor.md)
         * [Ultrasonic Sensor](docs/markdown/ultrasonic_sensor.md)
         * [Servo](docs/markdown/servo.md)
         * [DC Motor](docs/markdown/dc_motor.md)
@@ -269,10 +269,11 @@ The following links point to the hardware tutorials. These documents contain spe
 
 **Important Note: The PES board currently does not support stepper motors. The following example uses an external hardware driver and an additional battery pack, which is directly wired to the Nucleo board.**
 
-- [IR Sensor](docs/markdown/ir_sensor.md)
+- [Infrared Distance Sensor](docs/markdown/ir_sensor.md)
 - [Ultrasonic Sensor](docs/markdown/ultrasonic_sensor.md)
 - [Servo](docs/markdown/servo.md)
 - [DC Motor](docs/markdown/dc_motor.md)
+- [Differential Drive Robot Kinematics](dd_kinematics.md)
 - [Line Follower](docs/markdown/line_follower.md)
 - [IMU](docs/markdown/imu.md)
 - [Stepper Motor](docs/markdown/stepper_motor.md)
@@ -313,10 +314,6 @@ And below you will find all the solutions, as well as some additional examples:
 - [Example 1 SD-Card](docs/solutions/main_sd_card_logger_e1.cpp)
 - [Example 2 SD-Card](docs/solutions/main_sd_card_logger_e2.cpp)
 - [Example Serial Stream](docs/solutions/main_serial_stream.cpp)
-
-### Additional Information
-
-- [Differential Drive Robot Kinematics](docs/markdown/dd_kinematics.md)
 
 ## Build Mbed OS projects with VS Code
 

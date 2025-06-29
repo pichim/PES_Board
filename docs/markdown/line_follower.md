@@ -93,9 +93,9 @@ and create a variable for the distance from the wheel axis to the LEDs on the se
 - SDA (Data Line): **PB_9**
 
 ```cpp
-const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
 // sensor bar
-SensorBar sensorBar(PB_9, PB_8, bar_dist);
+const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
+SensorBar sensor_bar(PB_9, PB_8, bar_dist);
 ```
 
 #### Sensor Bar Usage
@@ -111,8 +111,8 @@ The sensor bar driver provides functionality to read the sensor values and calcu
 
 ```cpp
 // only update sensor bar angle if an led is triggered
-if (sensorBar.isAnyLedActive())
-    angle = sensorBar.getAvgAngleRad();
+if (sensor_bar.isAnyLedActive())
+    angle = sensor_bar.getAvgAngleRad();
 ```
 
 You can now use this angle to control the robot velocities.
@@ -129,7 +129,7 @@ As usual include the library in the ***main.cpp*** file.
 #define M_PIf 3.14159265358979323846f // pi
 ```
 
-Now you're able to define the mapping from wheel velocity to the robot velocities as a 2x2 matrix using the following code snippet. Check out [Differential Drive Robot Kinematics](dd_kinematics.md) for more information.
+Now you're able to define the mapping from wheel velocity to the robot velocities as a 2x2 matrix using the following code snippet. Check out [Tutorial Differential Drive Robot Kinematics](dd_kinematics.md) for more information.
 
 ```cpp
 // differential drive robot kinematics
@@ -181,9 +181,35 @@ motor_M2.setVelocity(wheel_speed(1) / (2.0f * M_PIf)); // set a desired speed fo
 **NOTE:**
 - The simple control law above is just an example. You can implement your own control law to follow the line based on the angle measured by the sensor bar. Think about a nonlinear proportional controller for the angle and a control law for the forward velocity that alters the forward velocity based on the angle. The more the robot deviates from the line, the slower it should drive forward. This way, you can implement a more robust and faster line following algorithm.
 
-## Example
+### Example
 
 - [Example Line Follower Base](../solutions/main_line_follower_base.cpp)
+
+### Additional Sensor Bar Functionality
+
+The ``SensorBar`` driver provides the following features. All these values are returned as floating-point numbers in the range from 0.0 to 1.0, where 0.0 represents no light detected and 1.0 represents maximum light detected.
+
+- **Averaged Bit Values**: The driver calculates the average bit values for each sensor, which can be accessed using the ``getAvgBit(int bitNumber)`` method, where ``bitNumber`` ranges from 0 to 7 and starts from the leftmost sensor (0) to the rightmost sensor (7). This allows for a more stable reading of the sensor values, reducing noise and fluctuations.
+- **Weighted Mean of the Three Leftmost Sensors**: The driver calculates a weighted mean of the three leftmost sensors using the ``getMeanThreeAvgBitsLeft()`` method.
+- **Weighted Mean of the Three Rightmost Sensors**: The driver calculates a weighted mean of the three rightmost sensors using the ``getMeanThreeAvgBitsRight()`` method.
+- **Weigthed Mean of the Four Center Sensors**: The driver calculates a weighted mean of the four center sensors using the ``getMeanFourAvgBitsCenter()`` method.
+
+Use the following code snippet to print the averaged bit values and the means of the left, center, and right sensors to the serial terminal.
+
+```cpp
+// print to the serial terminal
+printf("Averaged Bar Raw: |  %0.2f  | %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f | ", sensor_bar.getAvgBit(0)
+                                                                                                     , sensor_bar.getAvgBit(1)
+                                                                                                     , sensor_bar.getAvgBit(2)
+                                                                                                     , sensor_bar.getAvgBit(3)
+                                                                                                     , sensor_bar.getAvgBit(4)
+                                                                                                     , sensor_bar.getAvgBit(5)
+                                                                                                     , sensor_bar.getAvgBit(6)
+                                                                                                     , sensor_bar.getAvgBit(7));
+printf("Mean Left: %0.2f, Mean Center: %0.2f, Mean Right: %0.2f \n", sensor_bar.getMeanThreeAvgBitsLeft()
+                                                                   , sensor_bar.getMeanFourAvgBitsCenter()
+                                                                   , sensor_bar.getMeanThreeAvgBitsRight());
+```
 
 ## Line Follower Driver
 
@@ -191,7 +217,7 @@ The ``LineFollower`` driver is designed to drive (control) a differential drive 
 
 To start using the ``LineFollower`` driver, the initial step in the ***main.cpp*** file is to create the ``LineFollower`` object and specify the pins to which the object will be assigned.
 
-To set up the module in the main function, it's necessary that you define two DC motor objects. To do so, please see the instructions provided in [DC Motor](dc_motor.md). Code snippets that should be placed in the correct places:
+To set up the module in the main function, it's necessary that you define two DC motor objects. To do so, please see the instructions provided in [Tutorial DC Motor](dc_motor.md). Code snippets that should be placed in the correct places:
 
 ```cpp
 #include "DCMotor.h"
@@ -211,7 +237,7 @@ DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio, kn, voltage_ma
 ```
 
 **NOTE:**
-- Follow the instructions [Motor M2 Closed-Loop Velocity Control](dc_motor.md#motor-m2-closed-loop-velocity-control)
+- Follow the instructions **Motor M2 Closed-Loop Velocity Control** in [Tutorial DC Motor](dc_motor.md#motor-m2-closed-loop-velocity-control)
 - The control algorithm in the ``LineFollower`` driver works best if the motion planner for the DC motors is disabled (default).
 
 ### Create Line Follower Object
@@ -274,7 +300,7 @@ enable_motors = 0;
 **NOTE:** 
 - The ``LineFollower`` class assumes that the right motor is M1 and the left motor is M2 (sitting on the robot and looking forward) and that a positive speed setpoint to the motor M1 and M2 will rotate the robot positively around the z-axis (counter-clockwise seen from above).
 
-Below, you'll find an in-depth manual explaining the inner driver functions. While it's not mandatory to use this manual, familiarizing yourself with the content will certainly help. For enhanced comprehension, it's recommended to refer to the [Differential Drive Robot Kinematics](dd_kinematics.md) document.
+Below, you'll find an in-depth manual explaining the inner driver functions. While it's not mandatory to use this manual, familiarizing yourself with the content will certainly help. For enhanced comprehension, it's recommended to refer to the [Tutorial Differential Drive Robot Kinematics](dd_kinematics.md) document.
 
 ### Thread Algorithm Description
 

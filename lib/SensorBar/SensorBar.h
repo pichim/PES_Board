@@ -129,35 +129,30 @@
 #define INTERNAL_CLOCK  2
 #define EXTERNAL_CLOCK  1
 
-const char REG_I_ON[16] = {REG_I_ON_0, REG_I_ON_1, REG_I_ON_2, REG_I_ON_3,
-                           REG_I_ON_4, REG_I_ON_5, REG_I_ON_6, REG_I_ON_7,
-                           REG_I_ON_8, REG_I_ON_9, REG_I_ON_10, REG_I_ON_11,
-                           REG_I_ON_12, REG_I_ON_13, REG_I_ON_14, REG_I_ON_15
-                          };
+static const uint8_t REG_I_ON[16] = {REG_I_ON_0, REG_I_ON_1, REG_I_ON_2, REG_I_ON_3,
+                                     REG_I_ON_4, REG_I_ON_5, REG_I_ON_6, REG_I_ON_7,
+                                     REG_I_ON_8, REG_I_ON_9, REG_I_ON_10, REG_I_ON_11,
+                                     REG_I_ON_12, REG_I_ON_13, REG_I_ON_14, REG_I_ON_15};
 
-const char REG_T_ON[16] = {REG_T_ON_0, REG_T_ON_1, REG_T_ON_2, REG_T_ON_3,
-                           REG_T_ON_4, REG_T_ON_5, REG_T_ON_6, REG_T_ON_7,
-                           REG_T_ON_8, REG_T_ON_9, REG_T_ON_10, REG_T_ON_11,
-                           REG_T_ON_12, REG_T_ON_13, REG_T_ON_14, REG_T_ON_15
-                          };
+static const uint8_t REG_T_ON[16] = {REG_T_ON_0, REG_T_ON_1, REG_T_ON_2, REG_T_ON_3,
+                                     REG_T_ON_4, REG_T_ON_5, REG_T_ON_6, REG_T_ON_7,
+                                     REG_T_ON_8, REG_T_ON_9, REG_T_ON_10, REG_T_ON_11,
+                                     REG_T_ON_12, REG_T_ON_13, REG_T_ON_14, REG_T_ON_15};
 
-const char REG_OFF[16] = {REG_OFF_0, REG_OFF_1, REG_OFF_2, REG_OFF_3,
-                          REG_OFF_4, REG_OFF_5, REG_OFF_6, REG_OFF_7,
-                          REG_OFF_8, REG_OFF_9, REG_OFF_10, REG_OFF_11,
-                          REG_OFF_12, REG_OFF_13, REG_OFF_14, REG_OFF_15
-                         };
+static const uint8_t REG_OFF[16] = {REG_OFF_0, REG_OFF_1, REG_OFF_2, REG_OFF_3,
+                                    REG_OFF_4, REG_OFF_5, REG_OFF_6, REG_OFF_7,
+                                    REG_OFF_8, REG_OFF_9, REG_OFF_10, REG_OFF_11,
+                                    REG_OFF_12, REG_OFF_13, REG_OFF_14, REG_OFF_15};
 
-const char REG_T_RISE[16] = {0xFF, 0xFF, 0xFF, 0xFF,
-                             REG_T_RISE_4, REG_T_RISE_5, REG_T_RISE_6, REG_T_RISE_7,
-                             0xFF, 0xFF, 0xFF, 0xFF,
-                             REG_T_RISE_12, REG_T_RISE_13, REG_T_RISE_14, REG_T_RISE_15
-                            };
+static const uint8_t REG_T_RISE[16] = {0xFF, 0xFF, 0xFF, 0xFF,
+                                       REG_T_RISE_4, REG_T_RISE_5, REG_T_RISE_6, REG_T_RISE_7,
+                                       0xFF, 0xFF, 0xFF, 0xFF,
+                                       REG_T_RISE_12, REG_T_RISE_13, REG_T_RISE_14, REG_T_RISE_15};
 
-const char REG_T_FALL[16] = {0xFF, 0xFF, 0xFF, 0xFF,
-                             REG_T_FALL_4, REG_T_FALL_5, REG_T_FALL_6, REG_T_FALL_7,
-                             0xFF, 0xFF, 0xFF, 0xFF,
-                             REG_T_FALL_12, REG_T_FALL_13, REG_T_FALL_14, REG_T_FALL_15
-                            };
+static const uint8_t REG_T_FALL[16] = {0xFF, 0xFF, 0xFF, 0xFF,
+                                       REG_T_FALL_4, REG_T_FALL_5, REG_T_FALL_6, REG_T_FALL_7,
+                                       0xFF, 0xFF, 0xFF, 0xFF,
+                                       REG_T_FALL_12, REG_T_FALL_13, REG_T_FALL_14, REG_T_FALL_15};
 
 class SensorBar
 {
@@ -175,15 +170,22 @@ public:
     void setInvertBits();   // to make the bar functions look for a white line on dark surface
     void clearInvertBits(); // to make the bar look for a dark line on a reflective surface
 
-    uint8_t getRaw();
-    int8_t getBinaryPosition();
-    float getAngleRad();
-    float getAvgAngleRad();
-    uint8_t getNrOfLedsActive();
-    bool isAnyLedActive();
+    uint8_t getRaw() const;
+    int8_t getBinaryPosition() const;
+    float getAngleRad() const;
+    float getAvgAngleRad() const;
+    uint8_t getNrOfLedsActive() const;
+    bool isAnyLedActive() const;
+    float getAvgBit(int bitNumber) const;
+    float getMeanThreeAvgBitsLeft() const;
+    float getMeanThreeAvgBitsRight() const;
+    float getMeanFourAvgBitsCenter() const;
     void update();
 
 private:
+    static constexpr int AVG_FILTER_ANGLE_N = 10;
+    static constexpr int AVG_FILTER_BITS_N = 30;
+
     // holding variables
     uint8_t lastBarRawValue;
     uint8_t lastBarPositionValue;
@@ -205,33 +207,29 @@ private:
     // read Functions:
     uint8_t readByte(uint8_t registerAddress);
     unsigned int readWord(uint8_t registerAddress);
-    void readBytes(uint8_t firstRegisterAddress, char * destination, uint8_t length);
+    void readBytes(uint8_t firstRegisterAddress, uint8_t * destination, uint8_t length);
 
     // write functions:
     void writeByte(uint8_t registerAddress, uint8_t writeValue);
     void writeWord(uint8_t registerAddress, unsigned int writeValue);
-    void writeBytes(uint8_t firstRegisterAddress, uint8_t * writeArray, uint8_t length);
+    void writeBytes(uint8_t firstRegisterAddress, const uint8_t * writeArray, uint8_t length);
 
     I2C i2c;
-
-    static const char REG_I_ON[16];
-    static const char REG_T_ON[16];
-    static const char REG_OFF[16];
-    static const char REG_T_RISE[16];
-    static const char REG_T_FALL[16];
 
     ThreadFlag threadFlag;
     Thread     thread;
     Ticker     ticker;
 
-    float angle, avg_angle;
+    float angle, avgAngle;
     uint8_t nrOfLedsActive;
-    AvgFilter avg_filter;
-    bool is_first_avg;
+    AvgFilter avgFilterAngle;
+    bool isFirstAvgAngle;
+    AvgFilter avgFilterBits[8];
 
     void updateAsThread();
     float updateAngleRad();
     uint8_t updateNrOfLedsActive();
+    float constrainIntoZeroToOne(float val) const;
     void sendThreadFlag();
 };
 

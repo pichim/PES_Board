@@ -94,8 +94,8 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
                                    // is a defined potential
 ```
 
-3. Read the ultrasonic sensor manual and create an object in the ``main()`` function
-    >[Ultrasonic Sensor Manual](ultrasonic_sensor.md)
+3. Read the ultrasonic sensor tutorial and create an object in the ``main()`` function
+    >[Tutorial Ultrasonic Sensor](ultrasonic_sensor.md)
 4. Make sure that you add a reading command and a statement to handle non-valid measurement. This should be placed inside the ``while()`` loop in the scope of the ``if()`` statement, so that it is executed after clicking the **USER** button:
 
 ```cpp

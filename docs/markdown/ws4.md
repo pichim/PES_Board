@@ -21,7 +21,7 @@ In the fourth workshop, we will explore differential drive robot kinematics and 
 
 ## Part 1
 
-In the first part, you will learn about differential drive robot kinematics and implement the mathematical transformations in C++. The mathematical foundation and implementation details are described in the [Differential Drive Robot Kinematics](dd_kinematics.md) document.
+In the first part, you will learn about differential drive robot kinematics and implement the mathematical transformations in C++. The mathematical foundation and implementation details are described in the [Tutorial Differential Drive Robot Kinematics](dd_kinematics.md) document.
 
 ### Tasks Summary
 
@@ -42,7 +42,7 @@ The line follower array uses eight IR sensors to detect black lines. The sensor 
 4. Test and tune control parameters
 5. Optional: Use the ``LineFollower`` driver class
 
-Detailed instructions and examples are provided in the [Line Follower](line_follower.md) document.
+Detailed instructions and examples are provided in the [Tutorial Line Follower](line_follower.md) document.
 
 ## Summary
 
