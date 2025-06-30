@@ -350,4 +350,4 @@ For debugging purposes, it is useful to print the normalized angles to the seria
 printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
 ```
 
-The full working solution can be found in [Gimbal](../solutions/main_gimbal.cpp).
+The full working solution can be found in [Example Gimbal](../solutions/main_gimbal.cpp).
