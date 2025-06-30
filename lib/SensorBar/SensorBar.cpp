@@ -113,26 +113,25 @@ float SensorBar::getAvgBit(int bitNumber) const {
 
 float SensorBar::getMeanThreeAvgBitsLeft() const {
     // Leftmost 3 bits
-    const float avgBits = 0.5f * avgFilterBits[0].read()
-                        + 0.3f * avgFilterBits[1].read()
-                        + 0.2f * avgFilterBits[2].read();
+    const float avgBits = 1.0f / 3.0f * ( avgFilterBits[0].read()
+                                        + avgFilterBits[1].read()
+                                        + avgFilterBits[2].read() );
     return constrainIntoZeroToOne(avgBits);
 }
 
 float SensorBar::getMeanThreeAvgBitsRight() const {
     // Rightmost 3 bits
-    const float avgBits = 0.2f * avgFilterBits[5].read()
-                        + 0.3f * avgFilterBits[6].read()
-                        + 0.5f * avgFilterBits[7].read();
+    const float avgBits = 1.0f / 3.0f * ( avgFilterBits[5].read()
+                                        + avgFilterBits[6].read()
+                                        + avgFilterBits[7].read() );
     return constrainIntoZeroToOne(avgBits);
 }
 
 float SensorBar::getMeanFourAvgBitsCenter() const {
     // Center 4 bits
-    const float avgBits = 0.15f * avgFilterBits[2].read()
-                        + 0.35f * avgFilterBits[3].read()
-                        + 0.35f * avgFilterBits[4].read()
-                        + 0.15f * avgFilterBits[5].read();
+    const float avgBits = 1.0f / 4.0f * ( avgFilterBits[2].read()
+                                        + 1.0f / 2.0f * ( avgFilterBits[3].read() + avgFilterBits[4].read() )
+                                        + avgFilterBits[5].read() );
     return constrainIntoZeroToOne(avgBits);
 }
 

@@ -117,6 +117,32 @@ if (sensor_bar.isAnyLedActive())
 
 You can now use this angle to control the robot velocities.
 
+### Additional Sensor Bar Functionality
+
+The ``SensorBar`` driver provides the following features. All these values are returned as floating-point numbers in the range from 0.0 to 1.0, where 0.0 represents no light detected and 1.0 represents maximum light detected.
+
+- **Averaged Bit Values**: The driver calculates the average filtered bit values for each sensor, which can be accessed using the ``getAvgBit(int bitNumber)`` method, where ``bitNumber`` ranges from 0 to 7 and starts from the leftmost sensor (0) to the rightmost sensor (7). This allows for a more stable reading of the sensor values, reducing noise and fluctuations.
+- **Mean of the Three Leftmost Sensors**: The driver calculates the mean of the three leftmost sensors using the ``getMeanThreeAvgBitsLeft()`` method.
+- **Mean of the Three Rightmost Sensors**: The driver calculates the mean of the three rightmost sensors using the ``getMeanThreeAvgBitsRight()`` method.
+- **Mean of the Four Center Sensors**: The driver calculates a weighted mean of the four center sensors using the ``getMeanFourAvgBitsCenter()`` method.
+
+Use the following code snippet to print the averaged bit values and the means of the left, center, and right sensors to the serial terminal.
+
+```cpp
+// print to the serial terminal
+printf("Averaged Bar Raw: |  %0.2f  | %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f | ", sensor_bar.getAvgBit(0)
+                                                                                                     , sensor_bar.getAvgBit(1)
+                                                                                                     , sensor_bar.getAvgBit(2)
+                                                                                                     , sensor_bar.getAvgBit(3)
+                                                                                                     , sensor_bar.getAvgBit(4)
+                                                                                                     , sensor_bar.getAvgBit(5)
+                                                                                                     , sensor_bar.getAvgBit(6)
+                                                                                                     , sensor_bar.getAvgBit(7));
+printf("Mean Left: %0.2f, Mean Center: %0.2f, Mean Right: %0.2f \n", sensor_bar.getMeanThreeAvgBitsLeft()
+                                                                   , sensor_bar.getMeanFourAvgBitsCenter()
+                                                                   , sensor_bar.getMeanThreeAvgBitsRight());
+```
+
 ### Using Eigen Library (Linear Algebra)
 
 You can use the Eigen library for linear algebra operations. The library is used for matrix operations, such as matrix multiplication and inversion, which are essential for the kinematic calculations in the driver.
@@ -184,32 +210,6 @@ motor_M2.setVelocity(wheel_speed(1) / (2.0f * M_PIf)); // set a desired speed fo
 ### Example
 
 - [Example Line Follower Base](../solutions/main_line_follower_base.cpp)
-
-### Additional Sensor Bar Functionality
-
-The ``SensorBar`` driver provides the following features. All these values are returned as floating-point numbers in the range from 0.0 to 1.0, where 0.0 represents no light detected and 1.0 represents maximum light detected.
-
-- **Averaged Bit Values**: The driver calculates the average bit values for each sensor, which can be accessed using the ``getAvgBit(int bitNumber)`` method, where ``bitNumber`` ranges from 0 to 7 and starts from the leftmost sensor (0) to the rightmost sensor (7). This allows for a more stable reading of the sensor values, reducing noise and fluctuations.
-- **Weighted Mean of the Three Leftmost Sensors**: The driver calculates a weighted mean of the three leftmost sensors using the ``getMeanThreeAvgBitsLeft()`` method.
-- **Weighted Mean of the Three Rightmost Sensors**: The driver calculates a weighted mean of the three rightmost sensors using the ``getMeanThreeAvgBitsRight()`` method.
-- **Weigthed Mean of the Four Center Sensors**: The driver calculates a weighted mean of the four center sensors using the ``getMeanFourAvgBitsCenter()`` method.
-
-Use the following code snippet to print the averaged bit values and the means of the left, center, and right sensors to the serial terminal.
-
-```cpp
-// print to the serial terminal
-printf("Averaged Bar Raw: |  %0.2f  | %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f | ", sensor_bar.getAvgBit(0)
-                                                                                                     , sensor_bar.getAvgBit(1)
-                                                                                                     , sensor_bar.getAvgBit(2)
-                                                                                                     , sensor_bar.getAvgBit(3)
-                                                                                                     , sensor_bar.getAvgBit(4)
-                                                                                                     , sensor_bar.getAvgBit(5)
-                                                                                                     , sensor_bar.getAvgBit(6)
-                                                                                                     , sensor_bar.getAvgBit(7));
-printf("Mean Left: %0.2f, Mean Center: %0.2f, Mean Right: %0.2f \n", sensor_bar.getMeanThreeAvgBitsLeft()
-                                                                   , sensor_bar.getMeanFourAvgBitsCenter()
-                                                                   , sensor_bar.getMeanThreeAvgBitsRight());
-```
 
 ## Line Follower Driver
 
