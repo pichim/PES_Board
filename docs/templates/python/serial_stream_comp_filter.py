@@ -85,12 +85,15 @@ s = ct.tf("s")
 # Complementary Filter
 roll_comp_filter = np.zeros_like(roll_gyro) # implement your code here
 
+# 1-D Mahony Filter
+roll_1d_mahony = np.zeros_like(roll_gyro) # implement your code here
+
 plt.figure(3)
-plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll_comp_filter]) * 180 / np.pi)
+plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll_comp_filter, roll_1d_mahony]) * 180 / np.pi)
 plt.grid(True)
 plt.xlabel("Time (sec)")
 plt.ylabel("Roll (deg)")
-plt.legend(["Mahony", "Int. Gyro", "Acc", "Comp. Filter"], loc="best")
+plt.legend(["Mahony", "Int. Gyro", "Acc", "Comp. Filter", "1-D Mahony Filter"], loc="best")
 plt.xlim([0, data["time"][-1]])
 
 # Show all plots

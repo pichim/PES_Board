@@ -89,12 +89,21 @@ Alp = np.squeeze(Glp.den[0][0])
 # Complementary Filter
 roll_comp_filter = T * sp.signal.lfilter(Blp, Alp, data["values"][:, ind["gyro"]]) + sp.signal.lfilter(Blp, Alp, roll_acc)
 
+# 1-D Mahony Filter
+Kp = 1 / T
+N = len(data["values"][:, ind["gyro"]])
+roll_1d_mahony = np.zeros(N)
+roll_1d_mahony_i = 0.0
+for i in range(N):
+    roll_1d_mahony_i += Ts * (data["values"][i, ind["gyro"]] + Kp * (roll_acc[i] - roll_1d_mahony_i))
+    roll_1d_mahony[i] = roll_1d_mahony_i
+
 plt.figure(3)
-plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll_comp_filter]) * 180 / np.pi)
+plt.plot(data["time"], np.column_stack([data["values"][:, ind["roll"]], roll_gyro, roll_acc, roll_comp_filter, roll_1d_mahony]) * 180 / np.pi)
 plt.grid(True)
 plt.xlabel("Time (sec)")
 plt.ylabel("Roll (deg)")
-plt.legend(["Mahony", "Int. Gyro", "Acc", "Comp. Filter"], loc="best")
+plt.legend(["Mahony", "Int. Gyro", "Acc", "Comp. Filter", "1-D Mahony Filter"], loc="best")
 plt.xlim([0, data["time"][-1]])
 
 # Show all plots
