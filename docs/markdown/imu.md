@@ -35,7 +35,7 @@ An IMU (Inertial Measurement Unit) sensor is a compact electronic device that me
 ## Principle of Operation
 
 An IMU with 9 degrees of freedom is a device that measures and provides information about a body's specific acceleration, rotation rate, and the magnetic field measured in the IMU frame. It does this by using a combination of accelerometers, gyroscopes, and magnetometers.
-- **Accelerometer** - measures linear acceleration (change in velocity) along the three axes of 3D space. MEMS (Micro-Electro-Mechanical Systems) accelerometers typically use a small proof mass suspended between fixed electrodes. When the device accelerates, the proof mass shifts due to inertia, changing the distance between it and the fixed electrodes. This alters the capacitance, which is measured by electronic circuitry and converted into an analog or digital signal.
+- **Accelerometer** - measures linear acceleration (change in velocity) along the three axes of 3D space. MEMS (Micro-Electro-Mechanical Systems) accelerometers typically use a small proof mass suspended between fixed electrodes. When the device accelerates, the proof mass shifts due to inertia, changing the distance between it and the fixed electrodes. This alters the capacitance, which is measured by electronic circuitry.
 - **Gyroscope** - measures angular velocity (rate of rotation) around the three axes. MEMS gyroscopes use a vibrating structure (often a vibrating mass or tuning fork). When the device rotates, the Coriolis effect causes a secondary vibration perpendicular to the primary vibration. This Coriolis-induced displacement is sensed and converted into a rotational rate signal.
 - **Magnetometer** - measures the strength and direction of the magnetic field in 3D space. MEMS magnetometers commonly use Hall-effect sensors or magnetoresistive elements, rather than vibrating masses. When exposed to a magnetic field, these components experience a change in voltage (Hall effect) or resistance (magnetoresistive), which is measured by electronic circuitry and translated into a digital signal.
 
@@ -43,22 +43,22 @@ An IMU with 9 degrees of freedom is a device that measures and provides informat
 
 To achieve sufficient data accuracy, sensor fusion uses specialized algorithms to integrate measurements from multiple sensors of varying types. By combining the strengths of different sensors, this process capitalizes on their respective favorable characteristics, culminating in achieving the most precise measurements possible.
 
-A good example to understand the idea of sensor fusion is the estimation of the roll angle using an accelerometer and a gyroscope.
+A good example to understand the idea of sensor fusion is the estimation of the roll angle (rotation around the imu x-axis) using an accelerometer and a gyroscope.
 
 The measurements from the gyroscope and the measurements from the accelerometer can be used individually to estimate the roll angle. However, such an estimation will not be accurate due to the disadvantages of each of these sensors.
 
 The gyroscope has generally good signal quality (low noise), but usually has a bias or even drift (slowly varying bias).
 
 $$
-y_{gyro}(t) = \omega(t) + b_{gyro}
+y_{gyro}(t) = \omega_x(t) + b_{gyro}(t), \ \phi(t) = \int_{0}^{t} \omega_x(\tau) d\tau
 $$
 
 Clearly, we cannot just integrate the gyroscope signal to get the angle; the bias will accumulate over time and lead to drift in the angle estimation.
 
-The accelerometer, on the other hand, has no bias (if calibrated properly) but significant noise. The accelerometer measurements are proportional to the angle relative to gravity. For simplicity we just write.
+The accelerometer, on the other hand, has no bias (if calibrated properly) but significant noise. Based on the accelerometer measurements the angle relative to gravity can be calculated.
 
 $$
-y_{acc}(t) = \phi(t) + \eta_{acc}(t)
+y_{acc}(t) = \phi(t) + \eta_{acc}(t) = \tan^{-1}\left(\frac{a_y(t)}{a_z(t)}\right) + \eta_{acc}(t)
 $$
 
 These two signals can be fused so that we combine the precise operation of the gyroscope in the short term and use the accelerometer for long-term correction. This fusion can be done with different techniques, with the simplest form being a complementary filter. This approach uses a low-pass filter for measurements from the accelerometer and a high-pass filter for the integral of measurements from the gyroscope.
@@ -92,7 +92,7 @@ Remarkable here is that both filters are low-pass filters; the one that is appli
 
 A link to a video, which explains the above in a very accessible way, can be found [here][2].
 
-The ``IMU`` class uses a Mahony filter which is used to estimate the orientation in 3D space by combining data from accelerometer and gyroscope sensors. The Mahony filter can also use magnetometer data to estimate heading information using the measurement of the Earth's magnetic field. This allows for absolute orientation estimation relative to magnetic north (which in general is not true north). The Mahony filter can be thought of as a generalization of the complementary filter to 3D space, where the gyroscope provides angular velocity data, the accelerometer provides tilt information, and the magnetometer provides heading information.
+The ``IMU`` class uses a Mahony filter to estimate the orientation in 3D space by combining data from accelerometer and gyroscope sensors. The Mahony filter can also use magnetometer data to estimate heading information using the measurement of the Earth's magnetic field. This allows for absolute orientation estimation relative to magnetic north (which in general is not true north). The Mahony filter can be thought of as a generalization of the complementary filter to 3D space, where the gyroscope provides angular velocity data, the accelerometer provides tilt information, and the magnetometer provides heading information.
 
 **IMPORTANT NOTE:**
 
@@ -208,6 +208,15 @@ float pitch = imu_data.rpy(1);
 float yaw = imu_data.rpy(2);
 ```
 
+```cpp
+// pitch, roll, yaw according to Tait-Bryan angles ZXY
+// where R = Rz(yaw) * Rx(roll) * Ry(pitch)
+// singularity at roll = +/-pi/2
+float pitch = imu_data.pry(0);
+float roll = imu_data.pry(1);
+float yaw = imu_data.pry(2);
+```
+
 ## 2-Axis Gimbal Example
 
 In order to demonstrate how the IMU can be used, a 2D gimbal has been prepared requiring printing a few parts and assembling the appropriate servos.
@@ -217,7 +226,7 @@ In order to demonstrate how the IMU can be used, a 2D gimbal has been prepared r
     <i>2-Axis Gimbal</i>
 </p>
 
-Prepared parts in `.stl` format for printing can be found [here](../cad/gimbal); additionally, step files are also placed there in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
+Prepared parts in `.stl` format for printing can be found [here](../cad/gimbal); additionally, step files are also present in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
 
 **NOTE:**
 - Remember to calibrate the servos before using them for proper operation of the gimbal.
@@ -259,8 +268,8 @@ The servos must be calibrated before use and the appropriate values must be ente
 ```cpp
 // minimal pulse width and maximal pulse width obtained from the servo calibration process
 // modelcraft RS2 MG/BB
-float servo_ang_min = 0.0325f;
-float servo_ang_max = 0.1250f;
+float servo_ang_min = 0.035f;
+float servo_ang_max = 0.130f;
 
 // servo.setPulseWidth: before calibration (0,1) -> (min pwm, max pwm)
 // servo.setPulseWidth: after calibration (0,1) -> (servo_D0_ang_min, servo_D0_ang_max)
@@ -309,24 +318,25 @@ if (!servo_pitch.isEnabled())
 // read imu data
 imu_data = imu.getImuData();
 
-// roll, pitch, yaw according to Tait-Bryan angles ZYX
-// where R = Rz(yaw) * Ry(pitch) * Rx(roll) for ZYX sequence
-// singularity at pitch = +/-pi/2 radians (+/- 90 deg)
-rp(0) = imu_data.rpy(0); // roll angle
-rp(1) = imu_data.rpy(1); // pitch angle
+// pitch, roll, yaw according to Tait-Bryan angles ZXY
+// where R = Rz(yaw) * Rx(roll) * Ry(pitch)
+// singularity at roll = +/-pi/2
+rp(0) = imu_data.pry(1); // roll angle
+rp(1) = imu_data.pry(0); // pitch angle
 
 // map to servo commands
-roll_servo_width = -normalised_angle_gain * rp(0) + normalised_angle_offset;
-pitch_servo_width = normalised_angle_gain * rp(1) + normalised_angle_offset;
-if (rp(0) < angle_range_max && rp(0) > angle_range_min)
+roll_servo_width  = -normalised_angle_gain * rp(0) + normalised_angle_offset;
+pitch_servo_width =  normalised_angle_gain * rp(1) + normalised_angle_offset;
+if (angle_range_min <= rp(0) && rp(0) <= angle_range_max)
     servo_roll.setPulseWidth(roll_servo_width);
-if (rp(0) < angle_range_max && rp(0) > angle_range_min)
+if (angle_range_min <= rp(1) && rp(1) <= angle_range_max)
     servo_pitch.setPulseWidth(pitch_servo_width);
 ```
 
 Add the following command to the ``else()`` statement; the purpose is to set the servo initial position. This is triggered by pressing the **USER** button while the main task is running (the second time you press the button).
 
 ```cpp
+// reset variables and objects
 roll_servo_width = 0.5f;
 pitch_servo_width = 0.5f;
 servo_roll.setPulseWidth(roll_servo_width);

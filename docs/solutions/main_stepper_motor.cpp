@@ -52,6 +52,8 @@ int main()
     // led on nucleo board
     DigitalOut user_led(LED1);
 
+    // --- adding variables and objects and applying functions starts here ---
+
     // stepper motors
     Stepper stepper_M1(PB_9, PB_8);
     Stepper stepper_M2(PB_4, PA_7);
@@ -65,6 +67,8 @@ int main()
 
         if (do_execute_main_task) {
 
+        // --- code that runs when the blue button was pressed goes here ---
+
             // set velocity in rps
             // stepper_M1.setVelocity(0.1f);
             // stepper_M2.setVelocity(-0.1f);
@@ -77,6 +81,8 @@ int main()
             // the following code block gets executed only once
             if (do_reset_all_once) {
                 do_reset_all_once = false;
+
+                // --- variables and objects that should be reset go here ---
                 
                 // set rotation relative to current position
                 stepper_M1.setRotationRelative(-1.0f, 1.0f);
@@ -89,6 +95,8 @@ int main()
 
         // toggling the user led
         user_led = !user_led;
+
+        // --- code that runs every cycle goes here ---
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();

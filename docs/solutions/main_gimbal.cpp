@@ -36,6 +36,8 @@ int main()
     // led on nucleo board
     DigitalOut user_led(LED1);
 
+    // --- adding variables and objects and applying functions starts here ---
+
     // servo
     Servo servo_roll(PB_D0);
     Servo servo_pitch(PB_D1);
@@ -47,8 +49,8 @@ int main()
 
     // minimal pulse width and maximal pulse width obtained from the servo calibration process
     // modelcraft RS2 MG/BB
-    float servo_ang_min = 0.0325f;
-    float servo_ang_max = 0.1250f;
+    float servo_ang_min = 0.035f;
+    float servo_ang_max = 0.130f;
 
     // servo.setPulseWidth: before calibration (0,1) -> (min pwm, max pwm)
     // servo.setPulseWidth: after calibration (0,1) -> (servo_D0_ang_min, servo_D0_ang_max)
@@ -79,6 +81,8 @@ int main()
 
         if (do_execute_main_task) {
 
+        // --- code that runs when the blue button was pressed goes here ---
+
             // enable the servos
             if (!servo_roll.isEnabled())
                 servo_roll.enable();
@@ -88,30 +92,32 @@ int main()
             // read imu data
             imu_data = imu.getImuData();
 
-            // roll, pitch, yaw according to Tait-Bryan angles ZYX
-            // where R = Rz(yaw) * Ry(pitch) * Rx(roll) for ZYX sequence
-            // singularity at pitch = +/-pi/2 radians (+/- 90 deg)
-            rp(0) = imu_data.rpy(0); // roll angle
-            rp(1) = imu_data.rpy(1); // pitch angle
+            // // roll, pitch, yaw according to Tait-Bryan angles ZYX
+            // // where R = Rz(yaw) * Ry(pitch) * Rx(roll) for ZYX sequence
+            // // singularity at pitch = +/-pi/2 radians (+/- 90 deg)
+            // rp(0) = imu_data.rpy(0); // roll angle
+            // rp(1) = imu_data.rpy(1); // pitch angle
 
             // pitch, roll, yaw according to Tait-Bryan angles ZXY
             // where R = Rz(yaw) * Rx(roll) * Ry(pitch)
             // singularity at roll = +/-pi/2
-            // rp(0) = imu_data.pry(1); // roll angle
-            // rp(1) = imu_data.pry(0); // pitch angle
+            rp(0) = imu_data.pry(1); // roll angle
+            rp(1) = imu_data.pry(0); // pitch angle
 
             // map to servo commands
-            roll_servo_width = -normalised_angle_gain * rp(0) + normalised_angle_offset;
-            pitch_servo_width = normalised_angle_gain * rp(1) + normalised_angle_offset;
-            if (rp(0) < angle_range_max && rp(0) > angle_range_min)
+            roll_servo_width  = -normalised_angle_gain * rp(0) + normalised_angle_offset;
+            pitch_servo_width =  normalised_angle_gain * rp(1) + normalised_angle_offset;
+            if (angle_range_min <= rp(0) && rp(0) <= angle_range_max)
                 servo_roll.setPulseWidth(roll_servo_width);
-            if (rp(0) < angle_range_max && rp(0) > angle_range_min)
+            if (angle_range_min <= rp(1) && rp(1) <= angle_range_max)
                 servo_pitch.setPulseWidth(pitch_servo_width);
 
         } else {
             // the following code block gets executed only once
             if (do_reset_all_once) {
                 do_reset_all_once = false;
+
+                // --- variables and objects that should be reset go here ---
 
                 // reset variables and objects
                 roll_servo_width = 0.5f;
@@ -123,6 +129,8 @@ int main()
 
         // toggling the user led
         user_led = !user_led;
+
+        // --- code that runs every cycle goes here ---
 
         // print to the serial terminal
         printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);

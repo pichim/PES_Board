@@ -38,6 +38,8 @@ int main()
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 
+    // --- adding variables and objects and applying functions starts here ---
+
     // sd card logger
     SDLogger sd_logger(PB_SD_MOSI, PB_SD_MISO, PB_SD_SCK, PB_SD_CS);
     int cntr = 0;
@@ -51,6 +53,8 @@ int main()
 
         if (do_execute_main_task) {
 
+        // --- code that runs when the blue button was pressed goes here ---
+
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
 
@@ -62,6 +66,8 @@ int main()
             if (do_reset_all_once) {
                 do_reset_all_once = false;
 
+                // --- variables and objects that should be reset go here ---
+
                 // reset variables and objects
                 led1 = 0;
 
@@ -71,6 +77,8 @@ int main()
 
         // toggling the user led
         user_led = !user_led;
+
+        // --- code that runs every cycle goes here ---
 
         // print to the serial terminal
         if ((cntr % 50 == 0) && (cntr != 0))

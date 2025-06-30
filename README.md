@@ -29,22 +29,9 @@
  <!--
     TODO:
 
-    Before Ghana 25
-
-    - Week 1:
-      - Adjust line follwer example according to the new line follower hardware (grey robots)
-
-    - Week 2:
-      - Create Workshop 4 with line follower
-      - Create Workshop 5 with imu and comp filter -> done
-        - Part 1: Reading IMU and 2 axis gimbal
-        - Part 2: Serial Stream hardware tutorial and complementary filter
-      - Create Workshop 6 with my dc motor
-      - test main_pes_monster.cpp with the latest updates
-      - Add the actual md files to the README.md file
-      - Map all the new content to the workshops, see comment table below
-
     General:
+    - Create Workshop 6 with my dc motor
+    - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower
     - Document how to use PlatformIO
       - Especially with regards to gcc instead of armclang
       - Remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)
@@ -61,14 +48,14 @@
         - stepper_motor.md              (ok & spell checked)
         - course_setup.md               (ok & spell checked)   ->   ws1  , 2
         - dc_motor.md                   (ok & spell checked)   ->   ws3  , 3
-        - imu.md                        (ok & spell checked)
+        - imu.md                        (ok & spell checked)   ->   ws5  , 2
         - ir_sensor.md                  (ok & spell checked)   ->   ws1  , 6
         - dd_kinematics.md              (ok & spell checked)   ->   ws4  , 2
         - line_follower.md              (ok & spell checked)   ->   ws4  , 3
         - main_description.md           (ok & spell checked)   ->   ws1  , 5
         - my_dc_motor.md                (ok & spell checked)
         - sd_card_logger.md             (ok & spell checked)
-        - serial_stream.md              (ok & spell checked)
+        - serial_stream.md              (ok & spell checked)   ->   ws5  , 3
         - servo.md                      (ok & spell checked)   ->   ws2  , 3
         - tips.md                       (ok & spell checked)   ->   ws1  , 3
         - ultrasonic_sensor.md          (ok & spell checked)   ->   ws2  , 4
@@ -76,7 +63,7 @@
         - ws2.md                        (ok & spell checked)   ->   ws2  , 2
         - ws3.md                        (ok & spell checked)   ->   ws3  , 2
         - ws4.md                        (ok & spell checked)   ->   ws4  , 1
-        - ws5.md                        (ok & spell checked)
+        - ws5.md                        (ok & spell checked)   ->   ws5  , 1
         - ws6.md                        does not exist yet
 
         Solutions:
@@ -152,7 +139,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Workshop 2](docs/markdown/ws2.md)
     * [Workshop 3](docs/markdown/ws3.md)
     * [Workshop 4](docs/markdown/ws4.md)
-    <!-- * [Workshop 5](docs/markdown/ws5.md) -->
+    * [Workshop 5](docs/markdown/ws5.md)
 5. [Build Mbed OS projects with VS Code](#build-mbed-os-projects-with-vs-code)
     * [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
     * [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
@@ -295,7 +282,7 @@ The following links contain the workshop instructions:
 - [Workshop 2](docs/markdown/ws2.md)
 - [Workshop 3](docs/markdown/ws3.md)
 - [Workshop 4](docs/markdown/ws4.md)
-<!-- - [Workshop 5](docs/markdown/ws5.md) -->
+- [Workshop 5](docs/markdown/ws5.md)
 
 And below you will find all the solutions, as well as some additional examples:
 - [Workshop 1 Solution: Example Infrared Distance Sensor](docs/solutions/main_ir_sensor.cpp)

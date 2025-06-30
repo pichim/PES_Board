@@ -320,7 +320,7 @@ The ``followLine()`` function is a thread task method responsible for controllin
 
 #### Angular Velocity Controller
 
-The ``ang_cntrl_fcn()`` function is responsible for calculating the angular velocity of the robot based on the detected angle of the line relative to the robot's orientation. This function uses proportional linear and non-linear control to calculate the velocity based on the measured angle.
+The ``ang_cntrl_fcn()`` function is responsible for calculating the angular velocity of the robot based on the detected angle of the line relative to the robot's orientation. This function uses proportional linear and non-linear control law to calculate the velocity based on the measured angle.
 
 1. Input Parameters:
 - ``Kp``: Proportional gain parameter for angular control.
@@ -328,8 +328,7 @@ The ``ang_cntrl_fcn()`` function is responsible for calculating the angular velo
 - ``angle``: The angle of the detected line relative to the robot's orientation.
 
 2. Calculation:
-- If the angle is positive (``angle >= 0``), the function calculates the angular velocity using the formula: ``ang_vel = Kp * angle + Kp_nl * angle * angle``. This formula applies proportional control (``Kp * angle``) along with a non-linear correction term (``Kp_nl * angle * angle``).
-- If the angle is zero or negative (``angle < 0``), the function calculates the angular velocity (``retval``) using a similar formula but with a negative sign for the non-linear term: ``ang_vel = Kp * angle - Kp_nl * angle * angle``.
+- We apply ``ang_vel = Kp * angle + Kp_nl * angle * fabsf(angle)``
 
 #### Linear Velocity Controller
 

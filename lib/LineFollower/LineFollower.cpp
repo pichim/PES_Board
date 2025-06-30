@@ -123,7 +123,7 @@ void LineFollower::followLine()
 
 float LineFollower::ang_cntrl_fcn(float Kp, float Kp_nl, float angle)
 {
-    return Kp * angle + Kp_nl * copysignf(angle * angle, angle);
+    return Kp * angle + Kp_nl * angle * fabsf(angle);
 }
 
 float LineFollower::vel_cntrl_fcn(float wheel_vel_max,

@@ -129,7 +129,7 @@ float SensorBar::getMeanThreeAvgBitsRight() const {
 
 float SensorBar::getMeanFourAvgBitsCenter() const {
     // Center 4 bits
-    const float avgBits = 1.0f / 4.0f * ( avgFilterBits[2].read()
+    const float avgBits = 1.0f / 3.0f * ( avgFilterBits[2].read()
                                         + 1.0f / 2.0f * ( avgFilterBits[3].read() + avgFilterBits[4].read() )
                                         + avgFilterBits[5].read() );
     return constrainIntoZeroToOne(avgBits);

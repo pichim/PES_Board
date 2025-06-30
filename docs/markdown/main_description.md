@@ -80,6 +80,8 @@ int main()
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 
+    // --- adding variables and objects and applying functions starts here ---
+
     // start timer
     main_task_timer.start();
     .
@@ -101,6 +103,8 @@ If we want to command an actuator, read in a sensor or print an output to the co
         main_task_timer.reset();
 
         if (do_execute_main_task) {
+
+        // --- code that runs when the blue button was pressed goes here ---
             .
             .
 ```
@@ -116,6 +120,8 @@ Everything in the ``if()`` statement will be executed if the blue **USER** butto
             // the following code block gets executed only once
             if (do_reset_all_once) {
                 do_reset_all_once = false;
+
+                // --- variables and objects that should be reset go here ---
                 .
                 .
 ```
@@ -132,6 +138,8 @@ Here we can insert commands that we want to execute only after pressing the blue
 
         // toggling the user led
         user_led = !user_led;
+
+        // --- code that runs every cycle goes here ---
         .
         .
 ```

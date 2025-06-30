@@ -38,6 +38,8 @@ int main()
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 
+    // --- adding variables and objects and applying functions starts here ---
+
     // create object to enable power electronics for the dc motors
     DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
 
@@ -59,6 +61,8 @@ int main()
 
         if (do_execute_main_task) {
 
+        // --- code that runs when the blue button was pressed goes here ---
+
             // enable the motors if they are not enabled yet
             if (!enable_motors) {
                 enable_motors = 1;
@@ -78,6 +82,8 @@ int main()
             if (do_reset_all_once) {
                 do_reset_all_once = false;
 
+                // --- variables and objects that should be reset go here ---
+
                 // motor_M1.setVoltage(0.0f);
 
                 motor_M1.setVelocity(-1.0f);
@@ -89,6 +95,8 @@ int main()
 
         // toggling the user led
         user_led = !user_led;
+
+        // --- code that runs every cycle goes here ---
 
         // print to the serial terminal
         printf("Counts: %6ld Velocity RPS: %6.2f Rotations: %6.2f Voltage: %6.2f\n", motor_M1.getCounts(),

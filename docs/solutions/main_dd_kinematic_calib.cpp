@@ -41,6 +41,8 @@ int main()
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
     DigitalOut led1(PB_9);
 
+    // --- adding variables and objects and applying functions starts here ---
+
     // create object to enable power electronics for the dc motors
     DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
 
@@ -105,6 +107,8 @@ int main()
 
         if (do_execute_main_task) {
 
+        // --- code that runs when the blue button was pressed goes here ---
+
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
             enable_motors = 1;
@@ -167,6 +171,8 @@ int main()
             if (do_reset_all_once) {
                 do_reset_all_once = false;
 
+                // --- variables and objects that should be reset go here ---
+
                 // reset variables and objects
                 led1 = 0;
                 // enable_motors = 0; // do not disable motors for this specific example
@@ -175,6 +181,8 @@ int main()
 
         // toggling the user led
         user_led = !user_led;
+
+        // --- code that runs every cycle goes here ---
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();
