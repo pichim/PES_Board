@@ -41,7 +41,8 @@ int main()
     // --- adding variables and objects and applying functions starts here ---
 
     // serial stream to send data over uart
-    SerialStream serialStream(PB_UNUSED_UART_TX, PB_UNUSED_UART_RX);
+    SerialStream serialStream(PB_UNUSED_UART_TX /*PB_10*/,
+                              PB_UNUSED_UART_RX /*PC_5 */);
     int cntr_1 = 0;
     int cntr_2 = 0;
 

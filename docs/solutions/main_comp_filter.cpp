@@ -46,7 +46,8 @@ int main()
     IMU imu(PB_IMU_SDA, PB_IMU_SCL);
 
     // serial stream to send data over uart
-    SerialStream serialStream(PB_UNUSED_UART_TX, PB_UNUSED_UART_RX);
+    SerialStream serialStream(PB_UNUSED_UART_TX /*PB_10*/,
+                              PB_UNUSED_UART_RX /*PC_5 */);
 
     // additional timer to measure time elapsed since last call
     Timer logging_timer;

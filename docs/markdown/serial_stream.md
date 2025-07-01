@@ -38,6 +38,10 @@ To use the `SerialStream` class, you need an additional Serial to USB cable:
 #define PB_UNUSED_UART_RX PC_5
 ```
 
+- **TX** from the USB Serial TTL cable should be connected to **PB_UNUSED_UART_RX** / **PB_10**.
+- **RX** from the USB Serial TTL cable should be connected to **PB_UNUSED_UART_TX** / **PC_5**.
+- Make sure to also connect the ground pin of the USB Serial TTL cable to a ground pin of the PES board.
+
 ### Communication Protocol
 
 `SerialStream` implements a simple protocol:
@@ -60,7 +64,8 @@ Create a `SerialStream` object alongside a `Timer` to measure time.
 
 ```cpp
 // serial stream to send data over uart
-SerialStream serialStream(PB_UNUSED_UART_TX, PB_UNUSED_UART_RX);
+SerialStream serialStream(PB_UNUSED_UART_TX /*PB_10*/,
+                          PB_UNUSED_UART_RX /*PC_5 */);
 
 // additional timer to measure time elapsed since last call
 Timer logging_timer;
@@ -88,7 +93,7 @@ if (serialStream.startByteReceived()) {
 }
 ```
 
-**Note: The start byte functionality is optional. On the microcontroller side, you can decide whether to use it or not. Its purpose is to trigger the data stream on the microcontroller from the host computer.**
+**Note: The start byte functionality is optional. On the microcontroller side, you can decide whether to use it or not. Its purpose is to trigger the data stream on the microcontroller from the host computer. Everytime you start the data stream from the host computer, either MATLAB or Python, the host computer sends the start byte (255) to the microcontroller. Only then ``startByteReceived()`` returns true, and the microcontroller starts sending data. If you do not want to use the start byte functionality, you can remove the ``if (serialStream.startByteReceived())`` condition and call ``serialStream.send()`` directly. If you intend to use it without the start byte you have to make sure that the host computer is already waiting for the data stream.**
 
 The maximum used throughput in a real application was sending 30 float values at 1 kHz.
 
@@ -108,6 +113,6 @@ void reset();                // reset the SerialStream state and clear buffer
 Log two incrementing counters
 
 - [Example Serial Stream](../solutions/main_serial_stream.cpp)
-- [MATLAB Evaluation of Example Serial Stream Data](../matlab/serial_stream_eval.m)
-- [Python Evaluation of Example Serial Stream Data](../python/serial_stream_eval.py)
-- [Python Evaluation of Example Serial Stream Data](../python/serial_stream_eval.ipynb)
+- [MATLAB Evaluation of Example Serial Stream Data](../solutions/matlab/serial_stream_eval.m)
+- [Python Evaluation of Example Serial Stream Data](../solutions/python/serial_stream_eval.py)
+- [Python Evaluation of Example Serial Stream Data](../solutions/python/serial_stream_eval.ipynb)

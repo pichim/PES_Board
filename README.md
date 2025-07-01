@@ -30,8 +30,9 @@
     TODO:
 
     General:
-    - Create Workshop 6 with my dc motor
+    - Create description of 1-D mahony filter in imu.md
     - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower
+    - Create Workshop 6 with my dc motor
     - Document how to use PlatformIO
       - Especially with regards to gcc instead of armclang
       - Remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)

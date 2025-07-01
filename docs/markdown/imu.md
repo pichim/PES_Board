@@ -145,9 +145,9 @@ To start working with the ``IMU``, it is necessary to create an object in the **
 There is no need to connect anything as the IMU is an integral part of the PES board. Pins that are used to communicate with the IMU:
 
 ```cpp
-// PES-Board Pin Names
-PB_IMU_SDA
-PB_IMU_SCL
+// IMU
+#define PB_IMU_SDA PC_9
+#define PB_IMU_SCL PA_8
 ```
 
 ### Create IMU Object
@@ -296,6 +296,19 @@ servo_roll.setPulseWidth(roll_servo_width);
 servo_pitch.setPulseWidth(pitch_servo_width);
 ```
 
+The next step is to place the command that reads data from the IMU.
+
+```cpp
+// read imu data
+imu_data = imu.getImuData();
+
+// pitch, roll, yaw according to Tait-Bryan angles ZXY
+// where R = Rz(yaw) * Rx(roll) * Ry(pitch)
+// singularity at roll = +/-pi/2
+rp(0) = imu_data.pry(1); // roll angle
+rp(1) = imu_data.pry(0); // pitch angle
+```
+
 To activate the servo, use the following command. Place this command to enable the servo after initiating the program execution with the **USER** button:
 
 ```cpp
@@ -306,24 +319,9 @@ if (!servo_pitch.isEnabled())
     servo_pitch.enable();
 ```
 
-The next step is to place the command that reads data from the IMU, performs the appropriate transformation, and maps the angles to the range from 0 to 1.
+Then map the angles to the range 0 to 1.
 
 ```cpp
-// enable the servos
-if (!servo_roll.isEnabled())
-    servo_roll.enable();
-if (!servo_pitch.isEnabled())
-    servo_pitch.enable();
-
-// read imu data
-imu_data = imu.getImuData();
-
-// pitch, roll, yaw according to Tait-Bryan angles ZXY
-// where R = Rz(yaw) * Rx(roll) * Ry(pitch)
-// singularity at roll = +/-pi/2
-rp(0) = imu_data.pry(1); // roll angle
-rp(1) = imu_data.pry(0); // pitch angle
-
 // map to servo commands
 roll_servo_width  = -normalised_angle_gain * rp(0) + normalised_angle_offset;
 pitch_servo_width =  normalised_angle_gain * rp(1) + normalised_angle_offset;
@@ -350,4 +348,7 @@ For debugging purposes, it is useful to print the normalized angles to the seria
 printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
 ```
 
-The full working solution can be found in [Example Gimbal](../solutions/main_gimbal.cpp).
+## Example
+
+- [Example Gimbal](../solutions/main_gimbal.cpp)
+- [Example Gimbal using 1-D Mahony Filter](../solutions/main_gimbal_1d_mahony.cpp)

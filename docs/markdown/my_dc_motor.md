@@ -106,7 +106,7 @@ void MyDCMotor::executeTask()
     // Do not use this in production code!
 
     // static serial stream to send data over uart
-    static SerialStream serialStream(SerialStream::NUM_OF_FLOATS_MAX, PB_10/*tx*/, PC_5/*rx*/);
+    static SerialStream serialStream(PB_10 /*tx*/, PC_5 /*rx*/);
 
     // static timer to measure time elapsed since last call
     static Timer timer;
@@ -188,7 +188,7 @@ void MyDCMotor::executeTask()
     // Do not use this in production code!
 
     // static serial stream to send data over uart
-    static SerialStream serialStream(SerialStream::NUM_OF_FLOATS_MAX, PB_10/*tx*/, PC_5/*rx*/);
+    static SerialStream serialStream(PB_10 /*tx*/, PC_5 /*rx*/);
 
     // static timer to measure time elapsed since last call
     static Timer timer;

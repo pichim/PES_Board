@@ -55,6 +55,7 @@ In this workshop, we explored the IMU (Inertial Measurement Unit) and its applic
 ## Solutions
 
 - [Workshop 5 Part 1 Solution: Example Gimbal](../solutions/main_gimbal.cpp)
+- [Workshop 5 Part 1 Solution: Example Gimbal using 1-D Mahony Filter](../solutions/main_gimbal_1d_mahony.cpp)
 - [Workshop 5 Part 2 Solution: MATLAB Evaluation of IMU Data](../solutions/matlab/serial_stream_comp_filter.m)
 - [Workshop 5 Part 2 Solution: Python Evaluation of IMU Data](../solutions/python/serial_stream_comp_filter.py)
 - [Workshop 5 Part 2 Solution: Interactive Python Evaluation of IMU Data](../solutions/python/serial_stream_comp_filter.ipynb)

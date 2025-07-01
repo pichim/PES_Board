@@ -72,6 +72,12 @@ int main()
     servo_roll.setPulseWidth(roll_servo_width);
     servo_pitch.setPulseWidth(pitch_servo_width);
 
+    // linear 1-D mahony filter
+    const float Ts = static_cast<float>(main_task_period_ms) * 1.0e-3f; // sample time in seconds
+    const float kp = 3.0f;
+    float roll_estimate = 0.0f;
+    float pitch_estimate = 0.0f;
+
     // start timer
     main_task_timer.start();
 
@@ -88,11 +94,25 @@ int main()
         // rp(0) = imu_data.rpy(0); // roll angle
         // rp(1) = imu_data.rpy(1); // pitch angle
 
-        // pitch, roll, yaw according to Tait-Bryan angles ZXY
-        // where R = Rz(yaw) * Rx(roll) * Ry(pitch)
-        // singularity at roll = +/-pi/2
-        rp(0) = imu_data.pry(1); // roll angle
-        rp(1) = imu_data.pry(0); // pitch angle
+        // // pitch, roll, yaw according to Tait-Bryan angles ZXY
+        // // where R = Rz(yaw) * Rx(roll) * Ry(pitch)
+        // // singularity at roll = +/-pi/2
+        // rp(0) = imu_data.pry(1); // roll angle
+        // rp(1) = imu_data.pry(0); // pitch angle
+
+        // linear 1-D mahony filter
+        const float roll_acc = atan2f(imu_data.acc(1), imu_data.acc(2)); // roll angle from accelerometer
+        const float pitch_acc = atan2f(-imu_data.acc(0), imu_data.acc(2)); // pitch angle from accelerometer
+        // // roll, pitch, yaw according to Tait-Bryan angles ZYX
+        // const float roll_acc = atan2f(imu_data.acc(1), imu_data.acc(2)); // roll angle from accelerometer
+        // const float pitch_acc = atan2f(-imu_data.acc(0), sqrtf(imu_data.acc(1) * imu_data.acc(1) + imu_data.acc(2) * imu_data.acc(2))); // pitch angle from accelerometer
+        // // pitch, roll, yaw according to Tait-Bryan angles ZXY
+        // const float pitch_acc = atan2f(-imu_data.acc(0), imu_data.acc(2)); // pitch angle from accelerometer
+        // const float roll_acc = atan2f(imu_data.acc(1), sqrtf(imu_data.acc(0) * imu_data.acc(0) + imu_data.acc(2) * imu_data.acc(2))); // roll angle from accelerometer
+        roll_estimate  += Ts * (imu_data.gyro(0) + kp * (roll_acc  - roll_estimate ));
+        pitch_estimate += Ts * (imu_data.gyro(1) + kp * (pitch_acc - pitch_estimate));
+        rp(0) = roll_estimate; // roll angle
+        rp(1) = pitch_estimate; // pitch angle
 
         if (do_execute_main_task) {
 
@@ -134,6 +154,10 @@ int main()
 
         // print to the serial terminal
         printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
+        // printf("%6.2f, %6.2f ", imu_data.rpy(0) * 180.0f / M_PIf, imu_data.rpy(1) * 180.0f / M_PIf);
+        // printf("%6.2f, %6.2f \n", roll_estimate * 180.0f / M_PIf, pitch_estimate * 180.0f / M_PIf);
+        // printf("%6.2f, %6.2f ", imu_data.pry(1) * 180.0f / M_PIf, imu_data.pry(0) * 180.0f / M_PIf);
+        // printf("%6.2f, %6.2f \n", roll_estimate * 180.0f / M_PIf, pitch_estimate * 180.0f / M_PIf);
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();
