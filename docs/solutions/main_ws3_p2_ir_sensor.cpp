@@ -88,6 +88,8 @@ int main()
     while (true) {
         main_task_timer.reset();
 
+        // --- code that runs every cycle at the start goes here ---
+
         if (do_execute_main_task) {
 
         // --- code that runs when the blue button was pressed goes here ---
@@ -181,7 +183,7 @@ int main()
         // toggling the user led
         user_led = !user_led;
 
-        // --- code that runs every cycle goes here ---
+        // --- code that runs every cycle at the end goes here ---
 
         // print to the serial terminal
         printf("US Sensor in cm: %f, DC Motor Rotations: %f\n", us_distance_cm, motor_M3.getRotation());

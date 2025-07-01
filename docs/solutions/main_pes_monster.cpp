@@ -212,6 +212,8 @@ int main()
     while (true) {
         main_task_timer.reset();
 
+        // --- code that runs every cycle at the start goes here ---
+
         if (do_execute_main_task) {
 
         // --- code that runs when the blue button was pressed goes here ---
@@ -339,7 +341,7 @@ int main()
         // toggling the user led
         user_led = !user_led;
 
-        // --- code that runs every cycle goes here ---
+        // --- code that runs every cycle at the end goes here ---
 
         // print to the serial terminal
         printf("IR cm: %6.2f, US cm: %6.2f, R deg: %6.2f, P deg: %6.2f, Y deg: %6.2f, M1 rot: %6.2f, %6.2f, M2 rot: %6.2f, %6.2f, M3 rot: %6.2f, %6.2f \n",

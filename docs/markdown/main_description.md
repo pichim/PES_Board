@@ -102,6 +102,8 @@ If we want to command an actuator, read in a sensor or print an output to the co
     while (true) {
         main_task_timer.reset();
 
+        // --- code that runs every cycle at the start goes here ---
+
         if (do_execute_main_task) {
 
         // --- code that runs when the blue button was pressed goes here ---
@@ -139,7 +141,7 @@ Here we can insert commands that we want to execute only after pressing the blue
         // toggling the user led
         user_led = !user_led;
 
-        // --- code that runs every cycle goes here ---
+        // --- code that runs every cycle at the end goes here ---
         .
         .
 ```

@@ -58,6 +58,8 @@ int main()
     while (true) {
         main_task_timer.reset();
 
+        // --- code that runs every cycle at the start goes here ---
+
         // measure delta time
         const microseconds time_us = logging_timer.elapsed_time();
         const float dtime_us = duration_cast<microseconds>(time_us - time_previous_us).count();
@@ -92,7 +94,7 @@ int main()
         // toggling the user led
         user_led = !user_led;
 
-        // --- code that runs every cycle goes here ---
+        // --- code that runs every cycle at the end goes here ---
 
         // print to the serial terminal
         if ((cntr_1 % 50 == 0) && (cntr_1 != 0))

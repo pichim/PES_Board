@@ -85,6 +85,8 @@ int main()
     while (true) {
         main_task_timer.reset();
 
+        // --- code that runs every cycle at the start goes here ---
+
         // read imu data
         imu_data = imu.getImuData();
 
@@ -150,7 +152,7 @@ int main()
         // toggling the user led
         user_led = !user_led;
 
-        // --- code that runs every cycle goes here ---
+        // --- code that runs every cycle at the end goes here ---
 
         // print to the serial terminal
         printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
