@@ -351,4 +351,3 @@ printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
 ## Example
 
 - [Example Gimbal](../solutions/main_gimbal.cpp)
-- [Example Gimbal using 1-D Mahony Filter](../solutions/main_gimbal_1d_mahony.cpp)
