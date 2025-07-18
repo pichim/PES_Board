@@ -84,6 +84,18 @@ float LineFollower::getLeftWheelVelocity() const
 {
     return m_wheel_left_velocity_rps;
 }
+/* ─────────────────────────────────────────────────────────────── */
+/* Edge-intensity accessors                                       */
+float LineFollower::getLeftEdgeIntensity() const
+{
+    return m_SensorBar.getAvgBit(0);     // bit 0  = left-most LED
+}
+
+float LineFollower::getRightEdgeIntensity() const
+{
+    return m_SensorBar.getAvgBit(7);     // bit 7  = right-most LED
+}
+
 
 bool LineFollower::isLedActive() const
 {
@@ -118,7 +130,24 @@ void LineFollower::followLine()
         // setpoints for the dc motors in rps
         m_wheel_right_velocity_rps = wheel_speed(0) / (2.0f * M_PIf);
         m_wheel_left_velocity_rps = wheel_speed(1) / (2.0f * M_PIf);
-    }
+
+        /* ─── DEBUG: print once every 50 ms ─────────────────────────────── */
+        static Timer dbgTimer;
+        if (!dbgTimer.elapsed_time().count()) dbgTimer.start();  // start once
+
+        if (dbgTimer.elapsed_time() >= 50ms)                     // C++ chrono literal
+        {
+            dbgTimer.reset();                                    // restart stopwatch
+
+            // // printf("θ=%+6.1f°  RAW=0x%02X  ω_sp=%6.2f  vR=%.2f  vL=%.2f\r\n",
+            //     m_angle * 180.0f / M_PIf,                     // heading error [deg]
+            //     m_SensorBar.getRaw(),                         // raw 8-bit pattern
+            //     m_robot_coord(1),                             // rotational set-pt
+            //     m_wheel_right_velocity_rps,                   // right-wheel rps
+            //     m_wheel_left_velocity_rps);                   // left-wheel  rps
+        }
+
+            }
 }
 
 float LineFollower::ang_cntrl_fcn(float Kp, float Kp_nl, float angle)
@@ -149,3 +178,14 @@ void LineFollower::sendThreadFlag()
     // set the thread flag to trigger the thread task
     m_Thread.flags_set(m_ThreadFlag);
 }
+
+SensorBar& LineFollower::sensor()
+{
+    return m_SensorBar;
+}
+
+const SensorBar& LineFollower::sensor() const
+{
+    return m_SensorBar;
+}
+
