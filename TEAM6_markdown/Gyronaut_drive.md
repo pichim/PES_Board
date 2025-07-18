@@ -9,6 +9,14 @@
 <br>
 
 After careful assembly and code integration; our final run video is as shown;
+## Assembled gyronaut drive
+
+<p align="center">
+    <img src="../docs/images/gyronaut_drive.jpg" alt="Gyronaut drive components" width="700"/> </br>
+    <i>Components for Assembly</i>
+</p>
+
+<br>
 
 ## The Maze solution
 
