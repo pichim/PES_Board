@@ -1,0 +1,187 @@
+# Climbing Robot Control Firmware
+
+## Overview
+This firmware controls a climbing-capable robot using an STM32 Nucleo board with mbed OS.  
+It performs line-following, balance control using an IMU (Mahony filter), and a step-based climbing sequence.
+
+The system consists of:
+- A state machine managing Initialization, Execution (line following + balancing), and Climbing states.
+- Servo motor control for roll, pitch stabilization and lifting mechanism.
+- DC motors for locomotion and climbing actuation.
+- A sensor bar for line detection.
+- An IMU for orientation estimation.
+
+---
+
+## Features
+- **IMU-based roll and pitch estimation** using a 1-D Mahony filter.
+- **Nonlinear steering control** for smooth and adaptive line following.
+- **Stepwise climbing procedure** with motor and servo coordination.
+- **User control via button** to toggle execution and reset.
+- Modular code with clear separation of concerns.
+
+---
+
+## Hardware Requirements
+- STM32 Nucleo F446RE (or compatible)
+- DC Motors with encoders
+- Servos for roll, pitch and lifting (e.g., Modelcraft RS2 MG/BB)
+- Sensor bar for line detection
+- IMU sensor (I2C interface)
+- Mechanical button for state switching
+
+---
+
+## Software Requirements
+- mbed OS (version compatible with target board)
+- Eigen library for linear algebra
+- Standard C++11 or later
+- PlatformIO or mbed CLI for building and flashing firmware
+
+---
+
+## Setup Instructions
+
+1. Clone the repository.
+2. Install mbed OS and required libraries (`mbed`, `Eigen`, motor drivers, etc.).
+3. Calibrate servos using the provided pulse width min/max parameters.
+4. Connect hardware peripherals according to pin assignments in `PESBoardPinMap.h`.
+5. Build the project using PlatformIO or mbed CLI.
+6. Flash the firmware to your target board.
+7. Press the user button to start execution; press again to reset.
+
+---
+
+## Code Structure
+
+- **main.cpp**  
+  Main loop with a state machine running INITIAL, EXECUTION, and CLIMB states.  
+  Handles IMU updates, button interrupts, and timing.
+
+- **Climbing.h / Climbing.cpp**  
+  Contains functions for initialization, IMU update, execution control, and climbing step logic.  
+  Each function is well documented and modular.
+
+---
+
+## Usage
+
+- On power-up, the robot is in INITIAL state, enabling motors and servos.
+- On execution start (user button press), the robot enters EXECUTION state:  
+  - Line follows using sensor bar and adjusts steering using IMU data.
+  - Balances using servo roll and pitch based on filtered IMU data.
+- Press mechanical button during EXECUTION to trigger CLIMB state:
+  - Runs stepwise climbing routine controlling motors and lifting servo.
+- Press user button again to stop/reset.
+
+---
+
+## Troubleshooting
+
+- Ensure all motors and servos are calibrated and connected properly.
+- Verify IMU connections and correct I2C addresses.
+- Use serial prints for debugging messages.
+- Watch for warnings on loop timing overruns.
+- If behavior is erratic, try resetting and recalibrating servos.
+
+---
+
+## License
+
+MIT License — Feel free to use and modify this code with attribution.
+
+---
+
+
+
+
+# Maze Solver Robot Firmware
+
+## Overview
+This firmware enables an autonomous maze-solving robot running on an STM32 Nucleo F446RE board using mbed OS.  
+The robot explores an unknown maze, records junctions and turns, then performs an optimal run through the discovered path.
+
+---
+
+## Features
+- **Line following** with sensor bar to detect maze lines.
+- **Junction detection and turn recording** with a stateful path tracking structure.
+- **Backtracking on dead ends** with intelligent turn choice.
+- **Optimal run playback** of the discovered path.
+- **User button to start and reset** robot behavior.
+
+---
+
+## Hardware Requirements
+- STM32 Nucleo F446RE board (or compatible)
+- DC motors with encoders
+- Sensor bar for line detection
+- Servos if used (optional)
+- User button and mechanical button inputs
+
+---
+
+## Software Requirements
+- mbed OS
+- Eigen library for matrix math
+- Standard C++11 or later
+- PlatformIO or mbed CLI
+
+---
+
+## Setup Instructions
+
+1. Clone or download the repository.
+2. Set up mbed OS environment and install dependencies.
+3. Connect hardware as specified in `PESBoardPinMap.h`.
+4. Build and flash using PlatformIO or mbed CLI.
+5. Use user button to toggle robot exploration and reset.
+6. Mechanical button can be used to switch between exploration and optimal run.
+
+---
+
+## Code Structure
+
+- **main.cpp**  
+  Main control loop with state machine managing INIT, EXPLORING, and OPTIMAL_RUN states.  
+  Handles sensor reading, motor control, junction tracking, backtracking, and path playback.
+
+- **MazeSolver.h / MazeSolver.cpp**  
+  Contains modular functions for handling exploration, dead-end backtracking, and optimal run logic.  
+  Includes data structures for junctions and turns with detailed comments.
+
+---
+
+## Usage
+
+- Press the user button to start exploration mode.
+- The robot autonomously explores the maze, logging turns and junctions.
+- On reaching the goal or completion, it switches to optimal run mode.
+- Optimal run follows the shortest recorded path through the maze.
+- Press the user button again to reset and restart.
+
+---
+
+## Troubleshooting
+
+- Check sensor bar calibration and connections.
+- Verify motor encoders and motor wiring.
+- Use debug prints for junction and path data.
+- Make sure timing constraints are met; watch for warnings.
+- Reset if robot behaves unexpectedly.
+
+---
+
+## License
+
+MIT License — Open for modification and reuse with attribution.
+
+---
+
+## Authors
+Emmanuel Korankye
+Contact: ekorankye@ethz.ch
+
+Kobena Badu Enyam
+Contact: kobena.enyam@ashesi.edu.gh
+

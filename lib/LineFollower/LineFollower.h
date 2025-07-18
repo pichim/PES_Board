@@ -109,6 +109,28 @@ public:
      */
     bool isLedActive() const;
 
+        /**
+     * @brief Normalised reflectance of the outer-most sensors (0 = white, 1 = black).
+     */
+    float getLeftEdgeIntensity()  const;
+    float getRightEdgeIntensity() const;
+
+
+        /* MazeSolver needs access to a few low-level helpers for pivot turns */
+    friend class MazeSolver;
+
+        /* ------------------------------------------------------------------
+     * Direct access to the underlying SensorBar
+     *   – the non-const overload lets you call mutating functions
+     *     such as setInvertBits(), clearBarStrobe(), etc.
+     *   – the const overload lets you read values from main.cpp
+     * ------------------------------------------------------------------ */
+    SensorBar&       sensor();            ///< writable reference
+    const SensorBar& sensor() const;      ///< read-only reference
+
+
+
+
 
 private:
     // rotational velocity controller
