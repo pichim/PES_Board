@@ -30,6 +30,8 @@
     TODO:
 
     General:
+    - Maze solving description can be found here: https://www.instructables.com/Robot-Maze-Solver/
+    - Include information about the distance of the line follower sensors in the line follower description
     - Create description of 1-D mahony filter in imu.md
     - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower
     - Create Workshop 6 with my dc motor

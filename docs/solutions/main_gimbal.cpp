@@ -136,6 +136,8 @@ int main()
 
         // print to the serial terminal
         printf("%6.2f, %6.2f \n", roll_servo_width, pitch_servo_width);
+        // printf("%6.2f, %6.2f \n", imu_data.rpy(0) * 180.0f / M_PIf, imu_data.rpy(1) * 180.0f / M_PIf);
+        // printf("%6.2f, %6.2f \n", imu_data.pry(1) * 180.0f / M_PIf, imu_data.pry(0) * 180.0f / M_PIf);
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
         int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();

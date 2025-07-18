@@ -29,8 +29,8 @@ The kinematics of a differential drive robot describe the relationship between t
 ## Deriving the Kinematic Model
 
 <p align="center">
-    <img src="../images/kinematics.png" alt="Differential Drive Robot Kinematics" width="700"/> </br>
-    <i>Differential Drive Robot Kinematics</i>
+    <img src="../images/kinematics.png" alt="Sketch Differential Drive Robot Kinematics" width="550"/> </br>
+    <i>Sketch Differential Drive Robot Kinematics</i>
 </p>
 
 The computation should start by defining the geometric relationships and using simple formulas to derive transformation matrices that map the wheel speeds to the robot’s motion—both its translation and rotation around the center.
