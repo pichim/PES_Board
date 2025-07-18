@@ -3,6 +3,7 @@
 ## Overview
 This firmware controls a climbing-capable robot using an STM32 Nucleo board with mbed OS.  
 It performs line-following, balance control using an IMU (Mahony filter), and a step-based climbing sequence.
+A mechanical switch attached to the front head of the robot senses obstacles by clicking into them. Climbing mechanism is then activated
 
 The system consists of:
 - A state machine managing Initialization, Execution (line following + balancing), and Climbing states.
@@ -99,7 +100,7 @@ MIT License — Feel free to use and modify this code with attribution.
 
 ## Overview
 This firmware enables an autonomous maze-solving robot running on an STM32 Nucleo F446RE board using mbed OS.  
-The robot explores an unknown maze, records junctions and turns, then performs an optimal run through the discovered path.
+The robot explores an unknown maze, records junctions and turns, then performs an optimal run through the discovered path when the mechanicl switch is pressed.
 
 ---
 
