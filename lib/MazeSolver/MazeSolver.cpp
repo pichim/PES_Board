@@ -73,8 +73,9 @@ void runExploring(SensorBar& sensor_bar,
 {
     // Read raw sensor bits to detect line pattern
     uint8_t bits = sensor_bar.getRaw();
-    
-    if (bits == LEFTLINE || bits == RIGHTLINE )
+    float left_average = sensor_bar.getMeanThreeAvgBitsLeft(); //  incase reflectance pulsates
+    float right_average = sensor_bar.getMeanThreeAvgBitsRight();// incase reflectance pulsates
+    if (bits == LEFTLINE || bits == RIGHTLINE || (left_average > 0.6f) || (right_average> 0.6f) )
      {
         // Move forward a bit to confirm junction or corner
         printf("Forwarding\n");
@@ -98,7 +99,7 @@ void runExploring(SensorBar& sensor_bar,
                 j.id = junction_counter++;
                 j.path_index = global_path.size();
 
-                if (bits == LEFTLINE || ((bits & 0b00000001) == 0b00000001)) {
+                if (bits == LEFTLINE || ((bits & 0b00000001) == 0b00000001) || ((left_average >0.6f )&& (right_average < 0.6f))) {
                     j.first_turn = LEFT;
                     j.tried_turns.push_back(LEFT);
                     j.last_exit = LEFT;
@@ -107,7 +108,7 @@ void runExploring(SensorBar& sensor_bar,
                     printf("Left turn at junction\n");
                     global_path.push_back(LEFT);
                 }
-                else if (bits == RIGHTLINE || ((bits & 0b10000000) == 0b10000000)) {
+                else if (bits == RIGHTLINE || ((bits & 0b10000000) == 0b10000000) || ((left_average <0.6f )&& (right_average > 0.6f))) {
                     j.first_turn = RIGHT;
                     j.tried_turns.push_back(RIGHT);
                     j.last_exit = RIGHT;
@@ -119,11 +120,11 @@ void runExploring(SensorBar& sensor_bar,
             }
         } else {
             // No junction detected, it's a corner: turn accordingly
-            if (bits == LEFTLINE) {
+            if (bits == LEFTLINE || ((left_average >0.6f )&& (right_average < 0.6f))) {
                 if (!junctions.empty()) turn_count++;
                 turnLeft(motor_M1, motor_M2, 1200);
             }
-            else if (bits == RIGHTLINE) {
+            else if (bits == RIGHTLINE || ((left_average <0.6f )&& (right_average > 0.6f))) {
                 if (!junctions.empty()) turn_count++;
                 turnRight(motor_M1, motor_M2, 1200);
             }
