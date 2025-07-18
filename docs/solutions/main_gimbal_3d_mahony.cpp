@@ -7,6 +7,7 @@
 #include "DebounceIn.h"
 #include "IMU.h"
 #include "Servo.h"
+#include <Eigen/Dense>
 
 #define M_PIf 3.14159265358979323846f // pi
 
@@ -90,11 +91,42 @@ int main()
         // read imu data
         imu_data = imu.getImuData();
 
-        // linear 1-D mahony filter
-        const float roll_acc = atan2f(imu_data.acc(1), imu_data.acc(2)); // roll angle from accelerometer
+        // 3-D mahony filter
+        // // roll, pitch, yaw according to Tait-Bryan angles ZYX
+        // const float roll_acc = atan2f(imu_data.acc(1), imu_data.acc(2)); // roll angle from accelerometer
+        // const float pitch_acc = atan2f(-imu_data.acc(0), sqrtf(imu_data.acc(1) * imu_data.acc(1) + imu_data.acc(2) * imu_data.acc(2))); // pitch angle from accelerometer
+        // // [dphi; dtheta; dpsi] = OmegaInv * [wx; wy; wz]
+        // // OmegaInv = [[ 1, sin(phi)*tan(theta),  cos(phi)*tan(theta)],
+        // //             [ 0,           cos(phi),           -sin(phi)],
+        // //             [ 0, sin(phi)/cos(theta), cos(phi)/cos(theta)]]
+        // Eigen::Matrix3f OmegaInv;
+        // OmegaInv << 1.0f, sinf(roll_estimate) * tanf(pitch_estimate),  cosf(roll_estimate) * tanf(pitch_estimate),
+        //             0.0f,                       cosf(roll_estimate ),                       -sinf(roll_estimate ),
+        //             0.0f, sinf(roll_estimate) / cosf(pitch_estimate),  cosf(roll_estimate) / cosf(pitch_estimate);
+        // Eigen::Vector3f omega;
+        // omega << imu_data.gyro(0), imu_data.gyro(1), imu_data.gyro(2); // [wx, wy, wz]
+        // Eigen::Vector3f dang = OmegaInv * omega; // [dphi; dtheta; dpsi]
+        // roll_estimate  += Ts * (dang(0) + kp * (roll_acc  - roll_estimate ));
+        // pitch_estimate += Ts * (dang(1) + kp * (pitch_acc - pitch_estimate));
+
+        // pitch, roll, yaw according to Tait-Bryan angles ZXY
         const float pitch_acc = atan2f(-imu_data.acc(0), imu_data.acc(2)); // pitch angle from accelerometer
-        roll_estimate  += Ts * (imu_data.gyro(0) + kp * (roll_acc  - roll_estimate ));
-        pitch_estimate += Ts * (imu_data.gyro(1) + kp * (pitch_acc - pitch_estimate));
+        const float roll_acc = atan2f(imu_data.acc(1), sqrtf(imu_data.acc(0) * imu_data.acc(0) + imu_data.acc(2) * imu_data.acc(2))); // roll angle from accelerometer
+        // [dtheta; dphi; dpsi] = OmegaInv * [wy; wx; wz]
+        // OmegaInv = [[1,  tan(phi)*sin(theta), -cos(theta)*tan(phi)],
+        //             [0,          cos(theta),           sin(theta)],
+        //             [0, -sin(theta)/cos(phi),  cos(theta)/cos(phi)]]
+        Eigen::Matrix3f OmegaInv;
+        OmegaInv << 1.0f,  tanf(roll_estimate ) * sinf(pitch_estimate), -cosf(pitch_estimate) * tanf(roll_estimate ),
+                    0.0f,                         cosf(pitch_estimate),                         sinf(pitch_estimate),
+                    0.0f, -sinf(pitch_estimate) / cosf(roll_estimate ),  cosf(pitch_estimate) / cosf(roll_estimate );
+        Eigen::Vector3f omega;
+        omega << imu_data.gyro(1), imu_data.gyro(0), imu_data.gyro(2); // [wy, wx, wz]
+        Eigen::Vector3f dang = OmegaInv * omega; // [dtheta; dphi; dpsi]
+        pitch_estimate += Ts * (dang(0) + kp * (pitch_acc - pitch_estimate));
+        roll_estimate  += Ts * (dang(1) + kp * (roll_acc  - roll_estimate ));
+
+        // update angles for the servos
         rp(0) = roll_estimate; // roll angle
         rp(1) = pitch_estimate; // pitch angle
 
