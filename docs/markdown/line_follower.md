@@ -24,6 +24,11 @@ The sensor features eight diodes for line detection, with each diode's illuminat
 | Supply Voltage                      | 5 V         |
 | Supply Current                      | 25 - 185 mA |
 | Read Cycle Time                     | 3.2 ms      |
+| Measurement Distance                | 1-2 mm      |
+
+### Important Notes
+
+The measurement distance depends on the surface color and the ambient light conditions. The sensitivity can be adjusted via an on-board potentiometer, allowing customization for specific applications and environments. Best practice is to perform some experiments to find the best sensitivity and distance from the surface for your application.
 
 ## Links
 

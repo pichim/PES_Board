@@ -45,7 +45,7 @@ Through (fast and early) prototyping, you not only validate the feasibility of y
   <table>
     <tr>
       <td align="center">
-        <img src="../images/fast_prototyping.jpg" alt="Fast Prototyping does not have to be perfect" width="500"/>
+        <img src="../images/fast_prototyping_00.jpg" alt="Fast Prototyping does not have to be perfect" width="500"/>
         <br/><i>Fast Prototyping does not have to be perfect</i>
       </td>
       <td align="center">

@@ -31,8 +31,6 @@
 
     General:
     - Maze solving description can be found here: https://www.instructables.com/Robot-Maze-Solver/
-    - Include information about the distance of the line follower sensors in the line follower description
-    - Create description of 1-D mahony filter in imu.md
     - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower
     - Create Workshop 6 with my dc motor
     - Document how to use PlatformIO
@@ -104,8 +102,11 @@
 Big shoutout to Maciej Szarek for his help and the support (https://github.com/szar99).
 
 <p align="center">
-    <img src="docs/images/fast_prototyping.jpg" alt="Fast Prototyping does not have to be perfect" width="650"/> </br>
+    <img src="docs/images/fast_prototyping_00.jpg" alt="Fast Prototyping does not have to be perfect" width="750"/> <br/>
     <i>Fast Prototyping does not have to be perfect</i>
+    <br/><br/>
+    <img src="docs/images/fast_prototyping_01.png" alt="Iterating quickly helps accelerate the development process" width="750"/> <br/>
+    <i>Iterating quickly helps accelerate the development process</i>
 </p>
 
 Fast prototyping in robotics focuses on quickly building and testing a simple version of the system rather than aiming for perfection from the start. Through iterative development, each prototype helps identify and fix issues, leading to gradual improvements. This approach saves time and cost, encourages experimentation, and ensures that the final design is optimized based on real-world performance. Additionally, hardware and software evolve together, allowing adjustments to both as new challenges arise. Instead of spending too much time planning, build, test, and refine — learning from each iteration.
