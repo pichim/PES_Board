@@ -29,6 +29,28 @@
  <!--
     TODO:
 
+    Mbed CE:
+    - Test main_pes_monster.cpp and all hardware
+    - Remove MyDCMotor.h and MyDCMotor.cpp from lib
+    - Revert main.cpp to main_base.cpp
+    - In mbed_app.json5: Not sure if "target.features_add": ["STORAGE"], is needed
+{
+    "target_overrides": {
+        "*": {
+            "target.features_add": ["STORAGE"],
+            "target.components_add": ["SD"],
+            "target.printf_lib": "std",
+            "platform.stdio-baud-rate": 115200,
+            "sd.INIT_FREQUENCY": 100000
+        }
+    },
+    "config": {
+        "main-stack-size": {
+            "value": 16384
+        }
+    }
+}
+
     General:
     - Maze solving description can be found here: https://www.instructables.com/Robot-Maze-Solver/
     - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower

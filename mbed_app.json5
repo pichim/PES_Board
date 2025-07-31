@@ -1,0 +1,16 @@
+{
+    "target_overrides": {
+        "*": {
+            "target.features_add": ["STORAGE"],
+            "target.components_add": ["SD"],
+            "target.printf_lib": "std",
+            "platform.stdio-baud-rate": 115200,
+            "sd.INIT_FREQUENCY": 100000
+        }
+    },
+    "config": {
+        "main-stack-size": {
+            "value": 16384
+        }
+    }
+}

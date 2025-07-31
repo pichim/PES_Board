@@ -1,0 +1,31 @@
+buildType:
+  default: Develop
+  choices:
+    Develop:
+      short: Develop
+      long: Emit debug information but also optimize
+      buildType: Develop
+    Debug:
+      short: Debug
+      long: Emit debug information and don't optimize
+      buildType: Debug
+    Release:
+      short: Release
+      long: Optimize generated code
+      buildType: Release
+board:
+  # Fill name of your targer which has to corespond to
+  # target name in targets.json5 file or custom_targets.json5 in case of custom target.
+  # For simplified just replace every occurrence of YOUR_MBED_TARGET with Mbed target name. 
+  # For example LPC1768 or NUCLEO_L452RE_P
+  default: NUCLEO_F446RE # default variant (choose) from below
+  choices:
+    NUCLEO_F446RE: # Name of one variant
+      short: NUCLEO_F446RE # Short name of the variant
+      settings:
+        MBED_TARGET: NUCLEO_F446RE # Your mbed target name from targets.json5 file
+        # Fill your upload method according to variants below
+        # - universal: NONE, MBED, JLINK, PYOCD, OPENOCD
+        # - target specific: STLINK, STM32CUBE, LINKSERVER, PICOTOOL, ARDUINO_BOSSAC
+        # For more visit - https://github.com/mbed-ce/mbed-os/wiki/Upload-Methods#upload-method-list
+        UPLOAD_METHOD: MBED
