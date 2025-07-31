@@ -1,8 +1,12 @@
 #include "Motor.h"
 
-Motor::Motor(PinName pwm, float voltage_max) : m_FastPWM(pwm)
+Motor::Motor(PinName pwm, float voltage_max) : m_PWM(pwm)
                                              , m_voltage_max(voltage_max)
 {
+#if !MOTOR_DO_USE_FAST_PWM
+    m_PWM.period_us(50);
+    m_PWM.write(0.5f);
+#endif
     setVoltage(0.0f);
 }
 
@@ -17,7 +21,7 @@ float Motor::setVoltage(float voltage)
                   duty_cycle;
     
     // write the duty cycle to the PWM output
-    m_FastPWM.write(duty_cycle);
+    m_PWM.write(duty_cycle);
 
     // return the actual voltage applied to the motor
     return (2.0f * duty_cycle - 1.0f) * m_voltage_max;

@@ -5,9 +5,9 @@
 
 // drivers
 #include "DebounceIn.h"
+#include <Eigen/Dense>
 #include "IMU.h"
 #include "Servo.h"
-#include <Eigen/Dense>
 
 #define M_PIf 3.14159265358979323846f // pi
 

@@ -5,6 +5,7 @@
 
 // drivers
 #include "DebounceIn.h"
+#include <Eigen/Dense>
 #include "IMU.h"
 #include "Servo.h"
 

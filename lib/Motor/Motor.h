@@ -1,7 +1,13 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-#include "FastPWM.h"
+#define MOTOR_DO_USE_FAST_PWM true
+
+#if MOTOR_DO_USE_FAST_PWM
+    #include "FastPWM.h"
+#else
+    #include "mbed.h"
+#endif
 
 class Motor
 {
@@ -17,7 +23,11 @@ private:
     static constexpr float MOTOR_DUTY_CYCLE_MIN_VALUE = 0.0f;
     static constexpr float MOTOR_DUTY_CYCLE_MAX_VALUE = 1.0f;
 
-    FastPWM m_FastPWM;
+#if MOTOR_DO_USE_FAST_PWM
+    FastPWM m_PWM;
+#else
+    PwmOut m_PWM;
+#endif
     float m_voltage_max;
 };
 #endif /* MOTOR_H_ */
