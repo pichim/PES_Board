@@ -8,7 +8,10 @@
 			"targets": [
 				"flash-PES_Board"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"problemMatcher": [],
 			"detail": "CMake template build task"
 		}
