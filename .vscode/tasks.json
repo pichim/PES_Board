@@ -6,7 +6,7 @@
 			"label": "CMake: build",
 			"command": "build",
 			"targets": [
-				"flash-PES_Board"
+				"flash-SPI_COM_SLAVE"
 			],
 			"group": {
 				"kind": "build",
