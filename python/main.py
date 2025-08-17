@@ -1,0 +1,173 @@
+# pi@rasperry:~/Projects/spi_com_master $ pinout
+# Description        : Raspberry Pi 5B rev 1.1
+# Revision           : d04171
+# SoC                : BCM2712
+# RAM                : 8GB
+# Storage            : MicroSD
+# USB ports          : 4 (of which 2 USB3)
+# Ethernet ports     : 1 (1000Mbps max. speed)
+# Wi-fi              : True
+# Bluetooth          : True
+# Camera ports (CSI) : 2
+# Display ports (DSI): 2
+
+# ,--------------------------------.
+# | oooooooooooooooooooo J8   : +====
+# | 1ooooooooooooooooooo      : |USB2
+# |  Wi  Pi Model 5B  V1.1  fan +====
+# |  Fi     +---+      +---+       |
+# |         |RAM|      |RP1|    +====
+# ||p       +---+      +---+    |USB3
+# ||c      -------              +====
+# ||i        SoC      |c|c J14     |
+# (        -------  J7|s|s 12 +======
+# |  J2 bat   uart   1|i|i oo |   Net
+# | pwr\..|hd|...|hd|o|1|0    +======
+# `-| |-1o|m0|---|m1|--------------'
+
+# J8:
+#    3V3  (1) (2)  5V    
+#  GPIO2  (3) (4)  5V    
+#  GPIO3  (5) (6)  GND   
+#  GPIO4  (7) (8)  GPIO14
+#    GND  (9) (10) GPIO15
+# GPIO17 (11) (12) GPIO18
+# GPIO27 (13) (14) GND   
+# GPIO22 (15) (16) GPIO23
+#    3V3 (17) (18) GPIO24
+# GPIO10 (19) (20) GND   
+#  GPIO9 (21) (22) GPIO25
+# GPIO11 (23) (24) GPIO8 
+#    GND (25) (26) GPIO7 
+#  GPIO0 (27) (28) GPIO1 
+#  GPIO5 (29) (30) GND   
+#  GPIO6 (31) (32) GPIO12
+# GPIO13 (33) (34) GND   
+# GPIO19 (35) (36) GPIO16
+# GPIO26 (37) (38) GPIO20
+#    GND (39) (40) GPIO21
+
+# J2:
+# RUN (1)
+# GND (2)
+
+# J7:
+# COMPOSITE (1)
+#       GND (2)
+
+# J14:
+# TR01 TAP (1) (2) TR00 TAP
+# TR03 TAP (3) (4) TR02 TAP
+
+# For further information, please refer to https://pinout.xyz/
+
+import spidev
+import struct
+import time
+
+# Protocol constants (matching C++ header)
+SPI_HEADER_MASTER = 0x55  # Raspberry Pi header
+SPI_HEADER_SLAVE = 0x45   # Nucleo header
+SPI_NUM_FLOATS = 3        # Number of float values in each message
+SPI_MSG_SIZE = 1 + SPI_NUM_FLOATS * 4 + 1  # header + floats + checksum
+
+def calculate_crc8(buffer):
+    """Calculate CRC-8 with polynomial 0x07"""
+    crc = 0x00  # Initial value
+    for byte in buffer:
+        crc ^= byte
+        for _ in range(8):
+            if crc & 0x80:
+                crc = (crc << 1) ^ 0x07
+            else:
+                crc <<= 1
+            crc &= 0xFF  # Ensure 8-bit value
+    return crc
+
+def verify_checksum(buffer, expected_crc):
+    return calculate_crc8(buffer) == expected_crc
+
+class SPIData:
+    """Data structure for SPI communication"""
+    def __init__(self):
+        self.data = [0.0] * SPI_NUM_FLOATS
+        self.message_count = 0
+        self.failed_count = 0
+        self.last_delta_time_us = 0
+
+# Initialize SPI
+spi = spidev.SpiDev()
+spi.open(0, 0)  # SPI0.0 (MOSI: GPIO 10, MISO: GPIO 9, SCK: GPIO 11, CS: GPIO 8)
+spi.max_speed_hz = 200000 #200000
+spi.mode = 0b00  # SPI mode 0
+
+# Data structures
+transmitted_data = SPIData()
+received_data = SPIData()
+
+# Initialize transmitted data with test values
+transmitted_data.data[0] = 42.42
+transmitted_data.data[1] = 98.76
+transmitted_data.data[2] = 11.11
+
+# Timing
+start_time = time.time()
+previous_time = start_time
+
+while True:
+    # Prepare transmission message
+    tx_bytes = bytearray(SPI_MSG_SIZE)
+    tx_bytes[0] = SPI_HEADER_MASTER
+    
+    # Pack floats
+    for i in range(SPI_NUM_FLOATS):
+        float_bytes = struct.pack('<f', transmitted_data.data[i])
+        tx_bytes[1 + i * 4:1 + (i + 1) * 4] = float_bytes
+    
+    # Calculate and add checksum
+    checksum = calculate_crc8(tx_bytes[:-1])
+    tx_bytes[-1] = checksum
+
+    # Send and receive simultaneously (full-duplex)
+    rx_bytes = spi.xfer2(list(tx_bytes))
+
+    # Process received message
+    header_received = rx_bytes[0]
+    received_checksum = rx_bytes[-1]
+
+    # Verify checksum
+    if verify_checksum(rx_bytes[:-1], received_checksum):
+        if header_received == SPI_HEADER_SLAVE:
+            # Valid message - extract data
+            for i in range(SPI_NUM_FLOATS):
+                float_bytes = bytes(rx_bytes[1 + i * 4:1 + (i + 1) * 4])
+                received_data.data[i] = struct.unpack('<f', float_bytes)[0]
+            
+            received_data.message_count += 1
+
+            # Measure elapsed time
+            current_time = time.time()
+            delta_time_us = int((current_time - previous_time) * 1000000)
+            previous_time = current_time
+            received_data.last_delta_time_us = delta_time_us
+
+            # Keep transmitted data constant - no incrementing
+            # Transmitted data stays: [42.42, 98.76, 11.11]
+
+            transmitted_data.message_count += 1
+
+            # Print results
+            print(f"Message: {received_data.message_count} | "
+                  f"Delta Time: {delta_time_us} us | "
+                  f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, {received_data.data[2]:.2f}] | "
+                  f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}")
+        else:
+            # Wrong header
+            received_data.failed_count += 1
+            print(f"Wrong header! Expected: 0x{SPI_HEADER_SLAVE:02X}, Got: 0x{header_received:02X} | Failed: {received_data.failed_count}")
+    else:
+        received_data.failed_count += 1
+        expected_checksum = calculate_crc8(rx_bytes[:-1])
+        print(f"CRC failed! Expected: 0x{expected_checksum:02X}, Got: 0x{received_checksum:02X} | Failed: {received_data.failed_count}")
+
+    time.sleep(0.02)
