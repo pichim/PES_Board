@@ -26,23 +26,23 @@
 # `-| |-1o|m0|---|m1|--------------'
 
 # J8:
-#    3V3  (1) (2)  5V    
-#  GPIO2  (3) (4)  5V    
-#  GPIO3  (5) (6)  GND   
+#    3V3  (1) (2)  5V
+#  GPIO2  (3) (4)  5V
+#  GPIO3  (5) (6)  GND
 #  GPIO4  (7) (8)  GPIO14
 #    GND  (9) (10) GPIO15
 # GPIO17 (11) (12) GPIO18
-# GPIO27 (13) (14) GND   
+# GPIO27 (13) (14) GND
 # GPIO22 (15) (16) GPIO23
 #    3V3 (17) (18) GPIO24
-# GPIO10 (19) (20) GND   
+# GPIO10 (19) (20) GND
 #  GPIO9 (21) (22) GPIO25
-# GPIO11 (23) (24) GPIO8 
-#    GND (25) (26) GPIO7 
-#  GPIO0 (27) (28) GPIO1 
-#  GPIO5 (29) (30) GND   
+# GPIO11 (23) (24) GPIO8
+#    GND (25) (26) GPIO7
+#  GPIO0 (27) (28) GPIO1
+#  GPIO5 (29) (30) GND
 #  GPIO6 (31) (32) GPIO12
-# GPIO13 (33) (34) GND   
+# GPIO13 (33) (34) GND
 # GPIO19 (35) (36) GPIO16
 # GPIO26 (37) (38) GPIO20
 #    GND (39) (40) GPIO21
@@ -61,15 +61,41 @@
 
 # For further information, please refer to https://pinout.xyz/
 
+"""
+================================================================================
+ SPI Wiring (Raspberry Pi 5 – Master)
+ --------------------------------------------------------------------------------
+ Raspberry Pi Pin (J8) | Function | Connected to Nucleo F446RE Pin
+---------------------------------------------------------------------------------
+ GPIO10 (Pin 19)       | MOSI     | PC_3
+ GPIO9  (Pin 21)       | MISO     | PC_2
+ GPIO11 (Pin 23)       | SCLK     | PB_10
+ GPIO8  (Pin 24)       | CS (CE0) | PB_12
+ GND    (Pin 25)       | GND      | GND
+ 3V3    (Pin 1)        | VCC      | 3V3
+================================================================================
+ Notes:
+ - Raspberry Pi 5 is SPI MASTER (bus 0, device 0 → `/dev/spidev0.0`).
+ - Uses spidev Python library for full-duplex transfers.
+ - Ensure `dtparam=spi=on` is enabled in `/boot/firmware/config.txt`.
+================================================================================
+"""
+
+# sudo chrt -f 50 python /home/pi/Projects/SPI_COM_Master/python/main.py
+
 import spidev
 import struct
 import time
 
 # Protocol constants (matching C++ header)
 SPI_HEADER_MASTER = 0x55  # Raspberry Pi header
-SPI_HEADER_SLAVE = 0x45   # Nucleo header
-SPI_NUM_FLOATS = 3        # Number of float values in each message
+SPI_HEADER_SLAVE = 0x45  # Nucleo header
+SPI_NUM_FLOATS = 3  # Number of float values in each message
 SPI_MSG_SIZE = 1 + SPI_NUM_FLOATS * 4 + 1  # header + floats + checksum
+
+# Main task period (like the C++ example)
+main_task_period_us = 20000
+
 
 def calculate_crc8(buffer):
     """Calculate CRC-8 with polynomial 0x07"""
@@ -84,21 +110,25 @@ def calculate_crc8(buffer):
             crc &= 0xFF  # Ensure 8-bit value
     return crc
 
+
 def verify_checksum(buffer, expected_crc):
     return calculate_crc8(buffer) == expected_crc
 
+
 class SPIData:
     """Data structure for SPI communication"""
+
     def __init__(self):
         self.data = [0.0] * SPI_NUM_FLOATS
         self.message_count = 0
         self.failed_count = 0
         self.last_delta_time_us = 0
 
+
 # Initialize SPI
 spi = spidev.SpiDev()
 spi.open(0, 0)  # SPI0.0 (MOSI: GPIO 10, MISO: GPIO 9, SCK: GPIO 11, CS: GPIO 8)
-spi.max_speed_hz = 200000 #200000
+spi.max_speed_hz = 33333333
 spi.mode = 0b00  # SPI mode 0
 
 # Data structures
@@ -111,19 +141,21 @@ transmitted_data.data[1] = 98.76
 transmitted_data.data[2] = 11.11
 
 # Timing
-start_time = time.time()
+start_time = time.perf_counter()
 previous_time = start_time
 
 while True:
+    # Start timer (like main_task_timer.reset() in C++)
+    cycle_start_time = time.perf_counter()    
     # Prepare transmission message
     tx_bytes = bytearray(SPI_MSG_SIZE)
     tx_bytes[0] = SPI_HEADER_MASTER
-    
+
     # Pack floats
     for i in range(SPI_NUM_FLOATS):
-        float_bytes = struct.pack('<f', transmitted_data.data[i])
-        tx_bytes[1 + i * 4:1 + (i + 1) * 4] = float_bytes
-    
+        float_bytes = struct.pack("<f", transmitted_data.data[i])
+        tx_bytes[1 + i * 4 : 1 + (i + 1) * 4] = float_bytes
+
     # Calculate and add checksum
     checksum = calculate_crc8(tx_bytes[:-1])
     tx_bytes[-1] = checksum
@@ -140,13 +172,13 @@ while True:
         if header_received == SPI_HEADER_SLAVE:
             # Valid message - extract data
             for i in range(SPI_NUM_FLOATS):
-                float_bytes = bytes(rx_bytes[1 + i * 4:1 + (i + 1) * 4])
-                received_data.data[i] = struct.unpack('<f', float_bytes)[0]
-            
+                float_bytes = bytes(rx_bytes[1 + i * 4 : 1 + (i + 1) * 4])
+                received_data.data[i] = struct.unpack("<f", float_bytes)[0]
+
             received_data.message_count += 1
 
             # Measure elapsed time
-            current_time = time.time()
+            current_time = time.perf_counter()
             delta_time_us = int((current_time - previous_time) * 1000000)
             previous_time = current_time
             received_data.last_delta_time_us = delta_time_us
@@ -157,10 +189,7 @@ while True:
             transmitted_data.message_count += 1
 
             # Print results
-            print(f"Message: {received_data.message_count} | "
-                  f"Delta Time: {delta_time_us} us | "
-                  f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, {received_data.data[2]:.2f}] | "
-                  f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}")
+            print(f"Message: {received_data.message_count} | " f"Delta Time: {delta_time_us} us | " f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, {received_data.data[2]:.2f}] | " f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}")
         else:
             # Wrong header
             received_data.failed_count += 1
@@ -170,4 +199,9 @@ while True:
         expected_checksum = calculate_crc8(rx_bytes[:-1])
         print(f"CRC failed! Expected: 0x{expected_checksum:02X}, Got: 0x{received_checksum:02X} | Failed: {received_data.failed_count}")
 
-    time.sleep(0.02)
+    # Read timer and make the main thread sleep for the remaining time span (like C++ example)
+    main_task_elapsed_time_us = (time.perf_counter() - cycle_start_time) * 1000000.0
+    if main_task_period_us - main_task_elapsed_time_us < 0:
+        print("Warning: Main task took longer than main_task_period_ms")
+    else:
+        time.sleep((main_task_period_us - main_task_elapsed_time_us) / 1000000.0)
