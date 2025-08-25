@@ -1,70 +1,8 @@
-// #include "mbed.h"
-// #include "SPISlaveHandler.h"
-
-// int main() {
-//     SPISlaveHandler handler(
-//         PC_3,   // MOSI  (SPI2_MOSI)
-//         PC_2,   // MISO  (SPI2_MISO)
-//         PB_10,  // SCLK  (SPI2_SCK)
-//         PB_12   // CS/NSS (SPI2_NSS)  <-- hardware CS
-//     );
-
-//     while (true) {
-//         SPIData data;
-
-//         if (handler.has_new_data()) {
-//             handler.get_received_data(data);
-
-//             printf("Message: %lu | Delta Time: %lu us | "
-//                    "Received: [%.2f, %.2f, %.2f] | "
-//                    "Header: 0x%02X | Failed: %lu | "
-//                    "Readout Time: %lu us\r\n",
-//                    data.message_count, data.last_delta_time_us,
-//                    data.data[0], data.data[1], data.data[2],
-//                    SPI_HEADER_SLAVE, data.failed_count,
-//                    data.readout_time_us);
-//         }
-
-//         ThisThread::sleep_for(1ms);
-//     }
-// }
-
-
-
-// #include "mbed.h"
-// #include "SPISlaveHandlerPolling.h"
-
-// int main()
-// {
-//     SPISlaveHandlerPolling handler(PC_3, PC_2, PB_10, PB_12, LED1);
-
-//     printf("SPI Communication (polling) started. Waiting for master...\r\n");
-
-//     while (true) {
-//         // const bool frame_done = handler.poll(); // processes at most one byte
-
-//         // if (frame_done && handler.has_new_data()) {
-//         if (handler.has_new_data()) {
-//             SPIData d;
-//             handler.get_received_data(d);
-
-//             printf("Message: %lu | Delta Time: %lu us | "
-//                    "Received: [%.2f, %.2f, %.2f] | "
-//                    "Header: 0x%02X | Failed: %lu\r\n",
-//                    d.message_count,
-//                    d.last_delta_time_us,
-//                    d.data[0], d.data[1], d.data[2],
-//                    SPI_HEADER_SLAVE, // what we send back
-//                    handler.get_failed_count());
-//         }
-//         // no sleep — keep polling tight
-//     }
-// }
-
 /**
  * TODO
  * - Make setReplyData usefull
  * - Check thread priority
+ * - SPI pins are configurable via the SpiSlaveDMA constructor.
  */
 
 #include "mbed.h"
@@ -74,8 +12,16 @@ int main()
 {
     printf("SPI Communication started. Waiting for master...\n");
 
-    // Create driver (SPI2 default pins on NUCLEO_F446RE)
-    SpiSlaveDMA spiSlaveDMA;
+    // Create driver (explicit SPI2 pins).
+    // Valid SPI2 (AF5) options on NUCLEO_F446RE:
+    //   SCK  : PB_10, PB_13
+    //   MISO : PB_14, PC_2
+    //   MOSI : PB_15, PC_3
+    //   NSS  : PB_9,  PB_12
+    //
+    // Example wiring used here: MOSI=PC_3, MISO=PC_2, SCK=PB_10, NSS=PB_12
+    // MOSI, MISO, SCK, NSS
+    SpiSlaveDMA spiSlaveDMA(PC_3, PC_2, PB_10, PB_12);
 
     // Explicitly start DMA + worker thread; bail out if it fails
     if (!spiSlaveDMA.start()) {
@@ -87,7 +33,7 @@ int main()
 
     while (true) {
         if (spiSlaveDMA.hasNewData()) {
-            SPIData spiData = spiSlaveDMA.getSPIData();
+            SpiData spiData = spiSlaveDMA.getSPIData();
 
             printf("Message: %lu | Delta Time: %lu us | "
                    "Received: [%.2f, %.2f, %.2f, %.2f, %.2f] | "
@@ -99,7 +45,7 @@ int main()
                    spiData.readout_time_us);
         }
 
-        // Example: you can update the reply payload any time
+        // Example: you can update the reply payload any time (copied atomically into next TX)
         // spiSlaveDMA.setReplyData(11.11f, 22.22f, 33.33f);
 
         ThisThread::sleep_for(5ms);

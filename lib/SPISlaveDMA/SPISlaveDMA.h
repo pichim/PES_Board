@@ -5,6 +5,21 @@
  *          - A thread sleeps, woken by NSS rising edge (InterruptIn) to check DMA TC flags.
  *          - No HAL DMA/SPI callbacks (avoids Mbed link conflicts).
  *          - Re-arms DMA immediately for the next master frame.
+ *
+ *          Pin selection (SPI2, AF5) is configurable via the constructor:
+ *            SCK  : PB_10 or PB_13
+ *            MISO : PB_14 or PC_2
+ *            MOSI : PB_15 or PC_3
+ *            NSS  : PB_9  or PB_12
+ *          Pins are validated at start() with MBED_ASSERT.
+ *
+ *          Multiple instances are supported: all HAL handles (SPI+DMA) are
+ *          kept per-instance, and HAL_SPI_MspInit is intentionally left empty.
+ *          Works on both Mbed OS and Mbed CE.
+ *
+ *          Handshake used by the Raspberry Pi master (double-transfer):
+ *            1) 0x56 "ARM-ONLY" frame (payload don't-care) — lets the slave finish DMA and re-arm
+ *            2) 0x55 "PUBLISH" frame (payload valid)        — slave publishes this one
  */
 
 #ifndef SPI_SLAVE_DMA_H_
@@ -25,17 +40,17 @@ using namespace std::chrono;
 #define SPI_HEADER_MASTER  0x55 // publish (Pi->STM)
 #define SPI_HEADER_MASTER2 0x56 // arm-only (Pi->STM), do NOT publish
 #define SPI_HEADER_SLAVE   0x45 // data-from-STM (STM->Pi)
-#define SPI_NUM_FLOATS     200
+#define SPI_NUM_FLOATS     120
 #define SPI_MSG_SIZE       (1 + SPI_NUM_FLOATS * 4 + 1) // header + floats + crc
 
-// SPIData structure with processing time
-class SPIData
+// SpiData structure with processing time
+class SpiData
 {
 public:
-    SPIData() {
+    SpiData() {
         init();
     };
-    ~SPIData() = default;
+    ~SpiData() = default;
 
     float    data[SPI_NUM_FLOATS];
     uint32_t message_count;
@@ -59,17 +74,22 @@ public:
  * @brief   Encapsulates SPI2 + DMA in slave mode with InterruptIn-driven operation.
  *
  * Design (NSS edge detection):
- *  - NSS (PB_12) rising edge interrupt signals end of a master frame.
+ *  - The selected NSS pin rising edge interrupt signals end of a master frame.
  *  - The worker thread wakes on a thread flag, then checks DMA RX/TX TC flags.
  *  - When BOTH are set, the frame is complete:
  *       (1) Clear flags, HAL_SPI_DMAStop() so buffers are safe to touch
  *       (2) Verify CRC, parse floats, update counters/timing
  *       (3) Build next TX frame and re-arm immediately
+ *
+ * Double-transfer handshake support:
+ *  - Accepts 0x55 (publish) and 0x56 (arm-only) headers from the Pi.
+ *  - Publishes data to the app only on 0x55; 0x56 is used to guarantee minimal latency on 0x55.
+ *  - No LED toggling is performed (kept minimal for deterministic timing).
  */
 class SpiSlaveDMA {
 public:
-    // Construct with default SPI2 pinout for NUCLEO_F446RE
-    explicit SpiSlaveDMA(PinName led_pin = LED1);
+    // Construct with explicit SPI2 pins (MOSI, MISO, SCK, NSS)
+    explicit SpiSlaveDMA(PinName mosi, PinName miso, PinName sck, PinName nss);
 
     ~SpiSlaveDMA();
 
@@ -83,22 +103,23 @@ public:
     bool hasNewData() const;
 
     // Retrieve and clear the “new data” flag
-    SPIData getSPIData();
+    SpiData getSPIData();
 
 private:
-    // Grace window after NSS rising (100 µs) to cover the EXTI → DMA TC race.
-    // The worker waits up to this budget for both RX/TX TC flags; on timeout it
-    // immediately re-arms so transfers never stall. Marked `inline static constexpr`
-    // so this non-integral constant can live in the header without a separate
-    // definition (header-safe), and `{100}` avoids needing chrono literals.
-    // Tune if your master's SCK or inter-frame timing changes.
-    inline static constexpr microseconds TC_WAIT_BUDGET{100};
+    // Grace window after NSS rising (200 µs by default) to cover the EXTI → DMA TC race.
+    // Tune if your master's SCK or inter-frame timing changes (e.g., faster cadence).
+    inline static constexpr microseconds TC_WAIT_BUDGET{200};
 
     // --- mbed parts ---
     Thread       m_Thread;            // worker thread
-    InterruptIn  m_InteruptIn_NSS;     // NSS rising edge detection (PB_12)
+    InterruptIn  m_InterruptIn_NSS;   // NSS rising edge detection (selected NSS pin)
     ThreadFlag   m_ThreadFlag;
-    DigitalOut   m_Led;               // optional activity LED
+
+    // --- selected pins (SPI2) ---
+    PinName      m_MOSI;
+    PinName      m_MISO;
+    PinName      m_SCK;
+    PinName      m_NSS;
 
     // --- timing ---
     Timer        m_Timer;             // for delta between valid frames
@@ -108,11 +129,16 @@ private:
     float m_reply_data[SPI_NUM_FLOATS] = {11.11f, 22.22f, 33.33f, 44.44f, 55.55f};
 
     // --- last received data + counters ---
-    SPIData      m_SPIData;
+    SpiData      m_SPIData;
 
     // --- DMA-owned buffers (must be static-duration memory; not on stack) ---
     uint8_t m_buffer_rx[SPI_MSG_SIZE];
     uint8_t m_buffer_tx[SPI_MSG_SIZE];
+
+    // --- HAL handles (per-instance; enables multiple objects) ---
+    SPI_HandleTypeDef  m_hspi2;
+    DMA_HandleTypeDef  m_dma_rx;
+    DMA_HandleTypeDef  m_dma_tx;
 
     // --- new data flag (set when we parsed a valid frame) ---
     volatile bool m_has_new_data{false};
@@ -132,6 +158,12 @@ private:
     static bool    verifyChecksum(const uint8_t* buf, size_t len, uint8_t expected_crc);
 
     void sendThreadFlag();
+
+    // Configure GPIO clocks, pins (AF5), SPI2 clock and DMA streams for SPI2
+    void configureGPIOandDMA();
+
+    // Validate the selected pins belong to the allowed SPI2 sets and are unique
+    bool validatePins() const;
 };
 
 #endif // SPI_SLAVE_DMA_H_

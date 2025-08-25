@@ -78,6 +78,9 @@
  - Raspberry Pi 5 is SPI MASTER (bus 0, device 0 → `/dev/spidev0.0`).
  - Uses spidev Python library for full-duplex transfers.
  - Ensure `dtparam=spi=on` is enabled in `/boot/firmware/config.txt`.
+ - Protocol: **Double transfer** each 20 ms
+     1) 0x56 + zero payload (ARM-ONLY) — lets the Nucleo re-arm/build fresh TX
+     2) 0x55 + real payload (PUBLISH)  — Nucleo publishes/updates from this one
 ================================================================================
 """
 
@@ -92,14 +95,14 @@ SPI_HEADER_MASTER = 0x55  # Raspberry Pi header: PUBLISH (second transfer)
 SPI_HEADER_MASTER_ARM = 0x56  # Raspberry Pi header: ARM-ONLY (first transfer)
 SPI_HEADER_SLAVE = 0x45  # Nucleo header
 
-SPI_NUM_FLOATS = 200  # Number of float values in each message
+SPI_NUM_FLOATS = 120  # Number of float values in each message
 SPI_MSG_SIZE = 1 + SPI_NUM_FLOATS * 4 + 1  # header + floats + checksum
 
 # Main task period (like the C++ example)
-main_task_period_us = 20000
+main_task_period_us = 10000
 
 # ------------------ CHANGED: always double-transfer ------------------
-ARM_GAP_US = 10  # small gap so the slave can re-arm/build fresh TX
+ARM_GAP_US = 100  # small gap so the slave can re-arm/build fresh TX
 
 
 def busy_wait_us(us):
@@ -128,7 +131,7 @@ def verify_checksum(buffer, expected_crc):
     return calculate_crc8(buffer) == expected_crc
 
 
-class SPIData:
+class SpiData:
     """Data structure for SPI communication"""
 
     def __init__(self):
@@ -145,8 +148,8 @@ spi.max_speed_hz = 33333333
 spi.mode = 0b00  # SPI mode 0
 
 # Data structures
-transmitted_data = SPIData()
-received_data = SPIData()
+transmitted_data = SpiData()
+received_data = SpiData()
 
 # Initialize transmitted data with test values
 transmitted_data.data[0] = 42.42
@@ -186,10 +189,18 @@ while True:
 
     rx2 = spi.xfer2(list(tx2))
 
-    # Prefer the second reply (fresh data). Fallback to first if second invalid.
-    rx = rx2
+    # Prefer the second reply (fresh data). Do NOT fallback to the first.
     if not (len(rx2) == SPI_MSG_SIZE and verify_checksum(rx2[:-1], rx2[-1]) and rx2[0] == SPI_HEADER_SLAVE):
-        rx = rx1
+        received_data.failed_count += 1
+        # Optional: log the miss for tuning ARM_GAP_US
+        # print("rx2 invalid (no fresh data this cycle)")
+        # Skip processing this cycle
+        main_task_elapsed_time_us = (time.perf_counter() - cycle_start_time) * 1000000.0
+        if main_task_period_us - main_task_elapsed_time_us >= 0:
+            time.sleep((main_task_period_us - main_task_elapsed_time_us) / 1000000.0)
+        continue
+
+    rx = rx2
 
     # ---------------- Process selected received message ----------------------
     header_received = rx[0]

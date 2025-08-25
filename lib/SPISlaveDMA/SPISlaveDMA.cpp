@@ -3,17 +3,14 @@
  * @brief   Implementation of SpiSlaveDMA (STM32F446 SPI2 + DMA, InterruptIn-driven).
  *
  * DESIGN CHOICE - NSS Edge Detection:
- *  - Uses InterruptIn on PB12 (NSS) to detect rising edge when the master completes a transfer.
+ *  - Uses InterruptIn on the *selected* NSS pin to detect the rising edge when the master completes a transfer.
  *  - The worker thread blocks on a thread flag; on wake it checks DMA TC flags (RX+TX).
  *  - This avoids periodic polling and reduces CPU overhead.
+ *
+ *  HAL_SPI_MspInit is intentionally left empty; pins, clocks and DMA are configured per-instance in the class.
  */
 
 #include "SPISlaveDMA.h"
-
-// HAL handles for SPI2 + DMA (file-local)
-static SPI_HandleTypeDef  hspi2;
-static DMA_HandleTypeDef  hdma_spi2_rx;
-static DMA_HandleTypeDef  hdma_spi2_tx;
 
 // CRC8 table (poly 0x07, init 0x00)
 static const uint8_t CRC8_TAB[256] = {
@@ -35,105 +32,62 @@ static const uint8_t CRC8_TAB[256] = {
     0xDE,0xD9,0xD0,0xD7,0xC2,0xC5,0xCC,0xCB,0xE6,0xE1,0xE8,0xEF,0xFA,0xFD,0xF4,0xF3
 };
 
-// MSP init: clocks, pins, and DMA streams for SPI2 (HAL_SPI_Init will call this)
+// Keep HAL SPI MSP init empty; the class configures pins/clocks/DMA itself.
 extern "C" void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 {
-    if (hspi->Instance != SPI2) return;
-
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    __HAL_RCC_SPI2_CLK_ENABLE();
-    __HAL_RCC_DMA1_CLK_ENABLE(); // SPI2 uses DMA1 on STM32F446
-
-    // Configure SPI2 pins to AF5
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-    // PB12 (NSS), PB10 (SCK)
-    GPIO_InitStruct.Pin       = GPIO_PIN_12 | GPIO_PIN_10;
-    GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull      = GPIO_NOPULL;               // master drives NSS
-    GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    // PC2 (MISO), PC3 (MOSI)
-    GPIO_InitStruct.Pin       = GPIO_PIN_2 | GPIO_PIN_3;
-    GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull      = GPIO_NOPULL;
-    GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-    HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-    // DMA config (common mapping for F446)
-    // RX: DMA1 Stream3, Channel 0
-    hdma_spi2_rx.Instance                 = DMA1_Stream3;
-    hdma_spi2_rx.Init.Channel             = DMA_CHANNEL_0;
-    hdma_spi2_rx.Init.Direction           = DMA_PERIPH_TO_MEMORY;
-    hdma_spi2_rx.Init.PeriphInc           = DMA_PINC_DISABLE;
-    hdma_spi2_rx.Init.MemInc              = DMA_MINC_ENABLE;
-    hdma_spi2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-    hdma_spi2_rx.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
-    hdma_spi2_rx.Init.Mode                = DMA_NORMAL;             // one-shot per frame
-    hdma_spi2_rx.Init.Priority            = DMA_PRIORITY_VERY_HIGH;
-    hdma_spi2_rx.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
-    HAL_DMA_Init(&hdma_spi2_rx);
-    __HAL_LINKDMA(hspi, hdmarx, hdma_spi2_rx);
-
-    // TX: DMA1 Stream4, Channel 0
-    hdma_spi2_tx.Instance                 = DMA1_Stream4;
-    hdma_spi2_tx.Init.Channel             = DMA_CHANNEL_0;
-    hdma_spi2_tx.Init.Direction           = DMA_MEMORY_TO_PERIPH;
-    hdma_spi2_tx.Init.PeriphInc           = DMA_PINC_DISABLE;
-    hdma_spi2_tx.Init.MemInc              = DMA_MINC_ENABLE;
-    hdma_spi2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-    hdma_spi2_tx.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
-    hdma_spi2_tx.Init.Mode                = DMA_NORMAL;
-    hdma_spi2_tx.Init.Priority            = DMA_PRIORITY_VERY_HIGH;
-    hdma_spi2_tx.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
-    HAL_DMA_Init(&hdma_spi2_tx);
-    __HAL_LINKDMA(hspi, hdmatx, hdma_spi2_tx);
-
-    // We do not enable DMA IRQs here; the thread checks TC flags after NSS edge.
+    (void)hspi;
 }
 
 // SpiSlaveDMA — public API
 
-SpiSlaveDMA::SpiSlaveDMA(PinName led_pin) : m_Thread(osPriorityNormal)
-                                          , m_InteruptIn_NSS(PB_12)  // NSS pin for edge detection
-                                          , m_Led(led_pin)
+SpiSlaveDMA::SpiSlaveDMA(PinName mosi, PinName miso, PinName sck, PinName nss)
+    : m_Thread(osPriorityAboveNormal)
+    , m_InterruptIn_NSS(nss)
+    , m_MOSI(mosi)
+    , m_MISO(miso)
+    , m_SCK(sck)
+    , m_NSS(nss)
 {
-    // Configure SPI2 peripheral (slave, mode 0, 8-bit, HW NSS)
-    hspi2.Instance               = SPI2;
-    hspi2.Init.Mode              = SPI_MODE_SLAVE;
-    hspi2.Init.Direction         = SPI_DIRECTION_2LINES;       // full-duplex
-    hspi2.Init.DataSize          = SPI_DATASIZE_8BIT;
-    hspi2.Init.CLKPolarity       = SPI_POLARITY_LOW;           // CPOL=0
-    hspi2.Init.CLKPhase          = SPI_PHASE_1EDGE;            // CPHA=0 => mode 0
-    hspi2.Init.NSS               = SPI_NSS_HARD_INPUT;         // hardware NSS on PB12
-    hspi2.Init.FirstBit          = SPI_FIRSTBIT_MSB;
-    hspi2.Init.TIMode            = SPI_TIMODE_DISABLE;
-    hspi2.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE; // using our own CRC8
-    hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;    // ignored in slave
-
-    MBED_ASSERT(HAL_SPI_Init(&hspi2) == HAL_OK);
-
     // Timing setup
     m_Timer.start();
     m_time_previous = m_Timer.elapsed_time();
 
-    // NOTE: we do not arm or start the thread here.
-    // Users must call start() explicitly from main().
+    // SPI handle basic configuration (clocks/pins/DMA are set in configureGPIOandDMA())
+    memset(&m_hspi2, 0, sizeof(m_hspi2));
+    m_hspi2.Instance               = SPI2;
+    m_hspi2.Init.Mode              = SPI_MODE_SLAVE;
+    m_hspi2.Init.Direction         = SPI_DIRECTION_2LINES;       // full-duplex
+    m_hspi2.Init.DataSize          = SPI_DATASIZE_8BIT;
+    m_hspi2.Init.CLKPolarity       = SPI_POLARITY_LOW;           // CPOL=0
+    m_hspi2.Init.CLKPhase          = SPI_PHASE_1EDGE;            // CPHA=0 => mode 0
+    m_hspi2.Init.NSS               = SPI_NSS_HARD_INPUT;         // hardware NSS
+    m_hspi2.Init.FirstBit          = SPI_FIRSTBIT_MSB;
+    m_hspi2.Init.TIMode            = SPI_TIMODE_DISABLE;
+    m_hspi2.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE; // using our own CRC8
+    m_hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;    // ignored in slave
+
+    memset(&m_dma_rx, 0, sizeof(m_dma_rx));
+    memset(&m_dma_tx, 0, sizeof(m_dma_tx));
 }
 
 SpiSlaveDMA::~SpiSlaveDMA()
 {
-    HAL_SPI_DMAStop(&hspi2);
-    m_InteruptIn_NSS.rise(nullptr);  // Detach interrupt
+    HAL_SPI_DMAStop(&m_hspi2);
+    m_InterruptIn_NSS.rise(nullptr);  // Detach interrupt
     m_Thread.terminate();
 }
 
 bool SpiSlaveDMA::start()
 {
+    // Validate selected pins
+    MBED_ASSERT(validatePins());
+
+    // Configure clocks, pins (AF5) and DMA streams for SPI2
+    configureGPIOandDMA();
+
+    // Initialize SPI2 peripheral
+    MBED_ASSERT(HAL_SPI_Init(&m_hspi2) == HAL_OK);
+
     // Build first TX frame and arm DMA once so we’re ready for the first master transfer
     buildTX();
 
@@ -141,12 +95,12 @@ bool SpiSlaveDMA::start()
     if (tryArmDmaFrame()) {
         // Start thread and setup NSS rising edge interrupt (master finished)
         m_Thread.start(callback(this, &SpiSlaveDMA::threadTask));
-        m_InteruptIn_NSS.rise(callback(this, &SpiSlaveDMA::sendThreadFlag));
+        m_InterruptIn_NSS.rise(callback(this, &SpiSlaveDMA::sendThreadFlag));
         return true;
     }
 
     printf("[SPI] Initial arm failed (state=%u err=0x%08lX)\n",
-           (unsigned)HAL_SPI_GetState(&hspi2), (unsigned long)hspi2.ErrorCode);
+           (unsigned)HAL_SPI_GetState(&m_hspi2), (unsigned long)m_hspi2.ErrorCode);
     return false;
 }
 
@@ -165,11 +119,11 @@ bool SpiSlaveDMA::hasNewData() const
     return m_has_new_data;
 }
 
-SPIData SpiSlaveDMA::getSPIData()
+SpiData SpiSlaveDMA::getSPIData()
 {
     // Copy and clear flag together while IRQs are masked to avoid races
     core_util_critical_section_enter();
-    SPIData out = m_SPIData;
+    SpiData out = m_SPIData;
     m_has_new_data = false;
     core_util_critical_section_exit();
 
@@ -190,8 +144,8 @@ void SpiSlaveDMA::threadTask()
         bool rx_done = false, tx_done = false;
         const microseconds deadline = t0 + TC_WAIT_BUDGET;
         do {
-            rx_done = (__HAL_DMA_GET_FLAG(&hdma_spi2_rx, DMA_FLAG_TCIF3_7) != 0U);
-            tx_done = (__HAL_DMA_GET_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4) != 0U);
+            rx_done = (__HAL_DMA_GET_FLAG(&m_dma_rx, DMA_FLAG_TCIF3_7) != 0U);
+            tx_done = (__HAL_DMA_GET_FLAG(&m_dma_tx, DMA_FLAG_TCIF0_4) != 0U);
             if (rx_done && tx_done) break;
         } while (m_Timer.elapsed_time() < deadline);
 
@@ -210,18 +164,18 @@ void SpiSlaveDMA::threadTask()
         }
 
         // Acknowledge both flags
-        __HAL_DMA_CLEAR_FLAG(&hdma_spi2_rx, DMA_FLAG_TCIF3_7);
-        __HAL_DMA_CLEAR_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4);
+        __HAL_DMA_CLEAR_FLAG(&m_dma_rx, DMA_FLAG_TCIF3_7);
+        __HAL_DMA_CLEAR_FLAG(&m_dma_tx, DMA_FLAG_TCIF0_4);
 
         // Clear any SPI overrun **before** stopping DMA/SPI (2-line mode).
         // Rule: read DR then SR while SPI is enabled to clear OVR.
-        if (__HAL_SPI_GET_FLAG(&hspi2, SPI_FLAG_OVR)) {
+        if (__HAL_SPI_GET_FLAG(&m_hspi2, SPI_FLAG_OVR)) {
             volatile uint32_t d;
-            d = hspi2.Instance->DR; d = hspi2.Instance->SR; (void)d;
+            d = m_hspi2.Instance->DR; d = m_hspi2.Instance->SR; (void)d;
         }
 
         // Safe to touch buffers now
-        HAL_SPI_DMAStop(&hspi2);
+        HAL_SPI_DMAStop(&m_hspi2);
 
         // Process the just-received frame
         const uint8_t hdr    = m_buffer_rx[0];
@@ -242,8 +196,6 @@ void SpiSlaveDMA::threadTask()
 
                 m_has_new_data = true;
                 core_util_critical_section_exit();
-
-                m_Led = !m_Led;
             }
         } else {
             core_util_critical_section_enter();
@@ -254,7 +206,7 @@ void SpiSlaveDMA::threadTask()
         // Build next TX from the freshest reply data and re-arm DMA
         buildTX();
 
-        (void)tryArmDmaFrame(); // if it fails, next NSS edge will retry
+        (void)tryArmDmaFrame(); // if it fails, the next NSS edge will retry arming
 
         const microseconds t1 = m_Timer.elapsed_time();
         m_SPIData.readout_time_us = duration_cast<microseconds>(t1 - t0).count();
@@ -276,33 +228,40 @@ void SpiSlaveDMA::buildTX()
 bool SpiSlaveDMA::tryArmDmaFrame()
 {
     // Ensure streams disabled (clears any ongoing transfers/state)
-    (void)HAL_DMA_Abort(&hdma_spi2_rx);
-    (void)HAL_DMA_Abort(&hdma_spi2_tx);
+    (void)HAL_DMA_Abort(&m_dma_rx);
+    (void)HAL_DMA_Abort(&m_dma_tx);
 
     // Clear all DMA flags (TC/TE/HT/FE) for both streams
-    __HAL_DMA_CLEAR_FLAG(&hdma_spi2_rx, DMA_FLAG_TCIF3_7 | DMA_FLAG_TEIF3_7 |
-                                       DMA_FLAG_HTIF3_7 | DMA_FLAG_FEIF3_7);
-    __HAL_DMA_CLEAR_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4 | DMA_FLAG_TEIF0_4 |
-                                       DMA_FLAG_HTIF0_4 | DMA_FLAG_FEIF0_4);
+    __HAL_DMA_CLEAR_FLAG(&m_dma_rx, DMA_FLAG_TCIF3_7 | DMA_FLAG_TEIF3_7 |
+                                   DMA_FLAG_HTIF3_7 | DMA_FLAG_FEIF3_7);
+    __HAL_DMA_CLEAR_FLAG(&m_dma_tx, DMA_FLAG_TCIF0_4 | DMA_FLAG_TEIF0_4 |
+                                   DMA_FLAG_HTIF0_4 | DMA_FLAG_FEIF0_4);
 
     // Force HAL state back to READY if needed
-    if (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY) {
-        (void)HAL_SPI_Abort(&hspi2);
+    if (HAL_SPI_GetState(&m_hspi2) != HAL_SPI_STATE_READY) {
+        (void)HAL_SPI_Abort(&m_hspi2);
     }
 
     // Optional: wait briefly for NSS high before arming — avoids corner cases
-    uint32_t t0 = HAL_GetTick();
-    while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET) {
-        if ((HAL_GetTick() - t0) > 5) break;
+    GPIO_TypeDef* nss_port = nullptr;
+    uint16_t nss_pinmask = 0;
+    if (m_NSS == PB_12) { nss_port = GPIOB; nss_pinmask = GPIO_PIN_12; }
+    else if (m_NSS == PB_9) { nss_port = GPIOB; nss_pinmask = GPIO_PIN_9; }
+    if (nss_port != nullptr) {
+        // Small guard so we don't arm while NSS is still low between back-to-back frames.
+        uint32_t t0 = HAL_GetTick();
+        while (HAL_GPIO_ReadPin(nss_port, nss_pinmask) == GPIO_PIN_RESET) {
+            if ((HAL_GetTick() - t0) > 5) break;
+        }
     }
 
     // Arm the frame
-    HAL_StatusTypeDef st = HAL_SPI_TransmitReceive_DMA(&hspi2, m_buffer_tx, m_buffer_rx, SPI_MSG_SIZE);
+    HAL_StatusTypeDef st = HAL_SPI_TransmitReceive_DMA(&m_hspi2, m_buffer_tx, m_buffer_rx, SPI_MSG_SIZE);
     if (st != HAL_OK) {
         static uint32_t s_fail_print_throttle = 0;
         if ((s_fail_print_throttle++ % 100U) == 0U) {
             printf("[SPI] Arm failed: st=%ld, state=%u, err=0x%08lX\n",
-                (long)st, (unsigned)HAL_SPI_GetState(&hspi2), (unsigned long)hspi2.ErrorCode);
+                (long)st, (unsigned)HAL_SPI_GetState(&m_hspi2), (unsigned long)m_hspi2.ErrorCode);
         }
         return false;
     }
@@ -327,4 +286,105 @@ void SpiSlaveDMA::sendThreadFlag()
 {
     // set the thread flag to trigger the thread task
     m_Thread.flags_set(m_ThreadFlag);
+}
+
+// ------- pin/DMA configuration and validation --------------------------------
+
+void SpiSlaveDMA::configureGPIOandDMA()
+{
+    // Enable clocks
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    __HAL_RCC_SPI2_CLK_ENABLE();
+    __HAL_RCC_DMA1_CLK_ENABLE(); // SPI2 uses DMA1 on STM32F446
+
+    // Helper to configure a single pin for SPI2 AF5
+    auto do_pin = [](PinName pin) {
+        GPIO_InitTypeDef GPIO_InitStruct = {0};
+        if (pin == PB_10 || pin == PB_13 || pin == PB_14 || pin == PB_15 || pin == PB_9 || pin == PB_12) {
+            GPIO_TypeDef* port = GPIOB;
+            uint16_t p = 0;
+            switch (pin) {
+                case PB_10: p = GPIO_PIN_10; break;
+                case PB_13: p = GPIO_PIN_13; break;
+                case PB_14: p = GPIO_PIN_14; break;
+                case PB_15: p = GPIO_PIN_15; break;
+                case PB_9:  p = GPIO_PIN_9;  break;
+                case PB_12: p = GPIO_PIN_12; break;
+                default:    break;
+            }
+            GPIO_InitStruct.Pin       = p;
+            GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+            GPIO_InitStruct.Pull      = GPIO_NOPULL;
+            GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+            GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+            HAL_GPIO_Init(port, &GPIO_InitStruct);
+        } else if (pin == PC_2 || pin == PC_3) {
+            GPIO_TypeDef* port = GPIOC;
+            uint16_t p = (pin == PC_2) ? GPIO_PIN_2 : GPIO_PIN_3;
+            GPIO_InitStruct.Pin       = p;
+            GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;
+            GPIO_InitStruct.Pull      = GPIO_NOPULL;
+            GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+            GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
+            HAL_GPIO_Init(port, &GPIO_InitStruct);
+        } else {
+            MBED_ERROR(MBED_MAKE_ERROR(MBED_MODULE_APPLICATION, MBED_ERROR_CODE_INVALID_ARGUMENT),
+                       "Unsupported SPI2 pin for AF5");
+        }
+    };
+
+    // Configure each selected pin
+    do_pin(m_SCK);
+    do_pin(m_MISO);
+    do_pin(m_MOSI);
+    do_pin(m_NSS);
+
+    // Configure DMA streams for SPI2 (RX: DMA1 Stream3, TX: DMA1 Stream4, Channel 0)
+    m_dma_rx.Instance                 = DMA1_Stream3;
+    m_dma_rx.Init.Channel             = DMA_CHANNEL_0;
+    m_dma_rx.Init.Direction           = DMA_PERIPH_TO_MEMORY;
+    m_dma_rx.Init.PeriphInc           = DMA_PINC_DISABLE;
+    m_dma_rx.Init.MemInc              = DMA_MINC_ENABLE;
+    m_dma_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    m_dma_rx.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
+    m_dma_rx.Init.Mode                = DMA_NORMAL;             // one-shot per frame
+    m_dma_rx.Init.Priority            = DMA_PRIORITY_VERY_HIGH;
+    m_dma_rx.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
+    HAL_DMA_Init(&m_dma_rx);
+    __HAL_LINKDMA(&m_hspi2, hdmarx, m_dma_rx);
+
+    m_dma_tx.Instance                 = DMA1_Stream4;
+    m_dma_tx.Init.Channel             = DMA_CHANNEL_0;
+    m_dma_tx.Init.Direction           = DMA_MEMORY_TO_PERIPH;
+    m_dma_tx.Init.PeriphInc           = DMA_PINC_DISABLE;
+    m_dma_tx.Init.MemInc              = DMA_MINC_ENABLE;
+    m_dma_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    m_dma_tx.Init.MemDataAlignment    = DMA_MDATAALIGN_BYTE;
+    m_dma_tx.Init.Mode                = DMA_NORMAL;
+    m_dma_tx.Init.Priority            = DMA_PRIORITY_VERY_HIGH;
+    m_dma_tx.Init.FIFOMode            = DMA_FIFOMODE_DISABLE;
+    HAL_DMA_Init(&m_dma_tx);
+    __HAL_LINKDMA(&m_hspi2, hdmatx, m_dma_tx);
+}
+
+bool SpiSlaveDMA::validatePins() const
+{
+    bool sck_ok  = (m_SCK  == PB_10) || (m_SCK  == PB_13);
+    bool miso_ok = (m_MISO == PB_14) || (m_MISO == PC_2);
+    bool mosi_ok = (m_MOSI == PB_15) || (m_MOSI == PC_3);
+    bool nss_ok  = (m_NSS  == PB_9)  || (m_NSS  == PB_12);
+
+    if (!(sck_ok && miso_ok && mosi_ok && nss_ok)) {
+        return false;
+    }
+
+    // Ensure all four roles are mapped to distinct physical pins
+    if ((m_SCK == m_MISO) || (m_SCK == m_MOSI) || (m_SCK == m_NSS) ||
+        (m_MISO == m_MOSI) || (m_MISO == m_NSS) ||
+        (m_MOSI == m_NSS)) {
+        return false;
+    }
+
+    return true;
 }
