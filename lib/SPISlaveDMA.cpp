@@ -1,18 +1,14 @@
 /**
  * @file    SPISlaveDMA.cpp
- * @brief   Implementation of SpiSlaveDMA (STM32F446 SPI2 + DMA, non-blocking).
+ * @brief   Implementation of SpiSlaveDMA (STM32F446 SPI2 + DMA, InterruptIn-driven).
  *
- * NOTE ON DESIGN CHOICES:
- *  - We *do not* install HAL DMA IRQ handlers or HAL SPI callbacks here. Those are
- *    already provided by Mbed OS and wiring our own often causes linker conflicts.
- *  - We also avoid EXTI on PB12 because that pin must stay in AF5 for hardware NSS.
- *    (InterruptIn would reconfigure it to GPIO input with EXTI and break SPI2_NSS.)
- *  - Instead, the worker thread sleeps briefly and polls the DMA TC flags. CPU cost
- *    is negligible at 50 Hz master frames, and the slave stays fully non-blocking.
+ * DESIGN CHOICE - NSS Edge Detection:
+ *  - Uses InterruptIn on PB12 (NSS) to detect rising edge when the master completes a transfer.
+ *  - The worker thread blocks on a thread flag; on wake it checks DMA TC flags (RX+TX).
+ *  - This avoids periodic polling and reduces CPU overhead.
  */
 
 #include "SPISlaveDMA.h"
-// #include "mbed.h"
 
 // HAL handles for SPI2 + DMA (file-local)
 static SPI_HandleTypeDef  hspi2;
@@ -97,13 +93,14 @@ extern "C" void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
     HAL_DMA_Init(&hdma_spi2_tx);
     __HAL_LINKDMA(hspi, hdmatx, hdma_spi2_tx);
 
-    // IMPORTANT: we do not enable DMA IRQs here; we poll TC flags in a thread.
+    // We do not enable DMA IRQs here; the thread checks TC flags after NSS edge.
 }
 
 // SpiSlaveDMA — public API
 
-SpiSlaveDMA::SpiSlaveDMA(PinName led_pin) : m_Thread(osPriorityBelowNormal)
-                                          , m_led(led_pin)
+SpiSlaveDMA::SpiSlaveDMA(PinName led_pin) : m_Thread(osPriorityNormal)
+                                          , m_InteruptIn_NSS(PB_12)  // NSS pin for edge detection
+                                          , m_Led(led_pin)
 {
     // Configure SPI2 peripheral (slave, mode 0, 8-bit, HW NSS)
     hspi2.Instance               = SPI2;
@@ -121,30 +118,30 @@ SpiSlaveDMA::SpiSlaveDMA(PinName led_pin) : m_Thread(osPriorityBelowNormal)
     MBED_ASSERT(HAL_SPI_Init(&hspi2) == HAL_OK);
 
     // Timing setup
-    m_timer.start();
-    m_prev_ts = m_timer.elapsed_time();
+    m_Timer.start();
+    m_time_previous = m_Timer.elapsed_time();
 
-    // NOTE: we no longer arm or start the thread here.
+    // NOTE: we do not arm or start the thread here.
     // Users must call start() explicitly from main().
 }
 
 SpiSlaveDMA::~SpiSlaveDMA()
 {
     HAL_SPI_DMAStop(&hspi2);
-    m_Ticker.detach();
+    m_InteruptIn_NSS.rise(nullptr);  // Detach interrupt
     m_Thread.terminate();
 }
 
 bool SpiSlaveDMA::start()
 {
     // Build first TX frame and arm DMA once so we’re ready for the first master transfer
-    build_tx();
+    buildTX();
 
-    // Try once (subsequent retries will happen in the thread tick)
-    if (try_arm_dma_frame_()) {
-        // Start thread and ticker only after we have armed DMA successfully
+    // Try once (subsequent retries will happen on next NSS edge)
+    if (tryArmDmaFrame()) {
+        // Start thread and setup NSS rising edge interrupt (master finished)
         m_Thread.start(callback(this, &SpiSlaveDMA::threadTask));
-        m_Ticker.attach(callback(this, &SpiSlaveDMA::sendThreadFlag), std::chrono::microseconds{PERIOD_MUS});
+        m_InteruptIn_NSS.rise(callback(this, &SpiSlaveDMA::sendThreadFlag));
         return true;
     }
 
@@ -153,7 +150,7 @@ bool SpiSlaveDMA::start()
     return false;
 }
 
-void SpiSlaveDMA::set_reply_data(float f0, float f1, float f2)
+void SpiSlaveDMA::setReplyData(float f0, float f1, float f2)
 {
     core_util_critical_section_enter();
     m_reply_data[0] = f0;
@@ -162,17 +159,21 @@ void SpiSlaveDMA::set_reply_data(float f0, float f1, float f2)
     core_util_critical_section_exit();
 }
 
-bool SpiSlaveDMA::has_new_data() const
+bool SpiSlaveDMA::hasNewData() const
 {
-    return m_new_data;
+    // Lock-free read of a volatile flag; producer/consumer pattern is safe here on Cortex-M
+    return m_has_new_data;
 }
 
-void SpiSlaveDMA::get_last(SPIData& out)
+SPIData SpiSlaveDMA::getSPIData()
 {
+    // Copy and clear flag together while IRQs are masked to avoid races
     core_util_critical_section_enter();
-    out = m_last;
-    m_new_data = false;
+    SPIData out = m_SPIData;
+    m_has_new_data = false;
     core_util_critical_section_exit();
+
+    return out;
 }
 
 // Private helpers
@@ -180,86 +181,100 @@ void SpiSlaveDMA::get_last(SPIData& out)
 void SpiSlaveDMA::threadTask()
 {
     while (true) {
-        // Light sleep so we’re not busy-waiting. 100–200 µs is plenty.
-        // ThisThread::sleep_for(200us);
-        // ThisThread::sleep_for(1ms);   // or: wait_us(200);
+        // Wait for NSS rising edge to signal frame end
         ThisThread::flags_wait_any(m_ThreadFlag);
 
-        const auto t0 = m_timer.elapsed_time();
+        const microseconds t0 = m_Timer.elapsed_time();
 
-        // Check DMA TC flags:
-        // - RX: DMA1 Stream3 -> TCIF3_7
-        // - TX: DMA1 Stream4 -> TCIF0_4
-        const bool rx_done = (__HAL_DMA_GET_FLAG(&hdma_spi2_rx, DMA_FLAG_TCIF3_7) != 0U);
-        const bool tx_done = (__HAL_DMA_GET_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4) != 0U);
+        // Check DMA TC flags, allow a tiny bounded wait to cover EXTI/TC race
+        bool rx_done = false, tx_done = false;
+        const microseconds deadline = t0 + TC_WAIT_BUDGET;
+        do {
+            rx_done = (__HAL_DMA_GET_FLAG(&hdma_spi2_rx, DMA_FLAG_TCIF3_7) != 0U);
+            tx_done = (__HAL_DMA_GET_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4) != 0U);
+            if (rx_done && tx_done) break;
+        } while (m_Timer.elapsed_time() < deadline);
 
+        // If still not both done, treat as timeout/error: re-arm to avoid stall
         if (!(rx_done && tx_done)) {
-            continue; // frame not finished yet
+            core_util_critical_section_enter();
+            m_SPIData.failed_count++;
+            core_util_critical_section_exit();
+
+            buildTX();
+            (void)tryArmDmaFrame();
+
+            const microseconds t1 = m_Timer.elapsed_time();
+            m_SPIData.readout_time_us = duration_cast<microseconds>(t1 - t0).count();
+            continue;
         }
 
         // Acknowledge both flags
         __HAL_DMA_CLEAR_FLAG(&hdma_spi2_rx, DMA_FLAG_TCIF3_7);
         __HAL_DMA_CLEAR_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4);
 
-        // Safe to touch buffers now
-        HAL_SPI_DMAStop(&hspi2);
-
-        // Process the just-received frame
-        const uint8_t crc_rx = m_rx[SPI_MSG_SIZE - 1];
-
-        if (m_rx[0] == SPI_HEADER_MASTER && verify_checksum(m_rx, SPI_MSG_SIZE - 1, crc_rx)) {
-            memcpy(m_last.data, &m_rx[1], SPI_NUM_FLOATS * sizeof(float));
-            m_last.message_count++;
-
-            const auto now = m_timer.elapsed_time();
-            m_last.last_delta_time_us = duration_cast<microseconds>(now - m_prev_ts).count();
-            m_prev_ts = now;
-
-            m_led = !m_led;
-            m_new_data = true;
-        } else {
-            m_last.failed_count++;
-        }
-
-        // Optional: clear any overrun that might have happened if master outran us
+        // Clear any SPI overrun **before** stopping DMA/SPI (2-line mode).
+        // Rule: read DR then SR while SPI is enabled to clear OVR.
         if (__HAL_SPI_GET_FLAG(&hspi2, SPI_FLAG_OVR)) {
             volatile uint32_t d;
             d = hspi2.Instance->DR; d = hspi2.Instance->SR; (void)d;
         }
 
+        // Safe to touch buffers now
+        HAL_SPI_DMAStop(&hspi2);
+
+        // Process the just-received frame
+        const uint8_t hdr    = m_buffer_rx[0];
+        const uint8_t crc_rx = m_buffer_rx[SPI_MSG_SIZE - 1];
+
+        if ((hdr == SPI_HEADER_MASTER || hdr == SPI_HEADER_MASTER2) &&
+            verifyChecksum(m_buffer_rx, SPI_MSG_SIZE - 1, crc_rx)) {
+
+            // Only publish on PUBLISH header (0x55); 0x56 is arm-only
+            if (hdr == SPI_HEADER_MASTER) {
+                core_util_critical_section_enter();
+                memcpy(m_SPIData.data, &m_buffer_rx[1], SPI_NUM_FLOATS * sizeof(float));
+                m_SPIData.message_count++;
+
+                const microseconds now = m_Timer.elapsed_time();
+                m_SPIData.last_delta_time_us = duration_cast<microseconds>(now - m_time_previous).count();
+                m_time_previous = now;
+
+                m_has_new_data = true;
+                core_util_critical_section_exit();
+
+                m_Led = !m_Led;
+            }
+        } else {
+            core_util_critical_section_enter();
+            m_SPIData.failed_count++;
+            core_util_critical_section_exit();
+        }
+
         // Build next TX from the freshest reply data and re-arm DMA
-        build_tx();
+        buildTX();
 
-        (void)try_arm_dma_frame_(); // if it fails, next tick will retry
+        (void)tryArmDmaFrame(); // if it fails, next NSS edge will retry
 
-        const auto t1 = m_timer.elapsed_time();
-        m_last.readout_time_us = duration_cast<microseconds>(t1 - t0).count();
+        const microseconds t1 = m_Timer.elapsed_time();
+        m_SPIData.readout_time_us = duration_cast<microseconds>(t1 - t0).count();
     }
 }
 
-void SpiSlaveDMA::build_tx()
+void SpiSlaveDMA::buildTX()
 {
     // Copy reply payload atomically into the TX buffer
     core_util_critical_section_enter();
-    m_tx[0] = SPI_HEADER_SLAVE;
-    memcpy(&m_tx[1], m_reply_data, SPI_NUM_FLOATS * sizeof(float));
+    m_buffer_tx[0] = SPI_HEADER_SLAVE;
+    memcpy(&m_buffer_tx[1], m_reply_data, SPI_NUM_FLOATS * sizeof(float));
     core_util_critical_section_exit();
 
     // Compute CRC over header + payload
-    m_tx[SPI_MSG_SIZE - 1] = calculate_crc8(m_tx, SPI_MSG_SIZE - 1);
+    m_buffer_tx[SPI_MSG_SIZE - 1] = calculateCRC8(m_buffer_tx, SPI_MSG_SIZE - 1);
 }
 
-bool SpiSlaveDMA::try_arm_dma_frame_()
+bool SpiSlaveDMA::tryArmDmaFrame()
 {
-    // // Ensure streams disabled
-    // if ((hdma_spi2_rx.Instance->CR & DMA_SxCR_EN) != 0U) {
-    //     hdma_spi2_rx.Instance->CR &= ~DMA_SxCR_EN;
-    //     while ((hdma_spi2_rx.Instance->CR & DMA_SxCR_EN) != 0U) {}
-    // }
-    // if ((hdma_spi2_tx.Instance->CR & DMA_SxCR_EN) != 0U) {
-    //     hdma_spi2_tx.Instance->CR &= ~DMA_SxCR_EN;
-    //     while ((hdma_spi2_tx.Instance->CR & DMA_SxCR_EN) != 0U) {}
-    // }
     // Ensure streams disabled (clears any ongoing transfers/state)
     (void)HAL_DMA_Abort(&hdma_spi2_rx);
     (void)HAL_DMA_Abort(&hdma_spi2_tx);
@@ -270,29 +285,23 @@ bool SpiSlaveDMA::try_arm_dma_frame_()
     __HAL_DMA_CLEAR_FLAG(&hdma_spi2_tx, DMA_FLAG_TCIF0_4 | DMA_FLAG_TEIF0_4 |
                                        DMA_FLAG_HTIF0_4 | DMA_FLAG_FEIF0_4);
 
-    // Clear any SPI overrun
-    if (__HAL_SPI_GET_FLAG(&hspi2, SPI_FLAG_OVR)) {
-        volatile uint32_t d;
-        d = hspi2.Instance->DR; d = hspi2.Instance->SR; (void)d;
-    }
-
     // Force HAL state back to READY if needed
     if (HAL_SPI_GetState(&hspi2) != HAL_SPI_STATE_READY) {
         (void)HAL_SPI_Abort(&hspi2);
     }
 
-    // (Optional) wait briefly for NSS high before arming — avoids corner cases
+    // Optional: wait briefly for NSS high before arming — avoids corner cases
     uint32_t t0 = HAL_GetTick();
     while (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_RESET) {
         if ((HAL_GetTick() - t0) > 5) break;
     }
 
     // Arm the frame
-    HAL_StatusTypeDef st = HAL_SPI_TransmitReceive_DMA(&hspi2, m_tx, m_rx, SPI_MSG_SIZE);
+    HAL_StatusTypeDef st = HAL_SPI_TransmitReceive_DMA(&hspi2, m_buffer_tx, m_buffer_rx, SPI_MSG_SIZE);
     if (st != HAL_OK) {
         static uint32_t s_fail_print_throttle = 0;
         if ((s_fail_print_throttle++ % 100U) == 0U) {
-            printf("[SPI] Arm failed: st=%ld, state=%u, err=0x%08lX\r\n",
+            printf("[SPI] Arm failed: st=%ld, state=%u, err=0x%08lX\n",
                 (long)st, (unsigned)HAL_SPI_GetState(&hspi2), (unsigned long)hspi2.ErrorCode);
         }
         return false;
@@ -300,7 +309,7 @@ bool SpiSlaveDMA::try_arm_dma_frame_()
     return true;
 }
 
-uint8_t SpiSlaveDMA::calculate_crc8(const uint8_t* buffer, size_t length)
+uint8_t SpiSlaveDMA::calculateCRC8(const uint8_t* buffer, size_t length)
 {
     uint8_t crc = 0x00;
     for (size_t i = 0; i < length; ++i) {
@@ -309,9 +318,9 @@ uint8_t SpiSlaveDMA::calculate_crc8(const uint8_t* buffer, size_t length)
     return crc;
 }
 
-bool SpiSlaveDMA::verify_checksum(const uint8_t* buffer, size_t length, uint8_t expected_crc)
+bool SpiSlaveDMA::verifyChecksum(const uint8_t* buffer, size_t length, uint8_t expected_crc)
 {
-    return (calculate_crc8(buffer, length) == expected_crc);
+    return (calculateCRC8(buffer, length) == expected_crc);
 }
 
 void SpiSlaveDMA::sendThreadFlag()

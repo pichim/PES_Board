@@ -87,14 +87,27 @@ import spidev
 import struct
 import time
 
-# Protocol constants (matching C++ header)
-SPI_HEADER_MASTER = 0x55  # Raspberry Pi header
+# ------------------ CHANGED: protocol constants ------------------
+SPI_HEADER_MASTER = 0x55  # Raspberry Pi header: PUBLISH (second transfer)
+SPI_HEADER_MASTER_ARM = 0x56  # Raspberry Pi header: ARM-ONLY (first transfer)
 SPI_HEADER_SLAVE = 0x45  # Nucleo header
-SPI_NUM_FLOATS = 3  # Number of float values in each message
+
+SPI_NUM_FLOATS = 200  # Number of float values in each message
 SPI_MSG_SIZE = 1 + SPI_NUM_FLOATS * 4 + 1  # header + floats + checksum
 
 # Main task period (like the C++ example)
 main_task_period_us = 20000
+
+# ------------------ CHANGED: always double-transfer ------------------
+ARM_GAP_US = 10  # small gap so the slave can re-arm/build fresh TX
+
+
+def busy_wait_us(us):
+    """Busy-wait for 'us' microseconds (sub-ms precision)."""
+    t0 = time.perf_counter()
+    target = t0 + us / 1_000_000.0
+    while time.perf_counter() < target:
+        pass
 
 
 def calculate_crc8(buffer):
@@ -139,6 +152,8 @@ received_data = SPIData()
 transmitted_data.data[0] = 42.42
 transmitted_data.data[1] = 98.76
 transmitted_data.data[2] = 11.11
+transmitted_data.data[3] = 55.55
+transmitted_data.data[4] = 87.34
 
 # Timing
 start_time = time.perf_counter()
@@ -146,33 +161,46 @@ previous_time = start_time
 
 while True:
     # Start timer (like main_task_timer.reset() in C++)
-    cycle_start_time = time.perf_counter()    
-    # Prepare transmission message
-    tx_bytes = bytearray(SPI_MSG_SIZE)
-    tx_bytes[0] = SPI_HEADER_MASTER
+    cycle_start_time = time.perf_counter()
 
-    # Pack floats
+    # ---------------- First transfer: ARM-ONLY (0x56 + zeros) ----------------
+    tx1 = bytearray(SPI_MSG_SIZE)
+    tx1[0] = SPI_HEADER_MASTER_ARM
+    # explicit zero payload
+    for i in range(SPI_NUM_FLOATS):
+        tx1[1 + i * 4 : 1 + (i + 1) * 4] = b"\x00\x00\x00\x00"
+    tx1[-1] = calculate_crc8(tx1[:-1])
+
+    rx1 = spi.xfer2(list(tx1))
+
+    # short gap so the slave can process + re-arm with fresh TX
+    busy_wait_us(ARM_GAP_US)
+
+    # ---------------- Second transfer: PUBLISH (0x55 + real payload) ---------
+    tx2 = bytearray(SPI_MSG_SIZE)
+    tx2[0] = SPI_HEADER_MASTER
     for i in range(SPI_NUM_FLOATS):
         float_bytes = struct.pack("<f", transmitted_data.data[i])
-        tx_bytes[1 + i * 4 : 1 + (i + 1) * 4] = float_bytes
+        tx2[1 + i * 4 : 1 + (i + 1) * 4] = float_bytes
+    tx2[-1] = calculate_crc8(tx2[:-1])
 
-    # Calculate and add checksum
-    checksum = calculate_crc8(tx_bytes[:-1])
-    tx_bytes[-1] = checksum
+    rx2 = spi.xfer2(list(tx2))
 
-    # Send and receive simultaneously (full-duplex)
-    rx_bytes = spi.xfer2(list(tx_bytes))
+    # Prefer the second reply (fresh data). Fallback to first if second invalid.
+    rx = rx2
+    if not (len(rx2) == SPI_MSG_SIZE and verify_checksum(rx2[:-1], rx2[-1]) and rx2[0] == SPI_HEADER_SLAVE):
+        rx = rx1
 
-    # Process received message
-    header_received = rx_bytes[0]
-    received_checksum = rx_bytes[-1]
+    # ---------------- Process selected received message ----------------------
+    header_received = rx[0]
+    received_checksum = rx[-1]
 
     # Verify checksum
-    if verify_checksum(rx_bytes[:-1], received_checksum):
+    if verify_checksum(rx[:-1], received_checksum):
         if header_received == SPI_HEADER_SLAVE:
             # Valid message - extract data
             for i in range(SPI_NUM_FLOATS):
-                float_bytes = bytes(rx_bytes[1 + i * 4 : 1 + (i + 1) * 4])
+                float_bytes = bytes(rx[1 + i * 4 : 1 + (i + 1) * 4])
                 received_data.data[i] = struct.unpack("<f", float_bytes)[0]
 
             received_data.message_count += 1
@@ -189,14 +217,14 @@ while True:
             transmitted_data.message_count += 1
 
             # Print results
-            print(f"Message: {received_data.message_count} | " f"Delta Time: {delta_time_us} us | " f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, {received_data.data[2]:.2f}] | " f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}")
+            print(f"Message: {received_data.message_count} | " f"Delta Time: {delta_time_us} us | " f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, {received_data.data[2]:.2f}, {received_data.data[3]:.2f}, {received_data.data[4]:.2f}] | " f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}")
         else:
             # Wrong header
             received_data.failed_count += 1
             print(f"Wrong header! Expected: 0x{SPI_HEADER_SLAVE:02X}, Got: 0x{header_received:02X} | Failed: {received_data.failed_count}")
     else:
         received_data.failed_count += 1
-        expected_checksum = calculate_crc8(rx_bytes[:-1])
+        expected_checksum = calculate_crc8(rx[:-1])
         print(f"CRC failed! Expected: 0x{expected_checksum:02X}, Got: 0x{received_checksum:02X} | Failed: {received_data.failed_count}")
 
     # Read timer and make the main thread sleep for the remaining time span (like C++ example)
