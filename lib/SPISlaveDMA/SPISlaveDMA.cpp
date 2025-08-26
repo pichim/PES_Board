@@ -40,13 +40,15 @@ extern "C" void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 
 // SpiSlaveDMA — public API
 
-SpiSlaveDMA::SpiSlaveDMA(PinName mosi, PinName miso, PinName sck, PinName nss)
-    : m_Thread(osPriorityAboveNormal)
-    , m_InterruptIn_NSS(nss)
-    , m_MOSI(mosi)
-    , m_MISO(miso)
-    , m_SCK(sck)
-    , m_NSS(nss)
+SpiSlaveDMA::SpiSlaveDMA(PinName mosi,
+                         PinName miso,
+                         PinName sck,
+                         PinName nss) : m_Thread(osPriorityHigh)   // worker thread runs at high priority
+                                      , m_InterruptIn_NSS(nss)
+                                      , m_MOSI(mosi)
+                                      , m_MISO(miso)
+                                      , m_SCK(sck)
+                                      , m_NSS(nss)
 {
     // Timing setup
     m_Timer.start();
@@ -140,12 +142,16 @@ void SpiSlaveDMA::threadTask()
 
         const microseconds t0 = m_Timer.elapsed_time();
 
-        // Check DMA TC flags, allow a tiny bounded wait to cover EXTI/TC race
+        // Check DMA Transfer Complete flags with bounded wait to cover EXTI/TC race
+        // SPI2 on F446RE uses DMA1: RX=Stream3, TX=Stream4 (both Channel 0)
+        constexpr uint32_t DMA1_SPI2_RX_TC_FLAG = DMA_FLAG_TCIF3_7;
+        constexpr uint32_t DMA1_SPI2_TX_TC_FLAG = DMA_FLAG_TCIF0_4;
+
         bool rx_done = false, tx_done = false;
         const microseconds deadline = t0 + TC_WAIT_BUDGET;
         do {
-            rx_done = (__HAL_DMA_GET_FLAG(&m_dma_rx, DMA_FLAG_TCIF3_7) != 0U);
-            tx_done = (__HAL_DMA_GET_FLAG(&m_dma_tx, DMA_FLAG_TCIF0_4) != 0U);
+            rx_done = (__HAL_DMA_GET_FLAG(&m_dma_rx, DMA1_SPI2_RX_TC_FLAG) != 0U);
+            tx_done = (__HAL_DMA_GET_FLAG(&m_dma_tx, DMA1_SPI2_TX_TC_FLAG) != 0U);
             if (rx_done && tx_done) break;
         } while (m_Timer.elapsed_time() < deadline);
 
@@ -163,9 +169,9 @@ void SpiSlaveDMA::threadTask()
             continue;
         }
 
-        // Acknowledge both flags
-        __HAL_DMA_CLEAR_FLAG(&m_dma_rx, DMA_FLAG_TCIF3_7);
-        __HAL_DMA_CLEAR_FLAG(&m_dma_tx, DMA_FLAG_TCIF0_4);
+        // Clear Transfer Complete flags for both DMA streams (F446RE SPI2 mapping)
+        __HAL_DMA_CLEAR_FLAG(&m_dma_rx, DMA1_SPI2_RX_TC_FLAG);
+        __HAL_DMA_CLEAR_FLAG(&m_dma_tx, DMA1_SPI2_TX_TC_FLAG);
 
         // Clear any SPI overrun **before** stopping DMA/SPI (2-line mode).
         // Rule: read DR then SR while SPI is enabled to clear OVR.
@@ -231,40 +237,64 @@ bool SpiSlaveDMA::tryArmDmaFrame()
     (void)HAL_DMA_Abort(&m_dma_rx);
     (void)HAL_DMA_Abort(&m_dma_tx);
 
-    // Clear all DMA flags (TC/TE/HT/FE) for both streams
-    __HAL_DMA_CLEAR_FLAG(&m_dma_rx, DMA_FLAG_TCIF3_7 | DMA_FLAG_TEIF3_7 |
-                                   DMA_FLAG_HTIF3_7 | DMA_FLAG_FEIF3_7);
-    __HAL_DMA_CLEAR_FLAG(&m_dma_tx, DMA_FLAG_TCIF0_4 | DMA_FLAG_TEIF0_4 |
-                                   DMA_FLAG_HTIF0_4 | DMA_FLAG_FEIF0_4);
+    // Clear all DMA flags (TC/TE/HT/FE) for both streams (F446RE SPI2 mapping)
+    constexpr uint32_t DMA1_SPI2_RX_ALL_FLAGS = DMA_FLAG_TCIF3_7 | DMA_FLAG_TEIF3_7 | DMA_FLAG_HTIF3_7 | DMA_FLAG_FEIF3_7;
+    constexpr uint32_t DMA1_SPI2_TX_ALL_FLAGS = DMA_FLAG_TCIF0_4 | DMA_FLAG_TEIF0_4 | DMA_FLAG_HTIF0_4 | DMA_FLAG_FEIF0_4;
+
+    __HAL_DMA_CLEAR_FLAG(&m_dma_rx, DMA1_SPI2_RX_ALL_FLAGS);
+    __HAL_DMA_CLEAR_FLAG(&m_dma_tx, DMA1_SPI2_TX_ALL_FLAGS);
 
     // Force HAL state back to READY if needed
     if (HAL_SPI_GetState(&m_hspi2) != HAL_SPI_STATE_READY) {
         (void)HAL_SPI_Abort(&m_hspi2);
     }
 
-    // Optional: wait briefly for NSS high before arming — avoids corner cases
+    // Wait for NSS high with timeout protection before arming DMA
+    // This prevents hang if the master holds NSS low.
     GPIO_TypeDef* nss_port = nullptr;
     uint16_t nss_pinmask = 0;
     if (m_NSS == PB_12) { nss_port = GPIOB; nss_pinmask = GPIO_PIN_12; }
     else if (m_NSS == PB_9) { nss_port = GPIOB; nss_pinmask = GPIO_PIN_9; }
+
     if (nss_port != nullptr) {
-        // Small guard so we don't arm while NSS is still low between back-to-back frames.
-        uint32_t t0 = HAL_GetTick();
+        static constexpr uint32_t NSS_TIMEOUT_MS = 5;  // conservative guard
+        const uint32_t t0 = HAL_GetTick();
         while (HAL_GPIO_ReadPin(nss_port, nss_pinmask) == GPIO_PIN_RESET) {
-            if ((HAL_GetTick() - t0) > 5) break;
+            if ((HAL_GetTick() - t0) > NSS_TIMEOUT_MS) {
+                // Master may be holding NSS low — abort this arm attempt
+                m_consecutive_failures++;
+                if (m_consecutive_failures >= MAX_CONSECUTIVE_FAILURES) {
+                    resetSPIPeripheral();
+                }
+                return false;
+            }
         }
     }
 
     // Arm the frame
     HAL_StatusTypeDef st = HAL_SPI_TransmitReceive_DMA(&m_hspi2, m_buffer_tx, m_buffer_rx, SPI_MSG_SIZE);
     if (st != HAL_OK) {
+        // Track consecutive failures for automatic peripheral reset
+        m_consecutive_failures++;
+
+        // Throttled diagnostics
         static uint32_t s_fail_print_throttle = 0;
         if ((s_fail_print_throttle++ % 100U) == 0U) {
-            printf("[SPI] Arm failed: st=%ld, state=%u, err=0x%08lX\n",
-                (long)st, (unsigned)HAL_SPI_GetState(&m_hspi2), (unsigned long)m_hspi2.ErrorCode);
+            printf("[SPI] Arm failed: st=%ld, state=%u, err=0x%08lX (failures=%lu)\n",
+                   (long)st, (unsigned)HAL_SPI_GetState(&m_hspi2), (unsigned long)m_hspi2.ErrorCode,
+                   (unsigned long)m_consecutive_failures);
+        }
+
+        // Reset peripheral if too many consecutive failures (F446RE recovery)
+        if (m_consecutive_failures >= MAX_CONSECUTIVE_FAILURES) {
+            resetSPIPeripheral();
+            // Note: resetSPIPeripheral() resets m_consecutive_failures to 0
         }
         return false;
     }
+
+    // Reset consecutive failure counter on successful arm
+    m_consecutive_failures = 0;
     return true;
 }
 
@@ -305,12 +335,12 @@ void SpiSlaveDMA::configureGPIOandDMA()
             GPIO_TypeDef* port = GPIOB;
             uint16_t p = 0;
             switch (pin) {
+                case PB_9 : p = GPIO_PIN_9 ; break;
                 case PB_10: p = GPIO_PIN_10; break;
+                case PB_12: p = GPIO_PIN_12; break;
                 case PB_13: p = GPIO_PIN_13; break;
                 case PB_14: p = GPIO_PIN_14; break;
                 case PB_15: p = GPIO_PIN_15; break;
-                case PB_9:  p = GPIO_PIN_9;  break;
-                case PB_12: p = GPIO_PIN_12; break;
                 default:    break;
             }
             GPIO_InitStruct.Pin       = p;
@@ -387,4 +417,36 @@ bool SpiSlaveDMA::validatePins() const
     }
 
     return true;
+}
+
+void SpiSlaveDMA::resetSPIPeripheral()
+{
+    // Reset SPI2 peripheral and DMA due to persistent failures (robustness)
+    printf("[SPI] Resetting SPI2 peripheral due to %lu consecutive failures\n",
+           (unsigned long)m_consecutive_failures);
+
+    // Stop all ongoing DMA and SPI operations
+    HAL_SPI_DMAStop(&m_hspi2);
+
+    // Deinitialize SPI and DMA handles
+    HAL_SPI_DeInit(&m_hspi2);
+    HAL_DMA_DeInit(&m_dma_rx);
+    HAL_DMA_DeInit(&m_dma_tx);
+
+    // Small delay to allow peripheral reset to complete
+    ThisThread::sleep_for(2ms);
+
+    // Reconfigure GPIO, clocks, and DMA streams
+    configureGPIOandDMA();
+
+    // Reinitialize SPI2 peripheral
+    if (HAL_SPI_Init(&m_hspi2) != HAL_OK) {
+        printf("[SPI] ERROR: Failed to reinitialize SPI2 after reset\n");
+        return;
+    }
+
+    // Reset consecutive failure counter after successful recovery
+    m_consecutive_failures = 0;
+
+    printf("[SPI] SPI2 peripheral reset complete - ready for operation\n");
 }

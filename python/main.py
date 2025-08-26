@@ -78,7 +78,7 @@
  - Raspberry Pi 5 is SPI MASTER (bus 0, device 0 → `/dev/spidev0.0`).
  - Uses spidev Python library for full-duplex transfers.
  - Ensure `dtparam=spi=on` is enabled in `/boot/firmware/config.txt`.
- - Protocol: **Double transfer** each 20 ms
+ - Protocol: **Double transfer** each 10 ms
      1) 0x56 + zero payload (ARM-ONLY) — lets the Nucleo re-arm/build fresh TX
      2) 0x55 + real payload (PUBLISH)  — Nucleo publishes/updates from this one
 ================================================================================
@@ -228,7 +228,13 @@ while True:
             transmitted_data.message_count += 1
 
             # Print results
-            print(f"Message: {received_data.message_count} | " f"Delta Time: {delta_time_us} us | " f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, {received_data.data[2]:.2f}, {received_data.data[3]:.2f}, {received_data.data[4]:.2f}] | " f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}")
+            print(
+                f"Message: {received_data.message_count} | "
+                f"Delta Time: {delta_time_us} us | "
+                f"Received: [{received_data.data[0]:.2f}, {received_data.data[1]:.2f}, "
+                f"{received_data.data[2]:.2f}, {received_data.data[3]:.2f}, {received_data.data[4]:.2f}] | "
+                f"Header: 0x{header_received:02X} | Failed: {received_data.failed_count}"
+            )
         else:
             # Wrong header
             received_data.failed_count += 1

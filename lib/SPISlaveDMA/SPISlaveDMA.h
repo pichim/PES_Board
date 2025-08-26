@@ -143,6 +143,10 @@ private:
     // --- new data flag (set when we parsed a valid frame) ---
     volatile bool m_has_new_data{false};
 
+    // --- error tracking for automatic recovery ---
+    uint32_t m_consecutive_failures{0};
+    static constexpr uint32_t MAX_CONSECUTIVE_FAILURES = 20;
+
 private:
     // Main worker loop (wakes on NSS edge; checks DMA TC flags)
     void threadTask();
@@ -157,6 +161,7 @@ private:
     static uint8_t calculateCRC8(const uint8_t* buf, size_t len);
     static bool    verifyChecksum(const uint8_t* buf, size_t len, uint8_t expected_crc);
 
+    // ISR hook — just signals the worker thread
     void sendThreadFlag();
 
     // Configure GPIO clocks, pins (AF5), SPI2 clock and DMA streams for SPI2
@@ -164,6 +169,9 @@ private:
 
     // Validate the selected pins belong to the allowed SPI2 sets and are unique
     bool validatePins() const;
+
+    // Reset SPI2 peripheral and DMA on persistent failures (recovery)
+    void resetSPIPeripheral();
 };
 
 #endif // SPI_SLAVE_DMA_H_
