@@ -16,14 +16,14 @@ buildType:
 board:
   # Fill name of your targer which has to corespond to
   # target name in targets.json5 file or custom_targets.json5 in case of custom target.
-  # For simplified just replace every occurrence of YOUR_MBED_TARGET with Mbed target name. 
+  # For simplified just replace every occurrence of YOUR_MBED_TARGET with Mbed target name.
   # For example LPC1768 or NUCLEO_L452RE_P
-  default: NUCLEO_F446RE # default variant (choose) from below
+  default: NUCLEO_L432KC # default variant (choose) from below
   choices:
-    NUCLEO_F446RE: # Name of one variant
-      short: NUCLEO_F446RE # Short name of the variant
+    NUCLEO_L432KC: # Name of one variant
+      short: NUCLEO_L432KC # Short name of the variant
       settings:
-        MBED_TARGET: NUCLEO_F446RE # Your mbed target name from targets.json5 file
+        MBED_TARGET: NUCLEO_L432KC # Your mbed target name from targets.json5 file
         # Fill your upload method according to variants below
         # - universal: NONE, MBED, JLINK, PYOCD, OPENOCD
         # - target specific: STLINK, STM32CUBE, LINKSERVER, PICOTOOL, ARDUINO_BOSSAC

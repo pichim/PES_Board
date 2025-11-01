@@ -6,7 +6,7 @@
 			"label": "CMake: build",
 			"command": "build",
 			"targets": [
-				"flash-SPI_COM_Slave"
+				"flash-RCRC"
 			],
 			"group": {
 				"kind": "build",
