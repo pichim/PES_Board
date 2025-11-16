@@ -30,6 +30,7 @@
 #include "DebounceIn.h"
 #include "RealTimeThread.h"
 #include "SerialStream.h"
+// #include "SerialStreamThread.h"
 
 using namespace std::chrono;
 
@@ -75,6 +76,7 @@ private:
 
     // Serial communication
     SerialStream m_SerialStream; ///< Stream for data logging
+    // SerialStreamThread m_SerialStream; ///< Stream for data logging
 
     // Timing
     Timer        m_Timer;             ///< Measures elapsed time

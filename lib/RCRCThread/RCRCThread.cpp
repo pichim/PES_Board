@@ -16,7 +16,14 @@ RCRCThread::RCRCThread(uint32_t period_us,
     , m_Ain1(RTT_AIN1)
     , m_Ain2(RTT_AIN2)
     , m_Aout(RTT_AOUT1)
-    , m_SerialStream(RTT_TX, RTT_RX, RTT_NUM_OF_FLOATS, RTT_BAUDRATE)
+    , m_SerialStream(RTT_TX, RTT_RX,
+                     /*num_of_floats*/ RTT_NUM_OF_FLOATS,
+                     /*baud*/ RTT_BAUDRATE)
+    // , m_SerialStream(RTT_TX, RTT_RX,
+    //                  /*num_of_floats*/ RTT_NUM_OF_FLOATS,
+    //                  /*baud*/ RTT_BAUDRATE,
+    //                  /*period_us (drain)*/ 1000,
+    //                  /*prio*/ osPriorityAboveNormal)
     , m_Chirp(F0_HZ, (1.0f / 2.0f) / m_Ts, T1_SEC, m_Ts) // f1 = 1/(2*Ts)
 {
     // Button ISR — toggles execution flag
@@ -24,6 +31,7 @@ RCRCThread::RCRCThread(uint32_t period_us,
 
     // Start ticker (RealTimeThread handles periodic flag signaling)
     enable();
+    // m_SerialStream.enable();
 }
 
 /**
