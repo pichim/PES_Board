@@ -205,6 +205,8 @@ bool SerialStream::startByteReceived()
         const uint8_t val = _rxRing[_rxTail];
         _rxTail = static_cast<uint16_t>((_rxTail + 1) % RX_RING_SIZE);
         if (val == S_STREAM_START_BYTE) {
+            // Fresh session: clear TX/RX state so the next send re-emits the header
+            reset();
             return true;
         }
     }
