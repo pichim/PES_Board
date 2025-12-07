@@ -83,8 +83,8 @@ private:
     microseconds m_time_previous_us{0}; ///< Last timestamp
 
     // Chirp generator
-    static constexpr float F0_HZ     = 0.1f;
-    static constexpr float T1_SEC    = 10.0f;
+    static constexpr float T1_SEC    = 3.0f;
+    static constexpr float F0_HZ     = 1.0f / T1_SEC;
     static constexpr float AMP_V     = 0.9f * (3.3f / 2.0f);
     static constexpr float OFFSET_V  = 3.3f / 2.0f;
     Chirp m_Chirp;

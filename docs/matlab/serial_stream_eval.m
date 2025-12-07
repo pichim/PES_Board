@@ -2,7 +2,7 @@ clc, clear all
 %%
 
 port = '/dev/ttyUSB0';
-baudrate = 2e6;
+baudrate = 3e6;
 
 % Initialize the SerialStream object
 try

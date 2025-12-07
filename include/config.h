@@ -12,8 +12,11 @@
     // #define RTT_PERIOD_US 2500   //   400 Hz
     // #define RTT_PERIOD_US 2000   //   500 Hz
     // #define RTT_PERIOD_US 1000   //  1000 Hz
-    #define RTT_PERIOD_US 500    //  2000 Hz
-    // #define RTT_PERIOD_US 333    //  3000 Hz
+    // #define RTT_PERIOD_US 500    //  2000 Hz
+    // #define RTT_PERIOD_US 400    //  2500 Hz
+    #define RTT_PERIOD_US 333    //  3000 Hz
+    // #define RTT_PERIOD_US 300
+    // #define RTT_PERIOD_US 250    //  4000 Hz
     // #define RTT_PERIOD_US 200    //  5000 Hz
     // #define RTT_PERIOD_US 150    //  6666 Hz
     // #define RTT_PERIOD_US 133    //  7500 Hz
@@ -25,7 +28,7 @@
     // #define RTT_RX USBRX
     #define RTT_TX PB_6 // usb 2.0-cable TTL serial 6 pin to computer or openlager
     #define RTT_RX PB_7
-    #define RTT_BAUDRATE 2000000
+    #define RTT_BAUDRATE 3000000 // On Mbed CE you can go up to 3 Mbaud with L432KC
     #define RTT_NUM_OF_FLOATS 30
 
     // additonal button

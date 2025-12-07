@@ -102,7 +102,7 @@ void RCRCThread::executeTask()
         m_Aout.write(u_e / 3.3f);
 
         // Transmit data frame (same layout as original)
-        m_SerialStream.write(dtime_us); // 0: dt [µs]
+        // m_SerialStream.write(dtime_us); // 0: dt [µs]
         m_SerialStream.write(u_e);      // 1: excitation [V]
         m_SerialStream.write(uc_1);     // 2: Ain1 [V]
         m_SerialStream.write(uc_2);     // 3: Ain2 [V]
@@ -121,6 +121,7 @@ void RCRCThread::executeTask()
 
             m_SerialStream.reset();
             m_Chirp.reset();
+            m_is_start_byte_received = false;
 
             // LED off when idle
             m_Led = 0;
