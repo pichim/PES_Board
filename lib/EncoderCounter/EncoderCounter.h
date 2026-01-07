@@ -2,6 +2,7 @@
  * EncoderCounter.h
  * Copyright (c) 2018, ZHAW
  * All rights reserved.
+ * @authors M. Honegger / honr, minor adjustments M. Peter / pmic / pichim
  */
 
 #ifndef ENCODER_COUNTER_H_
@@ -33,6 +34,3 @@ private:
 };
 
 #endif /* ENCODER_COUNTER_H_ */
-
-
-

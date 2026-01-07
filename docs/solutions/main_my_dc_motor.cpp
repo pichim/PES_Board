@@ -63,7 +63,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // enable the motors if they are not enabled yet
             if (!enable_motors) {

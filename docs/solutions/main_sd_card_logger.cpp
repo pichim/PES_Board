@@ -55,7 +55,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;

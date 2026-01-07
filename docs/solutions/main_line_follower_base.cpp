@@ -39,11 +39,6 @@ int main()
     // led on nucleo board
     DigitalOut user_led(LED1);
 
-    // additional led
-    // create DigitalOut object to command extra led, you need to add an additional resistor, e.g. 220...500 Ohm
-    // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
-    DigitalOut led1(PB_9);
-
     // --- adding variables and objects and applying functions starts here ---
 
     // create object to enable power electronics for the dc motors
@@ -102,10 +97,9 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // visual feedback that the main task is executed, setting this once would actually be enough
-            led1 = 1;
             enable_motors = 1;
 
             // only update sensor bar angle if an led is triggered
@@ -131,7 +125,6 @@ int main()
                 // --- variables and objects that should be reset go here ---
 
                 // reset variables and objects
-                led1 = 0;
                 enable_motors = 0;
             }
         }

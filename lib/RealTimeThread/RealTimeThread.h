@@ -4,7 +4,7 @@
  *
  * The RealTimeThread class provides a simple framework for executing periodic tasks
  * at real-time intervals. It uses a ticker to signal a dedicated thread at regular
- * intervals, making it suitable for control loops, sensor reading, and other 
+ * intervals, making it suitable for control loops, sensor reading, and other
  * time-critical operations.
  *
  * @dependencies
@@ -22,7 +22,7 @@
  * @example
  * ```cpp
  * class MyRealTimeThread : public RealTimeThread {
- *     // for every constructor that exists in RealTimeThread, add a corresponding constructor to the 
+ *     // for every constructor that exists in RealTimeThread, add a corresponding constructor to the
  *     // overload set of MyRealTimeThread that simply forwards its arguments to the base‐class constructor
  *     using RealTimeThread::RealTimeThread;
  * protected:
@@ -45,8 +45,6 @@
 
 #include "ThreadFlag.h"
 
-using namespace std::chrono;
-
 class RealTimeThread
 {
 public:
@@ -65,7 +63,7 @@ public:
     // Control methods
     void enable();
     void disable();
-    bool isEnabled() const { return m_enabled; } // return Ticker state
+    bool isEnabled() const;
 
 protected:
     /**
@@ -82,7 +80,7 @@ private:
     Thread m_Thread;
     Ticker m_Ticker;
     ThreadFlag m_ThreadFlag;
-    Mutex m_Mutex; // only for enable/disable
+    mutable Mutex m_Mutex; // protects m_enabled and m_running
 
     // States
     bool m_enabled{false}; // Ticker state

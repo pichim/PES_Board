@@ -79,7 +79,7 @@ sd_logger.write((float)(1)); // cast 1 to float and log 1.0f
 sd_logger.send();
 ```
 
-### Examples 
+### Examples
 
 Log an incrementing counter
 

@@ -28,7 +28,7 @@ An IMU (Inertial Measurement Unit) sensor is a compact electronic device that me
 
 - [SparkFun 9DoF IMU Breakout - LSM9DS1][0] <br>
 
-## Datasheets 
+## Datasheets
 
 - [LSM9DS1](../datasheets/lsm9ds1.pdf)
 
@@ -108,7 +108,7 @@ So if no information about heading is needed, it is recommended not to use the m
 
 **NOTE:**
 
-By default, the IMU is not using the magnetometer. To enable it, it is necessary to change 
+By default, the IMU is not using the magnetometer. To enable it, it is necessary to change
 
 ```cpp
 #define IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE true
@@ -165,7 +165,7 @@ As mentioned, the IMU uses two pins to communicate via I2C. The next step is to 
 ```cpp
 // imu
 ImuData imu_data;
-IMU imu(PB_IMU_SDA, PB_IMU_SCL);   
+IMU imu(PB_IMU_SDA, PB_IMU_SCL);
 ```
 
 ### Read Measurements
@@ -180,14 +180,14 @@ imu_data = imu.getImuData();
 ```cpp
 // acceleration in meters per second squared in three axes
 float acc_x = imu_data.acc(0);
-float acc_y = imu_data.acc(1); 
+float acc_y = imu_data.acc(1);
 float acc_z = imu_data.acc(2);
 ```
 
 ```cpp
 // gyroscope in radians per second in three axes
 float gyro_x = imu_data.gyro(0);
-float gyro_y = imu_data.gyro(1); 
+float gyro_y = imu_data.gyro(1);
 float gyro_z = imu_data.gyro(2);
 ```
 

@@ -5,7 +5,7 @@
 
 The objective of the second workshop is to get familiar with the PES boards hardware and functionality by incorporating additional sensors and actuators, specifically an ultrasonic distance sensor and a servo motor.
 
-Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintainable firmware for a robot. 
+Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintainable firmware for a robot.
 
 ## Hardware
 

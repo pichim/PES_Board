@@ -16,14 +16,14 @@ The kinematics of a differential drive robot describe the relationship between t
 - Wheel base $b$
 
 **Input values:**
-- Forward velocity $v$ 
-- Rotational velocity with respect to the robot's Z axis $\omega$ 
+- Forward velocity $v$
+- Rotational velocity with respect to the robot's Z axis $\omega$
 
 **Output values:**
-- Right wheel velocity $\omega_1$ 
-- Left wheel velocity $\omega_2$ 
+- Right wheel velocity $\omega_1$
+- Left wheel velocity $\omega_2$
 
-**NOTE:** 
+**NOTE:**
 - For the implementation in C++, we use Eigen. Eigen is a powerful C++ library for linear algebra.
 
 ## Deriving the Kinematic Model
@@ -115,7 +115,7 @@ $$
 \begin{bmatrix}
 \omega_1 \\\
 \omega_2
-\end{bmatrix} = 
+\end{bmatrix} =
 \begin{bmatrix}
 \frac{1}{r} & \frac{b}{2\ r} \\\
 \frac{1}{r} & -\frac{b}{2\ r}

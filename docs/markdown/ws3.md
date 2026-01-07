@@ -72,9 +72,9 @@ The objective is to set up a mechatronic system that mimics a can crusher press.
 Before doing the task, you may look at the [Tutorial Structuring a Robot Task](tips.md#structuring-a-robot-task).
 
 1. Create the flow-chart diagram according to the description above.
-   
+
 2. Connect the mechanical button to pin **PC_5** and ground to the corresponding pin (see [Nucleo Board Pinmap][0])
-   
+
 3. Define a ``mechanical button`` object in the ``main()`` function with the appropriate pullup mode
 
 ```cpp
@@ -190,7 +190,7 @@ switch (robot_state) {
 
 ```cpp
     case RobotState::SLEEP: {
-        // wait for the signal from the user, so to run the process 
+        // wait for the signal from the user, so to run the process
         // that is triggered by clicking the mechanical button
         // then go to the FORWARD state
         if (mechanical_button.read())
@@ -204,7 +204,7 @@ switch (robot_state) {
 
 ```cpp
     case RobotState::FORWARD: {
-        // press is moving forward until it reaches 2.9f rotations, 
+        // press is moving forward until it reaches 2.9f rotations,
         // when reaching the value go to BACKWARD
         motor_M3.setRotation(2.9f); // setting this once would actually be enough
         // if the distance from the sensor is less than 4.5f cm,
@@ -271,7 +271,7 @@ robot_state = RobotState::INITIAL;
 ```
 
 17. Upload the program to the microcontroller using the **PLAY** button in Mbed Studio. Then, aim the sensor at an object that is beyond the distance triggering the **EMERGENCY** state. Press the **USER** button and click the mechanical button.
-    
+
 18. Experiment by pressing the mechanical button and pointing the sensor at an object that is below the threshold specified in the code.
 
 ## Summary

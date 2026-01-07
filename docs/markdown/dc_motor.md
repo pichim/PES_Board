@@ -70,7 +70,7 @@ A direct current (DC) motor is an electrical machine that converts electrical en
 
 - If pulse A precedes pulse B, the rotation direction is recognized as CW. Conversely, if pulse B precedes pulse A, the rotation direction is identified as CCW.
 
-Below are measurements taken with a pico scope oscilloscope showing readings from channel A and B. The descriptions of the images include information about the voltage transmitted to the motor. 
+Below are measurements taken with a pico scope oscilloscope showing readings from channel A and B. The descriptions of the images include information about the voltage transmitted to the motor.
 
 <center>
 <table>
@@ -288,7 +288,7 @@ printf("Motor velocity: %f \n", motor_M2.getVelocity());
 **NOTE:**
 - If the motor starts spinning immediately after enabling the hardware with maximum speed, the motor is connected incorrectly and the cables for M+ and M- from the PES board to the motor or the cables from the encoder A and B need to be swapped.
 - The maximum physically possible velocity is calculated and set in the driver based on the input arguments.
-  
+
 The default motor driver does not activate the motion planner, meaning the speed setpoint will be reached as fast as possible with the current PID controller parameters. To test this, you can place the following command inside the ``while()`` loop.
 
 ```cpp

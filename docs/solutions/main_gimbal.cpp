@@ -99,7 +99,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // enable the servos
             if (!servo_roll.isEnabled())

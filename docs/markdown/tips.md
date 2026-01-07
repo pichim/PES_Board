@@ -49,7 +49,7 @@ Through (fast and early) prototyping, you not only validate the feasibility of y
         <br/><i>Fast Prototyping does not have to be perfect</i>
       </td>
       <td align="center">
-        <img src="../images/3d_printing.png" alt="3D Printing" width="430"/>  
+        <img src="../images/3d_printing.png" alt="3D Printing" width="430"/>
         <br/><i>3D Printing</i>
       </td>
     </tr>
@@ -171,7 +171,7 @@ A state machine represents different states a robot can be in and the transition
 - <b>Identify States and Events</b> - Enumerate the distinct states your robot can be in (e.g., idle, moving, obstacle detected). Identify events or conditions that trigger transitions between states (e.g. button pressed, sensor input within a certain range, ...).
 - <b>Define State Transitions</b> - For each state, specify the conditions that lead to transitions to other states. Determine the actions or functions associated with each transition.
 - <b>Syntax in C++</b> - Use an enum or a set of constants to represent different states. Implement a switch-case structure to handle state transitions based on conditions. Execute corresponding actions or functions for each state.
-- <b>Be aware</b> - When changing states, prioritize sensor input for transitions, avoiding time-based decisions that may lead to blocking code. In general, blocking code should be avoided! 
+- <b>Be aware</b> - When changing states, prioritize sensor input for transitions, avoiding time-based decisions that may lead to blocking code. In general, blocking code should be avoided!
 
 Here is the code used to implement the state machine based on the preceding flowchart. Analyze the code to compare how the steps correspond between the flowchart and the code implementation.
 

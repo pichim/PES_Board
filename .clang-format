@@ -1,0 +1,38 @@
+BasedOnStyle: LLVM
+
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+  AfterControlStatement: false
+  AfterClass: true
+  AfterStruct: false
+  AfterNamespace: false
+
+BreakConstructorInitializersBeforeComma: true
+ColumnLimit: 120
+
+AccessModifierOffset: -4
+
+IndentCaseLabels: true
+
+AllowShortEnumsOnASingleLine: false
+
+IncludeBlocks: Regroup
+
+IncludeCategories:
+  - Regex: "^<.*>$"
+    Priority: 1
+  - Regex: ".*"
+    Priority: 2
+
+SortIncludes: true
+
+BinPackParameters: false
+BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: true
+AlignAfterOpenBracket: Align

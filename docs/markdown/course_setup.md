@@ -115,7 +115,7 @@ The build process can be performed without a connected board. After importing th
     <i>Building the Program</i>
 </p>
 
-The compiled files, including the ***.bin** file are stored in the **BUILD** directory within your project folder. 
+The compiled files, including the ***.bin** file are stored in the **BUILD** directory within your project folder.
 
 ### Flashing
 

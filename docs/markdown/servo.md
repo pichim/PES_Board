@@ -194,7 +194,7 @@ Now the ``servo_input`` variable in the range from 0.0f to 1.0f will be mapped i
 
 The class design incorporates the capability to execute smooth movements by adjusting the servo's maximum acceleration. This feature is suitable for movements that need smooth motions, eliminating abrupt movements. As default, the servo will move as fast as possible.
 
-The following function can be used as an example to establish smooth movement and needs to be placed after the ``Servo`` object calibration:  
+The following function can be used as an example to establish smooth movement and needs to be placed after the ``Servo`` object calibration:
 
 ```cpp
 // default acceleration of the servo motion profile is 1.0e6f

@@ -41,7 +41,7 @@ The first task will be to run a test program using an additional LED.
 6. Now click the blue **USER** button on the Nucleo board while watching the additional LED.
 7. Now click the blue **USER** button on the Nucleo board once again. What happens with the additional LED diode?
 
-After finishing the task, read through the code, read the comments and try to understand it. Discuss the basic program in the group. 
+After finishing the task, read through the code, read the comments and try to understand it. Discuss the basic program in the group.
 
 **If you have any questions, just ask them : - ), always!**
 
@@ -50,7 +50,7 @@ After finishing the task, read through the code, read the comments and try to un
 The second task will be carried out using an IR distance sensor. This task will be to calibrate the sensor so that it can be used to measure distances in centimeters. We want to learn more about how sensors are used, including the different situations in which they might be applied, unusual circumstances, and their limitations. This helps us better understand sensors as a whole system, so we can anticipate potential challenges as engineers.
 
 1. Read the IR sensor manual. There you can find technical information about the sensor and instructions for the connection to the Nucleo board. Perform the calibration according to the hardware tutorial:
-   
+
     > [Tutorial Infrared Distance Sensor](ir_sensor.md)
 
 ## Summary

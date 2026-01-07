@@ -6,8 +6,8 @@ Connect a DC Motor to the PES Board... TODO: Write commissioning stuff
 
 We start with a partially set up DC Motor class ``MyDCMotor``. We will add the missing parts to make it functional. The goal is to use your own ``MyDCMotor`` class within the project.
 
-- [MYDCMotor.h](../../lib/MyDCMotor/MyDCMotor.h)
-- [MYDCMotor.cpp](../../lib/MyDCMotor/MyDCMotor.h)
+- [MYDCMotor.h](../solutions/MyDCMotor/MyDCMotor.h)
+- [MYDCMotor.cpp](../solutions/MyDCMotor/MyDCMotor.cpp)
 
 It inherits from the class template ``RealTimeThread``. So everything related to the real-time thread is already set up.
 
@@ -21,28 +21,28 @@ $$
 
 whereas $K$ is the gain, $T_1$ is the time constant, $n$ is the order of the system and $T_t$ is the dead time. The order of the system is determined by the number of equal poles in the transfer function $p = -\frac{1}{T_1}$ and the cut off frequency $f_{cut} = \frac{1}{2 \pi T_1}$.
 
-To tune the PI controll we will 
+To tune the PI controll we will
 
 
 <!-- % Chien-Hrones-Reswick PI tuning
 % Reference: Chien, Hrones, Reswick (1952), Åström & Hägglund, Seborg et al.
 % Assumed model: First-order plus dead time (FOPDT):
-% 
+%
 %   G(s) = K / (T1*s + 1) * e^(-Tt*s)
-% 
+%
 % Approximation of your actual plant:
 % - The n-lag system is approximated to an equivalent FOPDT using:
 % - These formulas are empirically derived from Åström & Hägglund, based on matching step response behavior.
 %   Purpose: This allows the use of classical CHR PI tuning formulas based on FOPDT.
-% 
+%
 %   T1_approx = T1 * (n + 1)/2
 %   Tt_approx = T1 * (n - 1)/2 + Tt
-% 
+%
 % Tuning for ~20% overshoot (faster tuning)
-% 
+%
 %   Kp = 0.6 * T1 / (Tt * K)
 %   Ti = T1
-% 
+%
 % - Here the plant approximation (FOPDT) is used. -->
 
 
@@ -155,9 +155,9 @@ motor_M1.setVoltage(6.0f);
 
 To evaluate the data further we either use MATLAB or Python. The data is sent over the serial stream to MATLAB or Python. The SerialStream.m and SerialStream.py classes also trigger the start of the chirp signal when the start byte is received.
 
-- [MATLAB Modelling and Control Design using SerialStream](../matlab/serial_stream_pi_controller.m) (interactive)
-- [Python Modelling and Control Design using SerialStream](../python/serial_stream_pi_controller.py)
-- [Python Modelling and Control Design using SerialStream](../python/serial_stream_pi_controller.ipynb) (interactive)
+- [MATLAB Modelling and Control Design using SerialStream](../solutions/matlab/serial_stream_pi_controller.m) (interactive)
+- [Python Modelling and Control Design using SerialStream](../solutions/python/serial_stream_pi_controller.py)
+- [Python Modelling and Control Design using SerialStream](../solutions/python/serial_stream_pi_controller.ipynb) (interactive)
 
 Use one of the above scripts to evaluate the data. Study the script and adapt it to your needs. The goal here is to model the plant, approximate it through a first-order plus dead time (FOPDT) model and tune the PI controller using the Chien-Hrones-Reswick method for a 20% overshoot using the FOPDT model.
 
@@ -247,9 +247,9 @@ motor_M1.setVelocity(1.0f);
 
 To evaluate the performance of the PI controller we can use the following scripts:
 
-- [MATLAB Data Evaluation using SerialStream (*.m)](../matlab/serial_stream_eval.m) (interactive)
-- [Python Data Evaluation using SerialStream (*.py)](../python/serial_stream_eval.py)
-- [Python Data Evaluation using SerialStream (*.ipynb)](../python/serial_stream_eval.ipynb) (interactive)
+- [MATLAB Data Evaluation using SerialStream (*.m)](../solutions/matlab/serial_stream_eval.m) (interactive)
+- [Python Data Evaluation using SerialStream (*.py)](../solutions/python/serial_stream_eval.py)
+- [Python Data Evaluation using SerialStream (*.ipynb)](../solutions/python/serial_stream_eval.ipynb) (interactive)
 
 You maybe see that that the actual velocity is statically offset from the setpoint. If so, this is due to the I-part saturation. You can adjust the saturation limit in the ``MyDCMotor`` class by adding
 
@@ -337,11 +337,11 @@ While accelerating constantly, the feed-forward term will remove the steady stat
   <table>
     <tr>
       <td align="center">
-        <img src="../images/mydcmotor_0.png" alt="Voltage and Acceleration" width="500"/>  
+        <img src="../images/mydcmotor_0.png" alt="Voltage and Acceleration" width="500"/>
         <br/><i>Voltage and Acceleration</i>
       </td>
       <td align="center">
-        <img src="../images/mydcmotor_1.png" alt="Corresponding Counts, Velocity and Position" width="500"/>  
+        <img src="../images/mydcmotor_1.png" alt="Corresponding Counts, Velocity and Position" width="500"/>
         <br/><i>Corresponding Counts, Velocity and Position</i>
       </td>
     </tr>

@@ -20,7 +20,7 @@
  <!--
     Info about the demonstrators for WS2 and WS3:
 
-    In the folders [/docs/cad/WS2](/docs/cad/WS2) and [/docs/cad/WS3](/docs/cad/WS3) you will find the printable files needed to build the demonstration models for workshop 2 and workshop 3. For workshop 3, you need to edit the parts rack and gear wheel because they are only available in STL print-ready format. Editing can be done in Prusa Slicer, which offers the possibility of minor modification.
+    In the folders [docs/cad/WS2](docs/cad/WS2) and [docs/cad/WS3](docs/cad/WS3) you will find the printable files needed to build the demonstration models for workshop 2 and workshop 3. For workshop 3, you need to edit the parts rack and gear wheel because they are only available in STL print-ready format. Editing can be done in Prusa Slicer, which offers the possibility of minor modification.
 
     - Rack - one hole should be added, in order to screw the rack to the carriage on which the sensor is located, or possibly lengthen this element (details available: https://www.printables.com/de/model/522220-universal-gear-rack-collection-different-modules)
     - Make a hole in the element for the motor shaft (details available: https://www.printables.com/de/model/516177-universal-spur-gears-collection-module-15)
@@ -31,9 +31,9 @@
 
     General:
     - Maze solving description can be found here: https://www.instructables.com/Robot-Maze-Solver/
-    - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower
+    - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower (ok - removed the additional led from the solutions and added a note in the markdown file)
     - Create Workshop 6 with my dc motor
-    - Document how to use PlatformIO
+    - Document how to use PlatformIO (ok - at least minimal description is there)
       - Especially with regards to gcc instead of armclang
       - Remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)
     - Document how to use Putty
@@ -145,6 +145,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Workshop 4](docs/markdown/ws4.md)
     * [Workshop 5](docs/markdown/ws5.md)
 5. [Build Mbed OS projects with VS Code](#build-mbed-os-projects-with-vs-code)
+    * [Build Mbed with PlatformIO in VS Code](docs/markdown/build_mbed_platformio.md)
     * [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
     * [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
 6. [Weblinks](#weblinks)
@@ -153,13 +154,13 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
 
 In order to be able to complete the course, one must first register on the following platforms and obtain the appropriate tools. All the information needed to start the course can be found in [Course Setup](docs/markdown/course_setup.md).
 
-This document covers all the information about: 
+This document covers all the information about:
 
 - [Accounts](docs/markdown/course_setup.md#accounts)
 - [Software](docs/markdown/course_setup.md#software)
 - [GitHub](docs/markdown/course_setup.md#github)
 - [Arm Mbed](docs/markdown/course_setup.md#arm-mbed)
-  
+
 ## Hardware
 
 During the course, we will use the Nucleo-F446RE board from ST Microelectronics in combination with the PES board designed and developed at ZHAW. The basic hardware kit that students receive includes a variety of sensors and actuators for practical applications.
@@ -176,7 +177,7 @@ During the course, we will use the Nucleo-F446RE board from ST Microelectronics 
 
 The Nucleo-F446RE is a microcontroller development board featuring the STM32F446RET6 microcontroller from ST Microelectronics. It provides a versatile platform for prototyping and developing embedded systems, offering a wide range of peripherals, connectivity options, and compatibility with the Arduino and ST Morpho ecosystems.
 
-- [STM32F446RE Documentation][1] 
+- [STM32F446RE Documentation][1]
 
 <p align="center">
     <img src="docs/images/nucleo_overview.png" alt="Nucleo F446RE Overview" width="600"/> </br>
@@ -228,7 +229,7 @@ The batteries enable the board itself to be powered independently of the connect
 
 #### Resources
 
-All additional technical information such as schematics and pin maps for the PES board can be found [here](/docs/datasheets/pes_board_data). Also included there are CAD files of the combined Nucleo F446RE and PES board in `.3dxml` extensions (for 3Dexperience).
+All additional technical information such as schematics and pin maps for the PES board can be found [here](docs/datasheets/pes_board_data). Also included there are CAD files of the combined Nucleo F446RE and PES board in `.3dxml` extensions (for 3Dexperience).
 
 #### Peripherals
 
@@ -264,7 +265,7 @@ The following links point to the hardware tutorials. These documents contain spe
 - [Ultrasonic Sensor](docs/markdown/ultrasonic_sensor.md)
 - [Servo](docs/markdown/servo.md)
 - [DC Motor](docs/markdown/dc_motor.md)
-- [Differential Drive Robot Kinematics](dd_kinematics.md)
+- [Differential Drive Robot Kinematics](docs/markdown/dd_kinematics.md)
 - [Line Follower](docs/markdown/line_follower.md)
 - [IMU](docs/markdown/imu.md)
 - [Stepper Motor](docs/markdown/stepper_motor.md)
@@ -297,13 +298,13 @@ And below you will find all the solutions, as well as some additional examples:
 - [Workshop 3 Part 1 Solution: Example DC Motor](docs/solutions/main_dc_motor.cpp)
 - [Workshop 3 Part 2 Solution](docs/solutions/main_ws3_p2.cpp)
 - [Workshop 3 Part 2 Solution with IRSensor class instead of Ultrasonic Sensor](docs/solutions/main_ws3_p2_ir_sensor.cpp)
-- [Workshop 4 Part 1 Solution: Example Differential Drive Robot Kinematics Calibration](../solutions/main_dd_kinematic_calib.cpp)
-- [Workshop 4 Part 2 Solution: Example Line Follower Base](../solutions/main_line_follower_base.cpp)
-- [Workshop 4 Part 2 Solution: Example Line Follower](../solutions/main_line_follower.cpp)
+- [Workshop 4 Part 1 Solution: Example Differential Drive Robot Kinematics Calibration](docs/solutions/main_dd_kinematic_calib.cpp)
+- [Workshop 4 Part 2 Solution: Example Line Follower Base](docs/solutions/main_line_follower_base.cpp)
+- [Workshop 4 Part 2 Solution: Example Line Follower](docs/solutions/main_line_follower.cpp)
 - [Example Gimbal](docs/solutions/main_gimbal.cpp)
 - [Example Stepper Motor](docs/solutions/main_stepper_motor.cpp)
-- [Example 1 SD-Card](docs/solutions/main_sd_card_logger_e1.cpp)
-- [Example 2 SD-Card](docs/solutions/main_sd_card_logger_e2.cpp)
+- [Example 1 SD-Card](docs/solutions/main_sd_card_logger.cpp)
+- [Example 2 SD-Card](docs/solutions/main_sd_card_logger_with_time.cpp)
 - [Example Serial Stream](docs/solutions/main_serial_stream.cpp)
 
 ## Build Mbed OS projects with VS Code

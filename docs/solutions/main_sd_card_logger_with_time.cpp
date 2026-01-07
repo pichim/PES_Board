@@ -72,7 +72,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
@@ -103,7 +103,7 @@ int main()
 
         // print to the serial terminal
         printf("IR distance mV: %f IR distance cm: %f IR distance cm averaged: %f \n", ir_distance_mV, ir_distance_cm, ir_distance_avg);
-        
+
         // write data to the internal buffer of the sd card logger and send it to the sd card
         sd_logger.write( dtime_us );        //  0 delta time in us
         sd_logger.write( ir_distance_mV );  //  1 ir distance in mV

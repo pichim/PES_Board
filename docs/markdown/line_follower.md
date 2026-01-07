@@ -92,7 +92,7 @@ Include the necessary driver in the ***main.cpp*** file
 #include "SensorBar.h"
 ```
 
-and create a variable for the distance from the wheel axis to the LEDs on the sensor bar/array and a ``SensorBar`` object with the pin names for the I2C communication 
+and create a variable for the distance from the wheel axis to the LEDs on the sensor bar/array and a ``SensorBar`` object with the pin names for the I2C communication
 
 - SCL (Clock Line): **PB_8**
 - SDA (Data Line): **PB_9**
@@ -102,6 +102,16 @@ and create a variable for the distance from the wheel axis to the LEDs on the se
 const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar / array in meters
 SensorBar sensor_bar(PB_9, PB_8, bar_dist);
 ```
+
+***IMPORTANT NOTE:***
+
+Make sure you do not include
+
+```cpp
+DigitalOut led1(PB_9);
+```
+
+after creating the sensor bar object, as this is in conflict with the sensor bar pins. Better use another available pin for an additional led if you intend to use it.
 
 #### Sensor Bar Usage
 
@@ -302,7 +312,7 @@ Don't forget to reset when the **USER** button is pressed again.
 enable_motors = 0;
 ```
 
-**NOTE:** 
+**NOTE:**
 - The ``LineFollower`` class assumes that the right motor is M1 and the left motor is M2 (sitting on the robot and looking forward) and that a positive speed setpoint to the motor M1 and M2 will rotate the robot positively around the z-axis (counter-clockwise seen from above).
 
 Below, you'll find an in-depth manual explaining the inner driver functions. While it's not mandatory to use this manual, familiarizing yourself with the content will certainly help. For enhanced comprehension, it's recommended to refer to the [Tutorial Differential Drive Robot Kinematics](dd_kinematics.md) document.

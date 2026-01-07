@@ -48,7 +48,7 @@ int main()
 
     const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
                                      // 6.0f V if you only use one battery pack
-    const float gear_ratio = 78.125f; 
+    const float gear_ratio = 78.125f;
     const float kn = 180.0f / 12.0f;
     // motor M1 and M2, do NOT enable motion planner, disabled per default
     DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);
@@ -109,7 +109,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;

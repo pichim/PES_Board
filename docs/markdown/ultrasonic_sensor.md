@@ -41,7 +41,7 @@ An ultrasonic sensor (range finder / detector) is a type of sensor designed to m
 
 ## Ultrasonic Sensor Example
 
-The ``UltrasonicSensor`` class provides functionality to measure distances by emitting ultrasonic pulses 
+The ``UltrasonicSensor`` class provides functionality to measure distances by emitting ultrasonic pulses
 and measuring the time taken for the echo to return. It encapsulates the details of interfacing with the
 sensor hardware and offers a simple interface for obtaining distance measurements in centimeters.
 Maximum measurement distance is approximately 2 meters (measured 198.1 cm) with a measurement period of 12000

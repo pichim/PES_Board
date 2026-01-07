@@ -108,7 +108,7 @@ bool startByteReceived();    // check if the host computer has sent the start by
 void reset();                // reset the SerialStream state and clear buffer
 ```
 
-### Examples 
+### Examples
 
 Log two incrementing counters
 

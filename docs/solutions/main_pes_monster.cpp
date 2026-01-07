@@ -37,6 +37,8 @@
 
 #define M_PIf 3.14159265358979323846f // pi
 
+#define RUN_REALTIME_THREAD_EXAMPLE false
+
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
 bool do_reset_all_once = false;    // this variable is used to reset certain variables and objects and
@@ -94,7 +96,7 @@ int main()
     RealTimeThread real_time_thread(1000000);
 
     class MyRealTimeThread : public RealTimeThread {
-        // for every constructor that exists in RealTimeThread, add a corresponding constructor to the 
+        // for every constructor that exists in RealTimeThread, add a corresponding constructor to the
         // overload set of MyRealTimeThread that simply forwards its arguments to the base‐class constructor
         using RealTimeThread::RealTimeThread;
     protected:
@@ -159,7 +161,7 @@ int main()
     motor_M1.setMaxVelocity(motor_M1.getMaxVelocity() * 0.5f);
     // const float velocity_max_M1 = kn_M1 / 60.0f * voltage_max; // maximum velocity in rotations per second
     // motor_M1.setMaxVelocity(velocity_max_M1 * 0.5f);           // set maximum velocity to 50% of maximum velocity
-    
+
     // https://www.pololu.com/product/3485/specs
     const float gear_ratio_M2 = 488.28125f; // gear ratio
     const float kn_M2 = 28.0f / 12.0f;      // motor constant [rpm/V]
@@ -216,7 +218,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
@@ -225,8 +227,10 @@ int main()
             ir_distance_avg = ir_sensor.read();
 
             // enable real time threads
+#if RUN_REALTIME_THREAD_EXAMPLE
             real_time_thread.enable();
             my_real_time_thread.enable();
+#endif
 
             // read us sensor distance, only valid measurements will update us_distance_cm
             const float us_distance_cm_candidate = us_sensor.read();
@@ -292,7 +296,7 @@ int main()
                 }
                 case RobotState::BACKWARD: {
                     if (motor_M3.getRotation() <= 0.55f * motor_setpoint_M3) {
-                      
+
                         servo_D0.setPulseWidth(0.0f);
                         servo_D1.setPulseWidth(0.0f);
                         servo_D2.setPulseWidth(0.0f);

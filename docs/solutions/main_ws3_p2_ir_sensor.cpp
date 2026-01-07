@@ -92,7 +92,7 @@ int main()
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
@@ -114,7 +114,7 @@ int main()
                     break;
                 }
                 case RobotState::SLEEP: {
-                    // wait for the signal from the user, so to run the process 
+                    // wait for the signal from the user, so to run the process
                     // that is triggered by clicking mechanical button
                     // then go the the FORWARD state
                     if (mechanical_button.read())
@@ -123,7 +123,7 @@ int main()
                     break;
                 }
                 case RobotState::FORWARD: {
-                    // press is moving forward until it reaches 2.9f rotations, 
+                    // press is moving forward until it reaches 2.9f rotations,
                     // when reaching the value go to BACKWARD
                     motor_M3.setRotation(2.9f); // setting this once would actually be enough
                     // if the distance from the sensor is less than 4.5f cm,

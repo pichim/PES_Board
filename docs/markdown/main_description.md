@@ -20,7 +20,7 @@ In general, a file is executed starting from top to bottom. At the very beginnin
 #include "mbed.h"
 ```
 
-Next, a header file with some custom pin names of the PES board is included. In here we specify a naming convention to translate pin names from the Nucleo board to the PES board, see also [pes_board_peripherals.pdf](docs/datasheets/pes_board_peripherals.pdf).
+Next, a header file with some custom pin names of the PES board is included. In here we specify a naming convention to translate pin names from the Nucleo board to the PES board, see also [pes_board_peripherals.pdf](../datasheets/pes_board_peripherals.pdf).
 
 ```cpp
 // pes board pin map
@@ -106,7 +106,7 @@ If we want to command an actuator, read in a sensor or print an output to the co
 
         if (do_execute_main_task) {
 
-        // --- code that runs when the blue button was pressed goes here ---
+            // --- code that runs when the blue button was pressed goes here ---
             .
             .
 ```
