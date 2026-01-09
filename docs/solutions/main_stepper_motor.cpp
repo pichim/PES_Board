@@ -55,8 +55,8 @@ int main()
     // --- adding variables and objects and applying functions starts here ---
 
     // stepper motors
-    Stepper stepper_M1(PB_9, PB_8);
-    Stepper stepper_M2(PB_4, PA_7);
+    Stepper stepper_M1(PB_9, PB_8, 400 * 16); // actual motors used for testing seem to have 400 steps per revolution
+    Stepper stepper_M2(PB_4, PA_7, 400 * 16);
 
     // start timer
     main_task_timer.start();
@@ -72,12 +72,12 @@ int main()
             // --- code that runs when the blue button was pressed goes here ---
 
             // set velocity in rps
-            // stepper_M1.setVelocity(0.1f);
-            // stepper_M2.setVelocity(-0.1f);
+            stepper_M1.setVelocity(0.1f);
+            stepper_M2.setVelocity(-0.1f);
 
-            // set rotation absolute to initial position
-            stepper_M1.setRotation(-1.0f, 1.0f);
-            stepper_M2.setRotation(+2.0f, 1.0f);
+            // // set rotation absolute to initial position
+            // stepper_M1.setRotation(-1.0f, 3.0f);
+            // stepper_M2.setRotation(+2.0f, 3.0f);
 
         } else {
             // the following code block gets executed only once

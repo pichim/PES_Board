@@ -7,8 +7,10 @@
 #ifndef STEPPER_H_
 #define STEPPER_H_
 
-#include "mbed.h"
+#include <limits>
+
 #include "ThreadFlag.h"
+#include "mbed.h"
 
 class Stepper
 {
@@ -37,7 +39,7 @@ public:
      *
      * @return Current step setpoint.
      */
-    int getStepsSetpoint() const { return m_steps_setpoint; };
+    int getStepsSetpoint() const { return m_steps_setpoint; }
 
     /**
      * @brief Gets the current step count.
@@ -46,7 +48,7 @@ public:
      *
      * @return Current step position.
      */
-    int getSteps() const { return m_steps; };
+    int getSteps() const { return m_steps; }
 
     /**
      * @brief Gets the current rotation count.
@@ -55,16 +57,18 @@ public:
      *
      * @return Current rotation count.
      */
-    float getRotation() const { return static_cast<float>(m_steps) / m_steps_per_rev; };
+    float getRotation() const { return static_cast<float>(m_steps) / m_steps_per_rev; }
 
     /**
-     * @brief Gets the current velocity of the motor.
+     * @brief Returns the quantized velocity currently applied by the driver.
      *
-     * Returns the motor's velocity in rotations per second.
+     * The velocity is constrained by the ticker resolution, so the actual value can differ
+     * slightly from the requested setpoint. Callers should read back the value when precise
+     * logging is required.
      *
-     * @return Current velocity.
+     * @return Current velocity [rotations per second].
      */
-    float getVelocity() const { return m_velocity; };
+    float getVelocity() const { return m_velocity; }
 
     /**
      * @brief Sets the internal velocity of the motor.
@@ -73,7 +77,7 @@ public:
      *
      * @param velocity The velocity to set (default is 0.0f).
      */
-    void setInternalVelocity(float velocity = 0.0f) { m_velocity = velocity; };
+    void setInternalVelocity(float velocity = 0.0f) { m_velocity = velocity; }
 
     /**
      * @brief Sets the internal rotation of the motor.
@@ -82,7 +86,7 @@ public:
      *
      * @param rotations The rotation count to set (default is 0.0f).
      */
-    void setInternalRotation(float rotations = 0.0f) { m_steps = static_cast<int>(rotations * m_steps_per_rev + 0.5f); };
+    void setInternalRotation(float rotations = 0.0f) { m_steps = rotationsToSteps(rotations); }
 
     /**
      * @brief Sets the motor's rotation to a specified position at a given velocity.
@@ -123,11 +127,11 @@ public:
     void setRotationRelative(float rotations);
 
     /**
-     * @brief Sets the motor's velocity.
+     * @brief Adjusts the motion speed.
      *
-     * Adjusts the speed of the motor's movement.
+     * Passing zero stops the motor (equivalent to `setVelocity(0.0f)` in existing examples).
      *
-     * @param velocity The new velocity to set.
+     * @param velocity The new velocity to set [rotations per second].
      */
     void setVelocity(float velocity);
 
@@ -143,6 +147,7 @@ public:
 
 private:
     static constexpr int PULSE_MUS = 10;
+    static constexpr int MIN_PERIOD_US = PULSE_MUS + 2; // small margin above pulse width
     static constexpr int STEPS_MIN = std::numeric_limits<int>::min();
     static constexpr int STEPS_MAX = std::numeric_limits<int>::max();
 
@@ -161,7 +166,12 @@ private:
     int m_steps;
     float m_velocity;
 
-    int m_period_mus;  ///< Period of the step signal in microseconds.
+    int m_period_mus;   ///< Period of the step signal in microseconds.
+    bool m_exit_thread; ///< Signal for clean thread exit.
+
+    // Symmetric rounding helper: rounds rotations * steps_per_rev to nearest int,
+    // with halves rounded away from zero.
+    int rotationsToSteps(float rotations) const;
 
     void step();
     void enableDigitalOutput();
