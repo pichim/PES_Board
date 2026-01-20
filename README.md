@@ -251,7 +251,7 @@ All additional technical information such as schematics and pin maps for the PES
 - 1x Servo – FUTABA S3001
 - 1x LED green with resistor 2200/600mW/1%
 - 1x Distance sensor SHARP GP2YOA41 analog 300mm with cable (or similar)
-- 1x DC Motor POLOLU (different gear ratios) D = 20 mm/ l = 43 mm/ 12V with encoder POLOLU 2.7 – 18V
+- 2x DC Motor POLOLU (different gear ratios) D = 20 mm/ l = 43 mm/ 12V with encoder POLOLU 2.7 – 18V
 - 1x Mechanical Button
 - 1x Ultrasonic sensor GROVE ULTRASONIC RANGER V2.0 with cable
 
