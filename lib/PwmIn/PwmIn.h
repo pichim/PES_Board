@@ -52,15 +52,15 @@ public:
      */
     float pulsewidth();
     
-    // /** Read the current dutycycle
-    //  *
-    //  * @returns the dutycycle as a percentage, represented between 0.0-1.0
-    //  */
-    // float dutycycle();
+    /** Read the current dutycycle
+     *
+     * @returns the dutycycle as a percentage, represented between 0.0-1.0
+     */
+    float dutycycle();
 
 protected:        
     void rise();
-    // void fall();
+    void fall();
     
     InterruptIn _p;
     Timer _t;
