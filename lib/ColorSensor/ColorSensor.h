@@ -15,11 +15,11 @@
 
 // Default pin mapping for the board/target.
 // If your wiring differs, use the 6-pin constructor to override these.
-#define COLOR_SENSOR_LED PB_10
-#define COLOR_SENSOR_S0 PB_3
-#define COLOR_SENSOR_S1 PB_5
-#define COLOR_SENSOR_S2 PH_1
-#define COLOR_SENSOR_S3 PA_4
+#define COLOR_SENSOR_LED PB_4
+#define COLOR_SENSOR_S0 PA_4
+#define COLOR_SENSOR_S1 PB_0
+#define COLOR_SENSOR_S2 PC_0
+#define COLOR_SENSOR_S3 PC_1
 
 #define COLOR_DEBUG 0
 
