@@ -197,7 +197,7 @@ void ColorSensor::threadTask()
         {
             setColor(m_color[i]);
             // Allow filter switching and output frequency to stabilize.
-            ThisThread::sleep_for(25ms);
+            ThisThread::sleep_for(20ms);
 
             // PwmIn::period() returns the measured signal period (typically in seconds).
             float period = m_PwmIn.period();
@@ -270,18 +270,6 @@ void ColorSensor::applyCalibration(const float *color)
         m_color_norm[i] = m_color_cal[i] / max_rgb;
     }
 
-}
-
-
-
-/**
- * @brief Wake the worker thread.
- *
- * Called by the ticker at PERIOD_MUS cadence.
- */
-void ColorSensor::sendThreadFlag()
-{
-    m_Thread.flags_set(m_ThreadFlag);
 }
 
 int ColorSensor::getColor()
@@ -390,10 +378,6 @@ int ColorSensor::getColor()
     return (cnt >= STABLE_COUNT) ? candidate : last;
 }
 
-
-
-
-
 const char* ColorSensor::getColorString(int color)
 {
     switch (color) {
@@ -408,4 +392,14 @@ const char* ColorSensor::getColorString(int color)
         case 8: return "MAGENTA";
         default: return "INVALID";
     }
+}
+
+/**
+ * @brief Wake the worker thread.
+ *
+ * Called by the ticker at PERIOD_MUS cadence.
+ */
+void ColorSensor::sendThreadFlag()
+{
+    m_Thread.flags_set(m_ThreadFlag);
 }

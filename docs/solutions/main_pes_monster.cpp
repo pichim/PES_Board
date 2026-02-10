@@ -34,6 +34,8 @@
 #include "SerialStream.h"
 #include "Stepper.h"
 #include "ThreadFlag.h"
+#include "ColorSensor.h"
+#include "PwmIn.h"
 
 #define M_PIf 3.14159265358979323846f // pi
 
@@ -91,6 +93,9 @@ int main()
     float ir_distance_avg = 0.0f;
     IRSensor ir_sensor(PC_2);                      // before the calibration the read function will return the averaged mV value
     ir_sensor.setCalibration(2.574e+04f, -29.37f); // after the calibration the read function will return the calibrated value
+
+    ColorSensor colorSensor(PB_3);
+    colorSensor.switchLed(OFF);
 
     // real time thread template
     RealTimeThread real_time_thread(1000000);
@@ -223,8 +228,13 @@ int main()
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
 
+            // printf("Color Sensor: R:%.2f\tG: %.2f\tB: %.2f\tC: %.2f\n", colorSensor.readColor()[0], colorSensor.readColor()[1], colorSensor.readColor()[2], colorSensor.readColor()[3]);            
+            // printf("Color Sensor: R:%.2f\tG: %.2f\tB: %.2f\n", colorSensor.readColorNorm()[0], colorSensor.readColorNorm()[1], colorSensor.readColorNorm()[2]);            
+            // printf("Color: %s\n", colorSensor.getColorString(colorSensor.getColor()));	
             // read analog input
+
             ir_distance_avg = ir_sensor.read();
+            colorSensor.switchLed(ON);
 
             // enable real time threads
 #if RUN_REALTIME_THREAD_EXAMPLE
@@ -339,6 +349,8 @@ int main()
                 motor_M1.setRotation(0.0f);
                 motor_M2.setRotation(0.0f);
                 motor_M3.setRotation(0.0f);
+
+                colorSensor.switchLed(OFF);
             }
         }
 
@@ -348,7 +360,8 @@ int main()
         // --- code that runs every cycle at the end goes here ---
 
         // print to the serial terminal
-        printf("IR cm: %6.2f, US cm: %6.2f, R deg: %6.2f, P deg: %6.2f, Y deg: %6.2f, M1 rot: %6.2f, %6.2f, M2 rot: %6.2f, %6.2f, M3 rot: %6.2f, %6.2f \n",
+        printf("Color: %s, IR cm: %6.2f, US cm: %6.2f, R deg: %6.2f, P deg: %6.2f, Y deg: %6.2f, M1 rot: %6.2f, %6.2f, M2 rot: %6.2f, %6.2f, M3 rot: %6.2f, %6.2f \n",
+            colorSensor.getColorString(colorSensor.getColor()),
             ir_distance_avg,
             us_distance_cm,
             imu_data.rpy(0) * (180.0f / M_PIf),

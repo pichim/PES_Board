@@ -15,7 +15,7 @@
 
 // Default pin mapping for the board/target.
 // If your wiring differs, use the 6-pin constructor to override these.
-#define COLOR_SENSOR_LED PB_4
+#define COLOR_SENSOR_LED PB_14
 #define COLOR_SENSOR_S0 PA_4
 #define COLOR_SENSOR_S1 PB_0
 #define COLOR_SENSOR_S2 PC_0
@@ -23,7 +23,7 @@
 
 #define COLOR_DEBUG 0
 
-#define N_FILTER 5
+#define N_FILTER 3
 
 /**
  * @brief Calibration/reference values for each optical channel.
@@ -132,7 +132,7 @@ public:
 
 private:
     // Thread wake-up period in microseconds (100,000us = 100ms ~ 10Hz update).
-    static constexpr int64_t PERIOD_MUS = 150000;
+    static constexpr int64_t PERIOD_MUS = 100000;
 
     PwmIn m_PwmIn;
     DigitalOut m_S0;
