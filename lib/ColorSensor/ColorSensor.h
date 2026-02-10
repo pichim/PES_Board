@@ -148,10 +148,9 @@ private:
 
     bool m_is_calibrated{false};
     colorfilter_t m_color[4] = {RED, GREEN, BLUE, WHITE};
-    colorcalibration_t m_reference_color;
     colorcalibration_t m_reference_black;
     colorcalibration_t m_reference_white;
-    float m_calib_color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+
     float m_calib_black[4] = {0.0f, 0.0f, 0.0f, 0.0f};
     float m_calib_white[4] = {1.0f, 1.0f, 1.0f, 1.0f};
     float m_ratio[4]       = {1.0f, 1.0f, 1.0f, 1.0f};

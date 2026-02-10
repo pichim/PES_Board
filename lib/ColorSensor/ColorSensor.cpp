@@ -91,7 +91,6 @@ void ColorSensor::reset()
  * @brief Load hard-coded calibration references.
  *
  * The reference values below are frequency measurements (Hz) for:
- * - an example "color" surface (m_reference_color) [currently unused in math]
  * - a "black" surface (offset / dark level)
  * - a "white" surface (normalization / white balance)
  *
@@ -105,11 +104,6 @@ void ColorSensor::reset()
  */
 void ColorSensor::setCalibration()
 {
-    m_reference_color.red = 265.5f;
-    m_reference_color.green = 192.0f;
-    m_reference_color.blue = 234.0f;
-    m_reference_color.white = 1220.0f;
-
     m_reference_black.red = 70.0f;
     m_reference_black.green = 74.0f;
     m_reference_black.blue = 91.0f;
@@ -119,11 +113,6 @@ void ColorSensor::setCalibration()
     m_reference_white.green = 397.0f;
     m_reference_white.blue = 491.0f;
     m_reference_white.white = 1220.0f;
-
-    m_calib_color[0] = m_reference_color.red;
-    m_calib_color[1] = m_reference_color.green;
-    m_calib_color[2] = m_reference_color.blue;
-    m_calib_color[3] = m_reference_color.white;
 
     m_calib_black[0] = m_reference_black.red;
     m_calib_black[1] = m_reference_black.green;

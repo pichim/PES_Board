@@ -1,9 +1,7 @@
 <!-- link list, last updated 10.02.2026 -->
-[0]: https://www.mouser.com/datasheet/2/588/TCS3200-E11-1120711.pdf
-[1]: https://www.sparkfun.com/products/retired/9426
-[2]: https://www.taos.com/
-[3]: https://lastminuteengineers.com/tcs3200-color-sensor-arduino-tutorial/
-[4]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[0]: https://www.mouser.com/catalog/specsheets/TCS3200-E11.pdf
+[1]: https://www.berrybase.ch/tcs230-tcs3200-farbsensor-modul
+[2]: https://ams-osram.com/products/sensor-solutions/ambient-light-color-spectral-proximity-sensors/ams-tcs3200-color-sensor
 
 # Color Sensor
 
@@ -15,12 +13,10 @@ The TCS3200 color sensor is a programmable color light-to-frequency converter th
 >The TCS3200 contains an array of photodiodes with red, green, blue, and clear filters. By controlling two input pins (S2 and S3), you can select which color filter to read. The sensor converts the light intensity into a frequency signal that can be measured using a microcontroller. The output frequency ranges from 2 Hz to 500 kHz, with higher frequencies indicating higher light intensity. Two additional pins (S0 and S1) control the output frequency scaling to 2%, 20%, or 100%.
 >
 ><p align="center">
->    <img src="../images/tcs3200-color-sensor.png" alt="tcs3200_sensor" width="450"/> </br>
+>    <img src="../images/color_sensor_function.png" alt="tcs3200_sensor" width="450"/> </br>
 >    <i> TCS3200 Color Sensor Working Principle </i>
 ></p>
 >
-> More detailed explanation can be found [here][3].
-
 <p align="center">
     <img src="../images/tcs3200-sensor-module.png" alt="TCS3200_module" width="400"/> </br>
     <i> Example of TCS3200 Color Sensor Module </i>
@@ -35,27 +31,23 @@ The TCS3200 color sensor is a programmable color light-to-frequency converter th
 | Supply Voltage                      | VDD    |                       | -0.5 to +7.0 V                     |
 | Input/Output Voltage                | VI/O   |                       | -0.5 to VDD + 0.5 V                |
 | Operating Temperature               | Topr   |                       | -40 to +85 °C                      |
-| Storage Temperature                 | Tstg   |                       | -40 to +85 °C                      |
 | **Operating Supply Voltage**        |
 | Supply Voltage                      | VDD    |                       | 2.7 to 5.5 V                       |
 | **Electro-optical Characteristics** |        | Ta=25 °C, VDD = 5 VDC |                                    |
 | Output Frequency Range              | fO     | 100% scaling          | 2 Hz to 500 kHz                    |
 | Output Duty Cycle                   |        |                       | 50% ± 10%                          |
-| Resolution                          |        |                       | 16-bit (typical)                   |
-| PTCS3200 Datasheet][0] <br>
-- [SparkFun TCS3200 Module][1] <br>
-- [TAOS (ams) Website][2] <br>
+
+- [TCS3200 Datasheet][0] <br>
+- [TCS3200 Module][1] <br>
+- [OSRAM (ams) Website][2] <br>
 
 ## Datasheets
 
-- [TCS3200 Programmable Color Light-to-Frequency Converter](../datasheets/TCS3200-datasheet
+- [TCS3200 Programmable Color Light-to-Frequency Converter](../datasheets/TCS3200-E11.pdf)
 
-- [Sharp GP2D120](../datasheets/GP2D120-DATA-SHEET.pdf) <br>
-- [Sharp GP2Y0A21YK0F](../datasheets/gp2y0a21yk0f.pdf) <br>
-- [Sharp GP2Y0A41SK0F](../datasheets/GP2Y0A41SK0F.pdf)
 
 ##Ambient lighting can significantly affect color readings. For best results, use the sensor in consistent lighting conditions or shield it from external light sources.
-* The sensor works best when positioned 5-10 mm away from the surface being measured. Too close or too far can affect accuracy.
+* The sensor works best when positioned 10-50 mm away from the surface being measured. Too close or too far can affect accuracy.
 * White balance calibration is essential for accurate color detection. Always calibrate against a known white surface before taking measurements.
 * The surface texture and glossiness can affect readings. Matte surfaces typically provide more consistent results than glossy ones.
 * Use frequency scaling (S0/S1 pins) appropriately - higher scaling gives faster readings but may reduce accuracy in low-light conditions.
