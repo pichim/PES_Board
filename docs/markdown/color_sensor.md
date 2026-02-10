@@ -8,23 +8,23 @@
 
 The TCS3200 color sensor is a programmable color light-to-frequency converter that combines configurable silicon photodiodes and a current-to-frequency converter on a single monolithic CMOS integrated circuit. The sensor outputs a square wave frequency directly proportional to the light intensity of the detected color (Red, Green, Blue, or Clear). This device is valuable for color detection, color sorting, ambient light sensing, and RGB LED color matching applications. It provides a cost-effective and straightforward solution for projects requiring accurate color measurement.
 
-
-><b>How does it work?</b><br>
->The TCS3200 contains an array of photodiodes with red, green, blue, and clear filters. By controlling two input pins (S2 and S3), you can select which color filter to read. The sensor converts the light intensity into a frequency signal that can be measured using a microcontroller. The output frequency ranges from 2 Hz to 500 kHz, with higher frequencies indicating higher light intensity. Two additional pins (S0 and S1) control the output frequency scaling to 2%, 20%, or 100%.
->
-><p align="center">
->    <img src="../images/color_sensor_function.png" alt="tcs3200_sensor" width="450"/> </br>
->    <i> TCS3200 Color Sensor Working Principle </i>
-></p>
->
 <p align="center">
     <img src="../images/tcs3200-sensor-module.png" alt="TCS3200_module" width="400"/> </br>
     <i> Example of TCS3200 Color Sensor Module </i>
 </p>
 
+
+><b>How does it work?</b><br>
+>The TCS3200 contains an array of photodiodes with red, green, blue, and clear filters. By controlling two input pins (S2 and S3), you can select which color filter to read. The sensor converts the light intensity into a frequency signal that can be measured using a microcontroller. The output frequency ranges from 2 Hz to 500 kHz, with higher frequencies indicating higher light intensity. Two additional pins (S0 and S1) control the output frequency scaling to 2%, 20%, or 100%.
+>
+><p align="center">
+>    <img src="../images/color_sensor_function.png" alt="tcs3200_sensor" width="800"/> </br>
+>    <i> TCS3200 Color Sensor Working Principle </i>
+></p>
+
 ## Technical Specifications
 
-|                                     |        |                       | TCS3200                            |
+| Specifications                      |        |                       |                                    |
 | ----------------------------------- | ------ | --------------------- | ---------------------------------- |
 |                                     | Symbol | Conditions            |                                    |
 | **Absolute Maximum Ratings**        |        | Ta=25 °C              |                                    |
@@ -46,13 +46,13 @@ The TCS3200 color sensor is a programmable color light-to-frequency converter th
 - [TCS3200 Programmable Color Light-to-Frequency Converter](../datasheets/TCS3200-E11.pdf)
 
 
-##Ambient lighting can significantly affect color readings. For best results, use the sensor in consistent lighting conditions or shield it from external light sources.
+#### Ambient lighting can significantly affect color readings. For best results, use the sensor in consistent lighting conditions or shield it from external light sources.
 * The sensor works best when positioned 10-50 mm away from the surface being measured. Too close or too far can affect accuracy.
 * White balance calibration is essential for accurate color detection. Always calibrate against a known white surface before taking measurements.
 * The surface texture and glossiness can affect readings. Matte surfaces typically provide more consistent results than glossy ones.
 * Use frequency scaling (S0/S1 pins) appropriately - higher scaling gives faster readings but may reduce accuracy in low-light conditions.
 
-## TCS3200 Color Sensor Module
+**TCS3200 Color Sensor Module**
 
 The TCS3200 outputs a square wave frequency that must be measured using a digital input pin and timing functions. The ``PwmIn`` class or interrupt-based frequency measurement can be used to read the output signal.
 
@@ -63,6 +63,7 @@ The TCS3200 sensor module typically has 8 pins:
 - **GND**: Connect to ground
 - **S0, S1**: Frequency scaling selection pins (connect to digital output pins)
 - **S2, S3**: Color filter selection pins (connect to digital output pins)
+- **LED or <span style="text-decoration: overline;">OE</span>**: Enables LEDs and Sensor. Can be left floating, if no supported digital output pin is available
 ### Color Filter and Frequency Scaling Selection
 
 The TCS3200 uses two sets of control pins:
@@ -82,20 +83,12 @@ The TCS3200 uses two sets of control pins:
 ### Create Color Sensor Objects
 
 To start working with the sensor, it is necessary to connect it correctly and create the appropriate objects
-If you are not sure how to connect the sensor, click the following hint.
 
-<detaildigital output objects for the control pins and a frequency input for the output signal:
 
 ```cpp
 // TCS3200 color sensor
-DigitalOut s0(PB_3);   // frequency scaling
-DigitalOut s1(PB_5);   // frequency scaling
-DigitalOut s2(PB_4);   // color filter selection
-DigitalOut s3(PB_10);  // color filter selection
-PwmIn color_out(PC_6); // frequency output from sensor
-
-// variables to store color frequency readings
-float red_foutputs frequency values that vary based on ambient lighting, sensor variations, and the surface being measured. To achieve accurate color detection, calibration is necessary to normalize the sensor readings. This typically involves measuring white and black reference surfaces to establish minimum and maximum values for each color channel.
+ColorSensor color_sensor(PB_3);   // creates instance of ColorSensor object with PwmIn at PB_3
+```
 
 ><b>Why do we need calibration?</b><br>
 >Calibrating the TCS3200 color sensor is essential to:
@@ -109,9 +102,47 @@ float red_foutputs frequency values that vary based on ambient lighting, sensor 
 >- Measuring a black surface to get minimum values for R, G, B channels
 >- Calculating normalized values using: `normalized = (measured - black) / (white - black)`
 
-<br>
+><b>How to calibrate the color sensor</b><br>
+>1. Place the color sensor in a defined distance and angle on a black reference field. Shield the sensor from ambient light for best results
+>2. Turn LED or sensor on and print the raw or filtered sensor data to the console
+```cpp
+    color_sensor.switchLed(ON);
+    printf("R: %.2f Hz\t G: %.2f Hz\t B: %.2f Hz\t C: %.2f Hz\n", color_sensor.getColor[0], color_sensor.getColor[1], color_sensor.getColor[2], color_sensor.getColor[3]);
+```
+>3. In the ```applyCalibration()``` function, fill in the raw or filtered sensor data in the ```m_reference_black```
+```cpp
+    m_reference_black.red = 70.0f;      // Sensor values of the red channel on the black reference field
+    m_reference_black.green = 74.0f;    // Sensor values of the green channel on the black reference field
+    m_reference_black.blue = 91.0f;     // Sensor values of the blue channel on the black reference field
+    m_reference_black.white = 228.0f;   // Sensor values of the clear channel on the black reference field
+```
+>4. Place the color sensor in a defined distance and angle on a white reference field. Shield the sensor from ambient light for best results
+>5. Turn LED or sensor on and print the raw or filtered sensor data to the console
+>6. In the ```applyCalibration()``` function, fill in the raw or filtered sensor data ```m_reference_white```
+```cpp
+    m_reference_white.red = 362.0f;     // Sensor values of the red channel on the black reference field
+    m_reference_white.green = 397.0f;   // Sensor values of the green channel on the black reference field
+    m_reference_white.blue = 491.0f;    // Sensor values of the blue channel on the black reference field
+    m_reference_white.white = 1220.0f;  // Sensor values of the clear channel on the black reference field
+```
 
-The TCS3200 color sensor module
+><b>How to use the calibrated color sensor</b><br>
+>1. The sensor is now calibrated. After every sensor read, which is called internally by the sensor-thread, the calibration is applied. You can now access the calibrated sensor RGB-readings, by calling the function ```readColorCalib()```, or the calibrated and normalised RGB-readings by calling the function ```readColorCalib()```. The clear-channel readings for these functions have no practical meaning.
+>2. After sensor reading and calibration, the task automatically classifies the color. You can use two functions, to access these classifications. The first possibility is to call the function ```getColor()```. This function returns an integer value, which translates to a color as follows
+
+| Integer Number  | Color   |
+| --------------- | ------  |
+| 0               | <span style="text-decoration: overline; background: linear-gradient(90deg,red, orange, yellow, green, blue, indigo, violet);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">unknown</span> |
+| 1               | <span style="color: gray;">black</span>   |
+| 2               | <span style="color: white;">white</span>   |
+| 3               | <span style="color: red;">red</span>     |
+| 4               | <span style="color: yellow;">yellow</span>  |
+| 5               | <span style="color: green;">green</span>  |
+| 6               | <span style="color: cyan;">cyan</span>  |
+| 7               | <span style="color: blue;">blue</span>  |
+| 8               | <span style="color: magenta;">magenta</span>  |
+
+<!-- The TCS3200 color sensor module
 > - Mini USB cable
 > - Additional wires to connect the sensor to the NUCLEO board
 > - White paper/card (for white balance calibration)
@@ -281,12 +312,11 @@ color_sensor.setBlackReference(10.0f, 12.0f, 9.0f);
 
 // read normalized RGB values
 float r, g, b;
-color_sensor.readRGB(r, g, b);
-```
+color_sensor.readRGB(r, g, b); -->
 
-## Application Examples
+<!-- ## Application Examples -->
 
-**Line Following** - The TCS3200 can be used for line following robots by detecting the color of the line versus the background:
+<!-- **Line Following** - The TCS3200 can be used for line following robots by detecting the color of the line versus the background:
 
 ```cpp
 // detect black line on white background
@@ -308,10 +338,10 @@ printf("Detected color: %s\n", color);
 if(strcmp(color, "RED") == 0) {
     // activate sorting mechanism for red objects
 }
-```
 
 ## Examples
 
 - [Example Color Sensor Basic Reading](../solutions/main_color_sensor.cpp)
 - [Example Color Sensor with Calibration](../solutions/main_color_sensor_calibrated.cpp)
 - [Example Color Detection and Sorting](../solutions/main_color_detection
+``` -->
