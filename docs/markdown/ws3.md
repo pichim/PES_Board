@@ -7,6 +7,30 @@ In the third workshop, we will be using DC motors, exploring various control met
 
 We will discuss different control strategies for motor control, e.g., speed control and position control (angular speed and rotation). Additionally, we will revisit the construction of a state machine, incorporating sensor-equipped motors for distance measurement and integrating a mechanical button into the system.
 
+## Learning outcomes
+
+By the end of this workshop you will be able to:
+- Bring up a DC motor on the PES board, verify encoder direction, and reason about gear ratio/setpoint meaning.
+- Use closed-loop position control with the motion planner to execute bounded-acceleration moves.
+- Build a state machine (Initial → Sleep → Forward → Backward → Emergency) guarded by ultrasonic distance and a mechanical button.
+
+## Before class (do this first)
+
+**Expected time:** ~55–90 minutes total (split into shorter sessions if needed).
+
+**Required reading (come prepared so we can spend class time building/testing):**
+- Read: [../../README.md](../../README.md) (overview + safety + battery cautions).
+- Read: this document [ws3.md](ws3.md) (flow + what happens in class).
+- Read: [dc_motor.md](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
+
+**Quiz:** complete the short MS Forms quiz (Workshop 3 Quiz) covering battery/power safety, H-bridge/PWM mapping, encoder direction awareness, and the WS3 state-machine transitions.
+Link: TBA
+
+<p align="center">
+    <img src="../images/ws3_quiz_qr_code.png" alt="Workshop 3 Quiz QR" width="240"/> </br>
+    <i>Workshop 3 Quiz</i>
+</p>
+
 ## Hardware
 
 >Part 1:

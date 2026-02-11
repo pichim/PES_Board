@@ -36,7 +36,7 @@ The analog distance sensor is equipped with an IR diode and uses triangulation t
 | **Operating Supply Voltage**        |
 | Supply Voltage                      | Vcc    |                       | 4.5 to 5.5 V                       | 4.5 to 5.5 V                        | 4.5 to 5.5 V                       |
 | **Electro-optical Characteristics** |        | Ta=25 °C, Vcc = 5 VDC |                                    |                                     |                                    |
-| Measuring Distance Range            | ΔL     |                       | (MIN) 4.0 (TYP) ---- (MAX) 30.0 cm | (MIN) 10.0 (TYP) ---- (MAX) 30.0 cm | (MIN) 4.0 (TYP) ---- (MAX) 30.0 cm |
+| Measuring Distance Range            | ΔL     |                       | (MIN) 4.0 (TYP) ---- (MAX) 30.0 cm | (MIN) 10.0 (TYP) ---- (MAX) 80.0 cm | (MIN) 4.0 (TYP) ---- (MAX) 30.0 cm |
 
 ## Links
 
@@ -127,7 +127,9 @@ The first step of the procedure is the simultaneous measurement of the actual di
 
 #### Procedure
 
-- Tape the paper tape to the flat surface from the edge of the chosen object and use a tape measure to mark the measurement points on the tape (e.g. 0 to 15 cm every 1 cm, then 17.5 to 30 cm every 2.5 cm and 35 to 75 cm every 5 cm, appropriate measurements may vary depending on the sensor type)
+- Tape the paper tape to the flat surface from the edge of the chosen object and use a tape measure to mark the measurement points on the tape **within your sensor’s valid range** (see table above). Suggested grids (use something similar, denser near the minimum):
+  - **GP2D120 / GP2Y0A41SK0F (4–30 cm):** `dist_cm = [4:1:15, 16:2:30].'`
+  - **GP2Y0A21YK0F (10–80 cm):** `dist_cm = [10:1:20, 22:2:40, 42:3:80].'`
 
 <p align="center">
     <img src="../images/IR_task.png" alt="IR task" width="650"/> </br>

@@ -7,6 +7,35 @@ The first workshop aims to introduce the Nucleo-F446RE microcontroller. We will 
 
 Participants will explore hardware utilization, specifically the IR Sensor and a calibration process. To optimize the calibration parameters we will use either MATLAB or Python.
 
+## Learning outcomes
+
+By the end of this workshop you will be able to:
+- Flash and gate a simple loop with the USER button on Nucleo-F446RE.
+- Read an analog IR sensor signal and reason about its limits.
+- Calibrate the IR sensor to map voltage to distance and use that mapping in code.
+
+## Before class (do this first)
+
+**Expected time:** ~110–155 minutes total (you can split this into two shorter sessions).
+
+**Required reading (come prepared so we can spend class time building/testing):**
+- Read: [../../README.md](../../README.md) (overview + safety + board structure).
+- Read: [course_setup.md](course_setup.md) (GitHub + Mbed Studio import/build/flash basics).
+- Read: [tips.md](tips.md) (programming hygiene + debugging basics).
+- Read: [main_description.md](main_description.md) (loop, USER button gating, structure of `main.cpp`).
+- Read: [ir_sensor.md](ir_sensor.md) (intro, range table, wiring, calibration overview).
+- Read: this document [ws1.md](ws1.md) (flow + what happens in class).
+
+**Quiz:** complete the short MS Forms quiz (Workshop 1 Quiz) so we know you can read wiring rules and analog scaling.
+Link: https://forms.cloud.microsoft/e/knqQAypewF
+
+<p align="center">
+    <img src="../images/ws1_quiz_qr_code.png" alt="Workshop 1 Quiz QR" width="240"/> </br>
+    <i>Workshop 1 Quiz</i>
+</p>
+
+**Tools:** install and open Mbed Studio once (per [course_setup.md](course_setup.md)). Fork/clone/build happen in class. Accounts: GitHub + Mbed. Calibration requires either MATLAB (university login) or Python (with numpy/matplotlib).
+
 ## Hardware
 
 >Part 1:

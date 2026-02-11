@@ -7,6 +7,31 @@ The objective of the second workshop is to get familiar with the PES boards hard
 
 Furthermore, participants will be introduced to new tools/programming concepts, including a state machine, which is advantageous for developing reliable and maintainable firmware for a robot.
 
+## Learning outcomes
+
+By the end of this workshop you will be able to:
+- Wire, calibrate, and command a servo on the PES board using normalized pulse-width mapping.
+- Read and validate ultrasonic distance measurements (or IR fallback) and handle invalid reads safely.
+- Implement a simple state machine that maps distance to servo motion and enters emergency/sleep states when limits are hit.
+
+## Before class (do this first)
+
+**Expected time:** ~45–70 minutes total (you can split this into two short sessions).
+
+**Required reading (come prepared so we can spend class time building/testing):**
+- Read: [../../README.md](../../README.md) (overview + safety + board structure).
+- Read: this document [ws2.md](ws2.md) (flow + what happens in class).
+- Read: [servo.md](servo.md) (servo wiring, calibration, control basics).
+- Read: [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
+
+**Quiz:** complete the short MS Forms quiz (Workshop 2 Quiz) covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics (plus a quick README safety check).
+Link: TBA
+
+<p align="center">
+    <img src="../images/ws2_quiz_qr_code.png" alt="Workshop 2 Quiz QR" width="240"/> </br>
+    <i>Workshop 2 Quiz</i>
+</p>
+
 ## Hardware
 
 >Part 1:
