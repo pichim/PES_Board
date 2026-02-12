@@ -86,6 +86,8 @@ To plug the power source, you will need to use:
 
 ## Sensor Bar Driver to create your own Line Following Algorithm
 
+If you just want to drive the robot, you normally do **not** talk to the ``SensorBar`` directly—use the higher-level ``LineFollower`` class instead (see below), which wraps the same sensor interface and exposes the measurements you need. The ``SensorBar`` section stays here for those who want to build their own controller from scratch.
+
 Include the necessary driver in the ***main.cpp*** file
 
 ```cpp
@@ -140,6 +142,7 @@ The ``SensorBar`` driver provides the following features. All these values are r
 - **Mean of the Three Leftmost Sensors**: The driver calculates the mean of the three leftmost sensors using the ``getMeanThreeAvgBitsLeft()`` method.
 - **Mean of the Three Rightmost Sensors**: The driver calculates the mean of the three rightmost sensors using the ``getMeanThreeAvgBitsRight()`` method.
 - **Mean of the Four Center Sensors**: The driver calculates a weighted mean of the four center sensors using the ``getMeanFourAvgBitsCenter()`` method.
+- **Mean of the Four Outer Sensors**: The driver calculates the mean of the two leftmost and two rightmost sensors using the ``getMeanFourAvgBitsOuter()`` method.
 
 Use the following code snippet to print the averaged bit values and the means of the left, center, and right sensors to the serial terminal.
 
@@ -153,9 +156,10 @@ printf("Averaged Bar Raw: |  %0.2f  | %0.2f |  %0.2f |  %0.2f |  %0.2f |  %0.2f 
                                                                                                      , sensor_bar.getAvgBit(5)
                                                                                                      , sensor_bar.getAvgBit(6)
                                                                                                      , sensor_bar.getAvgBit(7));
-printf("Mean Left: %0.2f, Mean Center: %0.2f, Mean Right: %0.2f \n", sensor_bar.getMeanThreeAvgBitsLeft()
-                                                                   , sensor_bar.getMeanFourAvgBitsCenter()
-                                                                   , sensor_bar.getMeanThreeAvgBitsRight());
+printf("Mean Left: %0.2f, Mean Center: %0.2f, Mean Right: %0.2f, Mean Outer: %0.2f \n", sensor_bar.getMeanThreeAvgBitsLeft()
+                                                                                      , sensor_bar.getMeanFourAvgBitsCenter()
+                                                                                      , sensor_bar.getMeanThreeAvgBitsRight()
+                                                                                      , sensor_bar.getMeanFourAvgBitsOuter());
 ```
 
 ### Using Eigen Library (Linear Algebra)
@@ -279,6 +283,15 @@ const float bar_dist = 0.114f; // distance from wheel axis to leds on sensor bar
 // line follower, tune max. vel rps to your needs
 LineFollower lineFollower(PB_9, PB_8, bar_dist, d_wheel, b_wheel, motor_M2.getMaxPhysicalVelocity());
 ```
+
+### Line Follower Sensor Interface (no direct SensorBar needed)
+
+The ``LineFollower`` object already exposes the sensor readings that the raw ``SensorBar`` provides, so students do not need to include ``SensorBar.h`` or manage it themselves. Useful accessors:
+
+- Line angle: ``getAngleRadians()`` / ``getAngleDegrees()``
+- Detection state: ``isLedActive()`` (true if any diode sees the line)
+- Per-diode intensity: ``getAvgBit(int bit)`` with bit ``0..7`` left→right
+- Precomputed means: ``getMeanThreeAvgBitsLeft()``, ``getMeanThreeAvgBitsRight()``, ``getMeanFourAvgBitsCenter()``, ``getMeanFourAvgBitsOuter()``
 
 ### Parameter Adjustments
 

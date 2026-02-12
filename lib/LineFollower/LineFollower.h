@@ -109,6 +109,37 @@ public:
      */
     bool isLedActive() const;
 
+    /**
+     * @brief Get the averaged, filtered bit value from the sensor bar.
+     *
+     * @param bitNumber Sensor index [0..7], left to right.
+     * @return float Averaged bit value in range [0.0, 1.0].
+     */
+    float getAvgBit(int bitNumber) const;
+
+    /**
+     * @brief Mean of the three leftmost averaged bits.
+     * @return float Mean in range [0.0, 1.0].
+     */
+    float getMeanThreeAvgBitsLeft() const;
+
+    /**
+     * @brief Mean of the three rightmost averaged bits.
+     * @return float Mean in range [0.0, 1.0].
+     */
+    float getMeanThreeAvgBitsRight() const;
+
+    /**
+     * @brief Weighted mean of the four center averaged bits.
+     * @return float Mean in range [0.0, 1.0].
+     */
+    float getMeanFourAvgBitsCenter() const;
+
+    /**
+     * @brief Mean of the four outer averaged bits (2 leftmost, 2 rightmost).
+     * @return float Mean in range [0.0, 1.0].
+     */
+    float getMeanFourAvgBitsOuter() const;
 
 private:
     // rotational velocity controller
@@ -125,8 +156,12 @@ private:
     float m_wheel_right_velocity_rps{0.0f};
 
     // angle line sensor
-    float m_angle{0.0};
-    bool is_any_led_active{false};
+    float m_angle{0.0f};                // last detected line angle [rad]
+    bool is_any_led_active{false};      // true if any LED detects the line
+    float m_mean_three_avg_bits_left{0.0f};   // cached mean of leftmost 3 bits
+    float m_mean_three_avg_bits_right{0.0f};  // cached mean of rightmost 3 bits
+    float m_mean_four_avg_bits_center{0.0f};  // cached mean of center 4 bits
+    float m_mean_four_avg_bits_outer{0.0f};   // cached mean of outer 4 bits
 
     SensorBar m_SensorBar;
 

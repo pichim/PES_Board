@@ -180,6 +180,7 @@ public:
     float getMeanThreeAvgBitsLeft() const;
     float getMeanThreeAvgBitsRight() const;
     float getMeanFourAvgBitsCenter() const;
+    float getMeanFourAvgBitsOuter() const;
     void update();
 
 private:

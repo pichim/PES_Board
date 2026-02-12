@@ -90,6 +90,31 @@ bool LineFollower::isLedActive() const
     return is_any_led_active;
 }
 
+float LineFollower::getAvgBit(int bitNumber) const
+{
+    return m_SensorBar.getAvgBit(bitNumber);
+}
+
+float LineFollower::getMeanThreeAvgBitsLeft() const
+{
+    return m_mean_three_avg_bits_left;
+}
+
+float LineFollower::getMeanThreeAvgBitsRight() const
+{
+    return m_mean_three_avg_bits_right;
+}
+
+float LineFollower::getMeanFourAvgBitsCenter() const
+{
+    return m_mean_four_avg_bits_center;
+}
+
+float LineFollower::getMeanFourAvgBitsOuter() const
+{
+    return m_mean_four_avg_bits_outer;
+}
+
 // Thread task
 void LineFollower::followLine()
 {
@@ -104,6 +129,10 @@ void LineFollower::followLine()
         if (is_any_led_active) {
             m_angle = m_SensorBar.getAvgAngleRad();
         }
+        m_mean_three_avg_bits_left = m_SensorBar.getMeanThreeAvgBitsLeft();
+        m_mean_three_avg_bits_right = m_SensorBar.getMeanThreeAvgBitsRight();
+        m_mean_four_avg_bits_center = m_SensorBar.getMeanFourAvgBitsCenter();
+        m_mean_four_avg_bits_outer = m_SensorBar.getMeanFourAvgBitsOuter();
 
         // control algorithm for robot velocities
         m_robot_coord(1) = ang_cntrl_fcn(m_Kp, m_Kp_nl, m_angle);
