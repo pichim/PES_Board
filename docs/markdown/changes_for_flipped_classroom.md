@@ -106,26 +106,66 @@ Solutions:
 
 ---
 
-### WS1 Quiz Outline (MS Forms)
+# Workshop 1 – Pre-Class Quiz (Q1–Q6)
 
-- 6–8 items, auto-graded. Total quiz time ~7–10 min.
+## Q1
+Before changing wiring on the PES + Nucleo setup, what is the recommended state?
 
-**Suggested questions (core 4)**
-- Wiring safety (single choice): “Before connecting/reconnecting hardware, what must be true?”
-  Options: a) Power off/disconnect USB; b) Use thicker wires; c) Switch to 5V servo rail; d) Enable motors.
-  Answer: a.
+- A) USB connected, PES switch ON, charger disconnected  
+- B) All power sources disconnected, PES switch OFF  
+- C) Only stop code execution in Mbed Studio  
+- D) Keep board powered to verify live wiring  
 
-- Analog pin / voltage range (single choice): “What voltage range does AnalogIn map to 0.0–1.0?”
-  Options: a) 0–5 V; b) 0–3.3 V; c) 0–12 V; d) −3.3–3.3 V.
-  Answer: b.
+## Q2
+Why is a flow chart created before coding a robot task?
 
-- Range awareness (single choice): “Why do we need to identify the sensor model and range first?”
-  Options: a) To increase max range; b) To choose valid calibration points and avoid bad fits; c) To reduce CPU load; d) To change PWM frequency.
-  Answer: b.
+- A) It removes the need for testing  
+- B) It helps define states/transitions and catch logic issues early  
+- C) It guarantees bug-free implementation  
+- D) It is only useful for reports, not coding  
 
-- Calibration purpose (single choice): “Why calibrate the IR sensor?”
-  Options: a) To shift LED blink rate; b) To map sensor voltage to distance accurately; c) To increase max range beyond spec; d) To save flash memory.
-  Answer: b.
+## Q3
+What is the role of the USER button callback `toggle_do_execute_main_fcn()`?
+
+- A) It recalibrates the IR sensor each press  
+- B) It toggles whether the main task executes (`do_execute_main_task`)  
+- C) It changes the target board in Mbed Studio  
+- D) It forces `while(true)` to stop  
+
+## Q4
+If `main_task_period_ms = 20`, what is the intended loop rate?
+
+- A) 20 Hz  
+- B) 25 Hz  
+- C) 50 Hz  
+- D) 100 Hz  
+
+## Q5
+`AnalogIn.read()` returns `0.0...1.0`. What converts this to millivolts as used in the workshop?
+
+- A) `ir_mV = read()*1000`  
+- B) `ir_mV = read()*5.0*1000`  
+- C) `ir_mV = read()*3.3*1000`  
+- D) `ir_mV = read()/3.3*1000`  
+
+## Q6
+Why must calibration points stay within the specific sensor’s valid range (and be denser near minimum distance)?
+
+- A) Because outside-range behavior and near-minimum nonlinearity reduce mapping accuracy  
+- B) Because Mbed cannot print values outside the range  
+- C) Because the USER button only works within that range  
+- D) Because calibration only works in Release build profile  
+
+---
+
+## Answer Key
+
+- Q1: **B**  
+- Q2: **B**  
+- Q3: **B**  
+- Q4: **C**  
+- Q5: **C**  
+- Q6: **A**
 
 ---
 
@@ -222,21 +262,66 @@ Solutions:
 
 - 6 auto-graded items. Total quiz time ~6–8 min.
 
-**Suggested questions (core 4)**
-- Servo safety (single choice): “What must be true before reconnecting the servo wires?”
-  Options: a) Power off/disconnect USB; b) Increase PWM frequency; c) Switch to 5V rail; d) Hold the horn.
-  Answer: a.
+# Workshop 2 – Pre-Class Quiz (Q1–Q6)
 
-- Pulse-width mapping (numeric): “Given 1.0 ms–2.0 ms limits, what pulse width corresponds to command = 0.25?”
-  Expected: ~1.25 ms (accept ~1.22–1.28 ms).
+## Q1
+In the WS2 intended state-machine logic, what transition should happen from `EXECUTION`?
 
-- Calibration intent (single choice): “Why calibrate the servo endpoints?”
-  Options: a) To change torque; b) To avoid mechanical stall and map normalized commands; c) To reduce CPU usage; d) To enable UART.
-  Answer: b.
+- A) Out-of-range distance → `SLEEP`; mechanical button event → `EMERGENCY`  
+- B) Out-of-range distance → `EMERGENCY`; mechanical button event → `SLEEP`  
+- C) Any invalid read → `INITIAL`  
+- D) Mechanical button event → `INITIAL` directly  
 
-- Ultrasonic validity (single choice): “When `UltrasonicSensor::read()` returns an invalid value (e.g., -1.0f), what should you do?”
-  Options: a) Use it anyway; b) Keep the last valid reading and skip the update; c) Multiply by zero; d) Stop the loop.
-  Answer: b.
+## Q2
+The mechanical button is wired to `PC_5` and `GND`, and the input uses `PullUp`. Which condition correctly detects a pressed button?
+
+- A) `if (mechanical_button.read())` because pressed = HIGH  
+- B) `if (!mechanical_button.read())` because pressed pulls the pin LOW  
+- C) `if (mechanical_button.read() > 0.5f)` because it is analog  
+- D) `if (mechanical_button == BUTTON1)` because `PC_5` mirrors USER button  
+
+## Q3
+What is the purpose of servo calibration (`calibratePulseMinMax`) before normal operation?
+
+- A) It removes the need to enable the servo  
+- B) It sets servo-specific safe min/max pulse mapping so normalized commands are meaningful  
+- C) It converts servo commands directly to degrees  
+- D) It increases USB flashing speed  
+
+## Q4
+In the ultrasonic driver workflow, what does `us_sensor.read()` returning `-1.0f` mean?
+
+- A) The object is exactly at -1 cm  
+- B) Sensor calibration is complete  
+- C) No new valid measurement is currently available  
+- D) The sensor must be power-cycled immediately  
+
+## Q5
+What is the recommended handling for ultrasonic invalid reads in WS2?
+
+- A) Always assign the new value, including `-1.0f`  
+- B) Assign `0.0f` whenever `-1.0f` appears  
+- C) Update `us_distance_cm` only when the candidate read is valid (`> 0.0f`)  
+- D) Stop the state machine on the first invalid read  
+
+## Q6
+Why should the ultrasonic sensor not be polled faster than about every `12000 µs` (as documented)?
+
+- A) Faster polling increases PWM resolution  
+- B) Faster polling causes frequent invalid readings (`-1.0f`)  
+- C) Faster polling disables `PullUp` mode  
+- D) Faster polling forces the servo into emergency mode  
+
+---
+
+## Answer Key
+
+- Q1: **A**  
+- Q2: **B**  
+- Q3: **B**  
+- Q4: **C**  
+- Q5: **C**  
+- Q6: **B**
 
 ### In-class (4 × 45 min, same structure as WS1)
 
@@ -313,14 +398,57 @@ Solutions:
 
 - 4 auto-graded items. Total quiz time ~5–7 min.
 
-**Suggested questions (core 4)**
-- Battery safety (single choice): “When is it safe to reconnect the battery leads?” Options: a) While motor spins; b) Only when power switch off and wiring checked; c) Any time USB is plugged; d) When encoder is unplugged. Answer: b.
+## Workshop 3 – Pre-class Quiz (6 MC Questions)
 
-- H-bridge/PWM mapping (single choice): “What does a 0.6 duty command on PB_PWM_M1 do?” Options: a) Reverse full speed; b) Forward ~60% duty (direction per enable wiring); c) No effect; d) Turns off encoder. Answer: b.
+1. You are preparing your WS3 setup. Which step is required to let the DC motor actually receive power from the PES board? 
+   A) Call `motor_M3.enableMotionPlanner();`  
+   B) Set `enable_motors = 1;` using `DigitalOut enable_motors(PB_ENABLE_DCMOTORS);`  
+   C) Call `motor_M3.setRotation(0.0f);`  
+   D) Set `servo_D0.enable();`
 
-- Encoder direction (single choice): “If commanded forward yields negative counts, what do you do?” Options: a) Ignore; b) Swap encoder channels or invert sign in software; c) Swap battery packs; d) Reduce duty. Answer: b.
+2. You are using one 78:1 motor on M1 pins for WS3 position control. Which object setup is the correct closed-loop approach?
 
-- State-machine emergency (single choice): “What triggers the Emergency state in WS3?” Options: a) Timer overflow; b) Ultrasonic distance below threshold (e.g., 4.5 cm) during the forward stroke; c) Encoder zero; d) USB disconnect. Answer: b.
+   A) `FastPWM pwm_M1(PB_PWM_M1);` and command only with `write()`  
+   B) `DCMotor motor_M3(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);`  
+   C) `DigitalOut motor_M3(PB_PWM_M1);` with `motor_M3 = 1;`  
+   D) `AnalogIn motor_M3(PB_PWM_M1);`
+
+3. During testing, you command a positive motion, but measured rotation goes negative. What is the most likely issue?
+
+   A) The ultrasonic sensor is unplugged  
+   B) Encoder direction and motor direction are inconsistent with sign convention  
+   C) Motion planner acceleration is too low  
+   D) `printf()` is too slow
+
+4. You want smoother, bounded-acceleration motion before running the can-crusher state machine. What should you do?  
+
+   A) Disable the encoder  
+   B) Enable the motion planner and limit max velocity  
+   C) Enable the motion planner and limit max acceleration  
+   D) Use open-loop PWM only
+
+5. In WS3 FORWARD state, which condition should send the system to EMERGENCY? 
+   
+   A) `motor_M3.getRotation() > 2.89f`  
+   B) `mechanical_button.read() == 0`  
+   C) `us_distance_cm < 4.5f`  
+   D) `us_distance_cm > 4.5f`
+
+6. After an EMERGENCY stop and USER-button reset, why do we reset motion-planner internal state (position/velocity) and re-enable it?  
+   
+   A) To make the serial port faster  
+   B) To avoid stale planner states and ensure predictable next motion cycle  
+   C) To recalibrate the ultrasonic sensor  
+   D) To reverse motor polarity automatically
+
+## Answer Key
+
+- Q1: **B**  
+- Q2: **B**  
+- Q3: **B**  
+- Q4: **C**  
+- Q5: **C**  
+- Q6: **B**
 
 ### In-class (4 × 45 min, same structure as WS1)
 
