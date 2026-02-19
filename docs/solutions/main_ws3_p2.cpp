@@ -56,7 +56,7 @@ int main()
     mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that there
                                        // is a defined potential
 
-    // ultra sonic sensor
+    // ultrasonic sensor
     UltrasonicSensor us_sensor(PB_D3);
     float us_distance_cm = 0.0f;
 
@@ -167,8 +167,8 @@ int main()
                 led1 = 0;
                 enable_motors = 0;
                 us_distance_cm = 0.0f;
-                motor_M3.setMotionPlanerPosition(0.0f);
-                motor_M3.setMotionPlanerVelocity(0.0f);
+                motor_M3.setMotionPlannerPosition(0.0f);
+                motor_M3.setMotionPlannerVelocity(0.0f);
                 motor_M3.enableMotionPlanner();
                 robot_state = RobotState::INITIAL;
             }

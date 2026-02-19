@@ -56,14 +56,14 @@ int main()
     mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that there
                                        // is a defined potential
 
-    // // ultra sonic sensor
+    // // ultrasonic sensor
     // UltrasonicSensor us_sensor(PB_D3);
-    // ir distance sensor instead of ultra sonic sensor
+    // ir distance sensor instead of ultrasonic sensor
     IRSensor ir_sensor(PB_A0);
     ir_sensor.setCalibration(11801.3246f, -11.2132f); // set calibration values
     float us_distance_cm = 0.0f;
 
-    // min and max ultra sonic sensor reading
+    // min and max ultrasonic sensor reading
     float us_distance_min = 6.0f;
     float us_distance_max = 40.0f;
 
@@ -108,7 +108,7 @@ int main()
             // const float us_distance_cm_candidate = us_sensor.read();
             // if (us_distance_cm_candidate > 0.0f)
             //     us_distance_cm = us_distance_cm_candidate;
-            // ir distance sensor instead of ultra sonic sensor
+            // ir distance sensor instead of ultrasonic sensor
             us_distance_cm = ir_sensor.read();
 
             // state machine

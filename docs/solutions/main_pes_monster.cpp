@@ -145,7 +145,7 @@ int main()
     servo_D1.setMaxAcceleration(1.0f);
     servo_D2.setMaxAcceleration(1.0f);
 
-    // ultra sonic sensor
+    // ultrasonic sensor
     UltrasonicSensor us_sensor(PB_D3);
     float us_distance_cm = 0.0f;
 

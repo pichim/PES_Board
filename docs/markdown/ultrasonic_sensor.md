@@ -78,7 +78,7 @@ In the given example, the sensor is plugged into pin **D3 (PB_D3)** on the PES b
 ```
 
 ```cpp
-// ultra sonic sensor
+// ultrasonic sensor
 UltrasonicSensor us_sensor(PB_D3);
 float us_distance_cm = 0.0f;
 ```

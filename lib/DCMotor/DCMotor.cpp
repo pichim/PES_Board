@@ -218,11 +218,11 @@ long DCMotor::getEncoderCount() const
     return m_count;
 }
 
-void DCMotor::setMotionPlanerVelocity(float velocity) {
+void DCMotor::setMotionPlannerVelocity(float velocity) {
     m_Motion.setVelocity(velocity);
 }
 
-void DCMotor::setMotionPlanerPosition(float position) {
+void DCMotor::setMotionPlannerPosition(float position) {
     m_Motion.setPosition(position);
 }
 
@@ -242,7 +242,7 @@ void DCMotor::startGPA()
 #endif
 
 #if PERFORM_CHIRP_MEAS
-void DCMotor::startChrip()
+void DCMotor::startChirp()
 {
     if (!m_start_chirp) {
         m_start_chirp = true;

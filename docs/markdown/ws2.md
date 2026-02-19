@@ -1,5 +1,6 @@
 <!-- link list -->
 [0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[1]: https://forms.cloud.microsoft/e/csBg2wWZa5
 
 # Workshop 2
 
@@ -24,8 +25,7 @@ By the end of this workshop you will be able to:
 - Read: [servo.md](servo.md) (servo wiring, calibration, control basics).
 - Read: [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
 
-**Quiz:** complete the short MS Forms quiz (Workshop 2 Quiz) covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics (plus a quick README safety check).
-Link: TBA
+**Quiz:** complete the short [MS Forms quiz (Workshop 2 Quiz)][1] covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics (plus a quick README safety check).
 
 <p align="center">
     <img src="../images/ws2_quiz_qr_code.png" alt="Workshop 2 Quiz QR" width="240"/> </br>
@@ -37,7 +37,7 @@ Link: TBA
 >Part 1:
 > - PES board with NUCLEO-F446RE board
 > - Mini USB cable
-> - Servo Futaba S3001/RELY S-0090
+> - Servo Futaba S3001/REELY S-0090
 > - Additional wires to connect the servo to the PES board
 > - Jumper wires
 
@@ -73,13 +73,13 @@ To create and use the ``IRSensor`` class, you can use the following code snippet
 
 ...
 
-// ir distance sensor instead of ultra sonic sensor
+// ir distance sensor instead of ultrasonic sensor
 IRSensor ir_sensor(PB_A0);
 ir_sensor.setCalibration(11801.3246f, -11.2132f); // set calibration values
 
 ...
 
-// ir distance sensor instead of ultra sonic sensor
+// ir distance sensor instead of ultrasonic sensor
 us_distance_cm = ir_sensor.read();
 ```
 
@@ -191,7 +191,7 @@ switch (robot_state) {
 8. In the following step, you will map the measured distance to the deflection of the servo. Since the servos are calibrated, the objective is to map the servo in a way that associates variable to the minimum sensor range ``us_distance_min`` with zero servo deflection and the maximum range ``us_distance_max`` with the maximum servo deflection. Define the following variables along with the variable ``us_distance_cm``:
 
 ```cpp
-// min and max ultra sonic sensor reading, (us_distance_min, us_distance_max) -> (servo_min, servo_max)
+// min and max ultrasonic sensor reading, (us_distance_min, us_distance_max) -> (servo_min, servo_max)
 float us_distance_min = 6.0f;
 float us_distance_max = 40.0f;
 ```
@@ -210,7 +210,7 @@ float us_distance_max = 40.0f;
     }
 ```
 
-10. Now, let's establish the conditions that prompt transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **SLEEP** state, while the **EMERGENCY** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
+10. Now, let's establish the conditions that prompt transitions to other states. As previously mentioned, pressing the mechanical button will trigger the initiation of the **EMERGENCY** state, while the **SLEEP** state will be initialized when the sensor reading is outside the above defined min and max range. Use the following code snippet:
 
 ```cpp
     case RobotState::EXECUTION: {

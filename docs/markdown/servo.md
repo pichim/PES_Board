@@ -110,7 +110,7 @@ After setting the minimum and maximum pulse width via the servo driver (calibrat
 >Hardware:
 > - PES board with NUCLEO-F446RE board
 > - Mini USB cable
-> - Servo Futaba S3001/RELY S-0090
+> - Servo Futaba S3001/REELY S-0090
 > - Additional wires to connect the servo to the board
 > - Jumper wires
 

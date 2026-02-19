@@ -30,7 +30,7 @@ public:
     float getExc() const;
 
 private:
-    struct ChripParams {
+    struct ChirpParams {
         float f0, Ts, beta, k0, k1;
         uint32_t count, N;
         float exc, fchirp, sinarg;

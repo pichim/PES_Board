@@ -1,5 +1,6 @@
 <!-- link list -->
 [0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[1]: https://forms.cloud.microsoft/e/U3v2D8G4Em
 
 # Workshop 3
 
@@ -23,8 +24,7 @@ By the end of this workshop you will be able to:
 - Read: this document [ws3.md](ws3.md) (flow + what happens in class).
 - Read: [dc_motor.md](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
 
-**Quiz:** complete the short MS Forms quiz (Workshop 3 Quiz) covering battery/power safety, H-bridge/PWM mapping, encoder direction awareness, and the WS3 state-machine transitions.
-Link: TBA
+**Quiz:** complete the short [MS Forms quiz (Workshop 3 Quiz)][1] covering battery/power safety, H-bridge/PWM mapping, encoder direction awareness, and the WS3 state-machine transitions.
 
 <p align="center">
     <img src="../images/ws3_quiz_qr_code.png" alt="Workshop 3 Quiz QR" width="240"/> </br>
@@ -71,13 +71,13 @@ To create and use the ``IRSensor`` class, you can use the following code snippet
 
 ...
 
-// ir distance sensor instead of ultra sonic sensor
+// ir distance sensor instead of ultrasonic sensor
 IRSensor ir_sensor(PB_A0);
 ir_sensor.setCalibration(11801.3246f, -11.2132f); // set calibration values
 
 ...
 
-// ir distance sensor instead of ultra sonic sensor
+// ir distance sensor instead of ultrasonic sensor
 us_distance_cm = ir_sensor.read();
 ```
 
@@ -118,7 +118,7 @@ mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that
 
 ...
 
-// ultra sonic sensor
+// ultrasonic sensor
 UltrasonicSensor us_sensor(PB_D3);
 float us_distance_cm = 0.0f;
 ```
@@ -288,8 +288,8 @@ printf("US Sensor in cm: %f, DC Motor Rotations: %f\n", us_distance_cm, motor_M3
 led1 = 0;
 enable_motors = 0;
 us_distance_cm = 0.0f;
-motor_M3.setMotionPlanerPosition(0.0f);
-motor_M3.setMotionPlanerVelocity(0.0f);
+motor_M3.setMotionPlannerPosition(0.0f);
+motor_M3.setMotionPlannerVelocity(0.0f);
 motor_M3.enableMotionPlanner();
 robot_state = RobotState::INITIAL;
 ```

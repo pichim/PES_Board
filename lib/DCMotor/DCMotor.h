@@ -247,14 +247,14 @@ public:
      *
      * @param velocity The velocity in rotations per second.
      */
-    void setMotionPlanerVelocity(float velocity = 0.0f);
+    void setMotionPlannerVelocity(float velocity = 0.0f);
 
     /**
      * @brief Set the motion planner internal position.
      *
      * @param position The position in rotations.
      */
-    void setMotionPlanerPosition(float position = 0.0f);
+    void setMotionPlannerPosition(float position = 0.0f);
 
     /**
      * @brief Set the PWM period in microseconds.
@@ -268,7 +268,7 @@ public:
 #endif
 
 #if PERFORM_CHIRP_MEAS
-    void startChrip();
+    void startChirp();
 #endif
 
 private:

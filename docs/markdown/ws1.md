@@ -1,5 +1,6 @@
 <!-- link list -->
 [0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[1]: https://forms.cloud.microsoft/e/BFmzMtMYfv
 
 # Workshop 1
 
@@ -26,8 +27,8 @@ By the end of this workshop you will be able to:
 - Read: [ir_sensor.md](ir_sensor.md) (intro, range table, wiring, calibration overview).
 - Read: this document [ws1.md](ws1.md) (flow + what happens in class).
 
-**Quiz:** complete the short MS Forms quiz (Workshop 1 Quiz) so we know you can read wiring rules and analog scaling.
-Link: https://forms.cloud.microsoft/e/knqQAypewF
+**Quiz:** complete the short [MS Forms quiz (Workshop 1 Quiz)][1] so we know you can read wiring rules and analog scaling.
+
 
 <p align="center">
     <img src="../images/ws1_quiz_qr_code.png" alt="Workshop 1 Quiz QR" width="240"/> </br>
