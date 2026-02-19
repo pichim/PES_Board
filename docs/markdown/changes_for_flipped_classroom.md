@@ -156,6 +156,22 @@ Why must calibration points stay within the specific sensor’s valid range (and
 - C) Because the USER button only works within that range  
 - D) Because calibration only works in Release build profile  
 
+## Q7
+The IR sensor has a valid range from 12 cm to 60 cm. During calibration, at 12 cm the sensor reads 2850 mV, and at 60 cm it reads 850 mV. A student creates a linear mapping function. If the sensor currently reads 2050 mV, what distance (in cm) does the mapping function return?
+
+- A) ~19 cm  
+- B) ~25 cm  
+- C) ~31 cm  
+- D) ~44 cm  
+
+## Q8
+To reduce noise, a student averages three consecutive IR sensor readings: 2050 mV, 2045 mV, 2055 mV (read at slightly different distances). When the average is passed through the linear calibration mapping from Q7, what distance (in cm) is returned?
+
+- A) ~27 cm  
+- B) ~29 cm  
+- C) ~31 cm  
+- D) ~33 cm  
+
 ---
 
 ## Answer Key
@@ -165,7 +181,9 @@ Why must calibration points stay within the specific sensor’s valid range (and
 - Q3: **B**  
 - Q4: **C**  
 - Q5: **C**  
-- Q6: **A**
+- Q6: **A**  
+- Q7: **C**  
+- Q8: **C**
 
 ---
 
@@ -312,6 +330,22 @@ Why should the ultrasonic sensor not be polled faster than about every `12000 µ
 - C) Faster polling disables `PullUp` mode  
 - D) Faster polling forces the servo into emergency mode  
 
+## Q7
+A servo pulse-width mapping is calibrated: 1.0 ms pulse = 0°, 2.0 ms pulse = 180°. The servo command range is 0.0 (fully counterclockwise) to 1.0 (fully clockwise), and this is mapped linearly to pulse width. If you command 0.4 to the servo, what pulse width (in milliseconds) is approximately sent to the servo?
+
+- A) 1.2 ms  
+- B) 1.4 ms  
+- C) 1.6 ms  
+- D) 1.8 ms  
+
+## Q8
+The ultrasonic sensor requires at least 12 milliseconds between successive valid readings. The WS2 state machine loop runs at 50 Hz (20 ms per cycle). If you poll the ultrasonic sensor once per cycle, how many **complete valid measurements** can you reliably obtain per second?
+
+- A) ~40 measurements/sec  
+- B) ~50 measurements/sec  
+- C) ~80 measurements/sec  
+- D) ~100 measurements/sec  
+
 ---
 
 ## Answer Key
@@ -321,7 +355,9 @@ Why should the ultrasonic sensor not be polled faster than about every `12000 µ
 - Q3: **B**  
 - Q4: **C**  
 - Q5: **C**  
-- Q6: **B**
+- Q6: **B**  
+- Q7: **B**  
+- Q8: **B**
 
 ### In-class (4 × 45 min, same structure as WS1)
 
@@ -441,6 +477,20 @@ Solutions:
    C) To recalibrate the ultrasonic sensor  
    D) To reverse motor polarity automatically
 
+7. A 78:1 geared DC motor with encoder has 48 CPR (counts per revolution) at the motor shaft. Including the gear reduction, how many encoder counts occur for one complete rotation of the output shaft (driven load)?
+
+   A) 576 counts  
+   B) 1920 counts  
+   C) 3744 counts  
+   D) 7488 counts
+
+8. The 78:1 geared DC motor has a nominal no-load speed of 345 RPM at the motor shaft. What is the approximate maximum output shaft speed in RPM after the gear reduction?
+
+   A) ~4.4 RPM  
+   B) ~8.8 RPM  
+   C) ~44 RPM  
+   D) ~88 RPM
+
 ## Answer Key
 
 - Q1: **B**  
@@ -448,7 +498,9 @@ Solutions:
 - Q3: **B**  
 - Q4: **C**  
 - Q5: **C**  
-- Q6: **B**
+- Q6: **B**  
+- Q7: **C**  
+- Q8: **A**
 
 ### In-class (4 × 45 min, same structure as WS1)
 
