@@ -23,7 +23,7 @@
 
 #define COLOR_DEBUG 0
 
-#define N_FILTER 3
+#define N_FILTER 5
 
 /**
  * @brief Calibration/reference values for each optical channel.
@@ -131,8 +131,8 @@ public:
     void switchLed(ledstate_t led_state);
 
 private:
-    // Thread wake-up period in microseconds (100,000us = 100ms ~ 10Hz update).
-    static constexpr int64_t PERIOD_MUS = 100000;
+    // Thread wake-up period in microseconds (150,000us = 150ms ~ 6.66Hz update).
+    static constexpr int64_t PERIOD_MUS = 150000;
 
     PwmIn m_PwmIn;
     DigitalOut m_S0;

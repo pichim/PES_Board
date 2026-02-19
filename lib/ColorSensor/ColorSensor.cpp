@@ -104,15 +104,15 @@ void ColorSensor::reset()
  */
 void ColorSensor::setCalibration()
 {
-    m_reference_black.red = 70.0f;
-    m_reference_black.green = 74.0f;
-    m_reference_black.blue = 91.0f;
-    m_reference_black.white = 228.0f;
+    m_reference_black.red = 360.0f;
+    m_reference_black.green = 330.0f;
+    m_reference_black.blue = 370.0f;
+    m_reference_black.white = 1130.0f;
 
-    m_reference_white.red = 362.0f;
-    m_reference_white.green = 397.0f;
-    m_reference_white.blue = 491.0f;
-    m_reference_white.white = 1220.0f;
+    m_reference_white.red = 730.0f;
+    m_reference_white.green = 670.0f;
+    m_reference_white.blue = 740.0f;
+    m_reference_white.white = 2200.0f;
 
     m_calib_black[0] = m_reference_black.red;
     m_calib_black[1] = m_reference_black.green;
@@ -186,7 +186,7 @@ void ColorSensor::threadTask()
         {
             setColor(m_color[i]);
             // Allow filter switching and output frequency to stabilize.
-            ThisThread::sleep_for(20ms);
+            ThisThread::sleep_for(25ms);
 
             // PwmIn::period() returns the measured signal period (typically in seconds).
             float period = m_PwmIn.period();
@@ -277,7 +277,7 @@ int ColorSensor::getColor()
     const float H_RED_MAX_1   = 20.0f;
     const float H_YELLOW_MAX  = 65.0f;
     const float H_GREEN_MAX   = 170.0f;
-    const float H_CYAN_MAX    = 200.0f;
+    const float H_CYAN_MAX    = 210.0f;
     const float H_BLUE_MAX    = 240.0f;
     const float H_MAGENTA_MIN = 345.0f;
 
