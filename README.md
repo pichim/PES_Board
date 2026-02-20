@@ -129,6 +129,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
         * [Servo](docs/markdown/servo.md)
         * [DC Motor](docs/markdown/dc_motor.md)
         * [Line Follower](docs/markdown/line_follower.md)
+        * [Color Sensor](docs/markdown/color_sensor.md)
         * [IMU](docs/markdown/imu.md)
         * [Stepper Motor](docs/markdown/stepper_motor.md)
         * [SD-Card](docs/markdown/sd_card_logger.md)

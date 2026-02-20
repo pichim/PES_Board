@@ -25,7 +25,7 @@ By the end of this workshop you will be able to:
 - Read: [servo.md](servo.md) (servo wiring, calibration, control basics).
 - Read: [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
 
-**Quiz:** complete the short [MS Forms quiz (Workshop 2 Quiz)][1] covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics (plus a quick README safety check).
+**Quiz:** complete the short [MS Forms quiz (Workshop 2 Quiz)][1] covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics.
 
 <p align="center">
     <img src="../images/ws2_quiz_qr_code.png" alt="Workshop 2 Quiz QR" width="240"/> </br>
