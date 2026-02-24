@@ -80,11 +80,11 @@ If you are not sure how to connect the sensor, click the following hint.
 
 To start working with the sensor, it is necessary to connect it correctly and create an ``AnalogIn`` object in the ***main.cpp*** file.
 
-To be able to use the tooling from the Mbed platform, it is necessary to include the library at the beginning of the ***main.cpp*** file:
+<!-- To be able to use the tooling from the Mbed platform, it is necessary to include the library at the beginning of the ***main.cpp*** file: -->
 
-```cpp
+<!-- ```cpp
 #include "mbed.h"
-```
+``` -->
 
 Create an object with the pin's name passed as an argument and define a variable to store the corresponding reading from the sensor in millivolts:
 

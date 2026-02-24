@@ -59,7 +59,7 @@ Importing a program from GitHub to Mbed Studio involves linking the local reposi
     <i>Importing the Program</i>
 </p>
 
-* Visit the GitHub page of your repository (e.g., https://github.com/YOUR_NICK/NAME_OF_FORKED_REPOSITORY) and copy the **HTTPS** URL, located below the box on your forked repository.
+* Visit the GitHub page of your repository (e.g., https://github.com/GithubUserName/NameOfForkedRepository) and copy the **HTTPS** URL, located below the box on your forked repository.
 
 <p align="center">
     <img src="../images/https_link_github.png" alt="HTTPS link GitHub" width="350"/> </br>
@@ -128,9 +128,9 @@ Flashing the microcontroller involves programming its non-volatile memory with t
 
 To apply code changes, you can simply click the **PLAY** button, prompting Mbed Studio to build the code and flash it to the microcontroller.
 
-**NOTE:**
+<!-- **NOTE:** -->
 
-- Periodically deleting the build folder and re-building the program is recommended to avoid potential interference that may arise from adding new code.
+<!-- - Periodically deleting the build folder and re-building the program is recommended to avoid potential interference that may arise from adding new code. -->
 
 ## Navigating the Environment
 

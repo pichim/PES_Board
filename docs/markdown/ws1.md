@@ -20,22 +20,19 @@ By the end of this workshop you will be able to:
 **Expected time:** ~110–155 minutes total (you can split this into two shorter sessions).
 
 **Required reading (come prepared so we can spend class time building/testing):**
-- Read: [../../README.md](../../README.md) (overview + safety + board structure).
-- Read: [course_setup.md](course_setup.md) (GitHub + Mbed Studio import/build/flash basics).
-- Read: [tips.md](tips.md) (programming hygiene + debugging basics).
-- Read: [main_description.md](main_description.md) (loop, USER button gating, structure of `main.cpp`).
-- Read: [ir_sensor.md](ir_sensor.md) (intro, range table, wiring, calibration overview).
-- Read: this document [ws1.md](ws1.md) (flow + what happens in class).
+- [README.md](../../README.md) (overview + safety + board structure).
+- [course_setup.md](course_setup.md) (GitHub + Mbed Studio import/build/flash basics).
+- [tips.md](tips.md) (programming hygiene + debugging basics).
+- [main_description.md](main_description.md) (loop, USER button gating, structure of `main.cpp`).
+- [ir_sensor.md](ir_sensor.md) (intro, range table, wiring, calibration overview).
+- This document [ws1.md](ws1.md) (flow + what happens in class).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 1 Quiz)][1] so we know you can read wiring rules and analog scaling.
-
 
 <p align="center">
     <img src="../images/ws1_quiz_qr_code.png" alt="Workshop 1 Quiz QR" width="240"/> </br>
     <i>Workshop 1 Quiz</i>
 </p>
-
-**Tools:** install and open Mbed Studio once (per [course_setup.md](course_setup.md)). Fork/clone/build happen in class. Accounts: GitHub + Mbed. Calibration requires either MATLAB (university login) or Python (with numpy/matplotlib).
 
 ## Hardware
 

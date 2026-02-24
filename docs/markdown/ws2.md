@@ -20,10 +20,10 @@ By the end of this workshop you will be able to:
 **Expected time:** ~45–70 minutes total (you can split this into two short sessions).
 
 **Required reading (come prepared so we can spend class time building/testing):**
-- Read: [../../README.md](../../README.md) (overview + safety + board structure).
-- Read: this document [ws2.md](ws2.md) (flow + what happens in class).
-- Read: [servo.md](servo.md) (servo wiring, calibration, control basics).
-- Read: [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
+- [README.md](../../README.md) (overview + safety + board structure).
+- This document [ws2.md](ws2.md) (flow + what happens in class).
+- [servo.md](servo.md) (servo wiring, calibration, control basics).
+- [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 2 Quiz)][1] covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics.
 

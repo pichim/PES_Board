@@ -20,9 +20,9 @@ By the end of this workshop you will be able to:
 **Expected time:** ~55–90 minutes total (split into shorter sessions if needed).
 
 **Required reading (come prepared so we can spend class time building/testing):**
-- Read: [../../README.md](../../README.md) (overview + safety + battery cautions).
-- Read: this document [ws3.md](ws3.md) (flow + what happens in class).
-- Read: [dc_motor.md](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
+- [README.md](../../README.md) (overview + safety + battery cautions).
+- This document [ws3.md](ws3.md) (flow + what happens in class).
+- [dc_motor.md](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 3 Quiz)][1] covering battery/power safety, H-bridge/PWM mapping, encoder direction awareness, and the WS3 state-machine transitions.
 
