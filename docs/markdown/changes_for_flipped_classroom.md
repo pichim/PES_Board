@@ -460,10 +460,9 @@ Solutions:
    ## Q4 (in class)
    You want smoother, bounded-acceleration motion before running the can-crusher state machine. What should you do?  
 
-   - A) Increase PWM frequency to smooth torque ripple  
-   - B) Enable the motion planner and reduce the main loop period  
-   - C) Enable the motion planner and limit max acceleration  
-   - D) Clamp the target rotation range to a smaller interval
+   - A) Enable the motion planner and reduce the main loop period  
+   - B) Enable the motion planner and limit max acceleration  
+   - C) Clamp the target rotation range to a smaller interval
 
    ## Q5
    In WS3 FORWARD state, which condition should send the system to EMERGENCY?
@@ -476,10 +475,9 @@ Solutions:
    ## Q6 (in class)
    After an EMERGENCY stop and USER-button reset, why do we reset motion-planner internal state (position/velocity) and re-enable it?  
 
-   - A) To reflash the motor driver configuration after an emergency stop  
-   - B) To avoid stale planner states and ensure predictable next motion cycle  
-   - C) To re-zero the encoder count to prevent wraparound
-   - D) To increase the PWM frequency for smoother motion
+   - A) To avoid stale planner states and ensure predictable next motion cycle  
+   - B) To re-zero the encoder count to prevent wraparound
+   - C) To increase the PWM frequency for smoother motion
 
    ## Q7
    A 78:1 geared DC motor with encoder has 48 CPR (counts per revolution) at the motor shaft. Including the gear reduction, how many encoder counts occur for one complete rotation of the output shaft (driven load)?
@@ -502,9 +500,9 @@ Solutions:
 - Q1: **B**  
 - Q2: **B**  
 - Q3: **A, B, E**  
-- Q4: **C**  
+- Q4: **B**  
 - Q5: **C**  
-- Q6: **B**  
+- Q6: **A**  
 - Q7: **C**  
 - Q8: **A**
 
