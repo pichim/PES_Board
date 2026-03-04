@@ -1,0 +1,238 @@
+[OutputJobFile]
+Version=1.0
+Caption=
+Description=
+VaultGUID=
+ItemGUID=
+ItemHRID=
+RevisionGUID=
+RevisionId=
+VaultHRID=
+AutoItemHRID=
+NextRevId=
+FolderGUID=
+LifeCycleDefinitionGUID=
+RevisionNamingSchemeGUID=
+
+[OutputGroup1]
+Name=PES_BOARD_V2023.OutJob
+Description=
+TargetOutputMedium=PDF
+VariantName=[No Variations]
+VariantScope=0
+CurrentConfigurationName=
+TargetPrinter=Virtual Printer
+PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
+OutputMedium1=Print Job
+OutputMedium1_Type=Printer
+OutputMedium1_Printer=
+OutputMedium1_PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
+OutputMedium2=PDF
+OutputMedium2_Type=Publish
+OutputMedium3=Folder Structure
+OutputMedium3_Type=GeneratedFiles
+OutputMedium4=Video
+OutputMedium4_Type=Multimedia
+OutputType1=PCB Print
+OutputName1=PCB Prints
+OutputCategory1=Documentation
+OutputDocumentPath1=PES_BOARD_V2023.PcbDoc
+OutputVariantName1=
+OutputEnabled1=0
+OutputEnabled1_OutputMedium1=0
+OutputEnabled1_OutputMedium2=0
+OutputEnabled1_OutputMedium3=0
+OutputEnabled1_OutputMedium4=0
+OutputDefault1=0
+PageOptions1=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=6.81|XCorrection=1.00|YCorrection=1.00|PrintKind=2|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
+Configuration1_Name1=OutputConfigurationParameter1
+Configuration1_Item1=DesignatorDisplayMode=Physical|PrintArea=SpecificArea|PrintAreaLowerLeftCornerX=164375039|PrintAreaLowerLeftCornerY=160205591|PrintAreaUpperRightCornerX=181280551|PrintAreaUpperRightCornerY=170308110|Record=PcbPrintView|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name2=OutputConfigurationParameter2
+Configuration1_Item2=IncludeBottomLayerComponents=True|IncludeMultiLayerComponents=True|IncludeTopLayerComponents=True|IncludeViewports=True|Index=0|Mirror=False|Name=Multilayer Composite Print|PadNumberFontSize=14|Record=PcbPrintOut|ShowHoles=False|ShowPadNets=False|ShowPadNumbers=False|SubstituteFonts=False|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name3=OutputConfigurationParameter3
+Configuration1_Item3=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=TopOverlay|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name4=OutputConfigurationParameter4
+Configuration1_Item4=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=TopLayer|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name5=OutputConfigurationParameter5
+Configuration1_Item5=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=BottomLayer|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name6=OutputConfigurationParameter6
+Configuration1_Item6=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=MultiLayer|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name7=OutputConfigurationParameter7
+Configuration1_Item7=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=BottomOverlay|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name8=OutputConfigurationParameter8
+Configuration1_Item8=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical1|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name9=OutputConfigurationParameter9
+Configuration1_Item9=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical2|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name10=OutputConfigurationParameter10
+Configuration1_Item10=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical5|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name11=OutputConfigurationParameter11
+Configuration1_Item11=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical7|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name12=OutputConfigurationParameter12
+Configuration1_Item12=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical8|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name13=OutputConfigurationParameter13
+Configuration1_Item13=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical9|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name14=OutputConfigurationParameter14
+Configuration1_Item14=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical11|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name15=OutputConfigurationParameter15
+Configuration1_Item15=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical13|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+Configuration1_Name16=OutputConfigurationParameter16
+Configuration1_Item16=CArc=Full|CFill=Full|Comment=Full|Coordinate=Full|CPad=Full|CRegion=Full|CText=Full|CTrack=Full|CVia=Full|Designator=Full|Dimension=Full|DLayer1=TopLayer|DLayer2=BottomLayer|FArc=Full|FFill=Full|FPad=Full|FRegion=Full|FText=Full|FTrack=Full|FVia=Full|Layer=Mechanical15|Polygon=Full|PrintOutIndex=0|Record=PcbPrintLayer|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+PcbPrintPreferences1=
+OutputType2=BOM_PartType
+OutputName2=Copy of Bill of Materials
+OutputCategory2=Report
+OutputDocumentPath2=PES_BOARD_V2023.BomDoc
+OutputVariantName2=
+OutputEnabled2=0
+OutputEnabled2_OutputMedium1=0
+OutputEnabled2_OutputMedium2=0
+OutputEnabled2_OutputMedium3=1
+OutputEnabled2_OutputMedium4=0
+OutputDefault2=0
+PageOptions2=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
+Configuration2_Name1=ColumnNameFormat
+Configuration2_Item1=CaptionAsName
+Configuration2_Name2=General
+Configuration2_Item2=OpenExported=False|AddToProject=False|ReportBOMViolationsInMessages=False|ForceFit=False|NotFitted=False|Database=False|DatabasePriority=False|IncludePcbData=False|IncludeVaultData=False|IncludeCloudData=False|IncludeDocumentData=True|IncludeAlternatives=False|ShowExportOptions=True|TemplateFilename=|TemplateVaultGuid=|TemplateItemGuid=|TemplateRevisionGuid=|BatchMode=5|FormWidth=1200|FormHeight=710|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=USD|SolutionsPerItem=1|SuppliersPerSolution=1|ViewType=0|UseDirectApi=False|BomSetName=
+Configuration2_Name3=GroupOrder
+Configuration2_Item3=Comment=True|Footprint=True
+Configuration2_Name4=SortOrder
+Configuration2_Item4=Designator=Up|Comment=Up|Footprint=Up
+Configuration2_Name5=VisibleOrder
+Configuration2_Item5=Comment=120|Description=120|Designator=120|Footprint=120|LibRef=120|Quantity=120
+OutputType3=Gerber X2
+OutputName3=Gerber X2 Files
+OutputCategory3=Fabrication
+OutputDocumentPath3=PES_BOARD_V2023.PcbDoc
+OutputVariantName3=
+OutputEnabled3=0
+OutputEnabled3_OutputMedium1=0
+OutputEnabled3_OutputMedium2=0
+OutputEnabled3_OutputMedium3=2
+OutputEnabled3_OutputMedium4=0
+OutputDefault3=0
+Configuration3_Name1=OutputConfigurationParameter1
+Configuration3_Item1=BoardID=QRNDHOAD|FileComment= |FileSubject=Autodetect|GenerateDRCRulesFile=False|GenerateReports=True|GerberUnit=Metric|IncludeUnconnectedMidLayerPads=True|MergePadAndRegion=False|MinusApertureTolerance=50|NumberOfDecimals=5|OptimizeChangeLocationCommands=True|OutputFormat=Single|PlotBackDrillingPairs=False|PlotBlindViasPairs=False|PlotBoardProfile=True|PlotBoardProfileFileName= |PlotCounterHolesPairs=False|PlotDrillDrawingPair0_Backdrill=False|PlotDrillDrawingPair0_Checked=True|PlotDrillDrawingPair0_DrillType=Regular|PlotDrillDrawingPair0_FileName= |PlotDrillDrawingPair0_HighLayer=Bottom Layer|PlotDrillDrawingPair0_LowLayer=Top Layer|PlotDrillDrawingPairs=False|PlotDrillGuidePair0_Backdrill=False|PlotDrillGuidePair0_Checked=True|PlotDrillGuidePair0_DrillType=Regular|PlotDrillGuidePair0_FileName= |PlotDrillGuidePair0_HighLayer=Bottom Layer|PlotDrillGuidePair0_LowLayer=Top Layer|PlotDrillGuidePairs=False|PlotMicroViasPairs=False|PlotNPTHPair0_Backdrill=False|PlotNPTHPair0_Checked=True|PlotNPTHPair0_DrillType=Regular|PlotNPTHPair0_FileName= |PlotNPTHPair0_HighLayer=Top Layer|PlotNPTHPair0_LowLayer=Bottom Layer|PlotNPTHPairs=False|PlotPTHPair0_Backdrill=False|PlotPTHPair0_Checked=True|PlotPTHPair0_DrillType=Regular|PlotPTHPair0_FileName= |PlotPTHPair0_HighLayer=Top Layer|PlotPTHPair0_LowLayer=Bottom Layer|PlotPTHPairs=False|PlotViaTypeDrillDrawingPairs=False|PlotViaTypeDrillGuidePairs=False|PlotViaTypeDrillPairs=False|PlotX2.Set=SerializeLayerHash.Version~2,ClassName~TPlotLayerStateArray,16777217~1,16842751~1,16973830~1,16973831~1,16973834~1,16973835~1,16973832~1,16973833~1,16908289~1,16908301~1,16908302~1,16908303~1,16908311~1,16908312~1,16908313~1,16973837~1,16973848~1,16973849~1|PlusApertureTolerance=50|Record=GerberX2View|Sorted=False|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+OutputType4=Pick Place
+OutputName4=Generates pick and place files
+OutputCategory4=Assembly
+OutputDocumentPath4=PES_BOARD_V2023.PcbDoc
+OutputVariantName4=
+OutputEnabled4=0
+OutputEnabled4_OutputMedium1=0
+OutputEnabled4_OutputMedium2=0
+OutputEnabled4_OutputMedium3=3
+OutputEnabled4_OutputMedium4=0
+OutputDefault4=0
+Configuration4_Name1=OutputConfigurationParameter1
+Configuration4_Item1=Record=PickPlaceView|Units=Metric|GenerateCSVFormat=True|GenerateTextFormat=False|ShowUnits=False|Separator=.|ExcludeFilterParam=False|IncludeVariations=False|IncludeStandardNoBOM=True|Filter= |FilterActive=False|YFlip=False|DifferentFootprints=False|Column#1=Name:Designator,Fixed:True,Metric:False,Visible:True,Sort:None,Position:0|Column#2=Name:Comment,Fixed:True,Metric:False,Visible:True,Sort:None,Position:1|Column#3=Name:Layer,Fixed:True,Metric:False,Visible:True,Sort:None,Position:2|Column#4=Name:Footprint,Fixed:True,Metric:False,Visible:True,Sort:None,Position:3|Column#5=Name:Footprint Description,Fixed:True,Metric:False,Visible:False,Sort:None,Position:4|Column#6=Name:Center-X,Fixed:True,Metric:True,Visible:True,Sort:None,Position:5|Column#7=Name:Center-Y,Fixed:True,Metric:True,Visible:True,Sort:None,Position:6|Column#8=Name:Rotation,Fixed:True,Metric:False,Visible:True,Sort:None,Position:7|Column#9=Name:Description,Fixed:True,Metric:False,Visible:True,Sort:None,Position:8|Column#10=Name:ComponentKind,Fixed:True,Metric:False,Visible:False,Sort:None,Position:9|Column#11=Name:Height,Fixed:True,Metric:True,Visible:False,Sort:None,Position:10|Column#12=Name:Ref-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:11|Column#13=Name:Ref-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:12|Column#14=Name:Pad-X,Fixed:True,Metric:True,Visible:False,Sort:None,Position:13|Column#15=Name:Pad-Y,Fixed:True,Metric:True,Visible:False,Sort:None,Position:14|Column#16=Name:Variation,Fixed:True,Metric:False,Visible:False,Sort:None,Position:15|Column#17=Name:Inductivity,Fixed:False,Metric:False,Visible:False,Sort:None,Position:41,Type:0|Column#18=Name:Resistance DC,Fixed:False,Metric:False,Visible:False,Sort:None,Position:80,Type:0|Column#19=Name:Min Logic Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:60,Type:0|Column#20=Name:Current peak,Fixed:False,Metric:False,Visible:False,Sort:None,Position:28,Type:0|Column#21=Name:Pitch,Fixed:False,Metric:False,Visible:False,Sort:None,Position:71,Type:0|Column#22=Name:Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:27,Type:0|Column#23=Name:Resolution,Fixed:False,Metric:False,Visible:False,Sort:None,Position:81,Type:0|Column#24=Name:Min Power Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:62,Type:0|Column#25=Name:Sensor Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:83,Type:0|Column#26=Name:Overall Contact Length,Fixed:False,Metric:False,Visible:False,Sort:None,Position:66,Type:0|Column#27=Name:Case Code (Metric),Fixed:False,Metric:False,Visible:False,Sort:None,Position:19,Type:0|Column#28=Name:Termination Length,Fixed:False,Metric:False,Visible:False,Sort:None,Position:88,Type:0|Column#29=Name:Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:92,Type:0|Column#30=Name:Input Noise (1/sqr(Hz)),Fixed:False,Metric:False,Visible:False,Sort:None,Position:43,Type:0|Column#31=Name:Channels,Fixed:False,Metric:False,Visible:False,Sort:None,Position:21,Type:0|Column#32=Name:Wavelength,Fixed:False,Metric:False,Visible:False,Sort:None,Position:94,Type:0|Column#33=Name:Min Supply Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:63,Type:0|Column#34=Name:Frequency,Fixed:False,Metric:False,Visible:False,Sort:None,Position:34,Type:0|Column#35=Name:Contact Form,Fixed:False,Metric:False,Visible:False,Sort:None,Position:25,Type:0|Column#36=Name:Power,Fixed:False,Metric:False,Visible:False,Sort:None,Position:74,Type:0|Column#37=Name:Max Out Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:55,Type:0|Column#38=Name:Mounting Technology,Fixed:False,Metric:False,Visible:False,Sort:None,Position:64,Type:0|Column#39=Name:Max In Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:52,Type:0|Column#40=Name:Technology,Fixed:False,Metric:False,Visible:False,Sort:None,Position:86,Type:0|Column#41=Name:Gender,Fixed:False,Metric:False,Visible:False,Sort:None,Position:38,Type:0|Column#42=Name:Case/Package,Fixed:False,Metric:False,Visible:False,Sort:None,Position:20,Type:0|Column#43=Name:Illuminated,Fixed:False,Metric:False,Visible:False,Sort:None,Position:40,Type:0|Column#44=Name:Mating Length,Fixed:False,Metric:False,Visible:False,Sort:None,Position:50,Type:0|Column#45=Name:Pins,Fixed:False,Metric:False,Visible:False,Sort:None,Position:70,Type:0|Column#46=Name:Max Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:58,Type:0|Column#47=Name:GBW,Fixed:False,Metric:False,Visible:False,Sort:None,Position:37,Type:0|Column#48=Name:Ihold,Fixed:False,Metric:False,Visible:False,Sort:None,Position:39,Type:0|Column#49=Name:Resistance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:79,Type:0|Column#50=Name:Max Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:51,Type:0|Column#51=Name:Max Power Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:56,Type:0|Column#52=Name:Itrip,Fixed:False,Metric:False,Visible:False,Sort:None,Position:48,Type:0|Column#53=Name:Tolerance,Fixed:False,Metric:False,Visible:False,Sort:None,Position:89,Type:0|Column#54=Name:Actuation,Fixed:False,Metric:False,Visible:False,Sort:None,Position:16,Type:0|Column#55=Name:Forward Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:33,Type:0|Column#56=Name:Rated Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:78,Type:0|Column#57=Name:Max Logic Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:53,Type:0|Column#58=Name:Manufacturer,Fixed:False,Metric:False,Visible:False,Sort:None,Position:49,Type:0|Column#59=Name:Input Offset Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:44,Type:0|Column#60=Name:Quiescent Current / Ch,Fixed:False,Metric:False,Visible:False,Sort:None,Position:75,Type:0|Column#61=Name:Rail-to-Rail,Fixed:False,Metric:False,Visible:False,Sort:None,Position:76,Type:0|Column#62=Name:Size,Fixed:False,Metric:False,Visible:False,Sort:None,Position:84,Type:0|Column#63=Name:Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:90,Type:0|Column#64=Name:Min In Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:59,Type:0|Column#65=Name:Angle,Fixed:False,Metric:False,Visible:False,Sort:None,Position:17,Type:0|Column#66=Name:Current Rating,Fixed:False,Metric:False,Visible:False,Sort:None,Position:29,Type:0|Column#67=Name:Insulation Height,Fixed:False,Metric:False,Visible:False,Sort:None,Position:46,Type:0|Column#68=Name:Plating,Fixed:False,Metric:False,Visible:False,Sort:None,Position:73,Type:0|Column#69=Name:Direction,Fixed:False,Metric:False,Visible:False,Sort:None,Position:31,Type:0|Column#70=Name:Max Out Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:54,Type:0|Column#71=Name:Pitch Row,Fixed:False,Metric:False,Visible:False,Sort:None,Position:72,Type:0|Column#72=Name:Temperature Coefficient,Fixed:False,Metric:False,Visible:False,Sort:None,Position:87,Type:0|Column#73=Name:Family Name,Fixed:False,Metric:False,Visible:False,Sort:None,Position:32,Type:0|Column#74=Name:Rated Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:77,Type:0|Column#75=Name:Interface,Fixed:False,Metric:False,Visible:False,Sort:None,Position:47,Type:0|Column#76=Name:Peak Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:67,Type:0|Column#77=Name:Bus Type,Fixed:False,Metric:False,Visible:False,Sort:None,Position:18,Type:0|Column#78=Name:CMRR,Fixed:False,Metric:False,Visible:False,Sort:None,Position:22,Type:0|Column#79=Name:Peak Power,Fixed:False,Metric:False,Visible:False,Sort:None,Position:68,Type:0|Column#80=Name:Pin Mapping,Fixed:False,Metric:False,Visible:False,Sort:None,Position:69,Type:0|Column#81=Name:Value,Fixed:False,Metric:False,Visible:False,Sort:None,Position:91,Type:0|Column#82=Name:Color,Fixed:False,Metric:False,Visible:False,Sort:None,Position:23,Type:0|Column#83=Name:Contact Material,Fixed:False,Metric:False,Visible:False,Sort:None,Position:26,Type:0|Column#84=Name:Number of Positions,Fixed:False,Metric:False,Visible:False,Sort:None,Position:65,Type:0|Column#85=Name:Max Supply Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:57,Type:0|Column#86=Name:Input Bias Current,Fixed:False,Metric:False,Visible:False,Sort:None,Position:42,Type:0|Column#87=Name:Sample Rate,Fixed:False,Metric:False,Visible:False,Sort:None,Position:82,Type:0|Column#88=Name:Gain,Fixed:False,Metric:False,Visible:False,Sort:None,Position:36,Type:0|Column#89=Name:Function,Fixed:False,Metric:False,Visible:False,Sort:None,Position:35,Type:0|Column#90=Name:Voltage Rating,Fixed:False,Metric:False,Visible:False,Sort:None,Position:93,Type:0|Column#91=Name:Connection,Fixed:False,Metric:False,Visible:False,Sort:None,Position:24,Type:0|Column#92=Name:Dielectricum,Fixed:False,Metric:False,Visible:False,Sort:None,Position:30,Type:0|Column#93=Name:Min Out Voltage,Fixed:False,Metric:False,Visible:False,Sort:None,Position:61,Type:0|Column#94=Name:Inputs per Channel,Fixed:False,Metric:False,Visible:False,Sort:None,Position:45,Type:0|Column#95=Name:Slew Rate (V/us),Fixed:False,Metric:False,Visible:False,Sort:None,Position:85,Type:0|DocumentPath=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2023.PcbDoc
+OutputType5=Schematic Print
+OutputName5=Schematic Prints
+OutputCategory5=Documentation
+OutputDocumentPath5=
+OutputVariantName5=
+OutputEnabled5=1
+OutputEnabled5_OutputMedium1=0
+OutputEnabled5_OutputMedium2=1
+OutputEnabled5_OutputMedium3=0
+OutputEnabled5_OutputMedium4=0
+OutputDefault5=0
+PageOptions5=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=0|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PrintScaleName=PrintFitPageWidth|PaperKind=A3|PaperIndex=8
+Configuration5_Name1=OutputConfigurationParameter1
+Configuration5_Item1=Record=SchPrintView|ShowNoERC=True|ShowParamSet=True|ShowProbe=True|ShowBlanket=True|NoERCSymbolsToShow="Thin Cross","Thick Cross","Small Cross",Checkbox,Triangle|ShowNote=True|ShowNoteCollapsed=True|ShowOpenEnds=True|ExpandDesignator=True|ExpandNetLabel=False|ExpandPort=False|ExpandSheetNum=False|ExpandDocNum=False|PrintArea=0|PrintAreaRect.X1=0|PrintAreaRect.Y1=0|PrintAreaRect.X2=0|PrintAreaRect.Y2=0|DocumentPath=All SCH Documents
+
+[PublishSettings]
+OutputFilePath2=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2019.pdf
+ReleaseManaged2=0
+OutputBasePath2=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\
+OutputPathMedia2=
+OutputPathMediaValue2=
+OutputPathOutputer2=[Output Type]
+OutputPathOutputerPrefix2=
+OutputPathOutputerValue2=
+OutputFileName2=PES_BOARD_V2019.pdf
+OutputFileNameMulti2=
+UseOutputNameForMulti2=1
+OutputFileNameSpecial2=
+OpenOutput2=1
+PromptOverwrite2=1
+PublishMethod2=0
+ZoomLevel2=68
+FitSCHPrintSizeToDoc2=0
+FitPCBPrintSizeToDoc2=0
+GenerateNetsInfo2=1
+MarkPins2=1
+MarkNetLabels2=1
+MarkPortsId2=1
+GenerateTOC2=1
+ShowComponentParameters2=1
+GlobalBookmarks2=0
+PDFACompliance2=Disabled
+PDFVersion2=Default
+OutputFilePath3=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\Project Outputs for PES_BOARD_V2023\
+ReleaseManaged3=1
+OutputBasePath3=Project Outputs for PES_BOARD_V2023
+OutputPathMedia3=
+OutputPathMediaValue3=
+OutputPathOutputer3=[Output Type]
+OutputPathOutputerPrefix3=
+OutputPathOutputerValue3=
+OutputFileName3=
+OutputFileNameMulti3=
+UseOutputNameForMulti3=1
+OutputFileNameSpecial3=
+OpenOutput3=1
+OutputFilePath4=
+ReleaseManaged4=1
+OutputBasePath4=Project Outputs for PES_BOARD_V2023
+OutputPathMedia4=
+OutputPathMediaValue4=
+OutputPathOutputer4=[Output Type]
+OutputPathOutputerPrefix4=
+OutputPathOutputerValue4=
+OutputFileName4=
+OutputFileNameMulti4=
+UseOutputNameForMulti4=1
+OutputFileNameSpecial4=
+OpenOutput4=1
+PromptOverwrite4=1
+PublishMethod4=5
+ZoomLevel4=50
+FitSCHPrintSizeToDoc4=1
+FitPCBPrintSizeToDoc4=1
+GenerateNetsInfo4=1
+MarkPins4=1
+MarkNetLabels4=1
+MarkPortsId4=1
+MediaFormat4=Windows Media file (*.wmv,*.wma,*.asf)
+FixedDimensions4=1
+Width4=352
+Height4=288
+MultiFile4=0
+FramesPerSecond4=25
+FramesPerSecondDenom4=1
+AviPixelFormat4=7
+AviCompression4=MP42 MS-MPEG4 V2
+AviQuality4=100
+FFmpegVideoCodecId4=13
+FFmpegPixelFormat4=0
+FFmpegQuality4=80
+WmvVideoCodecName4=Windows Media Video V7
+WmvQuality4=80
+
+[GeneratedFilesSettings]
+RelativeOutputPath2=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\PES_BOARD_V2019.pdf
+OpenOutputs2=1
+RelativeOutputPath3=C:\Users\hurc\OneDrive - ZHAW\Dokumente\Altium\PES_BOARD_V2023\Project Outputs for PES_BOARD_V2023\
+OpenOutputs3=1
+AddToProject3=1
+TimestampFolder3=0
+UseOutputName3=0
+OpenODBOutput3=0
+OpenGerberOutput3=0
+OpenNCDrillOutput3=0
+OpenIPCOutput3=0
+EnableReload3=0
+RelativeOutputPath4=
+OpenOutputs4=1
+

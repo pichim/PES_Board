@@ -111,76 +111,76 @@ Solutions:
 ## Q1
 Before changing wiring on the PES + Nucleo setup, what is the recommended state?
 
-- A) USB connected, PES switch ON, charger disconnected
-- B) All power sources disconnected, PES switch OFF
-- C) Only stop code execution in Mbed Studio
-- D) Keep board powered to verify live wiring
+- A) USB connected, PES switch ON, charger disconnected  
+- B) All power sources disconnected, PES switch OFF  
+- C) Only stop code execution in Mbed Studio  
+- D) Keep board powered to verify live wiring  
 
 ## Q2 (done in class)
 Why is a flow chart created before coding a robot task?
 
-- A) It removes the need for testing
-- B) It helps define states/transitions and catch logic issues early
-- C) It guarantees bug-free implementation
+- A) It removes the need for testing  
+- B) It helps define states/transitions and catch logic issues early  
+- C) It guarantees bug-free implementation  
 
 ## Q3
 What is the role of the USER button callback `toggle_do_execute_main_fcn()`?
 
-- A) It recalibrates the IR sensor each press
-- B) It toggles whether the main task executes (`do_execute_main_task`)
-- C) It changes the target board in Mbed Studio
-- D) It forces `while(true)` to stop
+- A) It recalibrates the IR sensor each press  
+- B) It toggles whether the main task executes (`do_execute_main_task`)  
+- C) It changes the target board in Mbed Studio  
+- D) It forces `while(true)` to stop  
 
 ## Q4
 If `main_task_period_ms = 20`, what is the intended loop rate?
 
-- A) 20 Hz
-- B) 25 Hz
-- C) 50 Hz
-- D) 100 Hz
+- A) 20 Hz  
+- B) 25 Hz  
+- C) 50 Hz  
+- D) 100 Hz  
 
 ## Q5 (in class)
 `AnalogIn.read()` returns `0.0...1.0`. What converts this to millivolts as used in the workshop?
 
-- A) `ir_mV = read()*1000`
-- B) `ir_mV = read()*3.3*1000`
-- C) `ir_mV = read()/3.3*1000`
+- A) `ir_mV = read()*1000`  
+- B) `ir_mV = read()*3.3*1000`  
+- C) `ir_mV = read()/3.3*1000`  
 
 ## Q6
 Why must calibration points stay within the specific sensor’s valid range (and be denser near minimum distance)?
 
-- A) Because outside-range readings can saturate or be undefined, and the response is steep near the minimum so you need more points for an accurate mapping
-- B) Because `AnalogIn` stops working above 2.0 V, so only in-range points are readable
-- C) Because the analog readout is most stable in the middle of the range, so edge samples should be avoided
-- D) Because Mbed Studio clamps out-of-range values to 0.0 automatically during calibration
+- A) Because outside-range readings can saturate or be undefined, and the response is steep near the minimum so you need more points for an accurate mapping  
+- B) Because `AnalogIn` stops working above 2.0 V, so only in-range points are readable  
+- C) Because the analog readout is most stable in the middle of the range, so edge samples should be avoided  
+- D) Because Mbed Studio clamps out-of-range values to 0.0 automatically during calibration  
 
 ## Q7
 The IR sensor has a valid range from 12 cm to 60 cm. During calibration, at 12 cm the sensor reads 2850 mV, and at 60 cm it reads 850 mV. A student creates a linear mapping function. If the sensor currently reads 2050 mV, what distance (in cm) does the mapping function return?
 
-- A) ~19 cm
-- B) ~25 cm
-- C) ~31 cm
-- D) ~44 cm
+- A) ~19 cm  
+- B) ~25 cm  
+- C) ~31 cm  
+- D) ~44 cm  
 
 ## Q8
 To reduce noise, a student averages three consecutive IR sensor readings: 2050 mV, 2045 mV, 2055 mV (read at slightly different distances). When the average is passed through the linear calibration mapping from Q7, what distance (in cm) is returned?
 
-- A) ~27 cm
-- B) ~29 cm
-- C) ~31 cm
-- D) ~33 cm
+- A) ~27 cm  
+- B) ~29 cm  
+- C) ~31 cm  
+- D) ~33 cm  
 
 ---
 
 ## Answer Key
 
-- Q1: **B**
-- Q2: **B**
-- Q3: **B**
-- Q4: **C**
-- Q5: **C**
-- Q6: **A**
-- Q7: **C**
+- Q1: **B**  
+- Q2: **B**  
+- Q3: **B**  
+- Q4: **C**  
+- Q5: **B**  
+- Q6: **A**  
+- Q7: **C**  
 - Q8: **C**
 
 ---
@@ -283,76 +283,76 @@ Solutions:
 ## Q1
 In the WS2 intended state-machine logic, what transition should happen from `EXECUTION`?
 
-- A) Out-of-range distance → `SLEEP`; mechanical button event → `EMERGENCY`
-- B) Out-of-range distance → `EMERGENCY`; mechanical button event → `SLEEP`
-- C) Any invalid read → `INITIAL`
-- D) Mechanical button event → `INITIAL` directly
+- A) Out-of-range distance → `SLEEP`; mechanical button event → `EMERGENCY`  
+- B) Out-of-range distance → `EMERGENCY`; mechanical button event → `SLEEP`  
+- C) Any invalid read → `INITIAL`  
+- D) Mechanical button event → `INITIAL` directly  
 
 ## Q2
 The mechanical button is wired to `PC_5` and `GND`, and the input uses `PullUp`. Which condition correctly detects a pressed button?
 
-- A) `if (mechanical_button.read())` because pressed = HIGH
-- B) `if (!mechanical_button.read())` because pressed pulls the pin LOW
-- C) `if (mechanical_button.read() > 0.5f)` because it is analog
-- D) `if (mechanical_button == BUTTON1)` because `PC_5` mirrors USER button
+- A) `if (mechanical_button.read())` because pressed = HIGH  
+- B) `if (!mechanical_button.read())` because pressed pulls the pin LOW  
+- C) `if (mechanical_button.read() > 0.5f)` because it is analog  
+- D) `if (mechanical_button == BUTTON1)` because `PC_5` mirrors USER button  
 
 ## Q3 (in class)
 What is the purpose of servo calibration (`calibratePulseMinMax`) before normal operation?
 
-- A) It sets servo-specific safe min/max pulse mapping so normalized commands are meaningful
-- B) It converts servo commands directly to degrees
+- A) It sets servo-specific safe min/max pulse mapping so normalized commands are meaningful  
+- B) It converts servo commands directly to degrees  
 - C) It compensates for gearbox backlash so midpoints are mechanically precise
 
 ## Q4 (in class)
 In the ultrasonic driver workflow, what does `us_sensor.read()` returning `-1.0f` mean?
 
-- A) The object is exactly at -1 cm
-- B) The sensor is still settling after a trigger and is not ready to report yet
-- C) No new valid measurement is currently available
+- A) The object is exactly at -1 cm  
+- B) The sensor is still settling after a trigger and is not ready to report yet  
+- C) No new valid measurement is currently available  
 
 ## Q5
 What is the recommended handling for ultrasonic invalid reads in WS2?
 
-- A) Always assign the new value, including `-1.0f`
-- B) Assign `0.0f` whenever `-1.0f` appears
-- C) Update `us_distance_cm` only when the candidate read is valid (`> 0.0f`)
-- D) Stop the state machine on the first invalid read
+- A) Always assign the new value, including `-1.0f`  
+- B) Assign `0.0f` whenever `-1.0f` appears  
+- C) Update `us_distance_cm` only when the candidate read is valid (`> 0.0f`)  
+- D) Stop the state machine on the first invalid read  
 
 ## Q6
 Why should the ultrasonic sensor not be polled faster than about every `12000 µs` (as documented)?
 
-- A) Faster polling increases PWM resolution
-- B) Faster polling causes frequent invalid readings (`-1.0f`)
-- C) Faster polling shortens the echo timeout window so late echoes are missed
-- D) Faster polling forces the servo into emergency mode
+- A) Faster polling increases PWM resolution  
+- B) Faster polling causes frequent invalid readings (`-1.0f`)  
+- C) Faster polling shortens the echo timeout window so late echoes are missed  
+- D) Faster polling forces the servo into emergency mode  
 
 ## Q7
 A servo pulse-width mapping is calibrated: 1.0 ms pulse = 0°, 2.0 ms pulse = 180°. The servo command range is 0.0 (fully counterclockwise) to 1.0 (fully clockwise), and this is mapped linearly to pulse width. If you command 0.4 to the servo, what pulse width (in milliseconds) is approximately sent to the servo?
 
-- A) 1.2 ms
-- B) 1.4 ms
-- C) 1.6 ms
-- D) 1.8 ms
+- A) 1.2 ms  
+- B) 1.4 ms  
+- C) 1.6 ms  
+- D) 1.8 ms  
 
 ## Q8
 The ultrasonic sensor requires at least 12 milliseconds between successive valid readings. The WS2 state machine loop runs at 50 Hz (20 ms per cycle). If you poll the ultrasonic sensor once per cycle, how many **complete valid measurements** can you reliably obtain per second?
 
-- A) ~40 measurements/sec
-- B) ~50 measurements/sec
-- C) ~80 measurements/sec
-- D) ~100 measurements/sec
+- A) ~40 measurements/sec  
+- B) ~50 measurements/sec  
+- C) ~80 measurements/sec  
+- D) ~100 measurements/sec  
 
 ---
 
 ## Answer Key
 
-- Q1: **A**
-- Q2: **B**
-- Q3: **A**
-- Q4: **C**
-- Q5: **C**
-- Q6: **B**
-- Q7: **B**
+- Q1: **A**  
+- Q2: **B**  
+- Q3: **A**  
+- Q4: **C**  
+- Q5: **C**  
+- Q6: **B**  
+- Q7: **B**  
 - Q8: **B**
 
 ### In-class (4 × 45 min, same structure as WS1)
@@ -433,79 +433,77 @@ Solutions:
 ## Workshop 3 – Pre-class Quiz (6 MC Questions)
 
    ## Q1
-   You are preparing your WS3 setup. Which step is required to let the DC motor actually receive power from the PES board?
-
-   - A) Call `motor_M3.enableMotionPlanner();`
-   - B) Set `enable_motors = 1;` using `DigitalOut enable_motors(PB_ENABLE_DCMOTORS);`
-   - C) Call `motor_M3.setRotation(0.0f);`
+   You are preparing your WS3 setup. Which step is required to let the DC motor actually receive power from the PES board? 
+   
+   - A) Call `motor_M3.enableMotionPlanner();`  
+   - B) Set `enable_motors = 1;` using `DigitalOut enable_motors(PB_ENABLE_DCMOTORS);`  
+   - C) Call `motor_M3.setRotation(0.0f);`  
    - D) Set `servo_D0.enable();`
 
    ## Q2
    In WS3, which setup correctly enables closed-loop position control on M1?
 
-   - A) `FastPWM pwm_M1(PB_PWM_M1);` with encoder reads handled manually in the loop
-   - B) `DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);`
-   - C) `DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1);` and enable motors only
+   - A) `FastPWM pwm_M1(PB_PWM_M1);` with encoder reads handled manually in the loop  
+   - B) `DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);`  
+   - C) `DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1);` and enable motors only  
    - D) `DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1);` and call `setRotation()` only
 
-   ## Q3
+   ## Q3 
    During testing, you command a positive motion, but measured rotation goes negative. What are the most likely issues?
 
-   - A) Motor leads are reversed
-   - B) Encoder direction and motor direction are inconsistent with sign convention
-   - C) Motion planner acceleration is too low
+   - A) Motor leads are reversed  
+   - B) Encoder direction and motor direction are inconsistent with sign convention  
+   - C) Motion planner acceleration is too low  
    - D) `printf()` is too slow
    - E) Encoder channels A and B are swapped
 
    ## Q4 (in class)
-   You want smoother, bounded-acceleration motion before running the can-crusher state machine. What should you do?
+   You want smoother, bounded-acceleration motion before running the can-crusher state machine. What should you do?  
 
-   - A) Increase PWM frequency to smooth torque ripple
-   - B) Enable the motion planner and reduce the main loop period
-   - C) Enable the motion planner and limit max acceleration
-   - D) Clamp the target rotation range to a smaller interval
+   - A) Enable the motion planner and reduce the main loop period  
+   - B) Enable the motion planner and limit max acceleration  
+   - C) Clamp the target rotation range to a smaller interval
 
    ## Q5
    In WS3 FORWARD state, which condition should send the system to EMERGENCY?
 
-   - A) `motor_M3.getRotation() > 2.89f`
-   - B) `mechanical_button.read() == 0`
-   - C) `us_distance_cm < 4.5f`
+   - A) `motor_M3.getRotation() > 2.89f`  
+   - B) `mechanical_button.read() == 0`  
+   - C) `us_distance_cm < 4.5f`  
    - D) `us_distance_cm > 4.5f`
 
    ## Q6 (in class)
-   After an EMERGENCY stop and USER-button reset, why do we reset motion-planner internal state (position/velocity) and re-enable it?
+   After an EMERGENCY stop and USER-button reset, why do we reset motion-planner internal state (position/velocity) and re-enable it?  
 
-   - A) To reflash the motor driver configuration after an emergency stop
-   - B) To avoid stale planner states and ensure predictable next motion cycle
-   - C) To re-zero the encoder count to prevent wraparound
-   - D) To increase the PWM frequency for smoother motion
+   - A) To avoid stale planner states and ensure predictable next motion cycle  
+   - B) To re-zero the encoder count to prevent wraparound
+   - C) To increase the PWM frequency for smoother motion
 
    ## Q7
    A 78:1 geared DC motor with encoder has 48 CPR (counts per revolution) at the motor shaft. Including the gear reduction, how many encoder counts occur for one complete rotation of the output shaft (driven load)?
 
-   - A) 576 counts
-   - B) 1920 counts
-   - C) 3744 counts
+   - A) 576 counts  
+   - B) 1920 counts  
+   - C) 3744 counts  
    - D) 7488 counts
 
    ## Q8
    The 78:1 geared DC motor has a nominal no-load speed of 345 RPM at the motor shaft. What is the approximate maximum output shaft speed in RPM after the gear reduction?
 
-   - A) ~4.4 RPM
-   - B) ~8.8 RPM
-   - C) ~44 RPM
+   - A) ~4.4 RPM  
+   - B) ~8.8 RPM  
+   - C) ~44 RPM  
    - D) ~88 RPM
 
 ## Answer Key
 
-- Q1: **B**
-- Q2: **B**
-- Q3: **A, B, E**
-- Q4: **C**
-- Q5: **C**
-- Q6: **B**
-- Q7: **C**
+- Q1: **B**  
+- Q2: **B**  
+- Q3: **A, B, E**  
+- Q4: **B**  
+- Q5: **C**  
+- Q6: **A**  
+- Q7: **C**  
 - Q8: **A**
 
 ### In-class (4 × 45 min, same structure as WS1)

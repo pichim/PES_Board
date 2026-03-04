@@ -132,7 +132,7 @@ To monitor the ``servo_input`` variable value, it's necessary to include the fol
 printf("Pulse width: %f \n", servo_input);
 ```
 
-To activate the servo, use the following command. Place this command to enable the servo after the initiating the program execution with the **USER** button:
+To activate the servo, use the following command. Place this command to enable the servo after initiating the program execution with the **USER** button:
 
 ```cpp
 // enable the servos
