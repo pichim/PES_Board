@@ -216,4 +216,3 @@ This function allows the adjustment of the maximum acceleration during the movem
 ## Example
 
 - [Example Servo](../solutions/main_servo.cpp)
-
