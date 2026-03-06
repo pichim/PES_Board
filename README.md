@@ -186,9 +186,12 @@ The Nucleo-F446RE is a microcontroller development board featuring the STM32F446
     <i>Nucleo F446RE Overview</i>
 </p>
 
-Arm Mbed provides a dedicated platform with essential information about the development board. Here you can find technical specifications and the pinmap.
+Arm Mbed provides a dedicated platform with essential information about the development board.
+
+Here you can find technical specifications and the pinmap:
 
 - [Mbed ST-Nucleo-F446RE][0]
+- [Nucleo F446RE Mbed Pin Map](docs/markdown/mbed_nucleo_f446re_pin_map.md)
 
 ### PES Board
 
