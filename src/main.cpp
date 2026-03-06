@@ -5,6 +5,8 @@
 
 // drivers
 #include "DebounceIn.h"
+#include "FastPWM.h"
+#include "DCMotor.h"
 
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
@@ -15,7 +17,7 @@ bool do_reset_all_once = false;    // this variable is used to reset certain var
 DebounceIn user_button(BUTTON1);   // create DebounceIn to evaluate the user button
 void toggle_do_execute_main_fcn(); // custom function which is getting executed when user
                                    // button gets pressed, definition at the end
-
+float toggle_dir = 1.0f;
 // main runs as an own thread
 int main()
 {
@@ -39,6 +41,39 @@ int main()
 
     // --- adding variables and objects and applying functions starts here ---
 
+    // create object to enable power electronics for the dc motors
+    DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
+
+    // // motor M1
+    // FastPWM pwm_M1(PB_PWM_M1); // create FastPWM object to command motor M1
+
+    const float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
+                                     // 6.0f V if you only use one battery pack
+
+    // // motor M2
+    // const float gear_ratio_M2 = 78.125f; // gear ratio
+    // const float kn_M2 = 180.0f / 12.0f;  // motor constant [rpm/V]
+    // // it is assumed that only one motor is available, therefore
+    // // we use the pins from M1, so you can leave it connected to M1
+    // DCMotor motor_M2(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M2, kn_M2, voltage_max);
+    // // limit max. velocity to half physical possible velocity
+    // motor_M2.setMaxVelocity(motor_M2.getMaxPhysicalVelocity() * 0.5f);
+    // // enable the motion planner for smooth movements
+    // motor_M2.enableMotionPlanner();
+    // // limit max. acceleration to half of the default acceleration
+    // motor_M2.setMaxAcceleration(motor_M2.getMaxAcceleration() * 0.5f);
+
+    // motor M3
+    const float gear_ratio_M3 = 78.125f; // gear ratio
+    const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
+    // it is assumed that only one motor is available, therefore
+    // we use the pins from M1, so you can leave it connected to M1
+    DCMotor motor_M3(PB_PWM_M1, PB_DIR_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M3, kn_M3, voltage_max);
+    // enable the motion planner for smooth movement
+    motor_M3.enableMotionPlanner();
+    // limit max. velocity to half physical possible velocity
+    motor_M3.setMaxVelocity(motor_M3.getMaxPhysicalVelocity() * 0.5f);
+
     // start timer
     main_task_timer.start();
 
@@ -54,6 +89,13 @@ int main()
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
+
+            // enable hardwaredriver dc motors: 0 -> disabled, 1 -> enabled
+            enable_motors = 1;
+
+            // pwm_M1.write(0.75f); // apply 6V to the motor
+            // motor_M2.setVelocity(motor_M2.getMaxVelocity());
+            motor_M3.setRotation(toggle_dir*3.0f);
         } else {
             // the following code block gets executed only once
             if (do_reset_all_once) {
@@ -63,8 +105,13 @@ int main()
 
                 // reset variables and objects
                 led1 = 0;
+                enable_motors = 0;
+                toggle_dir = -1.0f*toggle_dir; // change direction for next time
             }
         }
+
+        // print to the serial terminal
+        printf("Motor position: %f\t Target: %f \n", motor_M3.getRotation(), motor_M3.getRotationTarget());
 
         // toggling the user led
         user_led = !user_led;
