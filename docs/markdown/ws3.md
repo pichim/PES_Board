@@ -12,8 +12,16 @@ We will discuss different control strategies for motor control, e.g., speed cont
 
 By the end of this workshop you will be able to:
 - Bring up a DC motor on the PES board, verify encoder direction, and reason about gear ratio/setpoint meaning.
-- Use closed-loop position control with the motion planner to execute bounded-acceleration moves.
+- Use closed-loop velocity and position control with the motion planner to execute bounded-acceleration moves.
 - Build a state machine (Initial → Sleep → Forward → Backward → Emergency) guarded by ultrasonic distance and a mechanical button.
+
+## Main file (main.cpp)
+
+If you have already made changes and run tests in `main.cpp`, you can find the original version here: [main.cpp](../solutions/main_base.cpp). It is recommended to start with the original version of `main.cpp` for the workshop.
+
+If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
+
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
 
 ## Before class (do this first)
 
