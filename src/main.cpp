@@ -5,6 +5,7 @@
 
 // drivers
 #include "DebounceIn.h"
+#include "Servo.h"
 
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
@@ -38,6 +39,14 @@ int main()
     DigitalOut led1(PB_9);
 
     // --- adding variables and objects and applying functions starts here ---
+    
+    // servo object
+    Servo servo_D0(PA_3);
+
+    // servo variables
+    float servo_input = 0.0f;
+    int servo_counter = 0;
+    const int loops_per_second = static_cast<int>(ceilf(1.0f / (0.001f * static_cast<float>(main_task_period_ms))));
 
     // start timer
     main_task_timer.start();
@@ -47,10 +56,27 @@ int main()
         main_task_timer.reset();
 
         // --- code that runs every cycle at the start goes here ---
+        
+        // print to serial monitor
+        printf("Pulse Width: %f \n", servo_input);
 
         if (do_execute_main_task) {
 
             // --- code that runs when the blue button was pressed goes here ---
+            
+            // enable servo
+            if (!servo_D0.isEnabled())
+                servo_D0.enable();
+
+            // command servo
+            servo_D0.setPulseWidth(servo_input);
+
+            // calculate servo input for next cycle
+            if ((servo_input < 1.0f) &&                     // constrain servo_input to be < 1.0f
+                (servo_counter % loops_per_second == 0) &&  // true if servo_counter is a multiple of loops_per_second
+                (servo_counter != 0))                       // avoid servo_counter = 0
+                servo_input += 0.0005f;
+            servo_counter++;
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
@@ -63,6 +89,8 @@ int main()
 
                 // reset variables and objects
                 led1 = 0;
+                servo_D0.disable();
+                servo_input = 0.0f;
             }
         }
 
