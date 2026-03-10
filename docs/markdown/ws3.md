@@ -29,8 +29,8 @@ Files stored in the `temp` folder will not be compiled. You can use it to keep d
 
 **Required reading (come prepared so we can spend class time building/testing):**
 - [README.md](../../README.md) (overview + safety + battery cautions).
-- This document [ws3.md](ws3.md) (flow + what happens in class).
-- [dc_motor.md](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
+- This document [Workshop 3](ws3.md) (flow + what happens in class).
+- [DC Motor](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 3 Quiz)][1] covering battery/power safety, H-bridge/PWM mapping, encoder direction awareness, and the WS3 state-machine transitions.
 
