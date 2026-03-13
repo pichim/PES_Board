@@ -93,7 +93,7 @@ public:
     /**
      * @brief Set the target velocity of the motor.
      *
-     * @param velocity The target velocity in units per second.
+     * @param velocity The target velocity in rotations per second.
      */
     void setVelocity(float velocity);
 
@@ -135,21 +135,21 @@ public:
     /**
      * @brief Get the current velocity target of the motor.
      *
-     * @return float The current velocity target in units per second.
+     * @return float The current velocity target in rotations per second.
      */
     float getVelocityTarget() const;
 
     /**
      * @brief Get the current velocity setpoint of the motor.
      *
-     * @return float The current velocity setpoint in units per second.
+     * @return float The current velocity setpoint in rotations per second.
      */
     float getVelocitySetpoint() const;
 
     /**
      * @brief Get the current velocity of the motor.
      *
-     * @return float The current velocity in units per second.
+     * @return float The current velocity in rotations per second.
      */
     float getVelocity() const;
 

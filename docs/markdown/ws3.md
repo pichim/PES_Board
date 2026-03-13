@@ -232,19 +232,19 @@ switch (robot_state) {
     }
 ```
 
-12. In the **FORWARD** state, include a command to execute 2.9f forward rotations and a condition that transitions to the **BACKWARD** state after reaching 2.85f revolutions. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
+12. In the **FORWARD** state, include a command to execute 1.5f forward rotations and a condition that transitions to the **BACKWARD** state after reaching 2.85f revolutions. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
 
 ```cpp
     case RobotState::FORWARD: {
-        // press is moving forward until it reaches 2.9f rotations,
+        // press is moving forward until it reaches 1.5f rotations,
         // when reaching the value go to BACKWARD
-        motor_M3.setRotation(2.9f); // setting this once would actually be enough
+        motor_M3.setRotation(1.5f); // setting this once would actually be enough
         // if the distance from the sensor is less than 4.5f cm,
         // we transition to the EMERGENCY state
         if (us_distance_cm < 4.5f)
             robot_state = RobotState::EMERGENCY;
         // switching condition is slightly smaller for robustness
-        if (motor_M3.getRotation() > 2.89f)
+        if (motor_M3.getRotation() > 1.49f)
             robot_state = RobotState::BACKWARD;
 
         break;
