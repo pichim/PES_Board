@@ -2,7 +2,7 @@
 #define PES_BOARD_PIN_MAP_
 
 // PES-Board Pin Names
-#define NEW_PES_BOARD_VERSION
+//#define NEW_PES_BOARD_VERSION
 #ifdef NEW_PES_BOARD_VERSION
     // Analog inputs 
     #define PB_A0 PC_3
@@ -78,7 +78,8 @@
     #define PB_CAN_RD PA_11
 
     // User button
-    #define PB_USER_BUTTON PH_0
+    //#define PB_USER_BUTTON PH_0  // Do not use: PH0 is the HSE oscillator input
+    #define PB_MECH_BUTTON PC_11
 #else
     // Analog Inputs
     #define PB_A0 PC_2
@@ -118,6 +119,10 @@
 
     #define PB_UNUSED_UART_TX PB_10
     #define PB_UNUSED_UART_RX PC_5
+
+    // User button
+    //#define PB_USER_BUTTON PH_0 // Do not use: PH_0 is the HSE oscillator input
+    #define PB_MECH_BUTTON PB_10
    
 #endif
 

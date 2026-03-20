@@ -84,14 +84,15 @@ int main()
     DigitalOut led2(PB_8);
 
     // mechanical button
-    DigitalIn mechanical_button(PC_5); // create DigitalIn object to evaluate mechanical button, you
-                                       // need to specify the mode for proper usage, see below
-    mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that there
-                                       // is a defined potential
+    // used to be PC_5
+    // DigitalIn mechanical_button(PB_MECH_BUTTON); // create DigitalIn object to evaluate mechanical button, you 
+    //                                    // need to specify the mode for proper usage, see below
+    // mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that there
+    //                                    // is a defined potential
 
     // ir distance sensor with average filter and implicit calibration
     float ir_distance_avg = 0.0f;
-    IRSensor ir_sensor(PC_2);                      // before the calibration the read function will return the averaged mV value
+    IRSensor ir_sensor(PB_A2);                      // before the calibration the read function will return the averaged mV value
     ir_sensor.setCalibration(2.574e+04f, -29.37f); // after the calibration the read function will return the calibrated value
 
     ColorSensor colorSensor(PB_3);
@@ -158,8 +159,11 @@ int main()
     // https://www.pololu.com/product/3475/specs
     const float gear_ratio_M1 = 31.25f; // gear ratio
     const float kn_M1 = 450.0f / 12.0f; // motor constant [rpm/V]
-    // DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max); // old PES board // ToDo: Remove comment
-    DCMotor motor_M1(PB_PWM_M1, PB_DIR_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max);
+    #ifndef NEW_PES_BOARD_VERSION
+        DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max); // old PES board // ToDo: Remove comment
+    #else
+        DCMotor motor_M1(PB_PWM_M1, PB_DIR_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max);
+    #endif
     // enable the motion planner for smooth movement
     motor_M1.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -171,7 +175,11 @@ int main()
     // https://www.pololu.com/product/3485/specs
     const float gear_ratio_M2 = 488.28125f; // gear ratio
     const float kn_M2 = 28.0f / 12.0f;      // motor constant [rpm/V]
-    DCMotor motor_M2(PB_PWM_M2, PB_DIR_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max);
+    #ifndef NEW_PES_BOARD_VERSION
+        DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max); // old PES board // ToDo: Remove comment
+    #else
+        DCMotor motor_M2(PB_PWM_M2, PB_DIR_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max);
+    #endif
     // enable the motion planner for smooth movement
     motor_M2.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -183,7 +191,11 @@ int main()
     // https://www.pololu.com/product/3477/specs
     const float gear_ratio_M3 = 78.125f; // gear ratio
     const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
-    DCMotor motor_M3(PB_PWM_M3, PB_DIR_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max);
+    #ifndef NEW_PES_BOARD_VERSION
+        DCMotor motor_M3(PB_PWM_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max); // old PES board // ToDo: Remove comment
+    #else
+        DCMotor motor_M3(PB_PWM_M3, PB_DIR_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max);
+    #endif
     // enable the motion planner for smooth movement
     motor_M3.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -273,7 +285,8 @@ int main()
                     break;
                 }
                 case RobotState::WAIT: {
-                    if (mechanical_button.read()) {
+                    // if (mechanical_button.read()) {
+                    if (true) {
                         led2 = 1;
 
                         servo_D0.setPulseWidth(1.0f);
