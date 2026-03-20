@@ -158,7 +158,8 @@ int main()
     // https://www.pololu.com/product/3475/specs
     const float gear_ratio_M1 = 31.25f; // gear ratio
     const float kn_M1 = 450.0f / 12.0f; // motor constant [rpm/V]
-    DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max);
+    // DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max); // old PES board // ToDo: Remove comment
+    DCMotor motor_M1(PB_PWM_M1, PB_DIR_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max);
     // enable the motion planner for smooth movement
     motor_M1.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -170,7 +171,7 @@ int main()
     // https://www.pololu.com/product/3485/specs
     const float gear_ratio_M2 = 488.28125f; // gear ratio
     const float kn_M2 = 28.0f / 12.0f;      // motor constant [rpm/V]
-    DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max);
+    DCMotor motor_M2(PB_PWM_M2, PB_DIR_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max);
     // enable the motion planner for smooth movement
     motor_M2.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -182,7 +183,7 @@ int main()
     // https://www.pololu.com/product/3477/specs
     const float gear_ratio_M3 = 78.125f; // gear ratio
     const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
-    DCMotor motor_M3(PB_PWM_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max);
+    DCMotor motor_M3(PB_PWM_M3, PB_DIR_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max);
     // enable the motion planner for smooth movement
     motor_M3.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
