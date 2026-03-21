@@ -29,11 +29,11 @@ Files stored in the `temp` folder will not be compiled. You can use it to keep d
 
 **Required reading (come prepared so we can spend class time building/testing):**
 - [README.md](../../README.md) (overview + safety + board structure).
-- [course_setup.md](course_setup.md) (GitHub + Mbed Studio import/build/flash basics).
-- [tips.md](tips.md) (programming hygiene + debugging basics).
-- [main_description.md](main_description.md) (loop, USER button gating, structure of `main.cpp`).
-- [ir_sensor.md](ir_sensor.md) (intro, range table, wiring, calibration overview).
-- This document [ws1.md](ws1.md) (flow + what happens in class).
+- [Course Setup](course_setup.md) (GitHub + Mbed Studio import/build/flash basics).
+- [Tips](tips.md) (programming hygiene + debugging basics).
+- [Main file description](main_description.md) (loop, USER button gating, structure of `main.cpp`).
+- [Infrared Distance Sensor](ir_sensor.md) (intro, range table, wiring, calibration overview).
+- This document [Workshop 1](ws1.md) (flow + what happens in class).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 1 Quiz)][1] so we know you can read wiring rules and analog scaling.
 
