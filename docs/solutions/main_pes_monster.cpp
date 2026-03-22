@@ -41,13 +41,13 @@
 
 #define RUN_REALTIME_THREAD_EXAMPLE false
 
-bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
+bool do_execute_main_task = true; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
 bool do_reset_all_once = false;    // this variable is used to reset certain variables and objects and
                                    // shows how you can run a code segment only once
 
 // objects for user button (blue button) handling on nucleo board
-DebounceIn user_button(BUTTON1);   // create DebounceIn to evaluate the user button
+// DebounceIn user_button(BUTTON1);   // create DebounceIn to evaluate the user button
 void toggle_do_execute_main_fcn(); // custom function which is getting executed when user
                                    // button gets pressed, definition at the end
 
@@ -63,7 +63,7 @@ int main()
     } robot_state = RobotState::INITIAL;
 
     // attach button fall function address to user button object
-    user_button.fall(&toggle_do_execute_main_fcn);
+    // user_button.fall(&toggle_do_execute_main_fcn);
 
     // while loop gets executed every main_task_period_ms milliseconds, this is a
     // simple approach to repeatedly execute main
@@ -78,24 +78,29 @@ int main()
     // additional led
     // create DigitalOut object to command extra led, you need to add an additional resistor, e.g. 220...500 Ohm
     // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
-    DigitalOut led1(PB_9);
+    DigitalOut led1(PB_STATUS_LED1);
 
     // --- adding variables and objects and applying functions starts here ---
-    DigitalOut led2(PB_8);
+    DigitalOut led2(PB_STATUS_LED2);
 
     // mechanical button
-    DigitalIn mechanical_button(PC_5); // create DigitalIn object to evaluate mechanical button, you
+    // used to be PC_5
+    DigitalIn mechanical_button(PB_MECH_BUTTON); // create DigitalIn object to evaluate mechanical button, you 
                                        // need to specify the mode for proper usage, see below
     mechanical_button.mode(PullUp);    // sets pullup between pin and 3.3 V, so that there
                                        // is a defined potential
 
     // ir distance sensor with average filter and implicit calibration
     float ir_distance_avg = 0.0f;
-    IRSensor ir_sensor(PC_2);                      // before the calibration the read function will return the averaged mV value
+    IRSensor ir_sensor(PB_A2);                      // before the calibration the read function will return the averaged mV value
     ir_sensor.setCalibration(2.574e+04f, -29.37f); // after the calibration the read function will return the calibrated value
 
-    ColorSensor colorSensor(PB_3);
-    colorSensor.switchLed(OFF);
+    // Extra constructors to test the other analog inputs
+    // IRSensor ir_sensor2(PB_A0);
+    // IRSensor ir_sensor3(PB_A1);
+
+    // ColorSensor colorSensor(PB_3);
+    // colorSensor.switchLed(OFF);
 
     // real time thread template
     RealTimeThread real_time_thread(1000000);
@@ -130,7 +135,7 @@ int main()
     // modelcraft RS2 MG/BB
     float servo_D1_ang_min = 0.0325f;
     float servo_D1_ang_max = 0.1250f;
-    // reely S0090
+    // // reely S0090
     float servo_D2_ang_min = 0.0325f;
     float servo_D2_ang_max = 0.1175f;
 
@@ -158,8 +163,11 @@ int main()
     // https://www.pololu.com/product/3475/specs
     const float gear_ratio_M1 = 31.25f; // gear ratio
     const float kn_M1 = 450.0f / 12.0f; // motor constant [rpm/V]
-    // DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max); // old PES board // ToDo: Remove comment
-    DCMotor motor_M1(PB_PWM_M1, PB_DIR_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max);
+    #ifndef NEW_PES_BOARD_VERSION
+        DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max); // old PES board // ToDo: Remove comment
+    #else
+        DCMotor motor_M1(PB_PWM_M1, PB_DIR_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio_M1, kn_M1, voltage_max);
+    #endif
     // enable the motion planner for smooth movement
     motor_M1.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -171,7 +179,11 @@ int main()
     // https://www.pololu.com/product/3485/specs
     const float gear_ratio_M2 = 488.28125f; // gear ratio
     const float kn_M2 = 28.0f / 12.0f;      // motor constant [rpm/V]
-    DCMotor motor_M2(PB_PWM_M2, PB_DIR_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max);
+    #ifndef NEW_PES_BOARD_VERSION
+        DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max); // old PES board // ToDo: Remove comment
+    #else
+        DCMotor motor_M2(PB_PWM_M2, PB_DIR_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio_M2, kn_M2, voltage_max);
+    #endif
     // enable the motion planner for smooth movement
     motor_M2.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -183,7 +195,11 @@ int main()
     // https://www.pololu.com/product/3477/specs
     const float gear_ratio_M3 = 78.125f; // gear ratio
     const float kn_M3 = 180.0f / 12.0f;  // motor constant [rpm/V]
-    DCMotor motor_M3(PB_PWM_M3, PB_DIR_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max);
+    #ifndef NEW_PES_BOARD_VERSION
+        DCMotor motor_M3(PB_PWM_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max); // old PES board // ToDo: Remove comment
+    #else
+        DCMotor motor_M3(PB_PWM_M3, PB_DIR_M3, PB_ENC_A_M3, PB_ENC_B_M3, gear_ratio_M3, kn_M3, voltage_max);
+    #endif
     // enable the motion planner for smooth movement
     motor_M3.enableMotionPlanner();
     // limit max. acceleration to half of the default acceleration
@@ -235,13 +251,13 @@ int main()
             // read analog input
 
             ir_distance_avg = ir_sensor.read();
-            colorSensor.switchLed(ON);
+            // colorSensor.switchLed(ON);
 
             // enable real time threads
-#if RUN_REALTIME_THREAD_EXAMPLE
-            real_time_thread.enable();
-            my_real_time_thread.enable();
-#endif
+            #if RUN_REALTIME_THREAD_EXAMPLE
+                real_time_thread.enable();
+                my_real_time_thread.enable();
+            #endif
 
             // read us sensor distance, only valid measurements will update us_distance_cm
             const float us_distance_cm_candidate = us_sensor.read();
@@ -274,6 +290,7 @@ int main()
                 }
                 case RobotState::WAIT: {
                     if (mechanical_button.read()) {
+                    // if (true) {
                         led2 = 1;
 
                         servo_D0.setPulseWidth(1.0f);
@@ -346,12 +363,12 @@ int main()
                 servo_D0.setPulseWidth(0.0f);
                 servo_D1.setPulseWidth(0.0f);
                 servo_D2.setPulseWidth(0.0f);
-                // enable_motors = 0; // do not disable motors for this specific example
+                enable_motors = 0; // do not disable motors for this specific example
                 motor_M1.setRotation(0.0f);
                 motor_M2.setRotation(0.0f);
                 motor_M3.setRotation(0.0f);
 
-                colorSensor.switchLed(OFF);
+                // colorSensor.switchLed(OFF);
             }
         }
 
@@ -361,8 +378,9 @@ int main()
         // --- code that runs every cycle at the end goes here ---
 
         // print to the serial terminal
-        printf("Color: %s, IR cm: %6.2f, US cm: %6.2f, R deg: %6.2f, P deg: %6.2f, Y deg: %6.2f, M1 rot: %6.2f, %6.2f, M2 rot: %6.2f, %6.2f, M3 rot: %6.2f, %6.2f \n",
-            colorSensor.getColorString(colorSensor.getColor()),
+        printf("IR cm: %6.2f, US cm: %6.2f, R deg: %6.2f, P deg: %6.2f, Y deg: %6.2f, M1 rot: %6.2f, %6.2f, M2 rot: %6.2f, %6.2f, M3 rot: %6.2f, %6.2f \n",
+        // printf("Color: %s, IR cm: %6.2f, US cm: %6.2f, R deg: %6.2f, P deg: %6.2f, Y deg: %6.2f, M1 rot: %6.2f, %6.2f, M2 rot: %6.2f, %6.2f, M3 rot: %6.2f, %6.2f \n",
+            // colorSensor.getColorString(colorSensor.getColor()),
             ir_distance_avg,
             us_distance_cm,
             imu_data.rpy(0) * (180.0f / M_PIf),
