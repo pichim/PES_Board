@@ -2,7 +2,7 @@
 #define PES_BOARD_PIN_MAP_
 
 // PES-Board Pin Names
-//#define NEW_PES_BOARD_VERSION
+#define NEW_PES_BOARD_VERSION
 #ifdef NEW_PES_BOARD_VERSION
     // Analog inputs 
     #define PB_A0 PC_3
@@ -14,7 +14,7 @@
     #define PB_D0 PA_4
     #define PB_D1 PB_0
     #define PB_D2 PA_15
-    #define PB_D3 PC_13
+    #define PB_D3 PC_13 // PB_D3 conflicts with the Nucleo F446RE blue user button. It cannot be used while the button is used.
 
     // DC-Motors
     #define PB_PWM_M1 PB_15
@@ -77,9 +77,13 @@
     #define PB_CAN_TD PA_12
     #define PB_CAN_RD PA_11
 
-    // User button
+    // User button (external. Not on PES Board) 
     //#define PB_USER_BUTTON PH_0  // Do not use: PH0 is the HSE oscillator input
-    #define PB_MECH_BUTTON PC_11
+    #define PB_MECH_BUTTON PC_11 // colides with PB_UNUSED_UART_RX
+
+    // User LEDs (external. Not on PES Board) 
+    #define PB_STATUS_LED1 PC_10 // colides with PB_UNUSED_UART_TX
+    #define PB_STATUS_LED2 PC_12 // colides with PB_UART5_TX
 #else
     // Analog Inputs
     #define PB_A0 PC_2
@@ -120,9 +124,13 @@
     #define PB_UNUSED_UART_TX PB_10
     #define PB_UNUSED_UART_RX PC_5
 
-    // User button
+    // User button (external. Not on PES Board) 
     //#define PB_USER_BUTTON PH_0 // Do not use: PH_0 is the HSE oscillator input
-    #define PB_MECH_BUTTON PB_10
+    #define PB_MECH_BUTTON PB_10 // collides with PB_UNUSED_UART_TX
+
+    // User LEDs (external. Not on PES Board) 
+    #define PB_STATUS_LED1 PB_9
+    #define PB_STATUS_LED2 PB_8
    
 #endif
 
