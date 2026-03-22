@@ -134,6 +134,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
         * [Stepper Motor](docs/markdown/stepper_motor.md)
         * [SD-Card](docs/markdown/sd_card_logger.md)
         * [Serial Stream](docs/markdown/serial_stream.md)
+        * [Color Sensor](docs/markdown/color_sensor.md)
 3. [Tips](#tips)
     * [Project Development](docs/markdown/tips.md#project-development)
     * [Programming](docs/markdown/tips.md#programming)
@@ -171,7 +172,7 @@ During the course, we will use the Nucleo-F446RE board from ST Microelectronics 
 >- <b>When working with hardware (connecting, reconnecting etc.), it is recommended that all power sources are disconnected. This is a general safety measure! So for us, the Nucleo is disconnected and the PES board **Power Switch** is **OFF** whenever we change something at the hardware setup.</b>
 >- <b>The USB cable should only be connected to the computer after the power switch has been switched on.</b>
 >- <b>Do not connect the charger when the battery packs are not connected, otherwise the PES board will be damaged.</b>
->- <b>Using the PES board with power ON and hardware running while connected to your computer/laptop happens at your own risk. There was a case where a student's laptop was damaged in the past.</b>
+>- <b>Using the PES board with power ON and hardware running while connected to your computer/laptop happens at your own risk.</b>
 >- <b>Various Nucleo boards, PES boards and even laptops have been damaged in the past, so make sure to stick to the rules above.</b>
 
 ### Nucleo F446RE
@@ -185,9 +186,12 @@ The Nucleo-F446RE is a microcontroller development board featuring the STM32F446
     <i>Nucleo F446RE Overview</i>
 </p>
 
-Arm Mbed provides a dedicated platform with essential information about the development board. Here you can find technical specifications and the pinmap.
+Arm Mbed provides a dedicated platform with essential information about the development board.
+
+Here you can find technical specifications and the pinmap:
 
 - [Mbed ST-Nucleo-F446RE][0]
+- [Nucleo F446RE Mbed Pin Map](docs/markdown/mbed_nucleo_f446re_pin_map.md)
 
 ### PES Board
 
@@ -209,7 +213,7 @@ The PES board is a hardware board with additional sensors, devices and power ele
 
 #### Batteries
 
-The kit includes two sets of 6V battery packs, which can be connected in series to provide 12 volts. The battery packs need to be connected to the back of the PES board. The picture below illustrates the proper battery connection required to get a total voltage of 12V.
+The kit includes two sets of 6V battery packs, which can be connected in series to provide 12V. The battery packs need to be connected to the back of the PES board. The picture below illustrates the proper battery connection required to get a total voltage of 12V.
 
 <p align="center">
     <img src="docs/images/battery_packs.png" alt="Battery Packs" width="600"/> </br>
@@ -218,15 +222,15 @@ The kit includes two sets of 6V battery packs, which can be connected in series 
 
 The batteries enable the board itself to be powered independently of the connection to the computer/laptop, eliminating the need for a connection via the Mini USB cable. The board continues to receive a stable 5V supply while offering the option to use up to 12V supply for the power electronics of the motors. To activate the external battery power, switch the slider on the PES board to the ON position.
 
-<b>Single battery pack</b> - if you are using a single battery pack, the remaining pins need to be bridged. If only 6 V is used, this must be parameterized accordingly in the firmware when parameterizing classes of hardware.
+<b>Single battery pack</b> - If you are using a single battery pack, the remaining pins need to be bridged. If only 6V is used, this must be parameterized accordingly in the firmware when parameterizing classes of hardware.
 
 #### Charging the Batteries
 
-<b>Using the Charger</b> - if you connect the charger to the PES board, the battery packs must be connected. If the battery packs (2 packs for 12 volts or one pack and a jumper for 6 volts) are not connected when you plug in the charger, the PES board will be destroyed. <b>THE CHARGER IS NOT A POWER SUPPLY!</b>
+<b>Using the Charger</b> - If you connect the charger to the PES board, the battery packs must be connected. If the battery packs (2 packs for 12V or one pack and a jumper for 6V) are not connected when you plug in the charger, the PES board will be destroyed. <b>THE CHARGER IS NOT A POWER SUPPLY!</b>
 
-<b>Charging batteries</b> - the battery packs are only charged when the power switch is set to OFF.
+<b>Charging batteries</b> - The battery packs are only charged when the power switch is set to OFF.
 
-<b>Usage while charging</b> - don't use the PES board while it is charging.
+<b>Usage while charging</b> - Don't use the PES board while it is charging.
 
 #### Resources
 
@@ -260,7 +264,7 @@ All additional technical information such as schematics and pin maps for the PES
 
 The following links point to the hardware tutorials. These documents contain specifications and technical information about the hardware itself and how to use it. The tutorials cover the software drivers, specific calibration procedures, controlling actuators and retrieving measurements from the sensors and actuators.
 
-**Important Note: The PES board currently does not support stepper motors. The following example uses an external hardware driver and an additional battery pack, which is directly wired to the Nucleo board.**
+<!-- **Important Note: The PES board currently does not support stepper motors. The following example uses an external hardware driver and an additional battery pack, which is directly wired to the Nucleo board.** -->
 
 - [Infrared Distance Sensor](docs/markdown/ir_sensor.md)
 - [Ultrasonic Sensor](docs/markdown/ultrasonic_sensor.md)
@@ -272,6 +276,7 @@ The following links point to the hardware tutorials. These documents contain spe
 - [Stepper Motor](docs/markdown/stepper_motor.md)
 - [SD-Card](docs/markdown/sd_card_logger.md)
 - [Serial Stream](docs/markdown/serial_stream.md)
+- [Color Sensor](docs/markdown/color_sensor.md)
 
 ## Tips
 
@@ -307,10 +312,17 @@ And below you will find all the solutions, as well as some additional examples:
 - [Example 1 SD-Card](docs/solutions/main_sd_card_logger.cpp)
 - [Example 2 SD-Card](docs/solutions/main_sd_card_logger_with_time.cpp)
 - [Example Serial Stream](docs/solutions/main_serial_stream.cpp)
+- [Example Color Sensor](docs/solutions/main_color_sensor.cpp)
 
-## Build Mbed OS projects with VS Code
+## Build Mbed OS projects with VS Code with PlatformIO
 
-The following descriptions explain how to build Mbed OS projects with VS Code on different operating systems without using PlatformIO. With PlatformIO the project should work as is.
+The following descriptions explain how to build Mbed OS projects with VS Code on different operating systems using PlatformIO.
+
+- [Build Mbed with PlatformIO in VS Code](docs/markdown/build_mbed_platformio.md)
+
+## Build Mbed OS projects with VS Code without PlatformIO
+
+The following descriptions explain how to build Mbed OS projects with VS Code on different operating systems without using PlatformIO.
 
 - [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
 - [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
@@ -325,6 +337,7 @@ The following descriptions explain how to build Mbed OS projects with VS Code on
 - C++ data types: https://www.tutorialspoint.com/cplusplus/cpp_data_types.htm
 - Printf format convention: https://cplusplus.com/reference/cstdio/printf/
 - Flowchart diagram maker: https://app.diagrams.net/
+- Online C++ Compiler: https://www.onlinegdb.com/online_c++_compiler
 
 ### Hardware Links
 
@@ -340,7 +353,3 @@ The following descriptions explain how to build Mbed OS projects with VS Code on
 - https://www.digikey.com
 - https://www.conrad.ch
 - https://www.distrelec.ch
-
-### Online C++ Compiler
-
-- Online C++ Compiler: https://www.onlinegdb.com/online_c++_compiler

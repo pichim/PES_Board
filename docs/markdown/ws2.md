@@ -15,15 +15,23 @@ By the end of this workshop you will be able to:
 - Read and validate ultrasonic distance measurements (or IR fallback) and handle invalid reads safely.
 - Implement a simple state machine that maps distance to servo motion and enters emergency/sleep states when limits are hit.
 
+## Main file (main.cpp)
+
+If you have already made changes and run tests in `main.cpp`, you can find the original version here: [main.cpp](../solutions/main_base.cpp). It is recommended to start with the original version of `main.cpp` for the workshop.
+
+If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
+
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+
 ## Before class (do this first)
 
 **Expected time:** ~45–70 minutes total (you can split this into two short sessions).
 
 **Required reading (come prepared so we can spend class time building/testing):**
-- Read: [../../README.md](../../README.md) (overview + safety + board structure).
-- Read: this document [ws2.md](ws2.md) (flow + what happens in class).
-- Read: [servo.md](servo.md) (servo wiring, calibration, control basics).
-- Read: [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
+- [README.md](../../README.md) (overview + safety + board structure).
+- This document [Workshop 2](ws2.md) (flow + what happens in class).
+- [Servo](servo.md) (servo wiring, calibration, control basics).
+- [Ultrasonic Sensor](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback mention).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 2 Quiz)][1] covering servo safety/calibration, pulse-width mapping, ultrasonic range/valid-read handling, and the WS2 state machine basics.
 

@@ -2,9 +2,9 @@
  * @file Servo.h
  * @brief This file defines the Servo class, which is used for controlling servo motors.
  *
- * The Servo class provides a range of functionalities for smooth and precise control of servo motors. 
+ * The Servo class provides a range of functionalities for smooth and precise control of servo motors.
  * It includes capabilities for calibrating the servo's pulse width range, setting motion profiles,
- * and enabling or disabling the servo. The class is designed to work with a variety of servo motors 
+ * and enabling or disabling the servo. The class is designed to work with a variety of servo motors
  * by allowing the user to specify the minimum and maximum pulse widths for calibration.
  *
  * @dependencies
@@ -49,8 +49,10 @@ public:
      * @brief Construct a new Servo object.
      *
      * @param pin The pin name to which the servo is connected.
+     * @param pulse_min The minimum pulse width (default is 0.0f).
+     * @param pulse_max The maximum pulse width (default is 1.0f).
      */
-    explicit Servo(PinName pin);
+    explicit Servo(PinName pin, float pulse_min = 0.0f, float pulse_max = 1.0f);
 
     /**
      * @brief Destroy the Servo object.

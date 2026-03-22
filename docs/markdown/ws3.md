@@ -12,17 +12,25 @@ We will discuss different control strategies for motor control, e.g., speed cont
 
 By the end of this workshop you will be able to:
 - Bring up a DC motor on the PES board, verify encoder direction, and reason about gear ratio/setpoint meaning.
-- Use closed-loop position control with the motion planner to execute bounded-acceleration moves.
+- Use closed-loop velocity and position control with the motion planner to execute bounded-acceleration moves.
 - Build a state machine (Initial → Sleep → Forward → Backward → Emergency) guarded by ultrasonic distance and a mechanical button.
+
+## Main file (main.cpp)
+
+If you have already made changes and run tests in `main.cpp`, you can find the original version here: [main.cpp](../solutions/main_base.cpp). It is recommended to start with the original version of `main.cpp` for the workshop.
+
+If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
+
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
 
 ## Before class (do this first)
 
 **Expected time:** ~55–90 minutes total (split into shorter sessions if needed).
 
 **Required reading (come prepared so we can spend class time building/testing):**
-- Read: [../../README.md](../../README.md) (overview + safety + battery cautions).
-- Read: this document [ws3.md](ws3.md) (flow + what happens in class).
-- Read: [dc_motor.md](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
+- [README.md](../../README.md) (overview + safety + battery cautions).
+- This document [Workshop 3](ws3.md) (flow + what happens in class).
+- [DC Motor](dc_motor.md) (motor wiring, H-bridge/PWM basics, encoder direction, motion planner).
 
 **Quiz:** complete the short [MS Forms quiz (Workshop 3 Quiz)][1] covering battery/power safety, H-bridge/PWM mapping, encoder direction awareness, and the WS3 state-machine transitions.
 
@@ -224,19 +232,19 @@ switch (robot_state) {
     }
 ```
 
-12. In the **FORWARD** state, include a command to execute 2.9f forward rotations and a condition that transitions to the **BACKWARD** state after reaching 2.85f revolutions. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
+12. In the **FORWARD** state, include a command to execute 1.5f forward rotations and a condition that transitions to the **BACKWARD** state after reaching 2.85f revolutions. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
 
 ```cpp
     case RobotState::FORWARD: {
-        // press is moving forward until it reaches 2.9f rotations,
+        // press is moving forward until it reaches 1.5f rotations,
         // when reaching the value go to BACKWARD
-        motor_M3.setRotation(2.9f); // setting this once would actually be enough
+        motor_M3.setRotation(1.5f); // setting this once would actually be enough
         // if the distance from the sensor is less than 4.5f cm,
         // we transition to the EMERGENCY state
         if (us_distance_cm < 4.5f)
             robot_state = RobotState::EMERGENCY;
         // switching condition is slightly smaller for robustness
-        if (motor_M3.getRotation() > 2.89f)
+        if (motor_M3.getRotation() > 1.49f)
             robot_state = RobotState::BACKWARD;
 
         break;

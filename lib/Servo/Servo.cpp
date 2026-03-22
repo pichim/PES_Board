@@ -1,7 +1,10 @@
 #include "Servo.h"
 
-Servo::Servo(PinName pin) : m_DigitalOut(pin), m_Thread(osPriorityAboveNormal1)
+Servo::Servo(PinName pin, float pulse_min, float pulse_max) : m_DigitalOut(pin), m_Thread(osPriorityAboveNormal1)
 {
+    // calibrate the servo with the given minimum and maximum pulse widths
+    calibratePulseMinMax(pulse_min, pulse_max);
+
     // set default motion profile
     setMaxVelocity();
     setMaxAcceleration();

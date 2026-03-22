@@ -38,9 +38,9 @@ conda env create -f mbed-env-linux.yml
 
 Download and install the latest installer from https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads. Make sure you select the version of the `GNU Arm Embedded Toolchain` for your operating system, e.g. `arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi.exe` for Windows.
 
-### Get the Toolchain from the ZHAW Server
+<!-- ### Get the Toolchain from the ZHAW Server
 
-Under the path `\\shared.zhaw.ch\public\staff\pmic\out\Mbed\Windows` you can find the GCC ARM Embedded Toolchain installer `arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi.exe`.
+Under the path `\\shared.zhaw.ch\public\staff\pmic\out\Mbed\Windows` you can find the GCC ARM Embedded Toolchain installer `arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi.exe`. -->
 
 ### Install the GCC ARM Embedded Toolchain
 
@@ -48,7 +48,9 @@ Simply execute the installer and follow the instructions, use the default settin
 
 ## Install Node.js, Npm and Mbed VSCode Generator
 
-Download the latest installer from https://nodejs.org/en/download or get the file `node-v22.13.1-x64.msi` from the ZHAW server `\\shared.zhaw.ch\public\staff\pmic\out\Mbed\Windows`.
+Download the latest installer from https://nodejs.org/en/download.
+
+ <!-- or get the file `node-v22.13.1-x64.msi` from the ZHAW server `\\shared.zhaw.ch\public\staff\pmic\out\Mbed\Windows`. -->
 
 Install Node.js, use the default settings. To verify the installation, open a terminal and type
 
@@ -71,7 +73,7 @@ Replace `pichim` with your GitHub username so that you clone your fork of the re
 git clone https://github.com/pichim/PES_Board.git
 ```
 
-## Recommended Extensions in VS Code (might not all be necessary)
+<!-- ## Recommended Extensions in VS Code (might not all be necessary)
 
 - `C/C++ Extension Pack` by Microsoft
 - `Python` by Microsoft
@@ -80,7 +82,7 @@ git clone https://github.com/pichim/PES_Board.git
 - `Python Debugger` by Microsoft
 - `CMake` by twxs
 - `CMake Tools` by Microsoft
-- `Makefile Tools` by Microsoft
+- `Makefile Tools` by Microsoft -->
 
 ## Activate the Conda environment in VS Code
 
@@ -94,7 +96,6 @@ Make sure you have a file '.mbed' in the root of your project with the following
 
 ```bash
 ROOT=.
-
 ```
 
 Use the terminal in VS Code for the following commands.

@@ -132,7 +132,7 @@ To monitor the ``servo_input`` variable value, it's necessary to include the fol
 printf("Pulse width: %f \n", servo_input);
 ```
 
-To activate the servo, use the following command. Place this command to enable the servo after the initiating the program execution with the **USER** button:
+To activate the servo, use the following command. Place this command to enable the servo after initiating the program execution with the **USER** button:
 
 ```cpp
 // enable the servos
@@ -190,6 +190,27 @@ servo_D1.calibratePulseMinMax(servo_D1_ang_min, servo_D1_ang_max);
 
 Now the ``servo_input`` variable in the range from 0.0f to 1.0f will be mapped in the driver internally to the pulse width range from value of ``servo_D0_ang_min`` to value of ``servo_D0_ang_max``.
 
+You can also use the constructor together with the calibration values, e.g.:
+
+```cpp
+// futuba S3001
+float servo_D0_ang_min = 0.0150f; // careful, these values might differ from servo to servo
+float servo_D0_ang_max = 0.1150f;
+// reely S0090
+float servo_D1_ang_min = 0.0325f;
+float servo_D1_ang_max = 0.1175f;
+
+// servo
+Servo servo_D0(PB_D0, servo_D0_ang_min, servo_D0_ang_max);
+Servo servo_D1(PB_D1, servo_D1_ang_min, servo_D1_ang_max);
+```
+
+So that the calibration is performed during the object construction. This way, the servo will be calibrated right after the object is created and there is no need to call the calibration function separately.
+
+**IMPORTANT NOTE:**
+
+- The calibration values can also be used to constrain the servo movement to a specific range. So that if you want to use the servo to drive a certain mechanism that should not move beyond a specific angle, you can set the calibration values accordingly. For example, if you want to use the servo to drive a robotic arm that should only move within a certain range of angles, you can set the calibration values to correspond to that range. This way, even if you command the servo to move beyond that range, it will not do so, ensuring the safety and integrity of the mechanism.
+
 #### Smooth Movement
 
 The class design incorporates the capability to execute smooth movements by adjusting the servo's maximum acceleration. This feature is suitable for movements that need smooth motions, eliminating abrupt movements. As default, the servo will move as fast as possible.
@@ -208,7 +229,7 @@ This function allows the adjustment of the maximum acceleration during the movem
     <center> <i>Servo movement with maximum Acceleration of 0.3f</i> </center>
 </p>
 
-| <center>Default settings</ <enter> | <center>Acceleration limited</nter>|
+| <center>Default settings <center> | <center>Acceleration limited</center>|
 | - | - |
 | <center><i> </i></center> | <center><i>``servo_D0.setMaxAcceleration(0.3f);``</i></center> |
 | Without setting the acceleration the servo will move to its commanded position as fast as possible, leading to fast but not very smooth movements. | With a maximum acceleration, the movement becomes smooth, and acceleration values are constrained by the driver. The velocity during the initial stage increases with a constant acceleration and then decreases, maintaining the same acceleration value but with negative sign. This results in a smooth movement. The velocity in- and decreases linearly, for the first increase of the velocity the derivative is approximately 0.1545/(0.95 - 0.435) = 0.3f as set via the class interface. |

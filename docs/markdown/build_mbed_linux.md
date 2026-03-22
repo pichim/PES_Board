@@ -45,7 +45,7 @@ ARM_TOOLCHAIN_VERSION=$(curl -s https://developer.arm.com/downloads/-/arm-gnu-to
 curl -Lo gcc-arm-none-eabi.tar.xz "https://developer.arm.com/-/media/Files/downloads/gnu/${ARM_TOOLCHAIN_VERSION}/binrel/arm-gnu-toolchain-${ARM_TOOLCHAIN_VERSION}-x86_64-arm-none-eabi.tar.xz"
 ```
 
-### Get the Toolchain from the ZHAW Server
+<!-- ### Get the Toolchain from the ZHAW Server
 
 Under the path
 
@@ -53,7 +53,7 @@ Under the path
 smb://public.zhaw.ch/staff/pmic/out/Mbed/Linux/gcc-arm-none-eabi
 ```
 
-you can find the GCC ARM Embedded Toolchain: `gcc-arm-none-eabi.tar.xz`
+you can find the GCC ARM Embedded Toolchain: `gcc-arm-none-eabi.tar.xz` -->
 
 
 ### Install the GCC ARM Embedded Toolchain
@@ -82,7 +82,7 @@ Replace `pichim` with your GitHub username so that you clone your fork of the re
 git clone https://github.com/pichim/PES_Board.git
 ```
 
-## Recommended Extensions in VS Code (might not all be necessary)
+<!-- ## Recommended Extensions in VS Code (might not all be necessary)
 
 - `C/C++ Extension Pack` by Microsoft
 - `Python` by Microsoft
@@ -91,7 +91,7 @@ git clone https://github.com/pichim/PES_Board.git
 - `Python Debugger` by Microsoft
 - `CMake` by twxs
 - `CMake Tools` by Microsoft
-- `Makefile Tools` by Microsoft
+- `Makefile Tools` by Microsoft -->
 
 ## Activate the Conda environment in VS Code
 
@@ -105,7 +105,6 @@ Make sure you have a file '.mbed' in the root of your project with the following
 
 ```bash
 ROOT=.
-
 ```
 
 Use the terminal in VS Code for the following commands.
