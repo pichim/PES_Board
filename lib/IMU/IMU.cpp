@@ -1,8 +1,35 @@
 #include "IMU.h"
 
+#ifdef NEW_PES_BOARD_VERSION
+#include "../../external/Mini_Segway/lib/MPU6500/MPU6500_I2C.cpp"
+#endif
+
+#ifdef NEW_PES_BOARD_VERSION
+IMU::IMU(PinName pin_sda, PinName pin_scl) : m_i2c(pin_sda, pin_scl),
+                                             m_ImuMPU6500(m_i2c),
+                                             m_Mahony(Parameters::kp, Parameters::ki, TS),
+                                             m_Thread(osPriorityHigh, THREAD_STACK_SIZE)
+{
+#if (IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE && IMU_DO_USE_STATIC_MAG_CALIBRATION)
+    m_magCalib.setCalibrationParameter(Parameters::A_mag, Parameters::b_mag);
+#endif
+
+    m_ImuMPU6500.init();
+    m_ImuMPU6500.configuration();
+    if (!m_ImuMPU6500.testConnection()) {
+        printf("IMU: MPU6500 connection test failed\n");
+    }
+
+    // start thread
+    m_Thread.start(callback(this, &IMU::threadTask));
+
+    // attach sendThreadFlag() to ticker so that sendThreadFlag() is called periodically, which signals the thread to execute
+    m_Ticker.attach(callback(this, &IMU::sendThreadFlag), std::chrono::microseconds{PERIOD_MUS});
+}
+#else
 IMU::IMU(PinName pin_sda, PinName pin_scl) : m_ImuLSM9DS1(pin_sda, pin_scl),
                                              m_Mahony(Parameters::kp, Parameters::ki, TS),
-                                             m_Thread(osPriorityHigh)
+                                             m_Thread(osPriorityHigh, THREAD_STACK_SIZE)
 {
 #if (IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE && IMU_DO_USE_STATIC_MAG_CALIBRATION)
     m_magCalib.setCalibrationParameter(Parameters::A_mag, Parameters::b_mag);
@@ -14,6 +41,7 @@ IMU::IMU(PinName pin_sda, PinName pin_scl) : m_ImuLSM9DS1(pin_sda, pin_scl),
     // attach sendThreadFlag() to ticker so that sendThreadFlag() is called periodically, which signals the thread to execute
     m_Ticker.attach(callback(this, &IMU::sendThreadFlag), std::chrono::microseconds{PERIOD_MUS});
 }
+#endif
 
 IMU::~IMU()
 {
@@ -30,7 +58,6 @@ void IMU::threadTask()
 {
     static const uint16_t Navg = static_cast<uint16_t>(1.0f / TS);
     static uint16_t avg_cntr = 0;
-    static bool imu_is_calibrated = false;
     static Eigen::Vector3f gyro_offset;
     static Eigen::Vector3f acc_offset;
     gyro_offset.setZero();
@@ -41,6 +68,19 @@ void IMU::threadTask()
     while (true) {
         ThisThread::flags_wait_any(m_ThreadFlag);
 
+#ifdef NEW_PES_BOARD_VERSION
+        // update imu
+        m_ImuMPU6500.readGyroAll();
+        m_ImuMPU6500.readAccAll();
+
+        // PES board IMU alignment for MPU6500:
+        // - x-axis pointing to the right
+        // - y-axis pointing forwards
+        // - z-axis pointing upwards
+        Eigen::Vector3f gyro(-m_ImuMPU6500.getGyroY(), -m_ImuMPU6500.getGyroZ(), m_ImuMPU6500.getGyroX());
+        Eigen::Vector3f acc(-m_ImuMPU6500.getAccY(), -m_ImuMPU6500.getAccZ(), m_ImuMPU6500.getAccX());
+        static Eigen::Vector3f mag = Eigen::Vector3f::Zero();
+#else
         m_ImuLSM9DS1.updateGyro();
         m_ImuLSM9DS1.updateAcc();
         Eigen::Vector3f gyro(m_ImuLSM9DS1.readGyroX(), m_ImuLSM9DS1.readGyroY(), m_ImuLSM9DS1.readGyroZ());
@@ -52,13 +92,14 @@ void IMU::threadTask()
 #else
         static Eigen::Vector3f mag = Eigen::Vector3f::Zero();
 #endif
+#endif
 
-        if (!imu_is_calibrated) {
+        if (!m_is_calibrated) {
             gyro_offset += gyro;
             acc_offset += acc;
             avg_cntr++;
             if (avg_cntr == Navg) {
-                imu_is_calibrated = true;
+                m_is_calibrated = true;
                 gyro_offset /= avg_cntr;
                 acc_offset /= avg_cntr;
                 // we have to keep gravity in acc z direction
@@ -71,7 +112,7 @@ void IMU::threadTask()
             }
         }
 
-        if (imu_is_calibrated) {
+        if (m_is_calibrated) {
             gyro -= gyro_offset;
             acc -= acc_offset;
 
