@@ -46,12 +46,12 @@
 #define START_MAIN_TASK_ENABLED true
 #define USE_MECHANICAL_BUTTON true
 
-#define USE_IR_SENSOR false
+#define USE_IR_SENSOR true
 #define IR_SENSOR_PIN PB_A0
 #define IR_SENSOR_INDEX 0  // (use 0 for PB_A0, 1: PB_A1,  2: PB_A3, 3: PB_A3)
 #define USE_EXTRA_IR_SENSOR_CONSTRUCTORS false // enabling it while all the other debug subsystems (constructors)
                                                // will cause a runtime error (mutex faults), see below.
-#define USE_IMU true
+#define USE_IMU false
 #define USE_SD_LOGGER true
 
 #define USE_SERVO_D0 true
