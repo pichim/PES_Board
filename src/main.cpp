@@ -63,8 +63,14 @@ int main()
     Eigen::Matrix2f Cwheel2robot;
     Cwheel2robot << r_wheel / 2.0f, r_wheel / 2.0f, r_wheel / b_wheel, -r_wheel / b_wheel;
 
-    // sensor bar
-    const SensorBar sensor_bar(PB_9, PB_8, bar_dist);
+    float sensor_direction = 1.0f;
+
+    // Both sensor bars, one in front, one at the back
+    SensorBar sensor_bar_front(PB_9, PB_8, bar_dist);
+    SensorBar sensor_bar_back(PB_3, PB_10, bar_dist);
+
+    // Pointer to the sensor bar actually being used
+    SensorBar * active_sensor_bar = &sensor_bar_front;
 
     // angle measured from sensor bar (black line) relative to robot
     float angle{0.0f};
@@ -76,8 +82,25 @@ int main()
     // start timer
     main_task_timer.start();
 
+    // Counter to assess how long the program has been running
+    int counter = 0;
+
     // this loop will run forever
     while (true) {
+
+        // This condition is only for demonstration purposes.
+        // Switching the direction based on time does not make sense
+        if (counter % 500 == 0) {
+            sensor_direction = -sensor_direction;
+
+            if (active_sensor_bar == &sensor_bar_front) {
+                active_sensor_bar = &sensor_bar_back;
+            } else {
+                active_sensor_bar = &sensor_bar_front;
+            }
+        }
+        counter++;
+
         main_task_timer.reset();
 
         // --- code that runs every cycle at the start goes here ---
@@ -91,12 +114,12 @@ int main()
             enable_motors = 1;
 
             // only update sensor bar angle if an led is triggered
-            if (sensor_bar.isAnyLedActive()) {
-                // printf("any LED is active:");
-                angle = sensor_bar.getAvgAngleRad();
+            if (active_sensor_bar->isAnyLedActive()) {
+                // The measured angle needs to be multiplied with -1 if the robot is driving backwards
+                angle = sensor_direction * active_sensor_bar->getAvgAngleRad();
             }
 
-            printf("angle: %f\n", angle);
+            // printf("angle: %f\n", angle);
 
             // control algorithm for robot velocities
             Eigen::Vector2f robot_coord = {0.25f * wheel_vel_max * r_wheel, // half of the max. forward velocity
@@ -105,9 +128,10 @@ int main()
             // map robot velocities to wheel velocities in rad/sec
             Eigen::Vector2f wheel_speed = Cwheel2robot.inverse() * robot_coord;
 
-            // setpoints for the dc motors in rps
-            motor_M1.setVelocity(wheel_speed(0) / (2.0f * M_PIf));        // set a desired speed for speed controlled dc motors M1
-            motor_M2.setVelocity((wheel_speed(1) / (2.0f * M_PIf)) * -1); // set a desired speed for speed controlled dc motors M2
+            // The motors need to be multiplied with -1 if the robot is driving backwards
+            // Motor 2 is multiplied by -1 because of the way it is mounted in the chassis
+            motor_M1.setVelocity((wheel_speed(0) / (2.0f * M_PIf)) * sensor_direction);
+            motor_M2.setVelocity(((wheel_speed(1) / (2.0f * M_PIf)) * -1) * sensor_direction);
 
         } else {
             // the following code block gets executed only once
@@ -137,7 +161,6 @@ int main()
 
 void toggle_do_execute_main_fcn()
 {
-    // printf("TOGGLE");
     // toggle do_execute_main_task if the button was pressed
     do_execute_main_task = !do_execute_main_task;
     // set do_reset_all_once to true if do_execute_main_task changed from false to true
