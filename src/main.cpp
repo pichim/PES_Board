@@ -4,8 +4,13 @@
 #include "PESBoardPinMap.h"
 
 // drivers
+#include <Eigen/Dense>
+
+#include "DCMotor.h"
 #include "DebounceIn.h"
-#include "Servo.h"
+#include "SensorBar.h"
+
+#define M_PIf 3.14159265358979323846f // pi
 
 bool do_execute_main_task = false; // this variable will be toggled via the user button (blue button) and
                                    // decides whether to execute the main task or not
@@ -33,20 +38,40 @@ int main()
     // led on nucleo board
     DigitalOut user_led(LED1);
 
-    // additional led
-    // create DigitalOut object to command extra led, you need to add an additional resistor, e.g. 220...500 Ohm
-    // a led has an anode (+) and a cathode (-), the cathode needs to be connected to ground via the resistor
-    DigitalOut led1(PB_9);
-
     // --- adding variables and objects and applying functions starts here ---
-    
-    // servo object
-    Servo servo_D0(PA_3);
 
-    // servo variables
-    float servo_input = 0.0f;
-    int servo_counter = 0;
-    const int loops_per_second = static_cast<int>(ceilf(1.0f / (0.001f * static_cast<float>(main_task_period_ms))));
+    // create object to enable power electronics for the dc motors
+    DigitalOut enable_motors(PB_ENABLE_DCMOTORS);
+
+    constexpr float voltage_max = 12.0f; // maximum voltage of battery packs, adjust this to
+                                     // 6.0f V if you only use one battery pack
+
+    constexpr float b_wheel = 0.128f;  // wheelbase, distance from wheel to wheel in meters
+    constexpr float bar_dist = 0.066f; // distance from wheel axis to leds on sensor bar / array in meters
+    constexpr float d_wheel = 0.0596f; // wheel diameter in meters
+    constexpr float r_wheel = d_wheel / 2.0f; // wheel radius in meters
+
+    // https://www.pololu.com/product/3490/specs
+    constexpr float gear_ratio = 100.00f;
+    constexpr float kn = 140.0f / 12.0f;
+
+    // motor M1 and M2, do NOT enable motion planner when used with the LineFollower (disabled per default)
+    DCMotor motor_M1(PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, gear_ratio, kn, voltage_max);
+    DCMotor motor_M2(PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2, gear_ratio, kn, voltage_max);
+
+    // transforms wheel to robot velocities
+    Eigen::Matrix2f Cwheel2robot;
+    Cwheel2robot << r_wheel / 2.0f, r_wheel / 2.0f, r_wheel / b_wheel, -r_wheel / b_wheel;
+
+    // sensor bar
+    const SensorBar sensor_bar(PB_9, PB_8, bar_dist);
+
+    // angle measured from sensor bar (black line) relative to robot
+    float angle{0.0f};
+
+    // rotational velocity controller
+    // const float wheel_vel_max = 2.0f * M_PIf * motor_M2.getMaxPhysicalVelocity();
+    const float wheel_vel_max = 2.0f * M_PIf * motor_M2.getMaxPhysicalVelocity();
 
     // start timer
     main_task_timer.start();
@@ -56,30 +81,34 @@ int main()
         main_task_timer.reset();
 
         // --- code that runs every cycle at the start goes here ---
-        
-        // print to serial monitor
-        printf("Pulse Width: %f \n", servo_input);
 
         if (do_execute_main_task) {
+            constexpr float Kp{5.0f};
 
             // --- code that runs when the blue button was pressed goes here ---
-            
-            // enable servo
-            if (!servo_D0.isEnabled())
-                servo_D0.enable();
-
-            // command servo
-            servo_D0.setPulseWidth(servo_input);
-
-            // calculate servo input for next cycle
-            if ((servo_input < 1.0f) &&                     // constrain servo_input to be < 1.0f
-                (servo_counter % loops_per_second == 0) &&  // true if servo_counter is a multiple of loops_per_second
-                (servo_counter != 0))                       // avoid servo_counter = 0
-                servo_input += 0.0005f;
-            servo_counter++;
 
             // visual feedback that the main task is executed, setting this once would actually be enough
-            led1 = 1;
+            enable_motors = 1;
+
+            // only update sensor bar angle if an led is triggered
+            if (sensor_bar.isAnyLedActive()) {
+                // printf("any LED is active:");
+                angle = sensor_bar.getAvgAngleRad();
+            }
+
+            printf("angle: %f\n", angle);
+
+            // control algorithm for robot velocities
+            Eigen::Vector2f robot_coord = {0.25f * wheel_vel_max * r_wheel, // half of the max. forward velocity
+                                           -Kp * angle};                     // simple proportional angle controller
+
+            // map robot velocities to wheel velocities in rad/sec
+            Eigen::Vector2f wheel_speed = Cwheel2robot.inverse() * robot_coord;
+
+            // setpoints for the dc motors in rps
+            motor_M1.setVelocity(wheel_speed(0) / (2.0f * M_PIf));        // set a desired speed for speed controlled dc motors M1
+            motor_M2.setVelocity((wheel_speed(1) / (2.0f * M_PIf)) * -1); // set a desired speed for speed controlled dc motors M2
+
         } else {
             // the following code block gets executed only once
             if (do_reset_all_once) {
@@ -88,9 +117,7 @@ int main()
                 // --- variables and objects that should be reset go here ---
 
                 // reset variables and objects
-                led1 = 0;
-                servo_D0.disable();
-                servo_input = 0.0f;
+                enable_motors = 0;
             }
         }
 
@@ -100,7 +127,7 @@ int main()
         // --- code that runs every cycle at the end goes here ---
 
         // read timer and make the main thread sleep for the remaining time span (non blocking)
-        int main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();
+        const long long main_task_elapsed_time_ms = duration_cast<milliseconds>(main_task_timer.elapsed_time()).count();
         if (main_task_period_ms - main_task_elapsed_time_ms < 0)
             printf("Warning: Main task took longer than main_task_period_ms\n");
         else
@@ -110,6 +137,7 @@ int main()
 
 void toggle_do_execute_main_fcn()
 {
+    // printf("TOGGLE");
     // toggle do_execute_main_task if the button was pressed
     do_execute_main_task = !do_execute_main_task;
     // set do_reset_all_once to true if do_execute_main_task changed from false to true
