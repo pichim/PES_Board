@@ -1,0 +1,3 @@
+[submodule "external/Mini_Segway"]
+	path = external/Mini_Segway
+	url = https://github.com/pichim/Mini_Segway.git

@@ -9,8 +9,13 @@
 
 #include "mbed.h"
 #include <Eigen/Dense>
+#include "PESBoardPinMap.h"
 
+#ifdef NEW_PES_BOARD_VERSION
+#include "MPU6500_I2C.h"
+#else
 #include "LSM9DS1.h"
+#endif
 #include "LinearCharacteristics3.h"
 #include "Mahony.h"
 #include "ThreadFlag.h"
@@ -85,15 +90,23 @@ public:
 private:
     static constexpr int64_t PERIOD_MUS = 20000;
     static constexpr float TS = 1.0e-6f * static_cast<float>(PERIOD_MUS);
+    static constexpr uint32_t THREAD_STACK_SIZE = 8192;
 
     ImuData m_ImuData;
+#ifdef NEW_PES_BOARD_VERSION
+    I2C m_i2c;
+    MPU6500_I2C m_ImuMPU6500;
+#else
     LSM9DS1 m_ImuLSM9DS1;
+#endif
     LinearCharacteristics3 m_magCalib;
     Mahony m_Mahony;
 
     Thread m_Thread;
     Ticker m_Ticker;
     ThreadFlag m_ThreadFlag;
+
+    bool m_is_calibrated{false};
 
     void threadTask();
     void sendThreadFlag();

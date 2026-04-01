@@ -44,6 +44,7 @@
 #include "ThreadFlag.h"
 #include "PIDCntrl.h"
 #include "IIRFilter.h"
+#include "PESBoardPinMap.h"
 
 #ifndef M_PIf
     #define M_PIf 3.14159265358979323846f // pi
@@ -78,6 +79,9 @@ public:
      * @param counts_per_turn The number of encoder counts per turn of the motor (default: 20.0f).
      */
     explicit DCMotor(PinName pwm_pin,
+#ifdef NEW_PES_BOARD_VERSION
+                     PinName direction_pin,
+#endif
                      PinName enc_a_pin,
                      PinName enc_b_pin,
                      float gear_ratio,
@@ -272,7 +276,7 @@ public:
 #endif
 
 private:
-    static constexpr int64_t PERIOD_MUS = 500;
+    static constexpr int64_t PERIOD_MUS = 5000;
     static constexpr float TS = 1.0e-6f * static_cast<float>(PERIOD_MUS);
     static constexpr float PWM_MIN = 0.01f;
     static constexpr float PWM_MAX = 0.99f;
@@ -284,6 +288,9 @@ private:
     static constexpr float P = 16.0f;
 
     FastPWM m_FastPWM;
+#ifdef NEW_PES_BOARD_VERSION
+    DigitalOut m_Direction; // true for forward, false for backward
+#endif  
     EncoderCounter m_EncoderCounter;
     Motion m_Motion;
     PIDCntrl m_PIDCntrl_velocity;

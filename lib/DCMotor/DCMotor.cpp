@@ -1,12 +1,19 @@
 #include "DCMotor.h"
 
+
 DCMotor::DCMotor(PinName pwm_pin,
+#ifdef NEW_PES_BOARD_VERSION
+                 PinName direction_pin,
+#endif
                  PinName enc_a_pin,
                  PinName enc_b_pin,
                  float gear_ratio,
                  float kn,
                  float voltage_max,
                  float counts_per_turn) : m_FastPWM(pwm_pin),
+#ifdef NEW_PES_BOARD_VERSION
+                                          m_Direction(direction_pin),
+#endif
                                           m_EncoderCounter(enc_a_pin, enc_b_pin),
                                           m_Thread(osPriorityHigh1)
 #if PERFORM_CHIRP_MEAS
@@ -349,7 +356,13 @@ void DCMotor::threadTask()
 #endif
 
         // calculate pwm and write output
+#ifdef NEW_PES_BOARD_VERSION
+        const float pwm = fabs(voltage / m_voltage_max);
+        const bool direction = (voltage > 0.0f) ? true : false;
+        m_Direction.write(direction);
+#else
         const float pwm = 0.5f + 0.5f * voltage / m_voltage_max;
+#endif
         m_FastPWM.write(pwm);
 
         // update signals
