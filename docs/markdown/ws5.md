@@ -1,11 +1,44 @@
 <!-- link list -->
 [0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[1]: https://forms.cloud.microsoft/e/rkadzrxAGC
 
 # Workshop 5
 
 In workshop number 5, we will be working with the IMU (Inertial Measurement Unit) and see how the device can be used to estimate the orientation (tilt) in space. This will then be used to control a 2-axis gimbal system.
 
 We will get to know Serial Streaming, which allows us to send data from the microcontroller to the host computer. This is particularly useful for debugging and development. Furthermore, we will implement our own sensor fusion algorithm with real data from the IMU. The goal is to calculate the orientation of the IMU in space (at least for one axis).
+
+## Learning outcomes
+By the end of this workshop, you will be able to:
+- Understand the functionality of an IMU and how to read data from it
+- Use Serial Streaming to send data from the microcontroller to a host computer
+- Implement a complementary filter for sensor fusion to estimate orientation
+- Implement a 1-D Mahony filter for sensor fusion to estimate orientation
+- Integrate the sensor fusion algorithm into your microcontroller code to control a 2-axis gimbal system based on orientation estimates
+
+## Main file (main.cpp)
+
+If you have already made changes and run tests in `main.cpp`, you can find the original version here: [main.cpp](../solutions/main_base.cpp). It is recommended to start with the original version of `main.cpp` for the workshop.
+
+If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
+
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+
+## Before class (do this before the workshop)
+
+**Expected time:** ~40-60 minutes total (split into two sessions if needed)
+
+**Required reading (come prepared so we can spend time on the hands-on activities):**
+- [README.md](../README.md) (10 minutes)
+- This document [Workshop 5: IMU and Sensor Fusion](ws5.md) (20 minutes)
+- [IMU Tutorial](imu.md) (20 minutes)
+
+**Quiz:** complete the short [MS Forms quiz (Workshop 5 Quiz)][1] covering IMU functionality, sensor fusion, and gimbal control. (15 minutes)
+
+<p align="center">
+    <img src="../images/ws5_quiz_qr_code.png" alt="Workshop 5 Quiz QR" width="240"/> </br>
+    <i>Workshop 5 Quiz</i>
+</p>
 
 ## Hardware
 

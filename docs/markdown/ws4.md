@@ -1,9 +1,42 @@
 <!-- link list -->
 [0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[1]: https://forms.cloud.microsoft/e/rkadzrxAGC
 
 # Workshop 4
 
 In the fourth workshop, we will explore differential drive robot kinematics and line following algorithms. Participants will learn how to transform desired robot velocities into individual wheel speeds and implement autonomous line following using an 8-sensor IR array.
+
+## Learning Outcomes
+
+By the end of this workshop, you will be able to:
+- Understand and implement differential drive robot kinematics
+- Use the SparkFun Line Follower Array to detect and follow lines
+- Design control algorithms for line following behavior
+- Calibrate robot parameters for improved performance
+
+## Main file (main.cpp)
+
+If you have already made changes and run tests in `main.cpp`, you can find the original version here: [main.cpp](../solutions/main_base.cpp). It is recommended to start with the original version of `main.cpp` for the workshop.
+
+If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
+
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+
+## Before class (do this before the workshop)
+
+**Expected time:** ~40-60 minutes total (split into two sessions if needed)
+
+**Required reading (come prepared so we can spend time on the hands-on activities):**
+- [README.md](../README.md) (5 minutes)
+- This document [Workshop 4: Differential Drive Kinematics and Line Following](ws4.md) (20 minutes)
+- [Line Follower](line_follower_array.md) (20 minutes)
+
+**Quiz:** complete the short [MS Forms quiz (Workshop 4 Quiz)][1] covering differential drive kinematics, line follower array functionality, and control algorithm design. (15 minutes)
+
+<p align="center">
+    <img src="../images/ws4_quiz_qr_code.png" alt="Workshop 4 Quiz QR" width="240"/> </br>
+    <i>Workshop 4 Quiz</i>
+</p>
 
 ## Hardware
 

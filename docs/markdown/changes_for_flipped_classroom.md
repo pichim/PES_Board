@@ -542,6 +542,315 @@ Solutions:
 
 ---
 
+## WS4
+
+### Ordered reading (per README numbers)
+1) [README.md](../../README.md)
+2) [ws4.md](ws4.md)
+3) [dd_kinematics.md](dd_kinematics.md)
+4) [line_follower.md](line_follower.md)
+
+Solutions:
+- [../solutions/main_dd_kinematic_calib.cpp](../solutions/main_dd_kinematic_calib.cpp)
+- [../solutions/main_line_follower_base.cpp](../solutions/main_line_follower_base.cpp)
+- [../solutions/main_line_follower.cpp](../solutions/main_line_follower.cpp)
+
+### Pre-class (read + quiz; tools not counted in time)
+
+**Target time (reading/understanding only):** ~55–90 min total (students can split into two sessions).
+
+**Read (same order as mapping, with estimated read/understand time):**
+- README.md (overview + safety + battery caution) — ~5–10 min
+- ws4.md (WS4 flow) — ~10–15 min
+- dd_kinematics.md (differential drive kinematics, derivation, Eigen implementation) — ~20–30 min
+- line_follower.md (sensor wiring, SensorBar/LineFollower driver, proportional control law) — ~20–30 min
+
+**Quiz (MS Forms, ~7–10 min total):**
+- 8 auto-graded items.
+- Focus: sensor wiring safety, I2C pin assignment, kinematic transformation matrix direction, code patterns for wheel-speed conversion, and two numerical inverse-kinematics calculations.
+
+**Pre-class outputs:**
+- Quiz completed.
+- Recall key pins: motors M1 on (PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1) and M2 on (PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2), `PB_ENABLE_DCMOTORS`; line follower I2C on PB_8 (SCL) / PB_9 (SDA) with 5 V supply.
+- Know that `Cwheel2robot` maps wheel → robot velocities, and its inverse maps robot → wheel velocities.
+
+### WS4 Quiz Outline (MS Forms)
+
+- 8 auto-graded items. Total quiz time ~7–10 min.
+
+## Workshop 4 – Pre-class Quiz (8 MC Questions)
+
+   ## Q1
+   Before connecting the SparkFun Line Follower Array to the PES board, what is the most critical precaution?
+
+   - A) Flash a test firmware to verify the I2C address before applying power
+   - B) Set the I2C clock frequency to 400 kHz in software before making any hardware connections
+   - C) Carefully review the provided wiring images; incorrect connections can permanently destroy the sensor
+   - D) Always use SPI instead of I2C for the line follower array to avoid bus collisions
+
+   ## Q2
+   The SparkFun Line Follower Array communicates via I2C. Which Nucleo pins are used for SCL and SDA?
+
+   - A) SCL: PB_9, SDA: PB_8
+   - B) SCL: PB_8, SDA: PB_9
+   - C) SCL: PB_D3, SDA: PB_D2
+   - D) SCL: PA_5, SDA: PA_7
+
+   ## Q3
+   Which of the following statements about the differential drive kinematic model are correct?
+
+   - A) `Cwheel2robot` maps wheel angular velocities (ω1, ω2) to robot velocities (v, ω)
+   - B) `Cwheel2robot` maps robot velocities (v, ω) to wheel angular velocities (ω1, ω2)
+   - C) To compute wheel speeds from desired robot velocities, apply `Cwheel2robot.inverse() * robot_coord`
+   - D) A positive robot angular velocity ω (counter-clockwise viewed from above) requires the right wheel (ω1) to rotate faster than the left wheel (ω2)
+   - E) Wheel speeds from the Eigen result are passed directly to `motor.setVelocity()` without any unit conversion
+
+   ## Q4 (in class)
+   When using the `LineFollower` driver class for closed-loop line following, should the DC motor motion planner be enabled?
+
+   - A) Yes, always enable the motion planner for smoother, bounded-acceleration motion
+   - B) No, the motion planner should be disabled (default) for best line-following performance
+   - C) Only enable it when the line track includes sharp 90° turns
+
+   ## Q5
+   The `isAnyLedActive()` check guards the angle update in:
+   ```cpp
+   if (sensor_bar.isAnyLedActive())
+       angle = sensor_bar.getAvgAngleRad();
+   ```
+   Why is this guard necessary?
+
+   - A) To prevent the sensor bar from overheating during continuous I2C reads
+   - B) To avoid overwriting the last valid angle with an undefined value when no line is detected beneath any sensor
+   - C) To limit the I2C polling rate to the sensor's minimum 3.2 ms read cycle
+   - D) To verify that the 5 V supply voltage is within specification before reading
+
+   ## Q6 (in class)
+   In the simple proportional control law `robot_coord(1) = Kp * angle`, what is the effect of increasing `Kp`?
+
+   - A) The robot reacts more aggressively to angular deviations from the line; a value that is too large will cause oscillations
+   - B) The robot's maximum forward speed increases proportionally with Kp
+   - C) The measurement range of the line follower sensor bar increases
+
+   ## Q7
+   A differential drive robot has wheel radius r = 0.025 m and wheelbase b = 0.13 m. The desired robot velocity is v = 0.5 m/s and ω = 0 rad/s. Applying the inverse kinematics, what are the right (ω1) and left (ω2) wheel angular speeds in rad/s?
+
+   - A) ω1 = 10 rad/s, ω2 = 10 rad/s
+   - B) ω1 = 20 rad/s, ω2 = 20 rad/s
+   - C) ω1 = 20 rad/s, ω2 = −20 rad/s
+   - D) ω1 = 2.6 rad/s, ω2 = 2.6 rad/s
+
+   ## Q8
+   Same robot (r = 0.025 m, b = 0.13 m). Desired: v = 0 m/s, ω = 1.0 rad/s (rotate in place, counter-clockwise from above). Applying the inverse kinematics, what are ω1 and ω2?
+
+   - A) ω1 = 1.0 rad/s, ω2 = −1.0 rad/s
+   - B) ω1 = 5.2 rad/s, ω2 = −5.2 rad/s
+   - C) ω1 = 2.6 rad/s, ω2 = −2.6 rad/s
+   - D) ω1 = 2.6 rad/s, ω2 = 2.6 rad/s
+
+## Answer Key
+
+- Q1: **C**
+- Q2: **B**
+- Q3: **A, C, D**
+- Q4: **B**
+- Q5: **B**
+- Q6: **A**
+- Q7: **B**
+- Q8: **C**
+
+### In-class (4 × 45 min, same structure as WS1–WS3)
+
+**Block 0 (Setup + safety):** confirm repo/import/target/build; review line follower wiring guide before touching hardware; identify `PB_ENABLE_DCMOTORS` toggle.
+
+**Block 1 (DC motors + kinematic bring-up):** wire motors M1 and M2; enable power electronics; implement `Cwheel2robot` and its inverse in C++ using Eigen; send velocity commands; print wheel and robot velocities and verify direction signs.
+
+**Block 2 (Line follower connection + sensor readings):** connect sensor array via I2C (PB_8/PB_9 + 5 V); print raw bit values and angle; move sensor over a black line and confirm angle changes correctly; verify `isAnyLedActive()` guard behavior.
+
+**Block 3 (Full line following + tuning):** combine kinematic transform with proportional angle controller; tune `Kp` until the robot follows the line without oscillating; demo: robot autonomously tracks a line. Optional: implement nonlinear Kp or forward-velocity modulation based on angle magnitude.
+
+### Checkpoints
+
+- After Block 0: repo builds; line follower wiring guide reviewed; power safety observed before connecting sensor.
+- After Block 1: both motors spin in the correct direction; kinematic transform implemented; printed robot/wheel velocities are consistent.
+- After Block 2: sensor connected without damage; angle reading changes as sensor crosses line; `isAnyLedActive()` confirmed to prevent stale angle overwrites.
+- After Block 3: robot follows line; `Kp` tuned to a stable response; demo completed.
+
+### Student announcement template (Teams)
+
+**Subject:** "WS4 (Flipped) – do this before class"
+
+**Body:**
+- **Before class (~55–90 min total for reading):**
+  - Read (required):
+    - [README.md](../../README.md) (overview + safety + battery cautions, ~5–10 min)
+    - [ws4.md](ws4.md) (WS4 flow, ~10–15 min)
+    - [dd_kinematics.md](dd_kinematics.md) (differential drive kinematics, derivation + Eigen code, ~20–30 min)
+    - [line_follower.md](line_follower.md) (sensor wiring, SensorBar/LineFollower driver, control law, ~20–30 min)
+  - Quiz (required, 8 questions): Link TBA; scan QR in [ws4.md](ws4.md). (~7–10 min)
+
+- **Bring to class:** laptop with Mbed Studio installed; fully assembled differential drive robot kit.
+- **Pins:** motors M1 on (PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1) and M2 on (PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2), `PB_ENABLE_DCMOTORS`; line follower I2C on PB_8 (SCL) and PB_9 (SDA) with 5 V supply.
+- **In-class plan:** Block 0 build/safety → Block 1 motors + kinematics → Block 2 line follower connection + readings → Block 3 line following + tuning demo.
+- **Help rule:** if stuck >5 minutes, check hints in [ws4.md](ws4.md) and [line_follower.md](line_follower.md), then ask instructor.
+
+---
+
+## WS5
+
+### Ordered reading (per README numbers)
+1) [README.md](../../README.md)
+2) [ws5.md](ws5.md)
+3) [imu.md](imu.md)
+4) [serial_stream.md](serial_stream.md)
+
+Solutions:
+- [../solutions/main_gimbal.cpp](../solutions/main_gimbal.cpp)
+- [../solutions/main_gimbal_1d_mahony.cpp](../solutions/main_gimbal_1d_mahony.cpp)
+- [../solutions/main_gimbal_3d_mahony.cpp](../solutions/main_gimbal_3d_mahony.cpp)
+- [../solutions/main_comp_filter.cpp](../solutions/main_comp_filter.cpp)
+- [../solutions/matlab/serial_stream_comp_filter.m](../solutions/matlab/serial_stream_comp_filter.m)
+- [../solutions/python/serial_stream_comp_filter.py](../solutions/python/serial_stream_comp_filter.py)
+
+### Pre-class (read + quiz; tools not counted in time)
+
+**Target time (reading/understanding only):** ~40–60 min total (students can split into two sessions).
+
+**Read (same order as mapping, with estimated read/understand time):**
+- README.md (overview + safety) — ~5–10 min
+- ws5.md (WS5 flow) — ~8–12 min
+- imu.md (IMU principle, gyro/acc/fusion overview, complementary filter, gimbal wiring) — ~15–25 min
+- serial_stream.md (UART wiring, TX/RX pins, start byte, send/write API) — ~10–15 min
+
+**Quiz (MS Forms, ~7–10 min total):**
+- 8 auto-graded items.
+- Focus: gyroscope vs accelerometer characteristics, complementary filter role of each sensor, 1-D Mahony filter structure, serial stream wiring, and two short calculation questions on filter discretization and angle mapping.
+
+**Pre-class outputs:**
+- Quiz completed.
+- Recall key pins: IMU I2C on PC_9 (SDA) / PA_8 (SCL); SerialStream TX: PB_10, RX: PC_5; servos roll on PB_D0, pitch on PB_D1.
+- Know that `imu_data.pry(1)` is roll and `imu_data.pry(0)` is pitch in the ZXY Tait-Bryan convention.
+
+### WS5 Quiz Outline (MS Forms)
+
+- 8 auto-graded items. Total quiz time ~7–10 min.
+
+## Workshop 5 – Pre-class Quiz (8 MC Questions)
+
+   ## Q1
+   The gyroscope signal is modelled as $y_{gyro}(t) = \omega_x(t) + b_{gyro}(t)$. Why can the gyroscope NOT be used alone to reliably estimate an angle over a long period of time?
+
+   - A) The gyroscope only measures linear acceleration, not angular velocity
+   - B) Integrating the gyroscope signal accumulates the bias over time, causing the angle estimate to drift
+   - C) The gyroscope has too much high-frequency noise, making angle integration useless
+   - D) The gyroscope saturates after 90° of rotation
+
+   ## Q2
+   The accelerometer-based angle estimate is $y_{acc} = \phi + \eta_{acc}$. What is the main limitation of using the accelerometer alone for angle estimation?
+
+   - A) The accelerometer introduces a slowly varying bias that is impossible to correct
+   - B) The accelerometer can only measure angles around the Z-axis
+   - C) The accelerometer signal is corrupted by significant noise and is also sensitive to linear accelerations of the platform
+   - D) The accelerometer cannot measure angles less than 45°
+
+   ## Q3
+   In the complementary filter, the accelerometer measurement passes through a low-pass filter and the gyroscope integral passes through a high-pass filter. What is the motivation for this combination?
+
+   - A) The low-pass filter removes the gyroscope drift, while the high-pass filter removes sensor noise
+   - B) The gyroscope is reliable in the short term (high-frequency), while the accelerometer is reliable in the long term (low-frequency), so each signal contributes where it is most accurate
+   - C) The high-pass filter doubles the accelerometer bandwidth, and the low-pass filter reduces the gyroscope update rate to save processing power
+   - D) Both filters are applied only to remove electromagnetic interference from the motor drivers
+
+   ## Q4 (in class)
+   Calibrating the servos with `calibratePulseMinMax(servo_ang_min, servo_ang_max)` before commanding the gimbal is required. Why?
+
+   - A) It resets the servo position to mechanical zero
+   - B) It maps the normalized command range (0.0–1.0) to the servo-specific safe min/max pulse widths so that angle commands are physically meaningful
+   - C) It sets the PWM carrier frequency to match the servo's internal oscillator
+
+   ## Q5
+   The `SerialStream` TX and RX pin labels can be confusing when connecting the USB Serial TTL cable. Which connection is correct?
+
+   - A) TX of the cable to PB_10 (microcontroller TX), RX of the cable to PC_5 (microcontroller RX)
+   - B) TX of the cable to PC_5 (microcontroller RX), RX of the cable to PB_10 (microcontroller TX)
+   - C) Both TX and RX of the cable to PB_10 because the pin is bidirectional
+   - D) TX of the cable to any available GPIO, polarity does not matter for UART
+
+   ## Q6 (in class)
+   In the gimbal code, `rp(0) = imu_data.pry(1)` is used for roll and `rp(1) = imu_data.pry(0)` for pitch. Why are the ZXY Tait-Bryan angles used (`.pry`) instead of the ZYX angles (`.rpy`)?
+
+   - A) The ZYX convention has a gimbal-lock singularity at pitch ±90°, whereas ZXY has the singularity at roll ±90°; the chosen convention matches the physical range of the gimbal
+   - B) `.pry` is the only convention that includes magnetometer data
+   - C) The ZYX convention is not supported by the Mahony filter implementation in the IMU driver
+
+   ## Q7
+   The 1-D Mahony filter discrete update is:
+   $$\phi_{est}[k] = \phi_{est}[k-1] + T_s\,(y_{gyro,x}[k] + k_p\,(y_{acc,x}[k] - \phi_{est}[k-1]))$$
+   With $k_p = 2.0$, $T_s = 0.02$ s, $\phi_{est}[k-1] = 0.10$ rad, $y_{gyro,x}[k] = 0.0$ rad/s, $y_{acc,x}[k] = 0.20$ rad. What is $\phi_{est}[k]$?
+
+   - A) 0.102 rad
+   - B) 0.104 rad
+   - C) 0.110 rad
+   - D) 0.120 rad
+
+   ## Q8
+   The servo command is mapped from an angle $\phi$ to a normalized pulse width using:
+   `servo_width = -normalised_angle_gain * φ + normalised_angle_offset`
+   where `normalised_angle_gain = 1/π` and `normalised_angle_offset = 0.5`. If the measured roll angle is $\phi = -\pi/4$ rad (−45°), what normalized pulse width is sent to the roll servo?
+
+   - A) 0.25
+   - B) 0.50
+   - C) 0.75
+   - D) 1.00
+
+## Answer Key
+
+- Q1: **B**
+- Q2: **C**
+- Q3: **B**
+- Q4: **B**
+- Q5: **B**
+- Q6: **A**
+- Q7: **B**
+- Q8: **C**
+
+### In-class (4 × 45 min, same structure as WS1–WS4)
+
+**Block 0 (Setup + safety):** confirm repo/import/target/build; calibrate servos (roll on PB_D0, pitch on PB_D1) before powering the gimbal; verify IMU readings print sensibly.
+
+**Block 1 (IMU bring-up + gimbal control):** create `IMU` and `Servo` objects; read roll and pitch from `imu_data.pry`; map angles to servo commands; verify gimbal physically compensates for board tilt.
+
+**Block 2 (Serial Streaming setup + data capture):** wire USB Serial TTL cable (TX→PC_5, RX→PB_10 + GND); flash `main_comp_filter.cpp`; confirm data reception in MATLAB or Python; capture a tilt sequence for offline analysis.
+
+**Block 3 (Complementary / Mahony filter implementation + demo):** implement complementary filter (or 1-D Mahony) in MATLAB or Python on captured data; compare estimate with built-in IMU output; port working algorithm to C++ and integrate into gimbal control; demo: gimbal stabilizes using student's own filter.
+
+### Checkpoints
+
+- After Block 0: repo builds; servos calibrated; printed roll/pitch values change correctly when board is tilted.
+- After Block 1: gimbal compensates tilt in both axes; angle limits guard prevents servo overrun.
+- After Block 2: serial stream data received on host; delta-time column is plausible (~20 ms per sample at 50 Hz).
+- After Block 3: complementary or Mahony filter implemented and verified offline; C++ port runs on board; gimbal uses student's own angle estimate.
+
+### Student announcement template (Teams)
+
+**Subject:** "WS5 (Flipped) – do this before class"
+
+**Body:**
+- **Before class (~40–60 min total for reading):**
+  - Read (required):
+    - [README.md](../../README.md) (overview + safety, ~5–10 min)
+    - [ws5.md](ws5.md) (WS5 flow, ~8–12 min)
+    - [imu.md](imu.md) (IMU principle, complementary filter, gimbal code, ~15–25 min)
+    - [serial_stream.md](serial_stream.md) (UART wiring, TX/RX pins, API usage, ~10–15 min)
+  - Quiz (required, 8 questions): Link TBA; scan QR in [ws5_quiz_qr_code.png](../images/ws5_quiz_qr_code.png) or [ws5.md](ws5.md). (~7–10 min)
+
+- **Bring to class:** laptop with Mbed Studio installed + MATLAB or Python (numpy/matplotlib) for offline analysis; assembled 2-axis gimbal kit; USB Serial TTL cable.
+- **Pins:** IMU I2C on PC_9 (SDA) / PA_8 (SCL) — on-board, no wiring needed; servos roll on PB_D0, pitch on PB_D1; SerialStream TX: PB_10, RX: PC_5.
+- **In-class plan:** Block 0 build/safety + servo calibration → Block 1 IMU bring-up + gimbal control → Block 2 serial streaming + data capture → Block 3 filter implementation + demo.
+- **Help rule:** if stuck >5 minutes, check hints in [ws5.md](ws5.md) and [imu.md](imu.md), then ask instructor.
+
+---
+
 ## Post-course Student Feedback Survey
 
 Thank you for completing this post-course feedback survey. Its purpose is to evaluate your experience with the flipped-format workshops (WS1–WS3) and help improve the course for future students. Your responses will be summarized anonymously, so please answer honestly and based on your own experience.
