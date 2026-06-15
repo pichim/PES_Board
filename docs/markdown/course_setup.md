@@ -15,6 +15,7 @@ It is recommended that you use a private email address to set up accounts on Mbe
 - Mbed Studio: https://os.mbed.com/studio/ Free IDE for the Mbed OS ecosystem
 - PuTTY: https://www.putty.org/ SSH and telnet client
 - MATLAB: https://matlab.mathworks.com/  Programming and numerical computing platform
+- Visual Studio Code: https://code.visualstudio.com/download Code editor with support for development operations
 
 ## GitHub
 
@@ -59,7 +60,7 @@ Importing a program from GitHub to Mbed Studio involves linking the local reposi
     <i>Importing the Program</i>
 </p>
 
-* Visit the GitHub page of your repository (e.g., https://github.com/GithubUserName/NameOfForkedRepository) and copy the **HTTPS** URL, located below the box on your forked repository.
+* Visit the GitHub page of your repository (e.g., https://github.com/YOUR_NICK/NAME_OF_FORKED_REPOSITORY) and copy the **HTTPS** URL, located below the box on your forked repository.
 
 <p align="center">
     <img src="../images/https_link_github.png" alt="HTTPS link GitHub" width="350"/> </br>
@@ -128,9 +129,101 @@ Flashing the microcontroller involves programming its non-volatile memory with t
 
 To apply code changes, you can simply click the **PLAY** button, prompting Mbed Studio to build the code and flash it to the microcontroller.
 
-<!-- **NOTE:** -->
+**NOTE:**
 
-<!-- - Periodically deleting the build folder and re-building the program is recommended to avoid potential interference that may arise from adding new code. -->
+- Periodically deleting the build folder and re-building the program is recommended to avoid potential interference that may arise from adding new code.
+
+## Visual Studio Code
+Visual Studio Code (VS Code) is a versatile code editor developed by Microsoft, designed for a wide range of programming languages and development tasks. It offers features such as syntax highlighting, debugging, version control integration, and a rich ecosystem of extensions, making it a popular choice among developers for various coding projects.
+If you intend to use Visual Studio Code for your development, you can install the necessary extensions to enhance your coding experience and support the specific programming languages and tools you will be using during the course.
+The following extensions are recommended for a smooth development experience:
+- C/C++ Extension: Provides support for C and C++ programming languages, including features like IntelliSense, debugging, and code navigation.
+- PlatformIO IDE Extension: Offers a comprehensive development environment for embedded systems, supporting various microcontroller platforms and providing tools for building, debugging, and flashing firmware.
+- Git Extension: Integrates Git version control into Visual Studio Code, allowing you to manage your code repositories and track changes effectively.
+- Serial Monitor Extension: Enables you to monitor and interact with serial ports, which is essential for debugging and communicating with microcontroller boards.
+
+### Installing extensions
+To install extensions in Visual Studio Code, follow these steps:
+1. Open Visual Studio Code.
+2. Click on the Extensions icon in the Activity Bar on the side of the window (or press `Ctrl+Shift+X`).
+3. In the Extensions view, use the search bar to find the desired extension (e.g., "C/C++ Extension").
+
+<p align="center">
+    <img src="../images/platformio_extension.png" alt="PlatformIO Extension" width="350"/> </br>
+    <i>PlatformIO Extension</i>
+</p>
+
+4. Click on the extension in the search results to view its details.
+5. Click the "Install" button to add the extension to your Visual Studio Code environment.
+Repeat these steps for each of the recommended extensions to set up your development environment for the course.
+
+## PlatformIO
+PlatformIO is an open-source ecosystem for embedded development, providing a unified platform for building, debugging, and managing firmware projects across various microcontroller platforms. It offers a powerful command-line interface and integration with popular code editors, streamlining the development process for embedded systems.
+PlatformIO supports a wide range of microcontroller platforms and frameworks, making it a versatile choice for developers working on embedded projects. It provides features such as library management, project configuration, and a built-in serial monitor, enhancing the efficiency of embedded development workflows.
+
+### Importing Your First Project
+For this course, there is no need to set up a project in platformIO, as all the configurations are already done in the current github repository. You can simply open the folder of the repository in Visual Studio Code and start working on the code. The platformIO extension will automatically detect the project and provide you with the necessary tools to build and flash your code to the microcontroller.
+Importing the project in Visual Studio Code is straightforward:
+1. Visit the GitHub page of your repository (e.g., https://github.com/YOUR_NICK/NAME_OF_FORKED_REPOSITORY) and copy the **HTTPS** URL, located below the box on your forked repository.
+
+<p align="center">
+    <img src="../images/https_link_github.png" alt="HTTPS link GitHub" width="350"/> </br>
+    <i>HTTPS link GitHub</i>
+</p>
+
+2. Clone the repository to your local machine using Git. You can do this by opening a terminal and running the following command, replacing `YOUR_NICK` and `NAME_OF_FORKED_REPOSITORY` with your GitHub username and the name of the repository you forked:
+    ```bash
+    git clone https://github.com/YOUR_NICK/NAME_OF_FORKED_REPOSITORY.git
+    ```
+    or by using the GitHub Desktop application, which provides a graphical interface for cloning repositories.
+    
+3. Open Visual Studio Code.
+4. Open the PlatformIO extension by clicking on the PlatformIO icon in the Activity Bar.
+5. Click on "Open Project" and navigate to the folder where your project is located (the folder of the repository you cloned).
+
+<p align="center">
+    <img src="../images/Import_project_in_platformIO.png" alt="Flashing the Board" width="1200"/> </br>
+    <i>Flashing the Board</i>
+</p>
+
+6. Select the project folder and click "Open". PlatformIO will automatically detect the project and set up the necessary configurations for building and flashing your code to the microcontroller.
+7. Once the project is opened, you can use the PlatformIO toolbar to build and flash your code to the microcontroller, as well as access other features such as the serial monitor for debugging.
+
+### Building a Program
+Building a program in PlatformIO involves compiling the source code and generating a binary file that can be flashed onto the microcontroller. The build process translates the high-level code into machine code that the microcontroller can execute. PlatformIO provides a streamlined build process, allowing developers to easily compile their code and manage dependencies.
+There is not the option to choose a build profile in PlatformIO, but you can change the optimization level in the platformio.ini file. For example, you can set the optimization level to 0 for debugging purposes or to 3 for maximum optimization. The optimization level can be adjusted by modifying the `build_flags` in the platformio.ini file.
+For the course, we will use the build settings as they are in the platformio.ini file. There is no need to change the optimization level or any other build settings, as they are already configured for the course requirements.
+
+Building in PlatformIO can be done by clicking the "Build" button in the PlatformIO toolbar located at the bottom of the IDE, which will compile the code and generate the binary file.
+<p align="center">
+    <img src="../images/pltformio_toolbar_building.png" alt="Building the Project" width="1200  "/> </br>
+    <i>Building the Project</i>
+</p>
+
+### Flashing
+Flashing the microcontroller in PlatformIO involves transferring the compiled binary file to the microcontroller's memory, allowing it to execute the programmed code. PlatformIO provides a simple and efficient flashing process, enabling developers to quickly update the firmware on their microcontroller boards.
+To flash the microcontroller in PlatformIO, you can click the "Upload" button in the PlatformIO toolbar located at the bottom of the IDE, which will initiate the flashing process and transfer the compiled binary to the microcontroller.
+<p align="center">
+    <img src="../images/pltformio_toolbar_flashing.png" alt="Flashing the Project" width="1200  "/> </br>
+    <i>Flashing the Project</i>
+</p>
+
+### Troubleshooting
+If problems are encounterted during working with PlatformIO, there are several troubleshooting steps you can take to resolve common issues:
+1. Check PATH variables, if global python installation is added to the PATH variable. If there is a global python installation, it can cause problems with PlatformIO. Remove the global python installation from the PATH variable and try again.
+    You can access the PATH variable by following these steps:
+    - Open the Start menu and search for "Environment Variables".
+    - Click on "Edit the system environment variables".
+    - In the System Properties window, click on the "Environment Variables" button.
+    - In the Environment Variables window, under the "System variables" section, find and select the "Path" variable, then click on "Edit".
+    - In the Edit Environment Variable window, look for any entries related to a global Python installation
+
+   Or by using the command line:
+   ```bash
+   echo %PATH%
+   ``` 
+
+2. Delete the folder ``C:\Users\*UserName*\.platformio`` and restart the IDE. This folder contains the PlatformIO installation and configuration files, and deleting it can help resolve issues related to corrupted files or configurations. After deleting the folder, restart Visual Studio Code and try building or flashing your project again to see if the issue is resolved.
 
 ## Navigating the Environment
 
