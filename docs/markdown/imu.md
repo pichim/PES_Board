@@ -4,6 +4,7 @@
 [2]: https://www.youtube.com/watch?v=whSw42XddsU
 [3]: https://www.youtube.com/watch?v=wCk-FWCbskw
 [4]: https://www.youtube.com/watch?v=uDJ_SURe3c0
+[5]: https://www.youtube.com/watch?v=vjguJkPgHbY
 
 
 # IMU
@@ -38,19 +39,25 @@ An IMU (Inertial Measurement Unit) sensor is a compact electronic device that me
 ## Principle of Operation
 
 An IMU with 9 degrees of freedom is a device that measures and provides information about a body's specific acceleration, rotation rate, and the magnetic field measured in the IMU frame. It does this by using a combination of accelerometers, gyroscopes, and magnetometers.
-- **Accelerometer** - measures linear acceleration (change in velocity) along the three axes of 3D space. MEMS capacitive accelerometers typically use a small proof mass suspended by microfabricated springs or flexures near fixed electrodes. When the device accelerates, inertia causes the proof mass to deflect relative to the frame. This changes the capacitance between the movable proof mass and the fixed electrodes, and electronic circuitry measures that capacitance change to infer acceleration.
-
+- **Accelerometer** - measures linear acceleration (change in velocity) along the three axes of 3D space. MEMS capacitive accelerometers typically use a small proof mass suspended by microfabricated springs or flexures near fixed electrodes. When the device accelerates, inertia causes the proof mass to deflect relative to the frame. This changes the capacitance between the movable proof mass and the fixed electrodes, and electronic circuitry measures that capacitance change to infer acceleration. [here][3] is a video that explains the principle of operation of MEMS accelerometers in an accessible way.
 <p align="center">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/wCk-FWCbskw" frameborder="0" allowfullscreen></iframe>
+    <img src="../images/accelerometers-imu.gif" alt="Principle of Operation" width="500"/> </br>
+    <i>Functioning of MEMS Accelerometer (<a href="https://howtomechatronics.com/how-it-works/electrical-engineering/mems-accelerometer-gyrocope-magnetometer-arduino/">Source</a>)</i>
 </p>
 
-- **Gyroscope** - measures angular velocity, or rate of rotation, about one or more axes. MEMS gyroscopes commonly use a vibrating mechanical structure, such as a vibrating proof mass, ring, or tuning-fork structure. When the device rotates, the Coriolis effect produces a force perpendicular to the primary vibration direction. This causes a secondary vibration or displacement, which is sensed — often capacitively — and converted by electronic circuitry into an angular-rate signal.
+- **Gyroscope** - measures angular velocity, or rate of rotation, about one or more axes. MEMS gyroscopes commonly use a vibrating mechanical structure, such as a vibrating proof mass, ring, or tuning-fork structure. When the device rotates, the Coriolis effect produces a force perpendicular to the primary vibration direction. This causes a secondary vibration or displacement, which is sensed — often capacitively — and converted by electronic circuitry into an angular-rate signal. [here][4] is a video that explains the principle of operation of MEMS gyroscopes in an accessible way.
 
 <p align="center">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/uDJ_SURe3c0" frameborder="0" allowfullscreen></iframe>
+    <img src="../images/gyro-imu.gif" alt="Principle of Operation" width="500"/> </br>
+    <i>Functioning of MEMS Gyroscope (<a href="https://howtomechatronics.com/how-it-works/electrical-engineering/mems-accelerometer-gyrocope-magnetometer-arduino/">Source</a>)</i>
 </p>
 
-- **Magnetometer** - measures the strength and direction of the magnetic field in 3D space. MEMS magnetometers commonly use Hall-effect sensors or magnetoresistive elements, rather than vibrating masses. When exposed to a magnetic field, these components experience a change in voltage (Hall effect) or resistance (magnetoresistive), which is measured by electronic circuitry and translated into a digital signal.
+- **Magnetometer** - measures the strength and direction of a magnetic field in 3D space. In compact electronic sensors, the sensing elements commonly use Hall-effect, anisotropic magnetoresistive, giant magnetoresistive, or tunneling magnetoresistive structures rather than vibrating proof masses. When exposed to a magnetic field, these elements produce a measurable voltage change, as in Hall sensors, or a resistance change, as in magnetoresistive sensors. Electronic circuitry measures these changes and converts them into a digital magnetic-field vector. [here][5] is a video that explains the principle of operation of magnetometers in an accessible way.
+
+<p align="center">
+    <img src="../images/magnetometer-imu.gif" alt="Principle of Operation" width="500"/> </br>
+    <i>Functioning of Hall Effect Magnetometer (<a href="https://howtomechatronics.com/how-it-works/electrical-engineering/mems-accelerometer-gyrocope-magnetometer-arduino/">Source</a>)</i>
+</p>
 
 ### Sensor Fusion
 
@@ -106,6 +113,8 @@ Remarkable here is that both filters are low-pass filters; the one that is appli
 A link to a video, which explains the above in a very accessible way, can be found [here][2].
 
 The ``IMU`` class uses a Mahony filter to estimate the orientation in 3D space by combining data from accelerometer and gyroscope sensors. The Mahony filter can also use magnetometer data to estimate heading information using the measurement of the Earth's magnetic field. This allows for absolute orientation estimation relative to magnetic north (which in general is not true north). The Mahony filter can be thought of as a generalization of the complementary filter to 3D space, where the gyroscope provides angular velocity data, the accelerometer provides tilt information, and the magnetometer provides heading information.
+
+For the theoretical background for the 1-D Mahony filter see: [Tutorial 1-D Mahony filter](1d_mahony.md). This will help you understand how to implement the filter first in MATLAB or Python and then port it to C++.
 
 **IMPORTANT NOTE:**
 
