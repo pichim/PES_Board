@@ -2,6 +2,9 @@
 [0]: https://www.sparkfun.com/products/retired/13284
 [1]: https://compsci290-s2016.github.io/CoursePage/Materials/EulerAnglesViz/
 [2]: https://www.youtube.com/watch?v=whSw42XddsU
+[3]: https://www.youtube.com/watch?v=wCk-FWCbskw
+[4]: https://www.youtube.com/watch?v=uDJ_SURe3c0
+
 
 # IMU
 
@@ -35,8 +38,18 @@ An IMU (Inertial Measurement Unit) sensor is a compact electronic device that me
 ## Principle of Operation
 
 An IMU with 9 degrees of freedom is a device that measures and provides information about a body's specific acceleration, rotation rate, and the magnetic field measured in the IMU frame. It does this by using a combination of accelerometers, gyroscopes, and magnetometers.
-- **Accelerometer** - measures linear acceleration (change in velocity) along the three axes of 3D space. MEMS (Micro-Electro-Mechanical Systems) accelerometers typically use a small proof mass suspended between fixed electrodes. When the device accelerates, the proof mass shifts due to inertia, changing the distance between it and the fixed electrodes. This alters the capacitance, which is measured by electronic circuitry.
-- **Gyroscope** - measures angular velocity (rate of rotation) around the three axes. MEMS gyroscopes use a vibrating structure (often a vibrating mass or tuning fork). When the device rotates, the Coriolis effect causes a secondary vibration perpendicular to the primary vibration. This Coriolis-induced displacement is sensed and converted into a rotational rate signal.
+- **Accelerometer** - measures linear acceleration (change in velocity) along the three axes of 3D space. MEMS capacitive accelerometers typically use a small proof mass suspended by microfabricated springs or flexures near fixed electrodes. When the device accelerates, inertia causes the proof mass to deflect relative to the frame. This changes the capacitance between the movable proof mass and the fixed electrodes, and electronic circuitry measures that capacitance change to infer acceleration.
+
+<p align="center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/wCk-FWCbskw" frameborder="0" allowfullscreen></iframe>
+</p>
+
+- **Gyroscope** - measures angular velocity, or rate of rotation, about one or more axes. MEMS gyroscopes commonly use a vibrating mechanical structure, such as a vibrating proof mass, ring, or tuning-fork structure. When the device rotates, the Coriolis effect produces a force perpendicular to the primary vibration direction. This causes a secondary vibration or displacement, which is sensed — often capacitively — and converted by electronic circuitry into an angular-rate signal.
+
+<p align="center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/uDJ_SURe3c0" frameborder="0" allowfullscreen></iframe>
+</p>
+
 - **Magnetometer** - measures the strength and direction of the magnetic field in 3D space. MEMS magnetometers commonly use Hall-effect sensors or magnetoresistive elements, rather than vibrating masses. When exposed to a magnetic field, these components experience a change in voltage (Hall effect) or resistance (magnetoresistive), which is measured by electronic circuitry and translated into a digital signal.
 
 ### Sensor Fusion
