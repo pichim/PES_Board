@@ -64,6 +64,7 @@ int main()
 
             // visual feedback that the main task is executed, setting this once would actually be enough
             led1 = 1;
+            Color_Sensor.switchLed(ON); // turn on the LED of the color sensor, if wired
 
             // read the raw color measurement (in Hz) and store it in the defined variable
             for (int i = 0; i < 4; i++) {
@@ -95,6 +96,7 @@ int main()
             // the following code block gets executed only once
             if (do_reset_all_once) {
                 do_reset_all_once = false;
+                Color_Sensor.switchLed(OFF); // turn off the LED of the color sensor, if wired
 
                 // --- variables and objects that should be reset go here ---
 

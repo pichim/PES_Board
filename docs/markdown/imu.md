@@ -5,6 +5,7 @@
 [3]: https://www.youtube.com/watch?v=wCk-FWCbskw
 [4]: https://www.youtube.com/watch?v=uDJ_SURe3c0
 [5]: https://www.youtube.com/watch?v=vjguJkPgHbY
+[6]: https://www.sagemotion.com/blog/how-does-an-imu-work
 
 
 # IMU
@@ -58,6 +59,8 @@ An IMU with 9 degrees of freedom is a device that measures and provides informat
     <img src="../images/magnetometer-imu.gif" alt="Principle of Operation" width="500"/> </br>
     <i>Functioning of Hall Effect Magnetometer (<a href="https://howtomechatronics.com/how-it-works/electrical-engineering/mems-accelerometer-gyrocope-magnetometer-arduino/">Source</a>)</i>
 </p>
+
+[here][6] you find an interactive website that explains the principle of operation of the IMU in an accessible way.
 
 ### Sensor Fusion
 
