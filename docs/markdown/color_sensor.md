@@ -1,6 +1,6 @@
 <!-- link list, last updated 10.02.2026 -->
 [0]: https://www.mouser.com/catalog/specsheets/TCS3200-E11.pdf
-[1]: https://www.berrybase.ch/tcs230-tcs3200-farbsensor-modul
+[1]: https://wiki.dfrobot.com/sen0101
 [2]: https://ams-osram.com/products/sensor-solutions/ambient-light-color-spectral-proximity-sensors/ams-tcs3200-color-sensor
 
 # Color Sensor
