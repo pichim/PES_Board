@@ -16,7 +16,7 @@ It is recommended that you use a private email address to set up accounts on Mbe
 - PuTTY: https://www.putty.org/ SSH and telnet client
 - MATLAB: https://matlab.mathworks.com/  Programming and numerical computing platform
 - Visual Studio Code: https://code.visualstudio.com/download Code editor with support for development operations
-- STLink Driver: https://www.st.com/en/development-tools/stsw-link009.html
+- STLink Driver: https://www.st.com/en/development-tools/stsw-link009.html Drivers, so you can flash code to the microcontroller using PlatformIO
 - Git: https://git-scm.com/install/windows Version control system for tracking changes in source code during software development
 
 ## GitHub
