@@ -68,7 +68,7 @@ In the first task, we will focus only on understanding the motor functionality a
 
 ## Part 2
 
-### No Ultrasonic Sensor?
+<!-- ### No Ultrasonic Sensor?
 
 Replace the ultrasonic sensor with an infrared (IR) distance sensor. The IR sensor can be used in a similar way, but you will need to adapt the code accordingly. You can find the IR sensor tutorial here: [Tutorial Infrared Distance Sensor](ir_sensor.md). Since you already have the calibration values from the first workshop, you can use them directly in your code. It is recommended to use the ``IRSensor`` class, which applies an averaging filter and automatically uses the calibration values.
 
@@ -87,7 +87,7 @@ ir_sensor.setCalibration(11801.3246f, -11.2132f); // set calibration values
 
 // ir distance sensor instead of ultrasonic sensor
 us_distance_cm = ir_sensor.read();
-```
+``` -->
 
 ### Ultrasonic Sensor
 
