@@ -127,7 +127,7 @@ float angle{0.0f};
 The sensor bar driver provides functionality to read the sensor values and calculate the angle of the line relative to the robot's orientation.
 
 ```cpp
-// only update sensor bar angle if an led is triggered
+// only update sensor bar angle if a led is triggered
 if (sensor_bar.isAnyLedActive())
     angle = sensor_bar.getAvgAngleRad();
 ```
