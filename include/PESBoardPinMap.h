@@ -65,8 +65,8 @@
 
     #define PB_ENABLE_DCMOTORS PB_2 // PB_13 ???
 
-    #define PB_IMU_SDA // ???
-    #define PB_IMU_SCL // ???
+    #define PB_IMU_SDA PB_9
+    #define PB_IMU_SCL PB_8
     
 #endif
 
