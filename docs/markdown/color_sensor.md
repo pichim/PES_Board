@@ -64,6 +64,8 @@ The TCS3200 sensor module typically has 8 pins:
 - **S0, S1**: Frequency scaling selection pins (connect to digital output pins)
 - **S2, S3**: Color filter selection pins (connect to digital output pins)
 - **LED or <span style="text-decoration: overline;">OE</span>**: Enables LEDs and Sensor. Can be left floating, if no supported digital output pin is available
+- **OUT**: Frequency output pin (connect to a digital input pin)
+
 ### Color Filter and Frequency Scaling Selection
 
 The TCS3200 uses two sets of control pins:

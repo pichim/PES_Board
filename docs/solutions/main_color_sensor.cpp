@@ -47,7 +47,7 @@ int main()
     
     int color_num = 0.0f; // define a variable to store the color number, e.g. 0 for red, 1 for green, 2 for blue, 3 for clear
     const char* color_string; // define a variable to store the color string, e.g. "red", "green", "blue", "clear"
-    ColorSensor Color_Sensor(PB_3); // create ColorSensor object, connect the frequency output pin of the sensor to PC_2
+    ColorSensor Color_Sensor(PB_3); // create ColorSensor object, connect the frequency output pin of the sensor to PB_3
 
     // start timer
     main_task_timer.start();
