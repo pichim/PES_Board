@@ -2,8 +2,8 @@
     // See http://go.microsoft.com/fwlink/?LinkId=827846
     // for the documentation about the extensions.json format
     "recommendations": [
-        "platformio.platformio-ide",
-        "ms-vscode.vscode-serial-monitor"
+        "ms-vscode.vscode-serial-monitor",
+        "platformio.platformio-ide"
     ],
     "unwantedRecommendations": [
         "ms-vscode.cpptools-extension-pack",
