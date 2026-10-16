@@ -1,8 +1,7 @@
 <!-- link list, last updated 07.12.2023 -->
-[0]: https://www.futaba.ch/?cat=21&tit=Servo%20SBus
+[0]: https://futabausa.com/product/s3001/
 [1]: https://www.conrad.ch/de/p/reely-standard-servo-cys-s0090-analog-servo-getriebe-material-metall-stecksystem-jr-2203091.html?refresh=true#productHighlights
 [2]: https://theorycircuit.com/servo-motor-driver-circuit/
-[3]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
 
 # Analog Servos
 
@@ -229,9 +228,9 @@ This function allows the adjustment of the maximum acceleration during the movem
     <center> <i>Servo movement with maximum Acceleration of 0.3f</i> </center>
 </p>
 
-| <center>Default settings <center> | <center>Acceleration limited</center>|
-| - | - |
-| <center><i> </i></center> | <center><i>``servo_D0.setMaxAcceleration(0.3f);``</i></center> |
+| <center>Default settings <center>                                                                                                                  | <center>Acceleration limited</center>                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <center><i> </i></center>                                                                                                                          | <center><i>``servo_D0.setMaxAcceleration(0.3f);``</i></center>                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | Without setting the acceleration the servo will move to its commanded position as fast as possible, leading to fast but not very smooth movements. | With a maximum acceleration, the movement becomes smooth, and acceleration values are constrained by the driver. The velocity during the initial stage increases with a constant acceleration and then decreases, maintaining the same acceleration value but with negative sign. This results in a smooth movement. The velocity in- and decreases linearly, for the first increase of the velocity the derivative is approximately 0.1545/(0.95 - 0.435) = 0.3f as set via the class interface. |
 
 ## Example

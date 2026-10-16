@@ -1,8 +1,3 @@
-<!-- link list, last updated 15.01.2023 -->
-[0]: https://www.sparkfun.com/products/retired/13284
-[1]: https://compsci290-s2016.github.io/CoursePage/Materials/EulerAnglesViz/
-[2]: https://www.youtube.com/watch?v=whSw42XddsU
-
 # 1-D Mahony Filter
 
 We look at the theoretical background of the 1-D Mahony filter, which is a sensor fusion algorithm used to estimate the orientation of an IMU (Inertial Measurement Unit) in space. The 1-D Mahony filter is a simplified version of the 3-D Mahony filter, focusing on estimating orientation around a single axis.

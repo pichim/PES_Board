@@ -146,7 +146,7 @@ Here we can insert commands that we want to execute only after pressing the blue
         .
 ```
 
-At the end of the ``main(){scope of while}`` we perform a time measurement and make the main thread sleep for the remaining time span (non-blocking). This is a simple approach to repeatedly execute the main task every ``main_task_period_ms`` milliseconds. The ``main_task_period_ms`` is defined at the beginning of the ``main()`` function and is set to 20 ms. This means that the main task will run 50 times per second, respectively the ``main()`` function runs at 50 Hz.
+At the end of the ``main(){scope of while}`` we perform a time measurement and make the main thread sleep for the remaining time span (non-blocking). This is a simple approach to repeatedly execute the main task every ``main_task_period_ms`` milliseconds. The ``main_task_period_ms`` is defined at the beginning of the ``main()`` function and is set to 20 ms. The loop is intended to execute approximately 50 iterations per second, provided the work fits within each 20 ms period. The ``main()`` function itself is entered once and contains this repeating loop.
 
 ```cpp
         .

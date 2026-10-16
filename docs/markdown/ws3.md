@@ -1,5 +1,5 @@
 <!-- link list -->
-[0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[0]: mbed_nucleo_f446re_pin_map.md
 [1]: https://forms.cloud.microsoft/e/U3v2D8G4Em
 
 # Workshop 3
@@ -140,7 +140,7 @@ if (us_distance_cm_candidate > 0.0f)
     us_distance_cm = us_distance_cm_candidate;
 ```
 
-7. Create an object for **Motor M3**, see [Tutorial DC Motor](dc_motor.md#motor-m3), which will be controlled by setting the setpoint position. Activate the motion planner and configure the maximum acceleration to half of the default value.
+7. Create an object for **Motor M3**, see [Tutorial DC Motor](dc_motor.md#motor-m3-closed-loop-position-control), which will be controlled by setting the setpoint position. Activate the motion planner and configure the maximum acceleration to half of the default value.
 
 ```cpp
 // create object to enable power electronics for the dc motors
@@ -302,7 +302,7 @@ motor_M3.enableMotionPlanner();
 robot_state = RobotState::INITIAL;
 ```
 
-17. Upload the program to the microcontroller using the **PLAY** button in Mbed Studio. Then, aim the sensor at an object that is beyond the distance triggering the **EMERGENCY** state. Press the **USER** button and click the mechanical button.
+17. Upload the program to the microcontroller by selecting or pressing **PlatformIO: Upload** (see the [upload instructions](build_mbed_platformio.md#upload)). Then, aim the sensor at an object that is beyond the distance triggering the **EMERGENCY** state. Press the **USER** button and click the mechanical button.
 
 18. Experiment by pressing the mechanical button and pointing the sensor at an object that is below the threshold specified in the code.
 

@@ -3,7 +3,7 @@
 [1]: https://www.pololu.com/product/136
 [2]: https://www.pololu.com/product/2464
 [3]: https://robocraze.com/blogs/post/ir-sensor-working
-[4]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[4]: mbed_nucleo_f446re_pin_map.md
 
 # Infrared Distance Sensor
 

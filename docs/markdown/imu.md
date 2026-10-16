@@ -251,7 +251,7 @@ In order to demonstrate how the IMU can be used, a 2D gimbal has been prepared r
     <i>2-Axis Gimbal</i>
 </p>
 
-Prepared parts in `.stl` format for printing can be found [here](../cad/gimbal); additionally, step files are also present in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
+Prepared parts in `.stl` format for printing can be found [here](../cad/WS5); additionally, step files are also present in case you wish to modify them. The parts are prepared for two Modelcraft RS2 MG/BB servos.
 
 **NOTE:**
 - Remember to calibrate the servos before using them for proper operation of the gimbal.

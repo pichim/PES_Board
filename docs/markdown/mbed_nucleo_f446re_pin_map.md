@@ -17,8 +17,8 @@
 </p>
 
 <p align="center">
-    <img src="../images/mbed_nucleo_f446re_pin_map_images/nucleo_f446re_arduino_right.png" alt="Arduino Header left" width="700"/> </br>
-    <i>Arduino Header left</i>
+    <img src="../images/mbed_nucleo_f446re_pin_map_images/nucleo_f446re_arduino_right.png" alt="Arduino Header right" width="700"/> </br>
+    <i>Arduino Header right</i>
 </p>
 
 ## Morpho Header

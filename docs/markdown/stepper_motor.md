@@ -2,7 +2,6 @@
 [0]: https://www.pololu.com/product/1209
 [1]: https://www.pololu.com/product/2267
 [2]: https://www.pololu.com/product/1182
-[3]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
 [4]: https://www.youtube.com/watch?v=89BHS9hfSUk&t=1s
 
 # Stepper Motor
@@ -60,7 +59,7 @@ where $R_{sense}$ is the sense resistor value, typically 0.05 Ohm for this board
 
 This setup helps ensure your motor operates within safe limits, especially during high-demand scenarios.
 
-For more information check out [A4988 Stepper Motor Driver Carrier][3] and the video [Setting the Current Limit on Pololu Stepper Motor Driver Carriers][4].
+For more information check out [A4988 Stepper Motor Driver Carrier][2] and the video [Setting the Current Limit on Pololu Stepper Motor Driver Carriers][4].
 
 ## Stepper Motor Example
 

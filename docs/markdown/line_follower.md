@@ -1,8 +1,8 @@
 <!-- link list -->
 [0]: https://www.sparkfun.com/products/13582
 [1]: https://learn.sparkfun.com/tutorials/sparkfun-line-follower-array-hookup-guide
-[2]: https://learn.sparkfun.com/tutorials/serial-peripheral-interface-spi/all
-[3]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[2]: https://www.nxp.com/docs/en/user-guide/UM10204.pdf
+[3]: mbed_nucleo_f446re_pin_map.md
 
 # Line Follower
 
@@ -52,7 +52,7 @@ Use the following pins directly on the Nucleo board to connect the sensor:
 - SCL (Clock Line): **PB_8**
 - SDA (Data Line): **PB_9**
 
-The pinmap from the Nucleo board can be found here: [Mbed ST-Nucleo-F446RE][3]
+The pinmap from the Nucleo board can be found here: [Nucleo F446RE Mbed Pin Map][3]
 
 <b>As mentioned above, this sensor is highly sensitive, and incorrect connections may cause damage. It is very important to carefully review the provided images that illustrate the correct way to connect the sensor.</b> <br>
 

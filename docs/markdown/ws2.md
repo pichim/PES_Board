@@ -1,5 +1,5 @@
 <!-- link list -->
-[0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[0]: mbed_nucleo_f446re_pin_map.md
 [1]: https://forms.cloud.microsoft/e/csBg2wWZa5
 
 # Workshop 2
@@ -292,7 +292,7 @@ if (do_reset_all_once) {
 printf("US distance cm: %f \n", us_distance_cm);
 ```
 
-14. Compile and flash the program to the microcontroller using the **PLAY** button in Mbed Studio and then point the sensor at an object that is at a distance that is within the range specified in the code and click the **USER** button.
+14. Compile and flash the program to the microcontroller by selecting or pressing **PlatformIO: Upload** (see the [upload instructions](build_mbed_platformio.md#upload)) and then point the sensor at an object that is at a distance that is within the range specified in the code and click the **USER** button.
 
 15. Experiment by directing the sensor towards an object that is out of range. Press the mechanical button and observe the serial terminal to see the current state and the measured distance (if valid and within the specified range).
 

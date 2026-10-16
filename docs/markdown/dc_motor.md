@@ -200,7 +200,7 @@ enable_motors = 1;
 ### Create DC Motor Object and Command the DC motor
 
 The provided examples show three different use cases of a DC motor and how to use the ``DCMotor`` class. We assume that we have three DC motors and encoders that are plugged into pins **M1 - M3** on the PES board. You can also test each use case separately when only one DC motor is available.
-- [Motor M1](#motor-m1-open-loop) will be used Open-Loop (direct voltage control)
+- [Motor M1](#motor-m1-open-loop-direct-voltage-control) will be used Open-Loop (direct voltage control)
 - [Motor M2](#motor-m2-closed-loop-velocity-control) will be used Closed-Loop Velocity Control (Rotations per Second)
 - [Motor M3](#motor-m3-closed-loop-position-control) will be used Closed-Loop Position Control (Rotations)
 

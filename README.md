@@ -33,10 +33,6 @@
     - Maze solving description can be found here: https://www.instructables.com/Robot-Maze-Solver/
     - Replace pin of DigitalOut led1(PB_9); -> this is in conflict with the sensor bar resp. line follower (ok - removed the additional led from the solutions and added a note in the markdown file)
     - Create Workshop 6 with my dc motor
-    - Document how to use PlatformIO (ok - at least minimal description is there)
-      - Especially with regards to gcc instead of armclang
-      - Remove important note in sd card logger that it currently only works with platformio (if it works with latest mbed studio)
-    - Document how to use Putty
     - In DCMotor.cpp PERFORM_GPA_MEAS and PERFORM_CHIRP_MEAS should be tested with the latest updates, here features like serial_pipe and serialStream could be introduced
       -> only tested if PERFORM_GPA_MEAS is still working via the terminal
 
@@ -44,8 +40,6 @@
 
         Markdown files read and checked:
         - README.md                     (ok & spell checked)   ->   ws1-3, 1
-        - build_mbed_linux.md           (ok & spell checked)
-        - build_mbed_windows.md         (ok & spell checked)
         - stepper_motor.md              (ok & spell checked)
         - course_setup.md               (ok & spell checked)   ->   ws1  , 2
         - dc_motor.md                   (ok & spell checked)   ->   ws3  , 3
@@ -89,7 +83,7 @@
   -->
 
 <!-- link list -->
-[0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[0]: docs/markdown/mbed_nucleo_f446re_pin_map.md
 [1]: https://www.st.com/en/microcontrollers-microprocessors/stm32f446re.html#documentation
 
 # PES Board - Hardware and Driver Documentation
@@ -116,7 +110,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Accounts](docs/markdown/course_setup.md#accounts)
     * [Software](docs/markdown/course_setup.md#software)
     * [GitHub](docs/markdown/course_setup.md#github)
-    * [Arm Mbed](docs/markdown/course_setup.md#arm-mbed)
+    * [PlatformIO](docs/markdown/course_setup.md#platformio)
 2. [Hardware](#hardware)
     * [Nucleo F446RE](#nucleo-f446re)
         * [Nucleo Pinmap][0]
@@ -137,7 +131,7 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
         * [Color Sensor](docs/markdown/color_sensor.md)
 3. [Tips](#tips)
     * [Project Development](docs/markdown/tips.md#project-development)
-    * [Programming](docs/markdown/tips.md#programming)
+    * [Programming](docs/markdown/tips.md#programming-tips)
         * [Main file description](docs/markdown/main_description.md)
     * [Structuring a Robot Task](docs/markdown/tips.md#structuring-a-robot-task)
 4. [Workshops, Solutions and Examples](#workshops-solutions-and-examples)
@@ -146,10 +140,8 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
     * [Workshop 3](docs/markdown/ws3.md)
     * [Workshop 4](docs/markdown/ws4.md)
     * [Workshop 5](docs/markdown/ws5.md)
-5. [Build Mbed OS projects with VS Code](#build-mbed-os-projects-with-vs-code)
+5. [Build and Upload with PlatformIO](#build-and-upload-with-platformio)
     * [Build Mbed with PlatformIO in VS Code](docs/markdown/build_mbed_platformio.md)
-    * [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
-    * [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
 6. [Weblinks](#weblinks)
 
 ## Course Setup
@@ -161,7 +153,7 @@ This document covers all the information about:
 - [Accounts](docs/markdown/course_setup.md#accounts)
 - [Software](docs/markdown/course_setup.md#software)
 - [GitHub](docs/markdown/course_setup.md#github)
-- [Arm Mbed](docs/markdown/course_setup.md#arm-mbed)
+- [PlatformIO](docs/markdown/course_setup.md#platformio)
 
 ## Hardware
 
@@ -186,12 +178,7 @@ The Nucleo-F446RE is a microcontroller development board featuring the STM32F446
     <i>Nucleo F446RE Overview</i>
 </p>
 
-Arm Mbed provides a dedicated platform with essential information about the development board.
-
-Here you can find technical specifications and the pinmap:
-
-- [Mbed ST-Nucleo-F446RE][0]
-- [Nucleo F446RE Mbed Pin Map](docs/markdown/mbed_nucleo_f446re_pin_map.md)
+Use the [STM32F446RE documentation][1] for technical specifications and the [Nucleo F446RE Mbed Pin Map][0] for pin names used in this project.
 
 ### PES Board
 
@@ -283,7 +270,7 @@ The following links point to the hardware tutorials. These documents contain spe
 Tips that you might find useful can be found in the document [Tips](docs/markdown/tips.md). Here you can find information about:
 
 - [Project Development](docs/markdown/tips.md#project-development)
-- [Programming](docs/markdown/tips.md#programming)
+- [Programming](docs/markdown/tips.md#programming-tips)
 - [Structuring a Robot Task](docs/markdown/tips.md#structuring-a-robot-task)
 
 ## Workshops, Solutions and Examples
@@ -314,18 +301,9 @@ And below you will find all the solutions, as well as some additional examples:
 - [Example Serial Stream](docs/solutions/main_serial_stream.cpp)
 - [Example Color Sensor](docs/solutions/main_color_sensor.cpp)
 
-## Build Mbed OS projects with VS Code with PlatformIO
+## Build and Upload with PlatformIO
 
-The following descriptions explain how to build Mbed OS projects with VS Code on different operating systems using PlatformIO.
-
-- [Build Mbed with PlatformIO in VS Code](docs/markdown/build_mbed_platformio.md)
-
-## Build Mbed OS projects with VS Code without PlatformIO
-
-The following descriptions explain how to build Mbed OS projects with VS Code on different operating systems without using PlatformIO.
-
-- [Build Mbed on Windows with VS Code](docs/markdown/build_mbed_windows.md)
-- [Build Mbed on Linux/WSL with VS Code](docs/markdown/build_mbed_linux.md)
+Use the [PlatformIO build guide](docs/markdown/build_mbed_platformio.md) to open this repository, compile the default program, upload it to the Nucleo-F446RE, and use the serial monitor. Complete [Course Setup](docs/markdown/course_setup.md) first.
 
 ## Weblinks
 
@@ -337,19 +315,21 @@ The following descriptions explain how to build Mbed OS projects with VS Code on
 - C++ data types: https://www.tutorialspoint.com/cplusplus/cpp_data_types.htm
 - Printf format convention: https://cplusplus.com/reference/cstdio/printf/
 - Flowchart diagram maker: https://app.diagrams.net/
-- Online C++ Compiler: https://www.onlinegdb.com/online_c++_compiler
 
 ### Hardware Links
 
+- https://www.play-zone.ch
+- https://www.bastelgarage.ch/
+- https://www.berrybase.ch/
+- https://www.digitec.ch/
+- https://boxtec.ch
+- http://farnell.ch
+- https://www.mouser.ch
+- https://www.distrelec.ch
+- https://www.digikey.com
+- https://www.conrad.ch
 - https://www.pololu.com
 - https://www.adafruit.com
 - https://www.sparkfun.com
 - https://www.seeedstudio.com
 - https://www.robotshop.com
-- https://boxtec.ch
-- https://www.play-zone.ch
-- http://farnell.ch
-- https://www.mouser.ch
-- https://www.digikey.com
-- https://www.conrad.ch
-- https://www.distrelec.ch

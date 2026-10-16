@@ -4,7 +4,7 @@ The **SD Card Logger** captures data and saves it in binary format on an SD card
 
 This guide provides a basic overview of the functionality and two short examples showing how to use `SDLogger` to log data.
 
-**Important Note: Logging with the SD Card Logger only works with the GNU Arm Embedded Toolchain which includes the GNU Compiler (gcc). Therefore, it will not work with Mbed Studio which uses Arm Compiler 6 (armclang), you have to use PlatformIO!**
+Build and upload the SD Card Logger examples using the project's [PlatformIO workflow](build_mbed_platformio.md). Keep the SD support settings in `mbed_app.json`.
 
 ## Basic Functionality
 

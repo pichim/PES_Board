@@ -1,10 +1,10 @@
 <!-- link list -->
-[0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
+[0]: mbed_nucleo_f446re_pin_map.md
 [1]: https://forms.cloud.microsoft/e/BFmzMtMYfv
 
 # Workshop 1
 
-The first workshop aims to introduce the Nucleo-F446RE microcontroller. We will familiarize ourselves with Mbed Studio, an integrated development environment (IDE) for coding and software/firmware development. The workshop will start by analyzing a given ***main.cpp*** file, its structure, and the implementation of basic commands.
+The first workshop aims to introduce the Nucleo-F446RE microcontroller. We will use Visual Studio Code with PlatformIO to build and upload the existing Mbed application. The workshop will start by analyzing a given ***main.cpp*** file, its structure, and the implementation of basic commands.
 
 Participants will explore hardware utilization, specifically the IR Sensor and a calibration process. To optimize the calibration parameters we will use either MATLAB or Python.
 
@@ -29,7 +29,7 @@ Files stored in the `temp` folder will not be compiled. You can use it to keep d
 
 **Required reading (come prepared so we can spend class time building/testing):**
 - [README.md](../../README.md) (overview + safety + board structure).
-- [Course Setup](course_setup.md) (GitHub + Mbed Studio import/build/flash basics).
+- [Course Setup](course_setup.md) (installation, GitHub and cloning), followed by the [PlatformIO build guide](build_mbed_platformio.md).
 - [Tips](tips.md) (programming hygiene + debugging basics).
 - [Main file description](main_description.md) (loop, USER button gating, structure of `main.cpp`).
 - [Infrared Distance Sensor](ir_sensor.md) (intro, range table, wiring, calibration overview).
@@ -48,6 +48,7 @@ Files stored in the `temp` folder will not be compiled. You can use it to keep d
 > - Nucleo-F446RE board
 > - Mini USB cable for flashing and serial communication
 > - LED diode
+> - 220–500 Ω series resistor for the LED
 > - Jumper wires
 
 >Part 2:
@@ -68,13 +69,11 @@ Furthermore, ensure that you are familiar with the general structure of the boar
 
 The first task will be to run a test program using an additional LED.
 
-1. Connect the LED to the pin **PB_9** and ground to the corresponding pin, see [Nucleo Board Pinmap][0]
-2. After connecting the additional LED, connect the board to the computer or laptop using the mini USB cable. Immediately after connecting, a console window should appear in Mbed Studio. Instead you can check the Serial Monitor tab. If your computer recognises the board, you should be able to see it in the port list. e.g. `COM9 - STMicroelectronics STLink Virtual COM Port (COM9)`.
-If not, check the connection and try again.
-3. Make sure you see the active program and the connection to the board in the upper left corner of the screen in Mbed Studio. If so, you can flash the compiled program to the microcontroller using the **Play** button.
-In PlatformIO, you can use the **Upload** button at the bottom of the screen to flash the program to the microcontroller. If you see a message that the program has been successfully flashed, you can proceed to the next step. More information about flashing the program can be found in the [Course Setup](course_setup.md) document.
-4. Monitor the progress in the bottom left corner of the screen in Mbed Studio or in the Terminal in PlatformIO, where the OS will display information about the uploading process. The big LED on the Nucleo board will blink with green and red during the flashing process and stay continuously lit once the process is complete.
-5. The small User-LED on the Nucleo board should be blinking fast now, indicating how many times the program runs per second.
+1. Follow the [hardware precautions](../../README.md#hardware) and disconnect power before wiring. Connect the additional LED in series with a **220–500 Ω resistor** between **PB_9** and **GND**, with its anode toward PB_9 and its cathode toward GND. See the [Nucleo Board Pinmap][0] and the comments in `src/main.cpp`.
+2. After connecting the additional LED, connect the board's ST-LINK USB connector to your computer using the mini USB data cable. Check that its removable drive is available, as described in the [upload instructions](build_mbed_platformio.md#upload).
+3. Open the project folder containing `platformio.ini`, save `src/main.cpp`, and select or press **PlatformIO: Upload**. This builds and flashes the program. Use **PlatformIO: Build** when you only want to compile.
+4. Follow the upload progress in the terminal and wait for **SUCCESS**. When you need to view printed output, open the **Serial Monitor** tab from Microsoft's extension and start monitoring at **115200 baud**; the default program does not print a startup message. See the [serial-monitor instructions](build_mbed_platformio.md#serial-monitor).
+5. The onboard user LED toggles once per main-loop iteration. With the default 20 ms period, that is approximately 50 toggles per second, or 25 complete on/off cycles per second; it may appear almost steady to the eye.
 6. Now click the blue **USER** button on the Nucleo board while watching the additional LED.
 7. Now click the blue **USER** button on the Nucleo board once again. What happens with the additional LED diode?
 
@@ -92,7 +91,7 @@ The second task will be carried out using an IR distance sensor. This task will 
 
 ## Summary
 
-In this workshop, participants were introduced to the Nucleo-F446RE board, acquiring familiarity with the Mbed Studio IDE and basic usage of objects in C++. The workshop included understanding of the ***main.cpp*** file, comprehension of its structure, defining and working with objects and the implementation of essential commands. Additionally, exploration of hardware utilization, particularly an IR sensor, and the corresponding calibration using MATLAB were conducted. This first workshop aimed to establish basic steps in using the system, laying the groundwork for further exploration for the development of robotics and mechatronics systems.
+In this workshop, participants were introduced to the Nucleo-F446RE board, acquiring familiarity with the PlatformIO workflow in VS Code and basic usage of objects in C++. The workshop included understanding of the ***main.cpp*** file, comprehension of its structure, defining and working with objects and the implementation of essential commands. Additionally, exploration of hardware utilization, particularly an IR sensor, and the corresponding calibration using MATLAB were conducted. This first workshop aimed to establish basic steps in using the system, laying the groundwork for further exploration for the development of robotics and mechatronics systems.
 
 ## Solutions
 

@@ -1,6 +1,5 @@
 <!-- link list -->
-[0]: https://os.mbed.com/platforms/ST-Nucleo-F446RE/
-[1]: https://forms.cloud.microsoft/e/rkadzrxAGC
+[1]: https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=nZ8aXR8gEEq5g0Uc9ly8Hj4DVXk-SFpLrn4htuIp731UNTJWR05QWVc5N1cwUDJZUUo3M1NKTk9GTS4u
 
 # Workshop 5
 
@@ -9,6 +8,7 @@ In workshop number 5, we will be working with the IMU (Inertial Measurement Unit
 We will get to know Serial Streaming, which allows us to send data from the microcontroller to the host computer. This is particularly useful for debugging and development. Furthermore, we will implement our own sensor fusion algorithm with real data from the IMU. The goal is to calculate the orientation of the IMU in space (at least for one axis).
 
 ## Learning outcomes
+
 By the end of this workshop, you will be able to:
 - Understand the functionality of an IMU and how to read data from it
 - Use Serial Streaming to send data from the microcontroller to a host computer
@@ -29,7 +29,7 @@ Files stored in the `temp` folder will not be compiled. You can use it to keep d
 **Expected time:** ~40-60 minutes total (split into two sessions if needed)
 
 **Required reading (come prepared so we can spend time on the hands-on activities):**
-- [README.md](../README.md) (10 minutes)
+- [README.md](../../README.md) (10 minutes)
 - This document [Workshop 5: IMU and Sensor Fusion](ws5.md) (20 minutes)
 - [IMU Tutorial](imu.md) (20 minutes)
 

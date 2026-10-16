@@ -19,8 +19,7 @@ https://www.qrcode-generator.ch/
 
 Markdown files read and checked (with workshop tags and priorities):
 - README.md (ws1-3, 1)
-- build_mbed_linux.md
-- build_mbed_windows.md
+- build_mbed_platformio.md
 - stepper_motor.md
 - course_setup.md (ws1, 2)
 - dc_motor.md (ws3, 3)
@@ -49,7 +48,7 @@ Ordered by workshop (same tags/priorities):
 - WS4: ws4.md (ws4, 1); dd_kinematics.md (ws4, 2); line_follower.md (ws4, 3)
 - WS5: ws5.md (ws5, 1); imu.md (ws5, 2); serial_stream.md (ws5, 3)
 - WS6: ws6.md (does not exist yet)
-- Cross-workshop/ungrouped: build_mbed_linux.md; build_mbed_windows.md; stepper_motor.md; my_dc_motor.md; sd_card_logger.md
+- Cross-workshop/ungrouped: build_mbed_platformio.md; stepper_motor.md; my_dc_motor.md; sd_card_logger.md
 
 ---
 
@@ -94,14 +93,14 @@ Solutions:
 - Focus: wiring safety, AnalogIn scaling, sensor range awareness, calibration mapping, and one code-structure question.
 
 **Install/check tools (~25–35 min):**
-- Install Mbed Studio and open it once to confirm it starts.
-- Verify accounts: GitHub + Mbed (MATLAB university login or Python/numpy/matplotlib for calibration).
+- Install VS Code and PlatformIO IDE per [Course Setup](course_setup.md), and let PlatformIO finish initialising.
+- Verify account: GitHub (MATLAB university login or Python/numpy/matplotlib for calibration).
 - Fork/clone/build happens in class (Block 0).
 
 **Pre-class outputs (what students should bring):**
 - Quiz completed.
-- Mbed Studio installed and opened once.
-- Ready GitHub + Mbed accounts.
+- VS Code and PlatformIO IDE installed and initialised.
+- Ready GitHub account.
 - Ready to identify IR sensor model + valid range (from `ir_sensor.md`).
 
 ---
@@ -113,7 +112,7 @@ Before changing wiring on the PES + Nucleo setup, what is the recommended state?
 
 - A) USB connected, PES switch ON, charger disconnected
 - B) All power sources disconnected, PES switch OFF
-- C) Only stop code execution in Mbed Studio
+- C) Only stop the application using the USER button
 - D) Keep board powered to verify live wiring
 
 ## Q2 (done in class)
@@ -128,7 +127,7 @@ What is the role of the USER button callback `toggle_do_execute_main_fcn()`?
 
 - A) It recalibrates the IR sensor each press
 - B) It toggles whether the main task executes (`do_execute_main_task`)
-- C) It changes the target board in Mbed Studio
+- C) It changes the target board in `platformio.ini`
 - D) It forces `while(true)` to stop
 
 ## Q4
@@ -152,7 +151,7 @@ Why must calibration points stay within the specific sensor’s valid range (and
 - A) Because outside-range readings can saturate or be undefined, and the response is steep near the minimum so you need more points for an accurate mapping
 - B) Because `AnalogIn` stops working above 2.0 V, so only in-range points are readable
 - C) Because the analog readout is most stable in the middle of the range, so edge samples should be avoided
-- D) Because Mbed Studio clamps out-of-range values to 0.0 automatically during calibration
+- D) Because the calibration code automatically clamps every out-of-range reading to 0.0
 
 ## Q7
 The IR sensor has a valid range from 12 cm to 60 cm. During calibration, at 12 cm the sensor reads 2850 mV, and at 60 cm it reads 850 mV. A student creates a linear mapping function. If the sensor currently reads 2050 mV, what distance (in cm) does the mapping function return?
@@ -187,7 +186,7 @@ To reduce noise, a student averages three consecutive IR sensor readings: 2050 m
 
 ### In-class (4 × 45 min)
 
-**Block 0 (Setup):** fork repo, clone locally, import into Mbed Studio, select target NUCLEO-F446RE, build once.
+**Block 0 (Setup):** fork repo, clone locally, open the folder containing `platformio.ini` in VS Code, and run **PlatformIO: Build** for `nucleo_f446re` per the [build guide](build_mbed_platformio.md).
 - Output: build succeeds or students have a captured error screenshot/log.
 
 **Block 1 (Part 1: LED + USER gating + code orientation):**
@@ -211,7 +210,7 @@ To reduce noise, a student averages three consecutive IR sensor readings: 2050 m
 
 ### Checkpoints
 
-- After Block 0: repo forked/cloned/imported, target set, **build succeeds** (or error captured).
+- After Block 0: repo forked/cloned/opened in VS Code, environment `nucleo_f446re` selected, **build succeeds** (or error captured).
 - After Block 1: LED toggles as expected with USER button; students can point to where the toggle logic lives.
 - After Block 2: IR sensor model + valid range confirmed; live mV readings vary with distance; first valid data points recorded.
 - After Block 3: calibration fit completed; mapping implemented in code; distance in cm printed; mini demo shown.
@@ -226,17 +225,17 @@ To reduce noise, a student averages three consecutive IR sensor readings: 2050 m
 - **Before class (~110–155 min total):**
   - Read (required) — ~75–110 min total:
     - [README.md](../../README.md) (overview + safety, ~5–10 min)
-    - [course_setup.md](course_setup.md) (tooling + Mbed Studio basics, ~15–20 min)
+    - [course_setup.md](course_setup.md) (installation + obtaining the project, ~15–20 min); then [build_mbed_platformio.md](build_mbed_platformio.md) for Build/Upload/Monitor
     - [tips.md](tips.md) (debugging + programming hygiene, ~10–15 min)
     - [ws1.md](ws1.md) (WS1 flow, ~8–12 min)
     - [main_description.md](main_description.md) (USER gating + structure of main, ~12–18 min)
     - [ir_sensor.md](ir_sensor.md) (range + wiring + calibration overview, ~25–35 min)
-  - Quiz (required): https://forms.cloud.microsoft/e/knqQAypewF (QR in [ws1.md](ws1.md)). (~7–10 min)
-  - Tools (required): install and open Mbed Studio once (per [course_setup.md](course_setup.md)). (~25–35 min)
-    - Accounts: GitHub + Mbed.
+  - Quiz (required): https://forms.cloud.microsoft/e/BFmzMtMYfv (QR in [ws1.md](ws1.md)). (~7–10 min)
+  - Tools (required): install VS Code and PlatformIO IDE and let initialisation finish (per [course_setup.md](course_setup.md)). (~25–35 min)
+    - Account: GitHub.
     - Calibration: MATLAB (university login) or Python (numpy/matplotlib).
 
-- **Bring to class:** laptop with Mbed Studio installed. (USB cable provided in class.)
+- **Bring to class:** laptop with VS Code and PlatformIO IDE installed. (USB cable provided in class.)
 - **In-class plan:** Block 0 setup/build → Part 1 LED + USER gating → IR wiring + data capture → fit mapping + mini demo.
 - **Help rule:** if stuck >5 minutes in class, check hints in [ws1.md](ws1.md), then ask instructor.
 
@@ -271,7 +270,7 @@ Solutions:
 
 **Pre-class outputs:**
 - Quiz completed.
-- Mbed Studio opened once; GitHub + Mbed accounts ready.
+- VS Code and PlatformIO IDE initialised; GitHub account ready.
 - Know planned pins: servo(s) per servo.md; ultrasonic on PB_D3 (or IR fallback on PB_A0) per ws2.md/ultrasonic_sensor.md.
 
 ### WS2 Quiz Outline (MS Forms)
@@ -357,7 +356,7 @@ The ultrasonic sensor requires at least 12 milliseconds between successive valid
 
 ### In-class (4 × 45 min, same structure as WS1)
 
-**Block 0 (Setup):** fork/clone/import, target NUCLEO-F446RE, build once. Output: build succeeds or error captured.
+**Block 0 (Setup):** fork/clone, open the configured project in VS Code, select `nucleo_f446re`, and run **PlatformIO: Build** per the [build guide](build_mbed_platformio.md). Output: build succeeds or error captured.
 
 **Block 1 (Servo wiring + calibration + control):**
 - Wire and calibrate one servo per servo.md; flash and sweep; confirm mapping 0.0–1.0 → pulse width → physical deflection.
@@ -372,7 +371,7 @@ The ultrasonic sensor requires at least 12 milliseconds between successive valid
 
 ### Checkpoints
 
-- After Block 0: repo imported, target set, **build succeeds** (or error captured).
+- After Block 0: repo opened in VS Code, environment `nucleo_f446re` selected, **build succeeds** (or error captured).
 - After Block 1: servo wired/calibrated; sweep works; students can point to the mapping line.
 - After Block 2: distance readings change with motion; invalid-read handling confirmed (no crashes/NaN flow).
 - After Block 3: state machine runs; servo responds to distance with defined ranges; emergency path tested.
@@ -388,9 +387,9 @@ The ultrasonic sensor requires at least 12 milliseconds between successive valid
     - [ws2.md](ws2.md) (WS2 flow, ~10–15 min)
     - [servo.md](servo.md) (servo wiring/calibration/control, ~15–20 min)
     - [ultrasonic_sensor.md](ultrasonic_sensor.md) (ultrasonic wiring/usage; IR fallback, ~15–25 min)
-  - Quiz (required, 6 questions): Link TBA; scan QR in [ws2_quiz_qr_code.png](../images/ws2_quiz_qr_code.png) or [ws2.md](ws2.md). (~6–8 min)
+  - Quiz (required, 6 questions): [Workshop quiz](https://forms.cloud.microsoft/e/csBg2wWZa5); scan QR in [ws2_quiz_qr_code.png](../images/ws2_quiz_qr_code.png) or [ws2.md](ws2.md). (~6–8 min)
 
-- **Bring to class:** laptop with Mbed Studio installed. (USB cable provided in class.)
+- **Bring to class:** laptop with VS Code and PlatformIO IDE installed. (USB cable provided in class.)
 - **In-class plan:** Block 0 setup/build → Block 1 servo wiring/calibration → Block 2 ultrasonic wiring + live reads → Block 3 state machine + demo.
 - **Help rule:** if stuck >5 minutes, check hints in [ws2.md](ws2.md), then ask instructor.
 
@@ -508,7 +507,7 @@ Solutions:
 
 ### In-class (4 × 45 min, same structure as WS1)
 
-**Block 0 (Setup + safety):** confirm repo/import/target/build; power switch off while wiring; identify `PB_ENABLE_DCMOTORS` control.
+**Block 0 (Setup + safety):** confirm the project is open in VS Code and **PlatformIO: Build** succeeds for `nucleo_f446re` (see the [build guide](build_mbed_platformio.md)); power switch off while wiring; identify `PB_ENABLE_DCMOTORS` control.
 
 **Block 1 (Motor bring-up + direction check):** wire motor on M1 pins; enable power electronics; run a low-duty open-loop or small velocity command; verify encoder sign matches command (swap A/B or invert if not); print rpm.
 
@@ -533,9 +532,9 @@ Solutions:
     - [README.md](../../README.md) (overview + safety + battery cautions, ~5–10 min)
     - [ws3.md](ws3.md) (WS3 flow, ~12–18 min)
     - [dc_motor.md](dc_motor.md) (motor wiring/H-bridge/PWM/encoder/motion planner, ~35–55 min)
-  - Quiz (required, 4 questions): Link TBA; scan QR in [ws3_quiz_qr_code.png](../images/ws3_quiz_qr_code.png) or [ws3.md](ws3.md). (~5–7 min)
+  - Quiz (required, 4 questions): [Workshop quiz](https://forms.cloud.microsoft/e/U3v2D8G4Em); scan QR in [ws3_quiz_qr_code.png](../images/ws3_quiz_qr_code.png) or [ws3.md](ws3.md). (~5–7 min)
 
-- **Bring to class:** laptop with Mbed Studio installed; hardware kit. USB cable provided in class.
+- **Bring to class:** laptop with VS Code and PlatformIO IDE installed; hardware kit. USB cable provided in class.
 - **Pins:** motor on M1 pins (PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1, `PB_ENABLE_DCMOTORS`); ultrasonic on PB_D3; mechanical button on PC_5.
 - **In-class plan:** Block 0 build/safety → Block 1 motor bring-up + direction → Block 2 position control + planner → Block 3 state machine + emergency demo.
 - **Help rule:** if stuck >5 minutes, check hints in [ws3.md](ws3.md), then ask instructor.
@@ -661,7 +660,7 @@ Solutions:
 
 ### In-class (4 × 45 min, same structure as WS1–WS3)
 
-**Block 0 (Setup + safety):** confirm repo/import/target/build; review line follower wiring guide before touching hardware; identify `PB_ENABLE_DCMOTORS` toggle.
+**Block 0 (Setup + safety):** confirm the project is open in VS Code and **PlatformIO: Build** succeeds for `nucleo_f446re` (see the [build guide](build_mbed_platformio.md)); review line follower wiring guide before touching hardware; identify `PB_ENABLE_DCMOTORS` toggle.
 
 **Block 1 (DC motors + kinematic bring-up):** wire motors M1 and M2; enable power electronics; implement `Cwheel2robot` and its inverse in C++ using Eigen; send velocity commands; print wheel and robot velocities and verify direction signs.
 
@@ -687,9 +686,9 @@ Solutions:
     - [ws4.md](ws4.md) (WS4 flow, ~10–15 min)
     - [dd_kinematics.md](dd_kinematics.md) (differential drive kinematics, derivation + Eigen code, ~20–30 min)
     - [line_follower.md](line_follower.md) (sensor wiring, SensorBar/LineFollower driver, control law, ~20–30 min)
-  - Quiz (required, 8 questions): Link TBA; scan QR in [ws4.md](ws4.md). (~7–10 min)
+  - Quiz (required, 8 questions): [Workshop quiz](https://forms.cloud.microsoft/e/rkadzrxAGC); scan QR in [ws4.md](ws4.md). (~7–10 min)
 
-- **Bring to class:** laptop with Mbed Studio installed; fully assembled differential drive robot kit.
+- **Bring to class:** laptop with VS Code and PlatformIO IDE installed; fully assembled differential drive robot kit.
 - **Pins:** motors M1 on (PB_PWM_M1, PB_ENC_A_M1, PB_ENC_B_M1) and M2 on (PB_PWM_M2, PB_ENC_A_M2, PB_ENC_B_M2), `PB_ENABLE_DCMOTORS`; line follower I2C on PB_8 (SCL) and PB_9 (SDA) with 5 V supply.
 - **In-class plan:** Block 0 build/safety → Block 1 motors + kinematics → Block 2 line follower connection + readings → Block 3 line following + tuning demo.
 - **Help rule:** if stuck >5 minutes, check hints in [ws4.md](ws4.md) and [line_follower.md](line_follower.md), then ask instructor.
@@ -816,7 +815,7 @@ Solutions:
 
 ### In-class (4 × 45 min, same structure as WS1–WS4)
 
-**Block 0 (Setup + safety):** confirm repo/import/target/build; calibrate servos (roll on PB_D0, pitch on PB_D1) before powering the gimbal; verify IMU readings print sensibly.
+**Block 0 (Setup + safety):** confirm the project is open in VS Code and **PlatformIO: Build** succeeds for `nucleo_f446re` (see the [build guide](build_mbed_platformio.md)); calibrate servos (roll on PB_D0, pitch on PB_D1) before powering the gimbal; verify IMU readings print sensibly.
 
 **Block 1 (IMU bring-up + gimbal control):** create `IMU` and `Servo` objects; read roll and pitch from `imu_data.pry`; map angles to servo commands; verify gimbal physically compensates for board tilt.
 
@@ -842,9 +841,9 @@ Solutions:
     - [ws5.md](ws5.md) (WS5 flow, ~8–12 min)
     - [imu.md](imu.md) (IMU principle, complementary filter, gimbal code, ~15–25 min)
     - [serial_stream.md](serial_stream.md) (UART wiring, TX/RX pins, API usage, ~10–15 min)
-  - Quiz (required, 8 questions): Link TBA; scan QR in [ws5_quiz_qr_code.png](../images/ws5_quiz_qr_code.png) or [ws5.md](ws5.md). (~7–10 min)
+  - Quiz (required, 8 questions): [Workshop quiz](https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=nZ8aXR8gEEq5g0Uc9ly8Hj4DVXk-SFpLrn4htuIp731UNTJWR05QWVc5N1cwUDJZUUo3M1NKTk9GTS4u); scan QR in [ws5_quiz_qr_code.png](../images/ws5_quiz_qr_code.png) or [ws5.md](ws5.md). (~7–10 min)
 
-- **Bring to class:** laptop with Mbed Studio installed + MATLAB or Python (numpy/matplotlib) for offline analysis; assembled 2-axis gimbal kit; USB Serial TTL cable.
+- **Bring to class:** laptop with VS Code and PlatformIO IDE installed + MATLAB or Python (numpy/matplotlib) for offline analysis; assembled 2-axis gimbal kit; USB Serial TTL cable.
 - **Pins:** IMU I2C on PC_9 (SDA) / PA_8 (SCL) — on-board, no wiring needed; servos roll on PB_D0, pitch on PB_D1; SerialStream TX: PB_10, RX: PC_5.
 - **In-class plan:** Block 0 build/safety + servo calibration → Block 1 IMU bring-up + gimbal control → Block 2 serial streaming + data capture → Block 3 filter implementation + demo.
 - **Help rule:** if stuck >5 minutes, check hints in [ws5.md](ws5.md) and [imu.md](imu.md), then ask instructor.
