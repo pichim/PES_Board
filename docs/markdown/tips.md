@@ -138,9 +138,9 @@ printf("Debugging: %d", value);
 
 #### 6. Use ChatGPT, GitHub Copilot and Similar Tools
 
-- First and foremost, don't trust any AI. Always check the answer and the code before using it. Nevertheless, these tools can be very helpful and often point you in the right direction. But in the end, you have to understand the code you are implementing.
-- Utilize ChatGPT for interactive assistance during programming. Describe issues, ask questions, or seek guidance on code-related problems to receive helpful suggestions.
-- Leverage ChatGPT to explore algorithms, design patterns, or coding concepts. Describe your requirements, and ChatGPT can provide insights, code snippets, or explanations to enhance your understanding.
+For a practical learning routine, examples from the workshops and guidance on browser chat and tools such as Copilot or Codex in VS Code, see [Learning to Code](learning_to_code.md). The guide is optional study advice; follow the rules communicated for each assessment.
+
+Choose help that supports your current learning goal: ask for a hint, an explanation or feedback on your attempt. Check suggestions against the supplied code and test whether you can explain and adapt the result yourself.
 
 ## Keeping Useful Notes
 

@@ -136,6 +136,8 @@ The supplied configuration does not compile files under `docs` or `temp` as appl
 
 The workshop pages include optional self-checks and discussion prompts. For advice on saving useful results or describing a problem, see [Keeping Useful Notes](docs/markdown/tips.md#keeping-useful-notes) and [Asking for Debugging Help](docs/markdown/tips.md#asking-for-debugging-help).
 
+For practical study advice with examples from this repository, see [Learning to Code](docs/markdown/learning_to_code.md). It covers understanding code, asking for useful help, checking AI suggestions and practising independently with browser chat or tools in VS Code. This is optional study advice; follow the rules communicated for each assessment.
+
 # Table of Contents
 1. [Course Setup](#course-setup)
     * [Accounts](docs/markdown/course_setup.md#accounts)

@@ -100,35 +100,35 @@ public:
     /**
      * @brief Set the target rotation of the motor.
      *
-     * @param rotation The target rotation in degrees.
+     * @param rotation The target rotation in rotations.
      */
     void setRotation(float rotation);
 
     /**
      * @brief Set the relative target rotation of the motor. Keep in mind that you do this only once.
      *
-     * @param rotation_relative The relative target rotation in degrees.
+     * @param rotation_relative The relative target rotation in rotations.
      */
     void setRotationRelative(float rotation_relative);
 
     /**
      * @brief Get the current rotation target of the motor.
      *
-     * @return float The current rotation target in degrees.
+     * @return float The current rotation target in rotations.
      */
     float getRotationTarget() const;
 
     /**
      * @brief Get the current rotation setpoint of the motor.
      *
-     * @return float The current rotation setpoint in degrees.
+     * @return float The current rotation setpoint in rotations.
      */
     float getRotationSetpoint() const;
 
     /**
      * @brief Get the current rotation of the motor.
      *
-     * @return float The current rotation in degrees.
+     * @return float The current rotation in rotations.
      */
     float getRotation() const;
 
