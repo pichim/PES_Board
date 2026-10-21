@@ -22,7 +22,7 @@ If you have already made changes and run tests in `main.cpp`, you can find the o
 
 If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
 
-Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`. For using a supplied application example, see [Working With Examples](../../README.md#working-with-examples).
 
 ## Before class (do this before the workshop)
 
@@ -84,6 +84,23 @@ Templates to evaluate the data for either MATLAB or Python can be found here:
 - [Template Interactive Python Evaluation of IMU Data](../templates/python/serial_stream_comp_filter.ipynb)
 
 For the theoretical background for the 1-D Mahony filter see: [Tutorial 1-D Mahony filter](1d_mahony.md). This will help you understand how to implement the filter first in MATLAB or Python and then port it to C++.
+
+## Optional Self-Checks and Discussion
+
+These optional prompts help you review the existing tasks; they add no submission or assessment requirement.
+
+- **Part 1:** compare the observed roll/pitch readings and servo response with the axis conventions and mapping in the [Gimbal Tutorial](imu.md#2-axis-gimbal-example).
+- **Part 2:** inspect the captured sample intervals and compare gyro-only, accelerometer-only and fused estimates in your existing evaluation plots. Consider keeping the data, filter settings and plots together; see [Keeping Useful Notes](tips.md#keeping-useful-notes).
+
+**Discussion prompt:** what features of your plots help you distinguish accumulated drift from measurement noise?
+
+### Troubleshooting Hints
+
+- **The gimbal response is unexpected:** compare axis conventions, servo calibration and mapping with the [Gimbal Tutorial](imu.md#2-axis-gimbal-example).
+- **No data reaches the host:** compare the adapter, selected port, communication settings and start-byte sequence with [Serial Stream](serial_stream.md). Its binary-data connection differs from the text serial monitor used for debugging.
+- **Filter results differ unexpectedly:** compare units, sample period, initial conditions and the update equation with [Sensor Fusion](imu.md#sensor-fusion) and the [1-D Mahony Derivation](1d_mahony.md).
+
+For build/upload issues or help describing the problem, see [Asking for Debugging Help](tips.md#asking-for-debugging-help).
 
 ## Summary
 

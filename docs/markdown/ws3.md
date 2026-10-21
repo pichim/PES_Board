@@ -21,7 +21,7 @@ If you have already made changes and run tests in `main.cpp`, you can find the o
 
 If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
 
-Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`. For using a supplied application example, see [Working With Examples](../../README.md#working-with-examples).
 
 ## Before class (do this first)
 
@@ -232,7 +232,7 @@ switch (robot_state) {
     }
 ```
 
-12. In the **FORWARD** state, include a command to execute 1.5f forward rotations and a condition that transitions to the **BACKWARD** state after reaching 2.85f revolutions. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
+12. In the **FORWARD** state, include a command to execute 1.5f forward rotations and a condition that transitions to the **BACKWARD** state when the measured rotation exceeds 1.49 turns. Also, add a condition that, if the distance measured by the ultrasonic sensor is less than 4.5f cm, the system will enter the **EMERGENCY** state.
 
 ```cpp
     case RobotState::FORWARD: {
@@ -243,8 +243,8 @@ switch (robot_state) {
         // we transition to the EMERGENCY state
         if (us_distance_cm < 4.5f)
             robot_state = RobotState::EMERGENCY;
-        // switching condition is slightly smaller for robustness
-        if (motor_M3.getRotation() > 1.49f)
+        // emergency takes priority when both conditions are true
+        else if (motor_M3.getRotation() > 1.49f)
             robot_state = RobotState::BACKWARD;
 
         break;
@@ -266,7 +266,7 @@ switch (robot_state) {
     }
 ```
 
-14. In the **EMERGENCY** state, the machine needs to quickly return to the initial position and turn off. To achieve this, disable the motion planner, as it allows for the fastest possible movement. Subsequently, turn "off" the machine, simulating the effect of pressing the emergency button. To reuse the mechatronic system, reset the machine using the **RESET** button logic ``toggle_do_execute_main_fcn()``.
+14. In the **EMERGENCY** state, the machine needs to quickly return to the initial position and turn off. To achieve this, disable the motion planner, as it allows for the fastest possible movement. Subsequently, turn "off" the machine, simulating the effect of pressing the emergency button. To reuse the mechatronic system, reset the machine using the **USER** button logic ``toggle_do_execute_main_fcn()``.
 
 ```cpp
     case RobotState::EMERGENCY: {
@@ -305,6 +305,23 @@ robot_state = RobotState::INITIAL;
 17. Upload the program to the microcontroller by selecting or pressing **PlatformIO: Upload** (see the [upload instructions](build_mbed_platformio.md#upload)). Then, aim the sensor at an object that is beyond the distance triggering the **EMERGENCY** state. Press the **USER** button and click the mechanical button.
 
 18. Experiment by pressing the mechanical button and pointing the sensor at an object that is below the threshold specified in the code.
+
+## Optional Self-Checks and Discussion
+
+These optional prompts help you review the existing tasks; they add no submission or assessment requirement.
+
+- **Part 1:** compare the commanded motor direction with the observed rotation and encoder measurement, using the [DC Motor Tutorial](dc_motor.md#practical-tips).
+- **Part 2:** compare target and measured rotations during the existing normal-cycle and emergency-return tasks. Trace the observed transitions through your flowchart and code. Consider keeping motor parameters and relevant observations with the code; see [Keeping Useful Notes](tips.md#keeping-useful-notes).
+
+**Discussion prompt:** how does a commanded rotation differ from the measured rotation while the motor is moving?
+
+### Troubleshooting Hints
+
+- **The motor does not move:** compare the battery setup, motor connection and power-electronics enable command with the [DC Motor Tutorial](dc_motor.md#enabling-the-power-electronics).
+- **Direction or measured motion is unexpected:** follow the tutorial's [Direction Checks](dc_motor.md#practical-tips), observing the existing hardware precautions before reconnecting anything.
+- **The state sequence is unexpected:** compare the current state, target/actual rotation, distance and button reading with the provided conditions. Record the discrepancy before changing logic or parameters.
+
+For build/upload issues or help describing the problem, see [Asking for Debugging Help](tips.md#asking-for-debugging-help).
 
 ## Summary
 

@@ -142,6 +142,22 @@ printf("Debugging: %d", value);
 - Utilize ChatGPT for interactive assistance during programming. Describe issues, ask questions, or seek guidance on code-related problems to receive helpful suggestions.
 - Leverage ChatGPT to explore algorithms, design patterns, or coding concepts. Describe your requirements, and ChatGPT can provide insights, code snippets, or explanations to enhance your understanding.
 
+## Keeping Useful Notes
+
+Alongside saved code in [temp](../../temp/), consider keeping calibration constants, measurements, plots and relevant settings from the work you already do. Include units, the sensor or motor model, and a short note about what you changed and observed. These notes can help you reproduce a result or compare it with a later version; they do not add a submission requirement.
+
+## Asking for Debugging Help
+
+When asking a partner or instructor for help, make the problem easy to reproduce:
+
+- State which workshop, part and example you are using.
+- Describe the expected result and what actually happened.
+- Show the relevant code and serial output, or the first build error with its surrounding messages.
+- Identify the board/component and relevant connections or settings.
+- Describe the last change and what you have already checked.
+
+For build, upload or serial-monitor problems, start with [PlatformIO Troubleshooting](build_mbed_platformio.md#troubleshooting). For component problems, use the corresponding hardware tutorial and [Hardware Precautions](../../README.md#hardware) before changing connections. Compare the documentation with your actual setup; if they disagree, show the discrepancy to your instructor before changing working logic or parameters.
+
 ## Structuring a Robot-Task
 
 Structuring robot tasks during the design of the software for robots and mechatronic systems is a crucial aspect to ensure efficient and organized development. This involves breaking down the overall robot functionality into modular and manageable tasks, each addressing specific aspects of the robot's mission. By defining clear interfaces between these tasks, developers can facilitate the integration of various subsystems. This approach enhances code maintainability, promotes code reuse, and allows for easier debugging and troubleshooting. A vital tool in programming for achieving a well-structured system is the design of a state machine.

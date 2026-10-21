@@ -19,7 +19,7 @@ If you have already made changes and run tests in `main.cpp`, you can find the o
 
 If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
 
-Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`. For using a supplied application example, see [Working With Examples](../../README.md#working-with-examples).
 
 ## Before class (do this before the workshop)
 
@@ -39,7 +39,7 @@ Files stored in the `temp` folder will not be compiled. You can use it to keep d
 
 ## Hardware
 
->Part 1 and Part 2::
+>Part 1 and Part 2:
 > - Fully functional differential drive robot
 
 <p align="center">
@@ -70,11 +70,28 @@ The line follower array uses eight IR sensors to detect black lines. The sensor 
 ### Tasks Summary
 
 1. Connect the line follower array using I2C communication
-3. Design a control law combining forward motion with line tracking
-4. Test and tune control parameters
-5. Optional: Use the ``LineFollower`` driver class
+2. Design a control law combining forward motion with line tracking
+3. Test and tune control parameters
+4. Optional: Use the ``LineFollower`` driver class
 
 Detailed instructions and examples are provided in the [Tutorial Line Follower](line_follower.md) document.
+
+## Optional Self-Checks and Discussion
+
+These optional prompts help you review the existing tasks; they add no submission or assessment requirement.
+
+- **Part 1:** compare calculated wheel speeds with the intended robot motion. Check the units and right/left wheel assignment against the [Kinematics Tutorial](dd_kinematics.md).
+- **Part 2:** compare line detection and angle readings with the sensor's position over the line. Relate the observed steering response to your controller settings. Consider keeping geometry, settings and observations together; see [Keeping Useful Notes](tips.md#keeping-useful-notes).
+
+**Discussion prompt:** why does the example convert wheel speeds from radians per second to rotations per second before commanding the motor driver?
+
+### Troubleshooting Hints
+
+- **Sensor readings are unexpected:** compare the setup with [Line Follower Connections](line_follower.md#connection-to-the-pes-board) and the pin-conflict note in [Sensor Bar Setup](line_follower.md#sensor-bar-driver-to-create-your-own-line-following-algorithm).
+- **Robot motion differs from the calculation:** compare units, geometry and wheel assignment with the kinematic transformation before changing controller gains.
+- **Steering oscillates or the line is lost:** note the detection state, angle and settings, then refer to the tutorial's [Control Example](line_follower.md#using-eigen-library-linear-algebra). Distinguish loss of detection from a controller response.
+
+For build/upload issues or help describing the problem, see [Asking for Debugging Help](tips.md#asking-for-debugging-help).
 
 ## Summary
 

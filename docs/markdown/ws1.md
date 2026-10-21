@@ -21,7 +21,7 @@ If you have already made changes and run tests in `main.cpp`, you can find the o
 
 If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
 
-Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`. For using a supplied application example, see [Working With Examples](../../README.md#working-with-examples).
 
 ## Before class (do this first)
 
@@ -67,7 +67,7 @@ Furthermore, ensure that you are familiar with the general structure of the boar
 
 ## Part 1
 
-The first task will be to run a test program using an additional LED.
+The first task will be to run a test program using an additional LED. Refer to [Main File Description](main_description.md) when tracing the loop and USER-button handling.
 
 1. Follow the [hardware precautions](../../README.md#hardware) and disconnect power before wiring. Connect the additional LED in series with a **220–500 Ω resistor** between **PB_9** and **GND**, with its anode toward PB_9 and its cathode toward GND. See the [Nucleo Board Pinmap][0] and the comments in `src/main.cpp`.
 2. After connecting the additional LED, connect the board's ST-LINK USB connector to your computer using the mini USB data cable. Check that its removable drive is available, as described in the [upload instructions](build_mbed_platformio.md#upload).
@@ -88,6 +88,23 @@ The second task will be carried out using an IR distance sensor. This task will 
 1. Read the IR sensor manual. There you can find technical information about the sensor and instructions for the connection to the Nucleo board. Perform the calibration according to the hardware tutorial:
 
     > [Tutorial Infrared Distance Sensor](ir_sensor.md)
+
+## Optional Self-Checks and Discussion
+
+These optional prompts help you review the existing tasks; they add no submission or assessment requirement.
+
+- **Part 1:** compare the extra LED's response to USER presses with the code controlled by `do_execute_main_task`. Identify which code continues to run when that task is disabled.
+- **Part 2:** compare the calibrated distance with the reference distance in your measurements, using consistent units and your sensor's valid range. Consider keeping the measurements, fitted constants and plot with your saved code; see [Keeping Useful Notes](tips.md#keeping-useful-notes).
+
+**Discussion prompt:** why can a fitted function agree with its calibration points but give a different error at another distance?
+
+### Troubleshooting Hints
+
+- **Build, upload or monitor problems:** use [PlatformIO Troubleshooting](build_mbed_platformio.md#troubleshooting). The default program has no startup message.
+- **Unexpected LED behaviour:** compare your wiring with Part 1 and your program structure with [Main File Description](main_description.md).
+- **Unexpected distance values:** compare the raw voltage, units, sensor model, valid range and calibration constants with the [IR Sensor Tutorial](ir_sensor.md#calibration).
+
+For help, use [Asking for Debugging Help](tips.md#asking-for-debugging-help).
 
 ## Summary
 

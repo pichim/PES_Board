@@ -105,6 +105,37 @@ Big shoutout to Maciej Szarek for his help and the support (https://github.com/s
 
 Fast prototyping in robotics focuses on quickly building and testing a simple version of the system rather than aiming for perfection from the start. Through iterative development, each prototype helps identify and fix issues, leading to gradual improvements. This approach saves time and cost, encourages experimentation, and ensures that the final design is optimized based on real-world performance. Additionally, hardware and software evolve together, allowing adjustments to both as new challenges arise. Instead of spending too much time planning, build, test, and refine — learning from each iteration.
 
+## Start Here
+
+For this Systems Engineering / Mechatronics course, begin with [Course Setup](docs/markdown/course_setup.md) and the [PlatformIO Build Guide](docs/markdown/build_mbed_platformio.md). Then open the workshop for your current class and follow its preparation and task instructions. Review the [Hardware Precautions](#hardware) before working with the equipment.
+
+| Workshop                           | Topics                                                          |
+| ---------------------------------- | --------------------------------------------------------------- |
+| [Workshop 1](docs/markdown/ws1.md) | Program structure, LED/button control and IR sensor calibration |
+| [Workshop 2](docs/markdown/ws2.md) | Servos, distance sensing and state machines                     |
+| [Workshop 3](docs/markdown/ws3.md) | DC motor control and a sensor-driven motion sequence            |
+| [Workshop 4](docs/markdown/ws4.md) | Differential-drive kinematics and line following                |
+| [Workshop 5](docs/markdown/ws5.md) | IMU, serial streaming, sensor fusion and gimbal control         |
+
+### Finding the Right Document
+
+- **Workshop instructions** describe the assigned tasks and preparation. Follow the tutorial links beside the relevant task.
+- **Hardware tutorials** explain components, connections, calibration and driver usage. Return to them when working with that component.
+- **Templates** under `docs/templates` provide starting material to complete or adapt as directed by the tutorial. **Solutions and examples** under `docs/solutions` provide reference implementations. Compare a specific part with your own work and explain any code you adopt.
+- The [Flipped Classroom Guide](docs/markdown/flipped_classroom.md), [Teaching Plan](docs/markdown/changes_for_flipped_classroom.md) and [PlatformIO Migration Work List](docs/markdown/migrate_to_platform_io.md) support teaching and maintenance; use the workshop pages for student task instructions.
+
+### Working With Examples
+
+For a C++ application example supplied as a `main_*.cpp` file:
+
+1. Save your current `src/main.cpp` under a meaningful name in [temp](temp/).
+2. Copy the chosen example's contents into `src/main.cpp`, replacing its existing contents. Keep only one `main()` definition among the compiled application files in `src`.
+3. Save, build and upload using the [PlatformIO Build Guide](docs/markdown/build_mbed_platformio.md). Check the example's tutorial for its hardware setup and calibration.
+
+The supplied configuration does not compile files under `docs` or `temp` as application sources. MATLAB/Python templates and evaluation scripts run on your computer; follow the corresponding tutorial and keep the helper files needed by the selected script available.
+
+The workshop pages include optional self-checks and discussion prompts. For advice on saving useful results or describing a problem, see [Keeping Useful Notes](docs/markdown/tips.md#keeping-useful-notes) and [Asking for Debugging Help](docs/markdown/tips.md#asking-for-debugging-help).
+
 # Table of Contents
 1. [Course Setup](#course-setup)
     * [Accounts](docs/markdown/course_setup.md#accounts)
@@ -128,7 +159,6 @@ Fast prototyping in robotics focuses on quickly building and testing a simple ve
         * [Stepper Motor](docs/markdown/stepper_motor.md)
         * [SD-Card](docs/markdown/sd_card_logger.md)
         * [Serial Stream](docs/markdown/serial_stream.md)
-        * [Color Sensor](docs/markdown/color_sensor.md)
 3. [Tips](#tips)
     * [Project Development](docs/markdown/tips.md#project-development)
     * [Programming](docs/markdown/tips.md#programming-tips)

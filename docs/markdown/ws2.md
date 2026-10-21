@@ -21,7 +21,7 @@ If you have already made changes and run tests in `main.cpp`, you can find the o
 
 If you don’t want to lose your changes, save your modified file under a meaningful name in the folder: [temp](../../temp/)
 
-Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`.
+Files stored in the `temp` folder will not be compiled. You can use it to keep different versions of `main.cpp`. For using a supplied application example, see [Working With Examples](../../README.md#working-with-examples).
 
 ## Before class (do this first)
 
@@ -295,6 +295,23 @@ printf("US distance cm: %f \n", us_distance_cm);
 14. Compile and flash the program to the microcontroller by selecting or pressing **PlatformIO: Upload** (see the [upload instructions](build_mbed_platformio.md#upload)) and then point the sensor at an object that is at a distance that is within the range specified in the code and click the **USER** button.
 
 15. Experiment by directing the sensor towards an object that is out of range. Press the mechanical button and observe the serial terminal to see the current state and the measured distance (if valid and within the specified range).
+
+## Optional Self-Checks and Discussion
+
+These optional prompts help you review the existing tasks; they add no submission or assessment requirement.
+
+- **Part 1:** compare your recorded servo calibration values with the positions observed during calibration. Explain how the normalized command relates to that calibrated range.
+- **Part 2:** compare the observed states and servo behaviour with the supplied flowchart and state-machine code. Use the distance and button readings to explain a transition. Consider keeping calibration values and a short observation note; see [Keeping Useful Notes](tips.md#keeping-useful-notes).
+
+**Discussion prompt:** what actions distinguish SLEEP from EMERGENCY in the supplied code?
+
+### Troubleshooting Hints
+
+- **Servo behaviour differs from your expectation:** compare its connection, calibration and enable/disable calls with the [Servo Tutorial](servo.md).
+- **Distance readings are missing or unexpected:** compare the setup and handling of invalid readings with the [Ultrasonic Sensor Tutorial](ultrasonic_sensor.md#read-the-distance).
+- **A transition is unexpected:** record the current state, distance and button reading, then compare them with the flowchart and conditions. Show discrepancies to your instructor before changing working button logic.
+
+For build/upload issues or help describing the problem, see [Asking for Debugging Help](tips.md#asking-for-debugging-help).
 
 ## Summary
 

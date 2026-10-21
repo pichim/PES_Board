@@ -124,8 +124,8 @@ int main()
                     // we transition to the EMERGENCY state
                     if (us_distance_cm < 4.5f)
                         robot_state = RobotState::EMERGENCY;
-                    // switching condition is slightly smaller for robustness
-                    if (motor_M3.getRotation() > 1.49f)
+                    // emergency takes priority when both conditions are true
+                    else if (motor_M3.getRotation() > 1.49f)
                         robot_state = RobotState::BACKWARD;
 
                     break;
