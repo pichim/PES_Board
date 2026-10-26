@@ -7,6 +7,12 @@ This document describes how WS1–WS3 are adapted to a flipped-classroom format:
 
 ---
 
+### Quiz review: verified repository state
+
+Question counts, “in class” markers and time estimates are retained. WS2 Q2 and Q8 below have been clarified against the supplied implementation; the WS2 Q2 answer key is now A. The live MS Forms contents have not been verified or updated here and need to be synchronised with these revisions.
+
+- **Counts and timing:** each local question list contains Q1–Q8, including two questions marked for class. Some headings and announcements state different counts. WS4/WS5 workshop pages allow 15 minutes; this plan estimates 7–10 minutes. These differences need confirmation by the quiz maintainer; they do not establish the live Forms question counts or an intended change to delivery.
+
 ## QR code generator
 
 [28/01 15:11] Sydow Antje (sydo)
@@ -288,10 +294,10 @@ In the WS2 intended state-machine logic, what transition should happen from `EXE
 - D) Mechanical button event → `INITIAL` directly
 
 ## Q2
-The mechanical button is wired to `PC_5` and `GND`, and the input uses `PullUp`. Which condition correctly detects a pressed button?
+The supplied WS2 solution configures `mechanical_button` as a digital input with `PullUp`. Which condition does the solution use to select `EMERGENCY` from `EXECUTION` or `SLEEP`?
 
-- A) `if (mechanical_button.read())` because pressed = HIGH
-- B) `if (!mechanical_button.read())` because pressed pulls the pin LOW
+- A) `if (mechanical_button.read())` — true when the input is HIGH
+- B) `if (!mechanical_button.read())` — true when the input is LOW
 - C) `if (mechanical_button.read() > 0.5f)` because it is analog
 - D) `if (mechanical_button == BUTTON1)` because `PC_5` mirrors USER button
 
@@ -334,7 +340,7 @@ A servo pulse-width mapping is calibrated: 1.0 ms pulse = 0°, 2.0 ms pulse = 18
 - D) 1.8 ms
 
 ## Q8
-The ultrasonic sensor requires at least 12 milliseconds between successive valid readings. The WS2 state machine loop runs at 50 Hz (20 ms per cycle). If you poll the ultrasonic sensor once per cycle, how many **complete valid measurements** can you reliably obtain per second?
+The ultrasonic driver triggers measurements asynchronously every 12 ms. The WS2 application calls `us_sensor.read()` once every 20 ms. Assuming a new valid measurement is available on every call, approximately how many valid readings does the application obtain per second?
 
 - A) ~40 measurements/sec
 - B) ~50 measurements/sec
@@ -346,7 +352,7 @@ The ultrasonic sensor requires at least 12 milliseconds between successive valid
 ## Answer Key
 
 - Q1: **A**
-- Q2: **B**
+- Q2: **A**
 - Q3: **A**
 - Q4: **C**
 - Q5: **C**
