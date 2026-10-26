@@ -138,7 +138,7 @@ printf("Debugging: %d", value);
 
 #### 6. Use ChatGPT, GitHub Copilot and Similar Tools
 
-For a practical learning routine, examples from the workshops and guidance on browser chat and tools such as Copilot or Codex in VS Code, see [Learning to Code](learning_to_code.md). The guide is optional study advice; follow the rules communicated for each assessment.
+For a practical learning routine, examples from the workshops and guidance on browser chat and tools such as Copilot or Codex in VS Code, see [Learning to Code with AI](learning_to_code.md). The guide is optional study advice; follow the rules communicated for each assessment.
 
 Choose help that supports your current learning goal: ask for a hint, an explanation or feedback on your attempt. Check suggestions against the supplied code and test whether you can explain and adapt the result yourself.
 

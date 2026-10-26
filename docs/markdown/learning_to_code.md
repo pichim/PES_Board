@@ -1,4 +1,4 @@
-# Learning to Code
+# Learning to Code with AI
 
 Learning to program means being able to explain code, predict its behaviour and make a small change yourself. AI can help with explanations, feedback and debugging. Check what you can do after the conversation ends.
 
@@ -60,7 +60,36 @@ Next, inspect the [IRSensor Header](../../lib/IRSensor/IRSensor.h) and [Implemen
 
 **Try without the answer:** repeat the voltage calculation for a normalized input of `0.25f`, then check the arithmetic. For calibration, compare your result with an independent distance measurement rather than asking AI whether it looks plausible.
 
-## Example 2: Trace a State Transition
+## Example 2: Explain a Servo Command
+
+In [Workshop 2](ws2.md), the `EXECUTION` case in [main_ws2_p2.cpp](../solutions/main_ws2_p2.cpp) maps a distance to a servo command:
+
+```cpp
+servo_input = (us_distance_cm - us_distance_min) / (us_distance_max - us_distance_min);
+```
+
+The example defines `us_distance_min = 6.0f` and `us_distance_max = 40.0f`, both in centimetres. On paper, predict `servo_input` for distances of `6`, `23` and `40 cm`. These are assumed inputs for tracing the formula, not measurements or instructions to move the mechanism.
+
+<details>
+<summary>Check the Mapping</summary>
+
+| Distance (cm) | Calculation           | `servo_input` |
+| ------------- | --------------------- | ------------- |
+| 6             | `(6.0f - 6.0f) / (40.0f - 6.0f)`  | `0.0`         |
+| 23            | `(23.0f - 6.0f) / (40.0f - 6.0f)` | `0.5`         |
+| 40            | `(40.0f - 6.0f) / (40.0f - 6.0f)` | `1.0`         |
+
+The centimetres cancel: `servo_input` is dimensionless, not an angle in degrees or a pulse duration. The program passes it to `servo_D0.setPulseWidth(servo_input)`. With the calibration configured in this example, the [Servo Implementation](../../lib/Servo/Servo.cpp) maps the normalized command to the calibrated pulse-width range. A command of `0.5` is halfway through that range; it does not by itself establish an actual shaft angle. See the [Servo Tutorial](servo.md) for calibration and hardware use.
+
+</details>
+
+**Ask for feedback on a claim:**
+
+> I am tracing the distance-to-servo mapping in `docs/solutions/main_ws2_p2.cpp`. Here are the formula, calibration calls and my calculation: [excerpts and my attempt]. Does `servo_input = 0.5` mean 90 degrees? Check my reasoning against `lib/Servo/Servo.cpp` and distinguish the command from the observed position. Give one hint before an explanation. Do not edit files or choose new calibration values.
+
+**Try without the answer:** calculate the command for `14.5 cm` and explain its unit, then check your result against the formula. Trace this calculation separately from the state transitions: it alone does not describe the complete program's response. For practical work, follow the existing workshop and calibration instructions.
+
+## Example 3: Trace a State Transition
 
 In [Workshop 3](ws3.md), the `FORWARD` case in [main_ws3_p2.cpp](../solutions/main_ws3_p2.cpp) selects its next state using:
 
@@ -93,29 +122,15 @@ In the first row, the first condition is true, so the `else if` is skipped. In t
 
 **Try without the answer:** trace another pair of values and explain why the branch is selected. This checks program flow; it does not establish physical stopping behaviour or validate the whole controller. Follow the existing [Hardware Precautions](../../README.md#hardware) for any practical work.
 
-## Example 3: Check Units Before Asking for a Filter Fix
+## Use the Same Approach in Workshops 1–3
 
-In [Workshop 5](ws5.md), [main_comp_filter.cpp](../solutions/main_comp_filter.cpp) sends a time interval in microseconds, gyro X in radians per second, acceleration Y/Z in metres per second squared and roll in radians. The [Python Stream Reader](../templates/python/SerialStream.py) converts the intervals into time in seconds and removes the time field from the measurement array: gyro X is therefore column `0` of `data["values"]`. In the transmitted sequence of floats, the interval has index `0` and gyro X has index `1`; these are zero-based indices, not byte positions. The [Python Evaluation Template](../templates/python/serial_stream_comp_filter.py) uses that layout and converts the plotted roll estimates to degrees.
+These suggestions complement the existing optional self-checks. The learning routine also applies to later workshops.
 
-For a simple arithmetic check, a constant rate of `1 rad/s` over `20,000 µs` gives an angle increment of `0.02 rad`: first convert the interval to `0.02 s`. This is an illustrative calculation, not a measured sample interval or a replacement for the filter algorithm.
-
-If two curves disagree, ask for a units check before requesting new filter code:
-
-> I am comparing my Workshop 5 roll estimate with the recorded reference. Here is my calculation, the units of each input and the relevant producer and evaluation code: [my attempt and excerpts]. Check units, indexing and initial conditions. Suggest one check before proposing a code change. Do not implement the workshop filters for me or invent measurement results.
-
-**Try without the answer:** derive the units of your gyro update and check where conversion to degrees occurs. Compare the actual timestamps and data columns with the stream reader. Keep the input data and initial conditions fixed when comparing algorithms. The [Sensor Fusion Tutorial](imu.md#sensor-fusion) provides the course context.
-
-## Use the Same Approach Across All Five Workshops
-
-These suggestions complement the existing optional self-checks:
-
-| Workshop                                   | Focus for your explanation                                                                                                                                                                                                                                                                                                                                           |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [1: IR Calibration](ws1.md)                | Trace a reading from normalized input to voltage and calibrated distance.                                                                                                                                                                                                                                                                                            |
-| [2: Servos and State Machines](ws2.md)     | Sketch the states of your program and predict a transition for a given sensor observation. Compare servo commands with the calibration in [Servo](servo.md).                                                                                                                                                                                                         |
-| [3: DC Motor Control](ws3.md)              | Distinguish state selection, motor commands and observed motion.                                                                                                                                                                                                                                                                                                     |
-| [4: Kinematics and Line Following](ws4.md) | Trace the units through one calculation. In [main_dd_kinematic_calib.cpp](../solutions/main_dd_kinematic_calib.cpp), wheel angles are divided by `2.0f * M_PIf` before `setRotationRelative()`. Check the conversion from radians to turns against the [DCMotor Implementation](../../lib/DCMotor/DCMotor.cpp), where encoder counts are divided by counts per turn. |
-| [5: Sensor Fusion](ws5.md)                 | Explain a plotted signal's source, unit and processing before comparing estimates.                                                                                                                                                                                                                                                                                   |
+| Workshop                               | Focus for your explanation                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------ |
+| [1: IR Calibration](ws1.md)            | Trace a reading from normalized input to voltage and calibrated distance.      |
+| [2: Servos and State Machines](ws2.md) | Explain the distance-to-command mapping and its relation to servo calibration. |
+| [3: DC Motor Control](ws3.md)          | Distinguish state selection, motor commands and observed motion.               |
 
 ## When You Need Debugging Help
 
@@ -137,4 +152,4 @@ Share only material you are permitted to send to the chosen service. Remove cred
 
 The routine draws on [PRIMM](https://suesentance.net/2019/05/06/new-paper-primm-and-sociocultural-theory/) and research on [Retrieval Practice and Spaced Study](https://doi.org/10.1177/1529100612453266). Studies of [Novice Programmers Using AI](https://doi.org/10.1145/3632620.3671116) and [AI-Supported Programming Exercises](https://doi.org/10.1016/j.caeai.2025.100537) motivate checking understanding separately from task completion. These sources do not establish the effectiveness of this particular guide.
 
-Prepared with AI assistance. The [Teaching Rationale](../notes/ai_learning/README.md) summarises the sources and limitations behind these recommendations. Reviewed against the linked repository examples on 21 October 2026.
+Prepared with AI assistance. The [Teaching Rationale](../notes/ai_learning/README.md) summarises the sources and limitations behind these recommendations. Reviewed against the linked repository examples on 26 October 2026.
