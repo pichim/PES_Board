@@ -4,11 +4,15 @@ Learning to program means being able to explain code, predict its behaviour and 
 
 This is optional study advice for the PES Board course. Follow the workshop instructions and the AI permissions and disclosure rules communicated for each assessment. The activities below add no assessment or submission requirement. You can use the same approach with documentation, classmates and teaching assistants; no paid AI tool is needed.
 
+For ZHAW assessed work, consult the [ZHAW Information Sheet on Generative AI in Assignments](https://gpmpublic.zhaw.ch/GPMDocProdDPublic/Vorgabedokumente_ZHAW/Z_MB_Merkblatt_Verwendung_von_generativer_KI_in_Arbeiten.pdf). Ask your instructor if the permitted AI contribution or required disclosure is unclear.
+
 ## Finishing a Task and Learning From It
 
 An AI assistant may produce a complete, correct solution. That does not establish what you have learned. Even if a generated IR sensor program prints correct distances, you may still be unable to explain the units, identify a calibration mistake or adapt the program yourself. Correctness still needs verification; AI output is not guaranteed to work.
 
 Decide whether your current goal is to learn a new skill or automate a task you already understand. For a learning task, use assistance to practise the reasoning you want to acquire: make a prediction, work through an explanation, test it and try another case yourself. A complete example can also be useful study material if you actively investigate and modify it. Judge your progress by what you can explain and do afterwards, rather than only by whether the task is finished.
+
+In Workshop 2, compare accepting an AI-generated servo mapping without investigating it with showing your own calculation and asking for feedback on your reasoning. The latter keeps you involved in the calculation. After either kind of help, explain the mapping and calculate another input yourself to check what you can do.
 
 ## Start With One Small Learning Goal
 
@@ -73,8 +77,8 @@ The example defines `us_distance_min = 6.0f` and `us_distance_max = 40.0f`, both
 <details>
 <summary>Check the Mapping</summary>
 
-| Distance (cm) | Calculation           | `servo_input` |
-| ------------- | --------------------- | ------------- |
+| Distance (cm) | Calculation                       | `servo_input` |
+| ------------- | --------------------------------- | ------------- |
 | 6             | `(6.0f - 6.0f) / (40.0f - 6.0f)`  | `0.0`         |
 | 23            | `(23.0f - 6.0f) / (40.0f - 6.0f)` | `0.5`         |
 | 40            | `(40.0f - 6.0f) / (40.0f - 6.0f)` | `1.0`         |
@@ -144,12 +148,14 @@ If a proposal conflicts with the course material or observed behaviour, preserve
 
 Close the generated answer and explain the relevant code, predict another case and make a small related change yourself when appropriate. Use documentation as needed. If you cannot do a step yet, name the missing concept and ask for focused help. A classmate can listen and ask you to trace the next step.
 
-Keep a short note of your hypothesis, check, result and remaining question; see [Keeping Useful Notes](tips.md#keeping-useful-notes). If you used AI, noting the tool, purpose, adopted parts and your checks can help you explain your process. Follow the format required for assessed work.
+Keep a short note of your hypothesis, check, result and remaining question; see [Keeping Useful Notes](tips.md#keeping-useful-notes). If you used AI, noting the tool, purpose, adopted parts and your checks can help you explain your process. For assessed work, follow the disclosure requirements communicated by your instructor. For ZHAW assignments without specific disclosure requirements, list the generative AI tools used and their purposes; pure spelling correction need not be included among the listed activities. The [ZHAW Information Sheet](https://gpmpublic.zhaw.ch/GPMDocProdDPublic/Vorgabedokumente_ZHAW/Z_MB_Merkblatt_Verwendung_von_generativer_KI_in_Arbeiten.pdf#page=2) provides an example.
 
 Share only material you are permitted to send to the chosen service. Remove credentials and personal or confidential information from prompts and logs. An assistant inside VS Code may still send context to an external service.
 
 ## Basis of This Guide
 
 The routine draws on [PRIMM](https://suesentance.net/2019/05/06/new-paper-primm-and-sociocultural-theory/) and research on [Retrieval Practice and Spaced Study](https://doi.org/10.1177/1529100612453266). Studies of [Novice Programmers Using AI](https://doi.org/10.1145/3632620.3671116) and [AI-Supported Programming Exercises](https://doi.org/10.1016/j.caeai.2025.100537) motivate checking understanding separately from task completion. These sources do not establish the effectiveness of this particular guide.
+
+The [ISAR Model (Bauer et al., 2025)](https://doi.org/10.1007/s10648-025-10020-8) offers a conceptual framework for distinguishing ways AI can support or displace learning processes. It does not demonstrate a learning effect of this guide.
 
 Prepared with AI assistance. The [Teaching Rationale](../notes/ai_learning/README.md) summarises the sources and limitations behind these recommendations. Reviewed against the linked repository examples on 26 October 2026.
