@@ -73,6 +73,10 @@
     #define PB_CAN_TD PA_12
     #define PB_CAN_RD PA_11
 
+    // UART
+    #define PB_FTDI_UART_TX PC_10
+    #define PB_FTDI_UART_RX PC_11
+
     // User button (external. Not on PES Board) 
     #define PB_MECH_BUTTON PC_11 // colides with PB_UNUSED_UART_RX
 
