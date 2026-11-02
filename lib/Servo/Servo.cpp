@@ -1,6 +1,12 @@
 #include "Servo.h"
 
-Servo::Servo(PinName pin, float pulse_min, float pulse_max) : m_DigitalOut(pin), m_Thread(osPriorityAboveNormal1)
+Servo::Servo(PinName pin, float pulse_min, float pulse_max) :
+#ifdef PESBOARD_V2026
+    m_FastPWM(pin),
+#else
+    m_DigitalOut(pin),
+#endif
+    m_Thread(osPriorityAboveNormal1)
 {
     // calibrate the servo with the given minimum and maximum pulse widths
     calibratePulseMinMax(pulse_min, pulse_max);
@@ -9,6 +15,12 @@ Servo::Servo(PinName pin, float pulse_min, float pulse_max) : m_DigitalOut(pin),
     setMaxVelocity();
     setMaxAcceleration();
 
+#ifdef PESBOARD_V2026
+    // hardware PWM with the servo period, output stays low until enabled
+    m_FastPWM.period_mus(static_cast<int>(PERIOD_MUS));
+    m_FastPWM.write(0.0f);
+#endif
+
     // start thread
     m_Thread.start(callback(this, &Servo::threadTask));
 }
@@ -16,7 +28,9 @@ Servo::Servo(PinName pin, float pulse_min, float pulse_max) : m_DigitalOut(pin),
 Servo::~Servo()
 {
     m_Ticker.detach();
+#ifndef PESBOARD_V2026
     m_Timeout.detach();
+#endif
     m_Thread.terminate();
 }
 
@@ -64,9 +78,14 @@ void Servo::disable()
 {
     m_enabled = false;
 
-    // detach ticker and timeout
+    // detach ticker and stop the output
+#ifdef PESBOARD_V2026
+    m_Ticker.detach();
+    m_FastPWM.write(0.0f);
+#else
     m_Ticker.detach();
     m_Timeout.detach();
+#endif
 }
 
 bool Servo::isEnabled() const
@@ -92,16 +111,22 @@ void Servo::threadTask()
             // increment to position
             m_Motion.incrementToPosition(m_pulse, TS);
 
+#ifdef PESBOARD_V2026
+            // the hardware PWM duty cycle equals the normalised position
+            m_FastPWM.write(m_Motion.getPosition());
+#else
             // convert to pulse width
             const uint16_t pulse_mus = static_cast<uint16_t>(m_Motion.getPosition() * static_cast<float>(PERIOD_MUS));
 
             // enable digital output and attach disableDigitalOutput() to timeout for soft PWM
             enableDigitalOutput();
             m_Timeout.attach(callback(this, &Servo::disableDigitalOutput), std::chrono::microseconds{pulse_mus});
+#endif
         }
     }
 }
 
+#ifndef PESBOARD_V2026
 void Servo::enableDigitalOutput()
 {
     // set the digital output to high
@@ -113,6 +138,7 @@ void Servo::disableDigitalOutput()
     // set the digital output to low
     m_DigitalOut = 0;
 }
+#endif
 
 void Servo::sendThreadFlag()
 {

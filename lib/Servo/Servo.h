@@ -35,6 +35,9 @@
 
 #include "Motion.h"
 #include "ThreadFlag.h"
+#ifdef PESBOARD_V2026
+#include "FastPWM.h"
+#endif
 
 /**
  * @brief Class for smooth control of a servo motor.
@@ -114,9 +117,13 @@ private:
     static constexpr float PWM_MIN = 0.01f;
     static constexpr float PWM_MAX = 0.99f;
 
+#ifdef PESBOARD_V2026
+    FastPWM m_FastPWM;
+#else
     DigitalOut m_DigitalOut;
-    Motion m_Motion;
     Timeout m_Timeout;
+#endif
+    Motion m_Motion;
 
     Thread m_Thread;
     Ticker m_Ticker;
@@ -129,8 +136,10 @@ private:
 
     float calculateNormalisedPulseWidth(float pulse);
     void threadTask();
+#ifndef PESBOARD_V2026
     void enableDigitalOutput();
     void disableDigitalOutput();
+#endif
     void sendThreadFlag();
     float constrainPulse(float pulse) const;
 };

@@ -85,6 +85,38 @@ EncoderCounter::EncoderCounter(PinName a, PinName b) : TIM(nullptr)
         RCC->APB1RSTR |= RCC_APB1RSTR_TIM3RST;
         RCC->APB1RSTR &= ~RCC_APB1RSTR_TIM3RST;
 
+    } else if ((a == PA_6) && (b == PA_7)) {
+
+        // pinmap OK for TIM3 CH1 and CH2
+
+        TIM = TIM3;
+
+        // configure reset and clock control registers
+        __HAL_RCC_GPIOA_CLK_ENABLE();           // port A for both encoder channels
+        __HAL_RCC_TIM3_CLK_ENABLE();            // TIM3 clock enable
+        (void)RCC->AHB1ENR;                     // dummy read forces clock enable to latch
+        (void)RCC->APB1ENR;                     // ensures registers are accessible before configuration
+
+        // configure general purpose I/O registers
+
+        GPIOA->MODER &= ~GPIO_MODER_MODER6;     // reset port A6
+        GPIOA->MODER |= GPIO_MODER_MODER6_1;    // set alternate mode of port A6
+        GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR6;     // reset pull-up/pull-down on port A6
+        GPIOA->PUPDR |= GPIO_PUPDR_PUPDR6_1;    // set input as pull-down
+        GPIOA->AFR[0] &= ~(0xF << 4*6);         // reset alternate function of port A6
+        GPIOA->AFR[0] |= 2 << 4*6;              // set alternate function 2 of port A6
+
+        GPIOA->MODER &= ~GPIO_MODER_MODER7;     // reset port A7
+        GPIOA->MODER |= GPIO_MODER_MODER7_1;    // set alternate mode of port A7
+        GPIOA->PUPDR &= ~GPIO_PUPDR_PUPDR7;     // reset pull-up/pull-down on port A7
+        GPIOA->PUPDR |= GPIO_PUPDR_PUPDR7_1;    // set input as pull-down
+        GPIOA->AFR[0] &= ~(0xF << 4*7);         // reset alternate function of port A7
+        GPIOA->AFR[0] |= 2 << 4*7;              // set alternate function 2 of port A7
+
+        // reset TIM3 controller
+        RCC->APB1RSTR |= RCC_APB1RSTR_TIM3RST;
+        RCC->APB1RSTR &= ~RCC_APB1RSTR_TIM3RST;
+
     } else if ((a == PB_6) && (b == PB_7)) {
 
         // pinmap OK for TIM4 CH1 and CH2

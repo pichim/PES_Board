@@ -358,12 +358,26 @@ void DCMotor::threadTask()
         // calculate pwm and write output
 #ifdef NEW_PES_BOARD_VERSION
         const float pwm = fabs(voltage / m_voltage_max);
-        const bool direction = (voltage > 0.0f) ? true : false;
+        const bool direction = (voltage > 0.0f) ? 0 : 1;
         m_Direction.write(direction);
 #else
         const float pwm = 0.5f + 0.5f * voltage / m_voltage_max;
 #endif
         m_FastPWM.write(pwm);
+
+        // TEMP DEBUG: remove after diagnosis
+        static int dbg_cnt = 0;
+        if (velocity_setpoint != 0.0f && ++dbg_cnt >= 100) {
+            dbg_cnt = 0;
+            printf("DBG v_set=%.3f v=%.3f volt=%.3f pwm=%.3f dir=%d cnt_d=%d\n",
+                   velocity_setpoint, m_velocity, voltage, pwm,
+#ifdef NEW_PES_BOARD_VERSION
+                   static_cast<int>(direction),
+#else
+                   0,
+#endif
+                   static_cast<int>(count_delta));
+        }
 
         // update signals
         m_velocity_setpoint = velocity_setpoint;
