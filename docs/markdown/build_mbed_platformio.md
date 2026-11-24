@@ -15,6 +15,31 @@ Install these before opening the project in VS Code:
 
 PlatformIO automatically downloads the ARM GCC toolchain and the required Mbed framework the first time you build.
 
+
+## Select the PES Board Hardware Version
+
+Before building or uploading a program, select the hardware version of your PES Board.
+
+Open `platformio.ini` and add exactly one of the following definitions to `build_flags`:
+
+- `-DPESBOARD_V2019_2023` for PES Board V2019/V2023
+- `-DPESBOARD_V2025` for PES Board V2025
+- `-DPESBOARD_V2026` for PES Board V2026
+
+Example for PES Board V2019/V2023:
+
+```ini
+build_flags =
+  -DEIGEN_NO_DEBUG
+  -DEIGEN_DONT_VECTORIZE
+  -I$PROJECT_INCLUDE_DIR
+  -DPESBOARD_V2019_2023
+```
+
+If no hardware version is specified, the pin map currently defaults to V2019/V2023.
+
+**Important:** Selecting the wrong version can result in incorrect pin assignments and motor control signals. Always verify the hardware version before uploading.
+
 ## Using PlatformIO after having used Mbed Studio
 
 - Open the repository folder in VS Code. PlatformIO detects `platformio.ini` automatically.

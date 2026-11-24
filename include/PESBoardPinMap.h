@@ -21,7 +21,7 @@
 // 1. Hardware-version selection
 // -----------------------------------------------------------------------------
 #if !defined(PESBOARD_V2019_2023) && !defined(PESBOARD_V2025) && !defined(PESBOARD_V2026)
-    #define PESBOARD_V2026
+    #define PESBOARD_V2019_2023
 #endif
 
 #if (defined(PESBOARD_V2019_2023) + defined(PESBOARD_V2025) + defined(PESBOARD_V2026)) != 1
@@ -39,7 +39,7 @@
     #define PB_HAS_STEPPERS 0    // Stepper connector signals intentionally ignored.
     #define PB_STEPPER_TIM10_TIM11 0
     #define PB_HAS_IMU_SPI 0
-    #define PB_HAS_SDCARD 0
+    #define PB_HAS_SDCARD 1
 #else
     // Separate PWM magnitude + DIR signal. Preserve DCMotor's existing
     // #ifdef NEW_PES_BOARD_VERSION behavior until its planned refactoring.
@@ -115,7 +115,6 @@
 
     #define PB_ENABLE_DCMOTORS PB_15
     // No independent DIR pins for bipolar PWM.
-    #define PB_DC_MOT_STATE PH_1
 
 #elif defined(PESBOARD_V2025)
     #define PB_PWM_M1 PB_15
@@ -225,15 +224,28 @@
     #define PB_SPI_MOSI PB_5
     #define PB_SPI_CS PA_10
 
+    // Legacy SPI pin names used by existing PES-Board examples
+    #define PB_SD_SCK  PB_SPI_SCK
+    #define PB_SD_MISO PB_SPI_MISO
+    #define PB_SD_MOSI PB_SPI_MOSI
+    #define PB_SD_CS   PB_SPI_CS
+
     #define PB_I2C_SDA PC_9
     #define PB_I2C_SCL PA_8
     #define PB_CAN_TD PA_12
     #define PB_CAN_RD PA_11
+    // Keep legacy I2C IMU names from the original header.
+    #define PB_IMU_SDA PB_I2C_SDA
+    #define PB_IMU_SCL PB_I2C_SCL
 
     #define PB_UART3_TX PC_10
     #define PB_UART3_RX PC_11
     #define PB_UART5_TX PC_12
     #define PB_UART5_RX PD_2
+
+    // Legacy UART pin names
+    #define PB_UNUSED_UART_TX PB_UART3_TX
+    #define PB_UNUSED_UART_RX PB_UART3_RX
     // UART3 and UART5 are external interfaces on the V2025 schematic.
 
 #else // PESBOARD_V2026
@@ -268,13 +280,17 @@
 // 8. User button and optional external LEDs
 // -----------------------------------------------------------------------------
 #if defined(PESBOARD_V2019_2023)
-    #define PB_MECH_BUTTON PC_13    // User Button in connector drawing.
+    #define PB_MECH_BUTTON PB_10   // User Button in connector drawing.
     #define PB_STATUS_LED1 PB_9    // Original header: optional external LED.
     #define PB_STATUS_LED2 PB_8    // Original header: optional external LED.
 #elif defined(PESBOARD_V2025)
-    #define PB_MECH_BUTTON PH_0    // Requires oscillator / solder-bridge check!
-    // PH0 is OSC_IN on the F446RE. Do not use unless HSE routing is verified.
-#else // PESBOARD_V2026
+    #define PB_MECH_BUTTON PC_11   // Requires oscillator / solder-bridge check!
+
+    // Legacy status LED pins
+    #define PB_STATUS_LED1 PC_10
+    #define PB_STATUS_LED2 PC_12
+
+    #else // PESBOARD_V2026
     #define PB_MECH_BUTTON PC_13   // Nucleo blue user button.
     #define PB_STATUS_LED1 PC_10   // Legacy alias; conflicts with FTDI TX.
 #endif

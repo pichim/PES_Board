@@ -38,8 +38,8 @@ To use the `SerialStream` class, you need an additional Serial to USB cable:
 #define PB_UNUSED_UART_RX PC_5
 ```
 
-- **TX** from the USB Serial TTL cable should be connected to **PB_UNUSED_UART_RX** / **PB_10**.
-- **RX** from the USB Serial TTL cable should be connected to **PB_UNUSED_UART_TX** / **PC_5**.
+- **TX** from the USB Serial TTL cable should be connected to **PB_UNUSED_UART_RX** / **PC_5**.
+- **RX** from the USB Serial TTL cable should be connected to **PB_UNUSED_UART_TX** / **PB_10**.
 - Make sure to also connect the ground pin of the USB Serial TTL cable to a ground pin of the PES board.
 
 ### Communication Protocol

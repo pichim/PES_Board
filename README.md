@@ -211,6 +211,26 @@ The PES board is a hardware board with additional sensors, devices and power ele
 >- <b>Depending on the PES board version DCMotor M3 rotation direction might be inverted.</b>
 >- <b>Depending on the PES board version, the pin map might differ. Feel free to ask if you are not sure.</b>
 
+#### Hardware Version Selection
+
+The PES Board is available in three hardware generations:
+
+| Hardware version | Build flag | IMU |
+|---|---|---|
+| V2019/V2023 | `-DPESBOARD_V2019_2023` | LSM9DS1 (I2C) |
+| V2025 | `-DPESBOARD_V2025` | MPU6500 (I2C) |
+| V2026 | `-DPESBOARD_V2026` | LSM6DSOX (SPI) |
+
+**Important:** Select the correct hardware version in `platformio.ini` before building or uploading.
+
+If no version is specified, the pin map currently defaults to V2019/V2023.
+
+Most existing workshop tutorials and examples were originally developed for V2019/V2023, which is the default hardware version. No additional build flag is required for these boards.
+
+See [Select the PES Board Hardware Version](docs/markdown/build_mbed_platformio.md#select-the-pes-board-hardware-version) for detailed instructions.
+
+The `src/main.cpp` file may contain hardware-specific test code and is not necessarily compatible with every board generation. The workshop example files are available under `docs/solutions/`.
+
 #### Batteries
 
 The kit includes two sets of 6V battery packs, which can be connected in series to provide 12V. The battery packs need to be connected to the back of the PES board. The picture below illustrates the proper battery connection required to get a total voltage of 12V.

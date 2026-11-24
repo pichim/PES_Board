@@ -1,9 +1,5 @@
 #include "IMU.h"
 
-#if defined(PESBOARD_V2025)
-#include "../../external/Mini_Segway/lib/MPU6500/MPU6500_I2C.cpp"
-#endif
-
 #if defined(PESBOARD_V2026)
 IMU::IMU(SPI& spi, DigitalOut& cs) : m_ImuLSM6DSOX(spi, cs),
                                       m_Mahony(Parameters::kp, Parameters::ki, TS),
@@ -49,7 +45,7 @@ IMU::IMU(PinName pin_sda, PinName pin_scl) : m_ImuLSM9DS1(pin_sda, pin_scl),
 #if (IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE && IMU_DO_USE_STATIC_MAG_CALIBRATION)
     m_magCalib.setCalibrationParameter(Parameters::A_mag, Parameters::b_mag);
 #endif
-    
+
     // start thread
     m_Thread.start(callback(this, &IMU::threadTask));
 
