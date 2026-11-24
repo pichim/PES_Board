@@ -11,7 +11,9 @@
 #include <Eigen/Dense>
 #include "PESBoardPinMap.h"
 
-#ifdef NEW_PES_BOARD_VERSION
+#if defined(PESBOARD_V2026)
+#include "LSM6DSOX.h"
+#elif defined(PESBOARD_V2025)
 #include "MPU6500_I2C.h"
 #else
 #include "LSM9DS1.h"
@@ -82,7 +84,11 @@ public:
 class IMU
 {
 public:
+#if defined(PESBOARD_V2026)
+    explicit IMU(SPI& spi, DigitalOut& cs);
+#else
     explicit IMU(PinName pin_sda, PinName pin_scl);
+#endif
     virtual ~IMU();
 
     ImuData getImuData() const;
@@ -93,7 +99,9 @@ private:
     static constexpr uint32_t THREAD_STACK_SIZE = 8192;
 
     ImuData m_ImuData;
-#ifdef NEW_PES_BOARD_VERSION
+#if defined(PESBOARD_V2026)
+    LSM6DSOX m_ImuLSM6DSOX;
+#elif defined(PESBOARD_V2025)
     I2C m_i2c;
     MPU6500_I2C m_ImuMPU6500;
 #else

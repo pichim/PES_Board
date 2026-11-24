@@ -1,10 +1,25 @@
 #include "IMU.h"
 
-#ifdef NEW_PES_BOARD_VERSION
+#if defined(PESBOARD_V2025)
 #include "../../external/Mini_Segway/lib/MPU6500/MPU6500_I2C.cpp"
 #endif
 
-#ifdef NEW_PES_BOARD_VERSION
+#if defined(PESBOARD_V2026)
+IMU::IMU(SPI& spi, DigitalOut& cs) : m_ImuLSM6DSOX(spi, cs),
+                                      m_Mahony(Parameters::kp, Parameters::ki, TS),
+                                      m_Thread(osPriorityHigh, THREAD_STACK_SIZE)
+{
+    if (!m_ImuLSM6DSOX.begin()) {
+        printf("IMU: LSM6DSOX initialization failed\n");
+    }
+
+    // start thread
+    m_Thread.start(callback(this, &IMU::threadTask));
+
+    // attach sendThreadFlag() to ticker so that sendThreadFlag() is called periodically, which signals the thread to execute
+    m_Ticker.attach(callback(this, &IMU::sendThreadFlag), std::chrono::microseconds{PERIOD_MUS});
+}
+#elif defined(PESBOARD_V2025)
 IMU::IMU(PinName pin_sda, PinName pin_scl) : m_i2c(pin_sda, pin_scl),
                                              m_ImuMPU6500(m_i2c),
                                              m_Mahony(Parameters::kp, Parameters::ki, TS),
@@ -68,7 +83,16 @@ void IMU::threadTask()
     while (true) {
         ThisThread::flags_wait_any(m_ThreadFlag);
 
-#ifdef NEW_PES_BOARD_VERSION
+#if defined(PESBOARD_V2026)
+        LSM6DSOX::Sample sample;
+        if (!m_ImuLSM6DSOX.readSample(sample)) {
+            continue;
+        }
+        // Sensor axes for now; verify PCB orientation before use in motion control.
+        Eigen::Vector3f gyro(sample.gyroX, sample.gyroY, sample.gyroZ);
+        Eigen::Vector3f acc(sample.accX, sample.accY, sample.accZ);
+        static Eigen::Vector3f mag = Eigen::Vector3f::Zero();
+#elif defined(PESBOARD_V2025)
         // update imu
         m_ImuMPU6500.readGyroAll();
         m_ImuMPU6500.readAccAll();
@@ -116,7 +140,7 @@ void IMU::threadTask()
             gyro -= gyro_offset;
             acc -= acc_offset;
 
-#if IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE
+#if IMU_THREAD_DO_USE_MAG_FOR_MAHONY_UPDATE && defined(PESBOARD_V2019_2023)
             mag = m_magCalib.applyCalibration(mag);
             m_Mahony.update(gyro, acc, mag);
 #else
