@@ -27,7 +27,6 @@
  * motor.setVelocity(1.5f); // command velocity to 1.5 rotations per second
  * float currentVelocity = motor.getVelocity(); // read current velocity
  * motor.setRotation(5.0f); // command rotation to 5
- * motor.getRotation(); // read current rotation
  * ```
  *
  * @author M. Peter / pmic / pichim
@@ -79,7 +78,7 @@ public:
      * @param counts_per_turn The number of encoder counts per turn of the motor (default: 20.0f).
      */
     explicit DCMotor(PinName pwm_pin,
-#ifdef NEW_PES_BOARD_VERSION
+#if PB_DC_CONTROL_PWM_DIR
                      PinName direction_pin,
 #endif
                      PinName enc_a_pin,
@@ -288,9 +287,9 @@ private:
     static constexpr float P = 16.0f;
 
     FastPWM m_FastPWM;
-#ifdef NEW_PES_BOARD_VERSION
-    DigitalOut m_Direction; // true for forward, false for backward
-#endif  
+#if PB_DC_CONTROL_PWM_DIR
+    DigitalOut m_Direction; // Existing hardware polarity: LOW for positive, HIGH for negative voltage
+#endif
     EncoderCounter m_EncoderCounter;
     Motion m_Motion;
     PIDCntrl m_PIDCntrl_velocity;

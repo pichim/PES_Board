@@ -33,6 +33,7 @@
 #ifndef SERVO_H_
 #define SERVO_H_
 
+#include "PESBoardPinMap.h"
 #include "Motion.h"
 #include "ThreadFlag.h"
 #ifdef PESBOARD_V2026

@@ -2,7 +2,7 @@
 
 
 DCMotor::DCMotor(PinName pwm_pin,
-#ifdef NEW_PES_BOARD_VERSION
+#if PB_DC_CONTROL_PWM_DIR
                  PinName direction_pin,
 #endif
                  PinName enc_a_pin,
@@ -11,7 +11,7 @@ DCMotor::DCMotor(PinName pwm_pin,
                  float kn,
                  float voltage_max,
                  float counts_per_turn) : m_FastPWM(pwm_pin),
-#ifdef NEW_PES_BOARD_VERSION
+#if PB_DC_CONTROL_PWM_DIR
                                           m_Direction(direction_pin),
 #endif
                                           m_EncoderCounter(enc_a_pin, enc_b_pin),
@@ -167,8 +167,6 @@ void DCMotor::setVelocityCntrl(float kp, float ki, float kd)
                               m_voltage_max * (2.0f * PWM_MAX - 1.0f));
     // avoid students melting their motors
     setVelocityCntrlIntegratorLimitsPercent();
-    // // print for debugging
-    // printf("DCMotor: velocity controller parameters: kp = %.4f, ki = %.4f, kd = %.4f\n", kp, ki, kd);
 }
 
 void DCMotor::setVelocityCntrlIntegratorLimitsPercent(float percent_of_max)
@@ -356,7 +354,7 @@ void DCMotor::threadTask()
 #endif
 
         // calculate pwm and write output
-#ifdef NEW_PES_BOARD_VERSION
+#if PB_DC_CONTROL_PWM_DIR
         const float pwm = fabs(voltage / m_voltage_max);
         const bool direction = (voltage > 0.0f) ? 0 : 1;
         m_Direction.write(direction);
@@ -364,20 +362,6 @@ void DCMotor::threadTask()
         const float pwm = 0.5f + 0.5f * voltage / m_voltage_max;
 #endif
         m_FastPWM.write(pwm);
-
-        // TEMP DEBUG: remove after diagnosis
-        static int dbg_cnt = 0;
-        if (velocity_setpoint != 0.0f && ++dbg_cnt >= 100) {
-            dbg_cnt = 0;
-            printf("DBG v_set=%.3f v=%.3f volt=%.3f pwm=%.3f dir=%d cnt_d=%d\n",
-                   velocity_setpoint, m_velocity, voltage, pwm,
-#ifdef NEW_PES_BOARD_VERSION
-                   static_cast<int>(direction),
-#else
-                   0,
-#endif
-                   static_cast<int>(count_delta));
-        }
 
         // update signals
         m_velocity_setpoint = velocity_setpoint;

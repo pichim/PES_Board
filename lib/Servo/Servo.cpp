@@ -85,6 +85,7 @@ void Servo::disable()
 #else
     m_Ticker.detach();
     m_Timeout.detach();
+    m_DigitalOut = 0;
 #endif
 }
 
