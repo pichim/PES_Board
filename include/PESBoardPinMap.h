@@ -10,8 +10,8 @@
  *   PESBOARD_V2025
  *   PESBOARD_V2026
  *
- * If no version is selected, V2026 is used for compatibility with the
- * previous PESBoardPinMap.h. Explicit -D selection overrides this default.
+ * If no version is selected, V2019/V2023 is used to preserve backward
+ * compatibility. Explicit -D selection overrides this default.
  *
  * Pin names refer to Mbed PinName symbols (e.g. PA_11, PC_7_ALT0).
  * Do not use two alternative functions of the same MCU pin simultaneously.
@@ -54,7 +54,7 @@
     #else
         #define PB_STEPPER_TIM10_TIM11 0
         #define PB_HAS_IMU_SPI 0
-        #define PB_HAS_SDCARD 0
+        #define PB_HAS_SDCARD 1
     #endif
 #endif
 
